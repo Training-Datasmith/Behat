@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Hook\AfterScenario;
 use Behat\Hook\BeforeScenario;
 use Behat\Step\Given;

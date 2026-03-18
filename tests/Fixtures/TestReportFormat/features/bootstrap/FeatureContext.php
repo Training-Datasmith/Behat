@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Hook\BeforeScenario;
@@ -44,6 +46,6 @@ class FeatureContext implements Context
     #[When('/^I have a PHP error$/')]
     public function iHaveAPHPError()
     {
-        $foo = new class extends Context {};
+        $foo = new class () extends Context {};
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>

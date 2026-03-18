@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behat\Behat\Output\Node\Printer\JUnit;
 
 use Behat\Behat\Hook\Scope\StepScope;

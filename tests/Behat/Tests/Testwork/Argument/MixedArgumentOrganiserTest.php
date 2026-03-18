@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behat\Tests\Testwork\Argument;
 
 use Behat\Testwork\Argument\MixedArgumentOrganiser;
@@ -21,7 +23,8 @@ final class MixedArgumentOrganiserTest extends TestCase
     public function testThatItOrganisesNothingIfNoArgs(): void
     {
         $r = new ReflectionFunction(
-            static function (DateTimeInterface $d) {}
+            static function (DateTimeInterface $d) {
+            }
         );
         $args = [];
 
@@ -33,7 +36,8 @@ final class MixedArgumentOrganiserTest extends TestCase
     public function testThatItMatchesArgsByPosition(): void
     {
         $r = new ReflectionFunction(
-            static function ($x, $y) {}
+            static function ($x, $y) {
+            }
         );
         $args = [
             1,
@@ -49,7 +53,8 @@ final class MixedArgumentOrganiserTest extends TestCase
     public function testThatItMatchesArgsByName(): void
     {
         $r = new ReflectionFunction(
-            static function ($date) {}
+            static function ($date) {
+            }
         );
         $args = [
             'date' => $date = new DateTime(),
@@ -64,7 +69,8 @@ final class MixedArgumentOrganiserTest extends TestCase
     public function testThatItMatchesArgsByType(): void
     {
         $r = new ReflectionFunction(
-            static function (DateTimeInterface $d) {}
+            static function (DateTimeInterface $d) {
+            }
         );
         $args = [
             'x' => $date = new DateTime(),
@@ -79,7 +85,8 @@ final class MixedArgumentOrganiserTest extends TestCase
     public function testThatItMatchesArgsByNameOverType(): void
     {
         $r = new ReflectionFunction(
-            static function (DateTimeInterface $a, $date) {}
+            static function (DateTimeInterface $a, $date) {
+            }
         );
         $args = [
             'date' => $date = new DateTime(),

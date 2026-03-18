@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -34,7 +36,8 @@ final class PatternTransformation extends RuntimeCallee implements Stringable, T
      */
     public function __construct(
         private $pattern,
-        callable|array $callable, ?string $description = null,
+        callable|array $callable,
+        ?string $description = null,
     ) {
         parent::__construct($callable, $description);
     }

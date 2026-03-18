@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -14,10 +16,12 @@ use Behat\Behat\Context\Snippet\Generator\CannotGenerateStepPatternException;
 use Behat\Behat\Definition\Translator\TranslatorInterface;
 use Behat\Behat\Snippet\AggregateSnippet;
 use Behat\Gherkin\Node\StepNode;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Output\OutputInterface;
 
 use function count;
+
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Behat console-based snippet printer.

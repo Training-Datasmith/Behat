@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -33,15 +35,21 @@ class PathOptionsController implements Controller
     {
         $command
             ->addOption(
-                '--print-absolute-paths', null, InputOption::VALUE_NONE,
+                '--print-absolute-paths',
+                null,
+                InputOption::VALUE_NONE,
                 'Print absolute paths in output'
             )
             ->addOption(
-                '--editor-url', null, InputOption::VALUE_REQUIRED,
+                '--editor-url',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'URL template for opening files in an editor'
             )
             ->addOption(
-                '--remove-prefix', null, InputOption::VALUE_REQUIRED,
+                '--remove-prefix',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'Comma-separated list of prefixes to remove from paths'
             )
         ;

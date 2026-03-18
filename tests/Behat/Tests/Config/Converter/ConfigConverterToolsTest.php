@@ -13,7 +13,7 @@ final class ConfigConverterToolsTest extends TestCase
 {
     public static function providerRemoveDefaultArguments(): array
     {
-        $object = new class {
+        $object = new class () {
             public function takesNoArgs(): void
             {
             }
@@ -119,7 +119,7 @@ final class ConfigConverterToolsTest extends TestCase
 
     public static function providerValidateMethodCallInput(): array
     {
-        $obj = new class {
+        $obj = new class () {
             public function withThings(string $one, string $two): void
             {
             }

@@ -7,12 +7,14 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('inherit'))
+    ->withProfile(
+        (new Profile('inherit'))
         ->withSuite(new Suite('default', [
             'contexts' => ['FeatureContextInheritAnnotations'],
         ]))
     )
-    ->withProfile((new Profile('both_patterns'))
+    ->withProfile(
+        (new Profile('both_patterns'))
         ->withSuite(new Suite('default', [
             'contexts' => ['FeatureContextBothAnnotations'],
         ]))

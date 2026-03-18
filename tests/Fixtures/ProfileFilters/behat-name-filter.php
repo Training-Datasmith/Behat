@@ -10,7 +10,8 @@ use Behat\Config\Profile;
 return (new Config())
     ->withProfile(
         (new Profile('default'))
-            ->withGherkinOptions((new GherkinOptions())
+            ->withGherkinOptions(
+                (new GherkinOptions())
                 ->withFilter(new NameFilter('simple feature'))
             )
     )

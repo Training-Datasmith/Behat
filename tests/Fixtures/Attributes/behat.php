@@ -1,22 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('step_attributes'))
+    ->withProfile(
+        (new Profile('step_attributes'))
         ->withSuite(new Suite('default', ['contexts' => ['StepAttributesContext']]))
     )
-    ->withProfile((new Profile('feature_hooks'))
+    ->withProfile(
+        (new Profile('feature_hooks'))
         ->withSuite(new Suite('default', ['contexts' => ['FeatureHookAttributesContext']]))
     )
-    ->withProfile((new Profile('scenario_hooks'))
+    ->withProfile(
+        (new Profile('scenario_hooks'))
         ->withSuite(new Suite('default', ['contexts' => ['ScenarioHookAttributesContext']]))
     )
-    ->withProfile((new Profile('suite_hooks'))
+    ->withProfile(
+        (new Profile('suite_hooks'))
         ->withSuite(new Suite('apples', ['contexts' => ['SuiteHookAttributesContext']]))
     )
-    ->withProfile((new Profile('step_hooks'))
+    ->withProfile(
+        (new Profile('step_hooks'))
         ->withSuite(new Suite('default', ['contexts' => ['StepHookAttributesContext']]))
     );
