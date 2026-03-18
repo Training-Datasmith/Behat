@@ -18,7 +18,7 @@ use Behat\Testwork\Specification\SpecificationIterator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class BeforeSuiteScope implements SuiteScope
+final readonly class BeforeSuiteScope implements SuiteScope
 {
     /**
      * Initializes scope.
@@ -26,8 +26,8 @@ final class BeforeSuiteScope implements SuiteScope
      * @param SpecificationIterator<mixed> $iterator
      */
     public function __construct(
-        private readonly Environment $environment,
-        private readonly SpecificationIterator $iterator,
+        private Environment $environment,
+        private SpecificationIterator $iterator,
     ) {
     }
 

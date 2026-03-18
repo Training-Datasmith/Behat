@@ -28,10 +28,7 @@ use Behat\Testwork\Tester\Result\TestResult;
  */
 final class ProgressStepPrinter implements StepPrinter
 {
-    /**
-     * @var int
-     */
-    private $stepsPrinted = 0;
+    private int $stepsPrinted = 0;
 
     private bool $hasPrintedOutput = false;
 
@@ -95,7 +92,7 @@ final class ProgressStepPrinter implements StepPrinter
 
         $printer->writeln("\n" . $result->getStepDefinition()->getPath() . ':');
         $callResult = $result->getCallResult();
-        $pad = (fn ($line): string => sprintf(
+        $pad = (fn (string $line): string => sprintf(
             '  | {+stdout}%s{-stdout}',
             $line
         ));

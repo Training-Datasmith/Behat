@@ -30,14 +30,14 @@ use Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class HookStatsListener implements EventListener
+final readonly class HookStatsListener implements EventListener
 {
     /**
      * Initializes listener.
      */
     public function __construct(
-        private readonly Statistics $statistics,
-        private readonly ExceptionPresenter $exceptionPresenter,
+        private Statistics $statistics,
+        private ExceptionPresenter $exceptionPresenter,
     ) {
     }
 

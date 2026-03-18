@@ -17,13 +17,13 @@ use ReflectionFunctionAbstract;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class PregMatchArgumentOrganiser implements ArgumentOrganiser
+final readonly class PregMatchArgumentOrganiser implements ArgumentOrganiser
 {
     /**
      * Initialises organiser.
      */
     public function __construct(
-        private readonly ArgumentOrganiser $baseOrganiser,
+        private ArgumentOrganiser $baseOrganiser,
     ) {
     }
 
@@ -67,10 +67,9 @@ final class PregMatchArgumentOrganiser implements ArgumentOrganiser
     /**
      * Checks if key at provided index is a string and next key in the array is an integer.
      *
-     * @param int     $keyIndex
      * @param mixed[] $keys
      */
-    private function isKeyAStringAndNextOneIsAnInteger($keyIndex, array $keys): bool
+    private function isKeyAStringAndNextOneIsAnInteger(int $keyIndex, array $keys): bool
     {
         $keyIsAString = is_string($keys[$keyIndex]);
         $nextKeyIsAnInteger = isset($keys[$keyIndex + 1]) && is_int($keys[$keyIndex + 1]);

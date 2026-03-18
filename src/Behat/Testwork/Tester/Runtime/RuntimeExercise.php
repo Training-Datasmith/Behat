@@ -32,7 +32,7 @@ use Behat\Testwork\Tester\SuiteTester;
  *
  * @implements Exercise<TSpec>
  */
-final class RuntimeExercise implements Exercise
+final readonly class RuntimeExercise implements Exercise
 {
     /**
      * Initializes tester.
@@ -40,8 +40,8 @@ final class RuntimeExercise implements Exercise
      * @param SuiteTester<TSpec> $suiteTester
      */
     public function __construct(
-        private readonly EnvironmentManager $envManager,
-        private readonly SuiteTester $suiteTester,
+        private EnvironmentManager $envManager,
+        private SuiteTester $suiteTester,
     ) {
     }
 

@@ -22,13 +22,13 @@ use Behat\Testwork\Tester\Result\TestWithSetupResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class StepContainerTester
+final readonly class StepContainerTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private readonly StepTester $stepTester,
+        private StepTester $stepTester,
     ) {
     }
 

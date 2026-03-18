@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AutoloaderExtension implements Extension
+final readonly class AutoloaderExtension implements Extension
 {
     /*
      * Available services
@@ -36,7 +36,7 @@ final class AutoloaderExtension implements Extension
      * Initializes extension.
      */
     public function __construct(
-        private readonly array $defaultPaths = [],
+        private array $defaultPaths = [],
     ) {
     }
 

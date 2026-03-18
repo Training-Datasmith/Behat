@@ -154,19 +154,15 @@ final class PrettyStepPrinter implements StepPrinter
 
     /**
      * Returns argument string for provided argument.
-     *
-     * @param bool           $collapse
      */
-    private function getArgumentString(ArgumentInterface $argument, $collapse = false): string
+    private function getArgumentString(ArgumentInterface $argument, bool $collapse = false): string
     {
         if ($collapse) {
             return '...';
         }
 
         if ($argument instanceof PyStringNode) {
-            $text = '"""' . "\n" . $argument . "\n" . '"""';
-
-            return $text;
+            return '"""' . "\n" . $argument . "\n" . '"""';
         }
         if ($argument instanceof TableNode) {
             return (string) $argument;
@@ -177,10 +173,8 @@ final class PrettyStepPrinter implements StepPrinter
 
     /**
      * Indents text to the subIndentation level.
-     *
-     * @param string $text
      */
-    private function subIndent($text): string
+    private function subIndent(string $text): string
     {
         return $this->subIndentText . $text;
     }

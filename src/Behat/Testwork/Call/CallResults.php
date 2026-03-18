@@ -21,7 +21,7 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<int, CallResult>
  */
-final class CallResults implements Countable, IteratorAggregate
+final readonly class CallResults implements Countable, IteratorAggregate
 {
     /**
      * Initializes call results collection.
@@ -29,7 +29,7 @@ final class CallResults implements Countable, IteratorAggregate
      * @param CallResult[] $results
      */
     public function __construct(
-        private readonly array $results = [],
+        private array $results = [],
     ) {
     }
 

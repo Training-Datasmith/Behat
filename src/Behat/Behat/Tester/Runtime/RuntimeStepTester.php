@@ -36,14 +36,14 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RuntimeStepTester implements StepTester
+final readonly class RuntimeStepTester implements StepTester
 {
     /**
      * Initialize tester.
      */
     public function __construct(
-        private readonly DefinitionFinder $definitionFinder,
-        private readonly CallCenter $callCenter,
+        private DefinitionFinder $definitionFinder,
+        private CallCenter $callCenter,
     ) {
     }
 

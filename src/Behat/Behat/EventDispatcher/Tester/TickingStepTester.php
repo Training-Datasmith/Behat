@@ -28,13 +28,13 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Peter Mitchell <peterjmit@gmail.com>
  */
-final class TickingStepTester implements StepTester
+final readonly class TickingStepTester implements StepTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private readonly StepTester $baseTester,
+        private StepTester $baseTester,
     ) {
     }
 

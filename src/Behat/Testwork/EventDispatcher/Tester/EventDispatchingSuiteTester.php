@@ -29,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @implements SuiteTester<TSpec>
  */
-final class EventDispatchingSuiteTester implements SuiteTester
+final readonly class EventDispatchingSuiteTester implements SuiteTester
 {
     /**
      * Initializes tester.
@@ -37,8 +37,8 @@ final class EventDispatchingSuiteTester implements SuiteTester
      * @param SuiteTester<TSpec>       $baseTester
      */
     public function __construct(
-        private readonly SuiteTester $baseTester,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private SuiteTester $baseTester,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

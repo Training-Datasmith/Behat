@@ -29,7 +29,7 @@ use Behat\Testwork\Tester\SuiteTester;
  *
  * @implements SuiteTester<TSpec>
  */
-final class HookableSuiteTester implements SuiteTester
+final readonly class HookableSuiteTester implements SuiteTester
 {
     /**
      * Initializes tester.
@@ -37,8 +37,8 @@ final class HookableSuiteTester implements SuiteTester
      * @param SuiteTester<TSpec> $baseTester
      */
     public function __construct(
-        private readonly SuiteTester $baseTester,
-        private readonly HookDispatcher $hookDispatcher,
+        private SuiteTester $baseTester,
+        private HookDispatcher $hookDispatcher,
     ) {
     }
 

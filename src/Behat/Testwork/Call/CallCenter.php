@@ -29,19 +29,19 @@ final class CallCenter
     /**
      * @var CallFilter[]
      */
-    private $callFilters = [];
+    private array $callFilters = [];
     /**
      * @var CallHandler[]
      */
-    private $callHandlers = [];
+    private array $callHandlers = [];
     /**
      * @var ResultFilter[]
      */
-    private $resultFilters = [];
+    private array $resultFilters = [];
     /**
      * @var ExceptionHandler[]
      */
-    private $exceptionHandlers = [];
+    private array $exceptionHandlers = [];
 
     /**
      * Registers call filter.
@@ -85,7 +85,7 @@ final class CallCenter
         try {
             return $this->filterResult($this->handleCall($this->filterCall($call)));
         } catch (Throwable $exception) {
-            return new CallResult($call, null, $this->handleException($exception), null);
+            return new CallResult($call, null, $this->handleException($exception));
         }
     }
 
@@ -151,11 +151,9 @@ final class CallCenter
     /**
      * Handles exception using registered handlers and returns a handled one.
      *
-     * @param Throwable $exception
      *
-     * @return Exception
      */
-    private function handleException($exception)
+    private function handleException(\Throwable $exception): \Behat\Testwork\Call\Exception\FatalThrowableError|\Exception
     {
         foreach ($this->exceptionHandlers as $handler) {
             if (!$handler->supportsException($exception)) {

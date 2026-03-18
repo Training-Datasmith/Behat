@@ -27,7 +27,7 @@ use Behat\Testwork\Tester\SpecificationTester;
  *
  * @implements SpecificationTester<FeatureNode>
  */
-final class HookableFeatureTester implements SpecificationTester
+final readonly class HookableFeatureTester implements SpecificationTester
 {
     /**
      * Initializes tester.
@@ -35,8 +35,8 @@ final class HookableFeatureTester implements SpecificationTester
      * @param SpecificationTester<FeatureNode> $baseTester
      */
     public function __construct(
-        private readonly SpecificationTester $baseTester,
-        private readonly HookDispatcher $hookDispatcher,
+        private SpecificationTester $baseTester,
+        private HookDispatcher $hookDispatcher,
     ) {
     }
 

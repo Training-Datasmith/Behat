@@ -23,11 +23,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Enables stop on failure via config.
  */
-final class StopOnFailureHandler
+final readonly class StopOnFailureHandler
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ResultInterpreter $resultInterpreter,
+        private EventDispatcherInterface $eventDispatcher,
+        private ResultInterpreter $resultInterpreter,
     ) {
     }
 

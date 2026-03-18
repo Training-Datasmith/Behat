@@ -30,16 +30,16 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RepositorySearchEngine implements SearchEngine
+final readonly class RepositorySearchEngine implements SearchEngine
 {
     /**
      * Initializes search engine.
      */
     public function __construct(
-        private readonly DefinitionRepository $repository,
-        private readonly PatternTransformer $patternTransformer,
-        private readonly DefinitionTranslator $translator,
-        private readonly ArgumentOrganiser $argumentOrganiser,
+        private DefinitionRepository $repository,
+        private PatternTransformer $patternTransformer,
+        private DefinitionTranslator $translator,
+        private ArgumentOrganiser $argumentOrganiser,
     ) {
     }
 

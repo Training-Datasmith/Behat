@@ -28,13 +28,13 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RuntimeBackgroundTester implements BackgroundTester
+final readonly class RuntimeBackgroundTester implements BackgroundTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private readonly StepContainerTester $containerTester,
+        private StepContainerTester $containerTester,
     ) {
     }
 

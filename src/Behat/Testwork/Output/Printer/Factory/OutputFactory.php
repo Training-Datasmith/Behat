@@ -27,23 +27,17 @@ abstract class OutputFactory
      * @var string|null
      */
     private $outputPath;
-    /**
-     * @var array
-     */
-    private $outputStyles = [];
+    private array $outputStyles = [];
 
     private ?bool $outputDecorated = null;
-    /**
-     * @var int
-     */
-    private $verbosityLevel = 0;
+    private int $verbosityLevel = 0;
 
     /**
      * Sets output path.
      *
      * @param string $path
      */
-    public function setOutputPath($path)
+    public function setOutputPath($path): void
     {
         $this->outputPath = $path;
     }
@@ -61,7 +55,7 @@ abstract class OutputFactory
     /**
      * Sets output styles.
      */
-    public function setOutputStyles(array $styles)
+    public function setOutputStyles(array $styles): void
     {
         $this->outputStyles = $styles;
     }
@@ -81,7 +75,7 @@ abstract class OutputFactory
      *
      * @param bool $decorated
      */
-    public function setOutputDecorated($decorated)
+    public function setOutputDecorated(?bool $decorated): void
     {
         $this->outputDecorated = $decorated;
     }
@@ -101,7 +95,7 @@ abstract class OutputFactory
      *
      * @param int $level
      */
-    public function setOutputVerbosity($level)
+    public function setOutputVerbosity($level): void
     {
         $this->verbosityLevel = intval($level);
     }

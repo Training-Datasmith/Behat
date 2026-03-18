@@ -18,7 +18,7 @@ use Behat\Gherkin\Node\StepNode;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AggregateSnippet
+final readonly class AggregateSnippet
 {
     /**
      * Initializes snippet.
@@ -26,7 +26,7 @@ final class AggregateSnippet
      * @param Snippet[] $snippets
      */
     public function __construct(
-        private readonly array $snippets,
+        private array $snippets,
     ) {
     }
 
@@ -100,7 +100,7 @@ final class AggregateSnippet
             array_merge(
                 ...array_values(
                     array_map(
-                        function (Snippet $snippet) {
+                        function (Snippet $snippet): array {
                             if (!$snippet instanceof ContextSnippet) {
                                 return [];
                             }

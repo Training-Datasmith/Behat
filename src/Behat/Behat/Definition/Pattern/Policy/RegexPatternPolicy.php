@@ -28,7 +28,7 @@ final class RegexPatternPolicy implements PatternPolicy
     /**
      * @var array<string,string>
      */
-    private static $replacePatterns = [
+    private static array $replacePatterns = [
         "/(?<=\W|^)\\\'(?:((?!\\').)*)\\\'(?=\W|$)/" => "'([^']*)'", // Single quoted strings
         '/(?<=\W|^)\"(?:[^\"]*)\"(?=\W|$)/' => '"([^"]*)"', // Double quoted strings
         '/(?<=\W|^)(\d+)(?=\W|$)/' => '(\\d+)', // Numbers
@@ -90,9 +90,8 @@ final class RegexPatternPolicy implements PatternPolicy
      * Counts regex placeholders using provided text.
      *
      * @param string $stepText
-     * @param string $stepRegex
      */
-    private function countPlaceholders($stepText, $stepRegex): int
+    private function countPlaceholders($stepText, string $stepRegex): int
     {
         preg_match('/^' . $stepRegex . '$/', $stepText, $matches);
 
@@ -101,10 +100,8 @@ final class RegexPatternPolicy implements PatternPolicy
 
     /**
      * Returns escaped step text.
-     *
-     * @param string $stepText
      */
-    private function escapeStepText($stepText): string
+    private function escapeStepText(string $stepText): string
     {
         return StrictRegex::replace('/([\/\[\]\(\)\\\^\$\.\|\?\*\+\'])/', '\\\\$1', $stepText);
     }

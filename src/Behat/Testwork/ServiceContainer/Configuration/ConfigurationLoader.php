@@ -24,10 +24,7 @@ use function str_ends_with;
  */
 final class ConfigurationLoader
 {
-    /**
-     * @var bool
-     */
-    private $profileFound;
+    private ?bool $profileFound = null;
     /**
      * @var array
      */
@@ -210,20 +207,15 @@ final class ConfigurationLoader
      */
     private function getPHPConfigObjectClosure(string $configPath): Closure
     {
-        return Closure::bind(function () use ($configPath): mixed {
-            $config = require $configPath;
-
-            return $config;
-        }, null, null);
+        return Closure::bind(fn(): mixed => require $configPath, null, null);
     }
 
     /**
      * Loads configs for provided config and profile.
      *
-     * @param string $basePath
      * @param string $profile
      */
-    private function loadConfigs($basePath, array $config, $profile): array
+    private function loadConfigs(string $basePath, array $config, $profile): array
     {
         $configs = [];
 
@@ -271,9 +263,8 @@ final class ConfigurationLoader
      * Loads all provided imports.
      *
      * @param string $basePath
-     * @param string $profile
      */
-    private function loadImports($basePath, array $paths, $profile): array
+    private function loadImports(string $basePath, array $paths, string $profile): array
     {
         $configs = [];
         foreach ($paths as $path) {
@@ -288,13 +279,11 @@ final class ConfigurationLoader
     /**
      * Parses import.
      *
-     * @param string $basePath
      * @param string $path
-     * @param string $profile
      *
      * @throws ConfigurationLoadingException If import file not found
      */
-    private function parseImport($basePath, $path, $profile): array
+    private function parseImport(string $basePath, $path, string $profile): array
     {
         if (!file_exists($path) && file_exists($basePath . DIRECTORY_SEPARATOR . $path)) {
             $path = $basePath . DIRECTORY_SEPARATOR . $path;

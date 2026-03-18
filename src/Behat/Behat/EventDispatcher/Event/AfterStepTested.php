@@ -76,7 +76,13 @@ final class AfterStepTested extends StepTested implements AfterTested
      */
     public function hasOutput(): bool
     {
-        return $this->teardownHasOutput() || $this->resultHasException() || $this->resultCallHasOutput();
+        if ($this->teardownHasOutput()) {
+            return true;
+        }
+        if ($this->resultHasException()) {
+            return true;
+        }
+        return $this->resultCallHasOutput();
     }
 
     /**
@@ -107,7 +113,9 @@ final class AfterStepTested extends StepTested implements AfterTested
         if (!$this->result instanceof ExecutedStepResult) {
             return false;
         }
-
-        return $this->result->getCallResult()->hasStdOut() || $this->result->getCallResult()->hasException();
+        if ($this->result->getCallResult()->hasStdOut()) {
+            return true;
+        }
+        return $this->result->getCallResult()->hasException();
     }
 }

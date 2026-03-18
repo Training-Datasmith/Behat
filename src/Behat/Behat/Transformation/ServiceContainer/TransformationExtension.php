@@ -57,7 +57,7 @@ class TransformationExtension implements Extension
         $this->processor = $processor ?: new ServiceProcessor();
     }
 
-    public function getConfigKey()
+    public function getConfigKey(): string
     {
         return 'transformations';
     }
@@ -70,7 +70,7 @@ class TransformationExtension implements Extension
     {
     }
 
-    public function load(ContainerBuilder $container, array $config)
+    public function load(ContainerBuilder $container, array $config): void
     {
         $this->loadDefinitionArgumentsTransformer($container);
         $this->loadDefaultTransformers($container);
@@ -79,7 +79,7 @@ class TransformationExtension implements Extension
         $this->loadRepository($container);
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->processArgumentsTransformers($container);
     }
@@ -158,13 +158,11 @@ class TransformationExtension implements Extension
     /**
      * Returns definition argument transformer service id.
      *
-     * @return string
      *
      * @deprecated Use DEFINITION_ARGUMENT_TRANSFORMER_ID constant instead
-     *
      * @todo Remove method in next major version
      */
-    protected function getDefinitionArgumentTransformerId()
+    protected function getDefinitionArgumentTransformerId(): string
     {
         return self::DEFINITION_ARGUMENT_TRANSFORMER_ID;
     }

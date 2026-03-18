@@ -86,11 +86,10 @@ final class ServicesResolver implements CallFilter
     /**
      * Repackages old calls with new arguments, but only if two differ.
      *
-     * @return Call
      *
      * @throws UnsupportedCallException if given call is not DefinitionCall or TransformationCall
      */
-    private function repackageCallIfNewArguments(Call $call, array $arguments)
+    private function repackageCallIfNewArguments(Call $call, array $arguments): \Behat\Testwork\Call\Call|\Behat\Behat\Definition\Call\DefinitionCall|\Behat\Behat\Transformation\Call\TransformationCall
     {
         if ($arguments === $call->getArguments()) {
             return $call;

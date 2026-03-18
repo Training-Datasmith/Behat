@@ -46,11 +46,10 @@ final class ConsoleFormatter extends BaseOutputFormatter
     /**
      * Replaces style of the output.
      *
-     * @param array $match
      *
      * @return string The replaced style
      */
-    private function replaceStyle($match)
+    private function replaceStyle(array $match)
     {
         if (!$this->isDecorated()) {
             return $match[2];
@@ -72,7 +71,7 @@ final class ConsoleFormatter extends BaseOutputFormatter
     {
         return StrictRegex::replaceCallback(
             self::HREF_PATTERN,
-            function ($matches) {
+            function ($matches): string {
                 $url = $matches[1];
                 $text = $matches[2];
 

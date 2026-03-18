@@ -21,13 +21,13 @@ use Behat\Testwork\Environment\Environment;
  *
  * @deprecated since 3.4. Use `ArgumentResolverFactory` instead
  */
-final class SuiteScopedResolverFactoryAdapter implements ArgumentResolverFactory
+final readonly class SuiteScopedResolverFactoryAdapter implements ArgumentResolverFactory
 {
     /**
      * Initialises adapter.
      */
     public function __construct(
-        private readonly SuiteScopedResolverFactory $factory,
+        private SuiteScopedResolverFactory $factory,
     ) {
     }
 

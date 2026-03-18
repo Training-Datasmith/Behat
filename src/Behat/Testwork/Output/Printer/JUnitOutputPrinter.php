@@ -51,7 +51,7 @@ final class JUnitOutputPrinter extends StreamOutputPrinter
      * @param string $name                 The filename (without extension) and default value of the name attribute
      * @param array  $testsuitesAttributes Attributes for the root element
      */
-    public function createNewFile($name, array $testsuitesAttributes = []): void
+    public function createNewFile(string $name, array $testsuitesAttributes = []): void
     {
         // This requires the DOM extension to be enabled.
         if (!extension_loaded('dom')) {
@@ -129,10 +129,9 @@ final class JUnitOutputPrinter extends StreamOutputPrinter
     /**
      * Sets file name.
      *
-     * @param string $fileName
      * @param string $extension The file extension, defaults to "xml"
      */
-    public function setFileName($fileName, $extension = 'xml'): void
+    public function setFileName(string $fileName, string $extension = 'xml'): void
     {
         if ('.' . $extension !== substr($fileName, strlen($extension) + 1)) {
             $fileName .= '.' . $extension;

@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class EnvironmentExtension implements Extension
+final readonly class EnvironmentExtension implements Extension
 {
     /*
      * Available services
@@ -39,7 +39,7 @@ final class EnvironmentExtension implements Extension
     public const HANDLER_TAG = 'environment.handler';
     public const READER_TAG = 'environment.reader';
 
-    private readonly ServiceProcessor $processor;
+    private ServiceProcessor $processor;
 
     /**
      * Initializes extension.

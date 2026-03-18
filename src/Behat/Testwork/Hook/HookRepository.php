@@ -20,13 +20,13 @@ use Behat\Testwork\Hook\Scope\HookScope;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class HookRepository
+final readonly class HookRepository
 {
     /**
      * Initializes repository.
      */
     public function __construct(
-        private readonly EnvironmentManager $environmentManager,
+        private EnvironmentManager $environmentManager,
     ) {
     }
 
@@ -52,7 +52,7 @@ final class HookRepository
     {
         return array_filter(
             $this->getEnvironmentHooks($scope->getEnvironment()),
-            function (Hook $hook) use ($scope) {
+            function (Hook $hook) use ($scope): bool {
                 if ($scope->getName() !== $hook->getScopeName()) {
                     return false;
                 }

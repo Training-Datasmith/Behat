@@ -20,15 +20,15 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class BeforeStepScope implements StepScope
+final readonly class BeforeStepScope implements StepScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private readonly Environment $environment,
-        private readonly FeatureNode $feature,
-        private readonly StepNode $step,
+        private Environment $environment,
+        private FeatureNode $feature,
+        private StepNode $step,
     ) {
     }
 

@@ -18,13 +18,13 @@ use Behat\Behat\Definition\SearchResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SkippedStepResult implements StepResult, DefinedStepResult
+final readonly class SkippedStepResult implements StepResult, DefinedStepResult
 {
     /**
      * Initializes step result.
      */
     public function __construct(
-        private readonly SearchResult $searchResult,
+        private SearchResult $searchResult,
     ) {
     }
 

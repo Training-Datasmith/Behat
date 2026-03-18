@@ -8,11 +8,11 @@ use Behat\Config\Converter\ConfigConverterTools;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use PhpParser\Node\Expr;
 
-final class Extension implements ExtensionConfigInterface
+final readonly class Extension implements ExtensionConfigInterface
 {
     public function __construct(
-        private readonly string $name,
-        private readonly array $settings = [],
+        private string $name,
+        private array $settings = [],
     ) {
     }
 
@@ -26,7 +26,7 @@ final class Extension implements ExtensionConfigInterface
         return $this->settings;
     }
 
-    public function toPhpExpr(): Expr
+    public function toPhpExpr(): \PhpParser\Node\Expr\New_
     {
         $extensionObject = ConfigConverterTools::createObject(self::class);
 

@@ -25,16 +25,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SyntaxController implements Controller
+final readonly class SyntaxController implements Controller
 {
-    private readonly KeywordsDumper $keywordsDumper;
+    private KeywordsDumper $keywordsDumper;
 
     /**
      * Initializes controller.
      */
     public function __construct(
         KeywordsDumper $dumper,
-        private readonly TranslatorInterface $translator,
+        private TranslatorInterface $translator,
     ) {
         $dumper->setKeywordsDumperFunction($this->dumpKeywords(...));
         $this->keywordsDumper = $dumper;

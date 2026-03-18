@@ -37,28 +37,21 @@ final class BeforeScenarioTeardown extends ScenarioTested implements BeforeTeard
 
     /**
      * Returns feature.
-     *
-     * @return FeatureNode
      */
-    public function getFeature()
+    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
     {
         return $this->feature;
     }
 
-    /**
-     * @return Scenario
-     */
-    public function getScenario()
+    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
     {
         return $this->scenario;
     }
 
     /**
      * Returns current test result.
-     *
-     * @return TestResult
      */
-    public function getTestResult()
+    public function getTestResult(): \Behat\Testwork\Tester\Result\TestResult
     {
         return $this->result;
     }

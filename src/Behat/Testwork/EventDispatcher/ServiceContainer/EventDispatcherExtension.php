@@ -41,10 +41,7 @@ class EventDispatcherExtension implements Extension
      */
     public const SUBSCRIBER_TAG = 'event_dispatcher.subscriber';
 
-    /**
-     * @var ServiceProcessor
-     */
-    protected $processor;
+    protected \Behat\Testwork\ServiceContainer\ServiceProcessor $processor;
 
     /**
      * Initializes extension.
@@ -54,7 +51,7 @@ class EventDispatcherExtension implements Extension
         $this->processor = $processor ?: new ServiceProcessor();
     }
 
-    public function getConfigKey()
+    public function getConfigKey(): string
     {
         return 'events';
     }
@@ -67,7 +64,7 @@ class EventDispatcherExtension implements Extension
     {
     }
 
-    public function load(ContainerBuilder $container, array $config)
+    public function load(ContainerBuilder $container, array $config): void
     {
         $this->loadSigintController($container);
         $this->loadEventDispatcher($container);
@@ -75,7 +72,7 @@ class EventDispatcherExtension implements Extension
         $this->loadEventDispatchingSuiteTester($container);
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->processSubscribers($container);
     }

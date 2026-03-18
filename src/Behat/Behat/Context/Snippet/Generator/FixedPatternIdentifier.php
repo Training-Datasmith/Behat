@@ -15,10 +15,10 @@ namespace Behat\Behat\Context\Snippet\Generator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class FixedPatternIdentifier implements PatternIdentifier
+final readonly class FixedPatternIdentifier implements PatternIdentifier
 {
     public function __construct(
-        private readonly ?string $patternType = null,
+        private ?string $patternType = null,
     ) {
     }
 

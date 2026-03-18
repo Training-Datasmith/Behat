@@ -25,16 +25,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AvailableDefinitionsController implements Controller
+final readonly class AvailableDefinitionsController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private readonly SuiteRepository $suiteRepository,
-        private readonly DefinitionWriter $writer,
-        private readonly ConsoleDefinitionListPrinter $listPrinter,
-        private readonly ConsoleDefinitionInformationPrinter $infoPrinter,
+        private SuiteRepository $suiteRepository,
+        private DefinitionWriter $writer,
+        private ConsoleDefinitionListPrinter $listPrinter,
+        private ConsoleDefinitionInformationPrinter $infoPrinter,
     ) {
     }
 

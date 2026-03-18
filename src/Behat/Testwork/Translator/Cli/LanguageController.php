@@ -22,13 +22,13 @@ use Symfony\Component\Translation\Translator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class LanguageController implements Controller
+final readonly class LanguageController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private readonly Translator $translator,
+        private Translator $translator,
     ) {
     }
 
@@ -42,7 +42,7 @@ final class LanguageController implements Controller
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
         if (!$input->getOption('lang')) {
             return null;

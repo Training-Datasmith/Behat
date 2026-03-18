@@ -22,12 +22,12 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ContextSnippetAppender implements SnippetAppender
+final readonly class ContextSnippetAppender implements SnippetAppender
 {
     public const PENDING_EXCEPTION_CLASS = PendingException::class;
 
     public function __construct(
-        private readonly ?FilesystemLogger $logger = null,
+        private ?FilesystemLogger $logger = null,
     ) {
     }
 
@@ -64,7 +64,7 @@ final class ContextSnippetAppender implements SnippetAppender
      * @param string $class
      * @param string $contextFileContent
      */
-    private function isClassImported($class, $contextFileContent): bool
+    private function isClassImported($class, string|bool $contextFileContent): bool
     {
         $classImportRegex = sprintf(
             '@use[^;]*%s.*;@ms',
@@ -77,10 +77,9 @@ final class ContextSnippetAppender implements SnippetAppender
     /**
      * Adds use-block for class.
      *
-     * @param string $class
      * @param string $contextFileContent
      */
-    private function importClass($class, $contextFileContent): string
+    private function importClass(string $class, string|bool $contextFileContent): string
     {
         $replaceWith = '$1use ' . $class . ";\n\$2;";
 

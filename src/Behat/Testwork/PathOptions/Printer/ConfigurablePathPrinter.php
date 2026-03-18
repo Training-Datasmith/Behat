@@ -63,10 +63,8 @@ final class ConfigurablePathPrinter
         if ($this->editorUrl === null || $applyEditorUrl === false) {
             $processedText = $this->printAbsolutePaths ? $text : str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $text);
             // Apply removePrefix if configured
-            if ($this->removePrefix !== []) {
-                foreach ($this->removePrefix as $prefix) {
-                    $processedText = str_replace($prefix, '', $processedText);
-                }
+            foreach ($this->removePrefix as $prefix) {
+                $processedText = str_replace($prefix, '', $processedText);
             }
 
             return $processedText;
@@ -88,12 +86,10 @@ final class ConfigurablePathPrinter
             $displayPath = $this->printAbsolutePaths ? $absPath : $relPath;
 
             // Remove prefixes if configured
-            if ($this->removePrefix !== []) {
-                foreach ($this->removePrefix as $prefix) {
-                    if (str_starts_with($displayPath, $prefix)) {
-                        $displayPath = substr($displayPath, strlen($prefix));
-                        break;
-                    }
+            foreach ($this->removePrefix as $prefix) {
+                if (str_starts_with($displayPath, $prefix)) {
+                    $displayPath = substr($displayPath, strlen($prefix));
+                    break;
                 }
             }
 

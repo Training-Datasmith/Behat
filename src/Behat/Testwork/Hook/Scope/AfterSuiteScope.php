@@ -19,7 +19,7 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AfterSuiteScope implements SuiteScope, AfterTestScope
+final readonly class AfterSuiteScope implements SuiteScope, AfterTestScope
 {
     /**
      * Initializes scope.
@@ -27,9 +27,9 @@ final class AfterSuiteScope implements SuiteScope, AfterTestScope
      * @param SpecificationIterator<mixed> $iterator
      */
     public function __construct(
-        private readonly Environment $environment,
-        private readonly SpecificationIterator $iterator,
-        private readonly TestResult $result,
+        private Environment $environment,
+        private SpecificationIterator $iterator,
+        private TestResult $result,
     ) {
     }
 

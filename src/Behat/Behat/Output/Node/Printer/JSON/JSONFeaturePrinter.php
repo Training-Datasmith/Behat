@@ -43,7 +43,7 @@ final class JSONFeaturePrinter implements FeaturePrinter
     {
         $stats = $this->statistics->getScenarioStatCounts();
 
-        $totalCount = 0 === count($stats) ? 0 : (int) array_sum($stats);
+        $totalCount = 0 === count($stats) ? 0 : array_sum($stats);
 
         $outputPrinter = $formatter->getOutputPrinter();
         assert($outputPrinter instanceof JSONOutputPrinter);

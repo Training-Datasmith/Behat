@@ -20,14 +20,8 @@ use Stringable;
  */
 final class Timer implements Stringable
 {
-    /**
-     * @var float|null
-     */
-    private $starTime;
-    /**
-     * @var float|null
-     */
-    private $stopTime;
+    private ?float $starTime = null;
+    private ?float $stopTime = null;
 
     /**
      * Starts timer.
@@ -56,7 +50,7 @@ final class Timer implements Stringable
      *
      * @throws TimerException If timer has not been started
      */
-    public function getTime()
+    public function getTime(): int|float
     {
         if (!$this->starTime) {
             throw new TimerException('You can not get time from timer that never been started.');
@@ -88,10 +82,8 @@ final class Timer implements Stringable
 
     /**
      * Returns string representation of time passed.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!$this->starTime || !$this->stopTime) {
             return '0m0s';

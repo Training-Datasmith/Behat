@@ -22,16 +22,16 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AfterScenarioScope implements ScenarioScope, AfterTestScope
+final readonly class AfterScenarioScope implements ScenarioScope, AfterTestScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private readonly Environment $environment,
-        private readonly FeatureNode $feature,
-        private readonly ScenarioInterface $scenario,
-        private readonly TestResult $result,
+        private Environment $environment,
+        private FeatureNode $feature,
+        private ScenarioInterface $scenario,
+        private TestResult $result,
     ) {
     }
 

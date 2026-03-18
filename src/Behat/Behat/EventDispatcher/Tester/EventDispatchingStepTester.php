@@ -26,14 +26,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class EventDispatchingStepTester implements StepTester
+final readonly class EventDispatchingStepTester implements StepTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private readonly StepTester $baseTester,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private StepTester $baseTester,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

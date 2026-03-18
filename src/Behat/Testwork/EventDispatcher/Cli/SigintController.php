@@ -23,13 +23,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SigintController implements Controller
+final readonly class SigintController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class SigintController implements Controller
     {
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
         if (function_exists('pcntl_signal')) {
             pcntl_async_signals(true);

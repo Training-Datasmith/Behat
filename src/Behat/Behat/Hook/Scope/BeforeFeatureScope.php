@@ -19,14 +19,14 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class BeforeFeatureScope implements FeatureScope
+final readonly class BeforeFeatureScope implements FeatureScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private readonly Environment $environment,
-        private readonly FeatureNode $feature,
+        private Environment $environment,
+        private FeatureNode $feature,
     ) {
     }
 

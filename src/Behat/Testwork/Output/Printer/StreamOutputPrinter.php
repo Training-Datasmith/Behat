@@ -26,15 +26,12 @@ class StreamOutputPrinter implements OutputPrinter
     ) {
     }
 
-    /**
-     * @return OutputFactory
-     */
-    protected function getOutputFactory()
+    protected function getOutputFactory(): \Behat\Testwork\Output\Printer\Factory\OutputFactory
     {
         return $this->outputFactory;
     }
 
-    public function setOutputPath($path)
+    public function setOutputPath($path): void
     {
         $this->outputFactory->setOutputPath($path);
         $this->flush();
@@ -45,7 +42,7 @@ class StreamOutputPrinter implements OutputPrinter
         return $this->outputFactory->getOutputPath();
     }
 
-    public function setOutputStyles(array $styles)
+    public function setOutputStyles(array $styles): void
     {
         $this->outputFactory->setOutputStyles($styles);
         $this->flush();
@@ -56,7 +53,7 @@ class StreamOutputPrinter implements OutputPrinter
         return $this->outputFactory->getOutputStyles();
     }
 
-    public function setOutputDecorated($decorated)
+    public function setOutputDecorated($decorated): void
     {
         $this->outputFactory->setOutputDecorated($decorated);
         $this->flush();
@@ -67,7 +64,7 @@ class StreamOutputPrinter implements OutputPrinter
         return $this->outputFactory->isOutputDecorated();
     }
 
-    public function setOutputVerbosity($level)
+    public function setOutputVerbosity($level): void
     {
         $this->outputFactory->setOutputVerbosity($level);
         $this->flush();
@@ -78,17 +75,17 @@ class StreamOutputPrinter implements OutputPrinter
         return $this->outputFactory->getOutputVerbosity();
     }
 
-    public function write($messages)
+    public function write($messages): void
     {
         $this->getWritingStream()->write($messages, false);
     }
 
-    public function writeln($messages = '')
+    public function writeln($messages = ''): void
     {
         $this->getWritingStream()->write($messages, true);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->output = null;
     }

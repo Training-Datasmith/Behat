@@ -71,7 +71,7 @@ final class DeprecationExtension implements Extension
     private function loadCollector(ContainerBuilder $container): void
     {
         $definition = new Definition(DeprecationCollector::class);
-        $definition->setFactory([DeprecationCollector::class, 'getInstance']);
+        $definition->setFactory(DeprecationCollector::getInstance(...));
         $container->setDefinition(self::COLLECTOR_ID, $definition);
     }
 

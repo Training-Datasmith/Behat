@@ -18,13 +18,13 @@ use Behat\Testwork\Tester\Result\ExceptionResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class FailedStepSearchResult implements StepResult, ExceptionResult
+final readonly class FailedStepSearchResult implements StepResult, ExceptionResult
 {
     /**
      * Initializes result.
      */
     public function __construct(
-        private readonly SearchException $searchException,
+        private SearchException $searchException,
     ) {
     }
 

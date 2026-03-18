@@ -102,11 +102,10 @@ final class FilesystemFeatureLocator implements SpecificationLocator
     /**
      * Loads feature files paths from provided path.
      *
-     * @param string $path
      *
      * @return list<string>
      */
-    private function findFeatureFiles($path): array
+    private function findFeatureFiles(string $path): array
     {
         $absolutePath = $this->findAbsolutePath($path);
 
@@ -129,8 +128,8 @@ final class FilesystemFeatureLocator implements SpecificationLocator
             RegexIterator::MATCH
         );
 
-        $paths = array_map('strval', iterator_to_array($iterator));
-        uasort($paths, 'strnatcasecmp');
+        $paths = array_map(strval(...), iterator_to_array($iterator));
+        uasort($paths, strnatcasecmp(...));
 
         return $paths;
     }

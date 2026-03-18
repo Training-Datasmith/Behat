@@ -28,7 +28,7 @@ use ReflectionUnionType;
  */
 final class MixedArgumentOrganiser implements ArgumentOrganiser
 {
-    private $definedArguments = [];
+    private array $definedArguments = [];
 
     /**
      * Organises arguments using function reflection.
@@ -131,7 +131,7 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @param string[] $parameterNames
      */
-    private function isStringKeyAndExistsInParameters($argumentKey, $parameterNames): bool
+    private function isStringKeyAndExistsInParameters(int|string $argumentKey, array $parameterNames): bool
     {
         return is_string($argumentKey) && in_array($argumentKey, $parameterNames);
     }
@@ -159,7 +159,7 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
     /**
      * Checks if value matches typehint of provided parameter.
      */
-    private function isValueMatchesTypehintedParameter($value, ReflectionParameter $parameter): bool
+    private function isValueMatchesTypehintedParameter(object $value, ReflectionParameter $parameter): bool
     {
         foreach ($this->getReflectionClassesFromParameter($parameter) as $typehintRefl) {
             if ($typehintRefl->isInstance($value)) {
@@ -313,11 +313,11 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
         array $parameters,
         array &$candidates,
         array &$arguments,
-        $predicate,
+        \Closure $predicate,
     ): void {
         $filtered = $this->filterApplicableTypehintedParameters($parameters);
 
-        foreach ($filtered as $num => $parameter) {
+        foreach ($filtered as $parameter) {
             $this->matchParameterToCandidateUsingPredicate($parameter, $candidates, $arguments, $predicate);
         }
     }

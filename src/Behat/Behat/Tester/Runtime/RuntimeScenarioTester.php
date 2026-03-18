@@ -30,14 +30,14 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RuntimeScenarioTester implements ScenarioTester
+final readonly class RuntimeScenarioTester implements ScenarioTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private readonly StepContainerTester $containerTester,
-        private readonly BackgroundTester $backgroundTester,
+        private StepContainerTester $containerTester,
+        private BackgroundTester $backgroundTester,
     ) {
     }
 

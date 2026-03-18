@@ -20,14 +20,14 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class StepTextPainter
+final readonly class StepTextPainter
 {
     /**
      * Initializes painter.
      */
     public function __construct(
-        private readonly PatternTransformer $patternTransformer,
-        private readonly ResultToStringConverter $resultConverter,
+        private PatternTransformer $patternTransformer,
+        private ResultToStringConverter $resultConverter,
     ) {
     }
 
@@ -58,10 +58,15 @@ final class StepTextPainter
         $shift = 0;
         $lastReplacementPosition = 0;
         foreach ($matches as $key => $match) {
-            if (!is_numeric($key) || -1 === $match[1] || str_contains($match[0], '<')) {
+            if (!is_numeric($key)) {
                 continue;
             }
-
+            if (-1 === $match[1]) {
+                continue;
+            }
+            if (str_contains($match[0], '<')) {
+                continue;
+            }
             $offset = $match[1] + $shift;
             $value = $match[0];
 

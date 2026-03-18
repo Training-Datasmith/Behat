@@ -31,18 +31,9 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  */
 class OnlyFirstBackgroundFiresListener implements EventListener
 {
-    /**
-     * @var bool
-     */
-    private $firstBackgroundEnded = false;
-    /**
-     * @var bool
-     */
-    private $inBackground = false;
-    /**
-     * @var bool
-     */
-    private $stepSetupHadOutput = false;
+    private bool $firstBackgroundEnded = false;
+    private bool $inBackground = false;
+    private bool $stepSetupHadOutput = false;
 
     /**
      * Initializes listener.
@@ -52,7 +43,7 @@ class OnlyFirstBackgroundFiresListener implements EventListener
     ) {
     }
 
-    public function listenEvent(Formatter $formatter, Event $event, $eventName)
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
         $this->flushStatesIfBeginningOfTheFeature($eventName);
         $this->markBeginningOrEndOfTheBackground($eventName);
@@ -144,7 +135,10 @@ class OnlyFirstBackgroundFiresListener implements EventListener
      */
     private function isStepEventWithOutput(Event $event): bool
     {
-        return $this->isBeforeStepEventWithOutput($event) || $this->isAfterStepWithOutput($event);
+        if ($this->isBeforeStepEventWithOutput($event)) {
+            return true;
+        }
+        return $this->isAfterStepWithOutput($event);
     }
 
     /**

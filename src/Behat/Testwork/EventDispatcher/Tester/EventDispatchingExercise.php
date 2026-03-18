@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @implements Exercise<TSpec>
  */
-final class EventDispatchingExercise implements Exercise
+final readonly class EventDispatchingExercise implements Exercise
 {
     /**
      * Initializes exercise.
@@ -35,8 +35,8 @@ final class EventDispatchingExercise implements Exercise
      * @param Exercise<TSpec>          $baseExercise
      */
     public function __construct(
-        private readonly Exercise $baseExercise,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private Exercise $baseExercise,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

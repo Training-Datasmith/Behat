@@ -19,23 +19,21 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class DefinitionWriter
+final readonly class DefinitionWriter
 {
     /**
      * Initializes writer.
      */
     public function __construct(
-        private readonly EnvironmentManager $environmentManager,
-        private readonly DefinitionRepository $repository,
+        private EnvironmentManager $environmentManager,
+        private DefinitionRepository $repository,
     ) {
     }
 
     /**
      * Prints definitions for provided suite using printer.
-     *
-     * @param Suite             $suite
      */
-    public function printSuiteDefinitions(DefinitionPrinter $printer, $suite): void
+    public function printSuiteDefinitions(DefinitionPrinter $printer, \Behat\Testwork\Suite\Suite $suite): void
     {
         $environment = $this->environmentManager->buildEnvironment($suite);
         $definitions = $this->repository->getEnvironmentDefinitions($environment);

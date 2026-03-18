@@ -20,10 +20,10 @@ use Behat\Testwork\Output\Printer\JSONOutputPrinter;
 use Behat\Testwork\Tester\Result\ExceptionResult;
 use Behat\Testwork\Tester\Result\TestResult;
 
-final class JSONStepPrinter implements StepPrinter
+final readonly class JSONStepPrinter implements StepPrinter
 {
     public function __construct(
-        private readonly ExceptionPresenter $exceptionPresenter,
+        private ExceptionPresenter $exceptionPresenter,
     ) {
     }
 

@@ -25,10 +25,10 @@ use Behat\Testwork\Output\Printer\JSONOutputPrinter;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
 
-final class JSONSetupPrinter implements SetupPrinter
+final readonly class JSONSetupPrinter implements SetupPrinter
 {
     public function __construct(
-        private readonly ExceptionPresenter $exceptionPresenter,
+        private ExceptionPresenter $exceptionPresenter,
     ) {
     }
 

@@ -24,14 +24,14 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class FeatureListener implements EventListener
+final readonly class FeatureListener implements EventListener
 {
     /**
      * Initializes listener.
      */
     public function __construct(
-        private readonly FeaturePrinter $featurePrinter,
-        private readonly SetupPrinter $setupPrinter,
+        private FeaturePrinter $featurePrinter,
+        private SetupPrinter $setupPrinter,
     ) {
     }
 

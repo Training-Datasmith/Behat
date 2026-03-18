@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SuiteExtension implements Extension
+final readonly class SuiteExtension implements Extension
 {
     /*
      * Available services
@@ -43,7 +43,7 @@ final class SuiteExtension implements Extension
     public const GENERATOR_TAG = 'suite.generator';
     public const SETUP_TAG = 'suite.setup';
 
-    private readonly ServiceProcessor $processor;
+    private ServiceProcessor $processor;
 
     /**
      * Initializes extension.
@@ -77,7 +77,7 @@ final class SuiteExtension implements Extension
             ->prototype('array')
                 ->beforeNormalization()
                     ->ifTrue(fn ($suite): bool => is_array($suite) && count($suite))
-                    ->then(function ($suite) {
+                    ->then(function (array $suite): array {
                         $suite['settings'] ??= [];
 
                         foreach ($suite as $key => $val) {

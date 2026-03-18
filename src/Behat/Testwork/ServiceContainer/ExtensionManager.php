@@ -27,8 +27,8 @@ final class ExtensionManager
     /**
      * @var Extension[string]
      */
-    private $locatedExtensions = [];
-    private $debugInformation = [
+    private array $locatedExtensions = [];
+    private array $debugInformation = [
         'extensions_list' => [],
     ];
 
@@ -64,7 +64,7 @@ final class ExtensionManager
      *
      * @return Extension
      */
-    public function activateExtension($locator)
+    public function activateExtension(string $locator)
     {
         $extension = $this->initialize($locator);
 

@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Prints collected deprecations at the end of the test run.
  */
-final class DeprecationPrinter
+final readonly class DeprecationPrinter
 {
     public function __construct(
-        private readonly DeprecationCollector $collector,
-        private readonly ConfigurablePathPrinter $pathPrinter,
+        private DeprecationCollector $collector,
+        private ConfigurablePathPrinter $pathPrinter,
     ) {
     }
 

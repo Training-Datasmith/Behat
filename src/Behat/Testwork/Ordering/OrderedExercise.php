@@ -27,15 +27,12 @@ use Behat\Testwork\Tester\Result\TestResult;
  */
 final class OrderedExercise implements Exercise
 {
-    /**
-     * @var Orderer
-     */
-    private $orderer;
+    private \Behat\Testwork\Ordering\Orderer\NoopOrderer|\Behat\Testwork\Ordering\Orderer\Orderer $orderer;
 
     /**
      * @var SpecificationIterator<TSpec>[]|null
      */
-    private $unordered;
+    private ?array $unordered = null;
 
     /**
      * @var SpecificationIterator<TSpec>[]|null

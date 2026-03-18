@@ -47,7 +47,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class DefinitionExtension implements Extension
+final readonly class DefinitionExtension implements Extension
 {
     /*
      * Available services
@@ -66,7 +66,7 @@ final class DefinitionExtension implements Extension
     public const PATTERN_POLICY_TAG = 'definition.pattern_policy';
     public const DOC_BLOCK_HELPER_ID = 'definition.doc_block_helper';
 
-    private readonly ServiceProcessor $processor;
+    private ServiceProcessor $processor;
 
     /**
      * Initializes compiler pass.

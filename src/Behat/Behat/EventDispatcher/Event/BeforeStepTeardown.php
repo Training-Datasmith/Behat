@@ -67,7 +67,10 @@ final class BeforeStepTeardown extends StepTested implements BeforeTeardown
      */
     public function hasOutput(): bool
     {
-        return $this->resultHasException() || $this->resultCallHasOutput();
+        if ($this->resultHasException()) {
+            return true;
+        }
+        return $this->resultCallHasOutput();
     }
 
     /**
@@ -88,7 +91,9 @@ final class BeforeStepTeardown extends StepTested implements BeforeTeardown
         if (!$this->result instanceof ExecutedStepResult) {
             return false;
         }
-
-        return $this->result->getCallResult()->hasStdOut() || $this->result->getCallResult()->hasException();
+        if ($this->result->getCallResult()->hasStdOut()) {
+            return true;
+        }
+        return $this->result->getCallResult()->hasException();
     }
 }

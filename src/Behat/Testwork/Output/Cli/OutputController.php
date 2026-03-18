@@ -33,7 +33,7 @@ class OutputController implements Controller
     ) {
     }
 
-    public function configure(Command $command)
+    public function configure(Command $command): void
     {
         $command
             ->addOption(
@@ -61,7 +61,7 @@ class OutputController implements Controller
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
         $formats = $input->getOption('format');
         $outputs = $input->getOption('out');
@@ -136,10 +136,8 @@ class OutputController implements Controller
 
     /**
      * Initializes multiple formatters with different outputs.
-     *
-     * @param bool $decorated
      */
-    private function configureOutputs(array $formats, array $outputs, $decorated = false): void
+    private function configureOutputs(array $formats, array $outputs, bool $decorated = false): void
     {
         if (1 == count($outputs) && !$this->isStandardOutput($outputs[0])) {
             $outputPath = $this->locateOutputPath($outputs[0]);
@@ -197,11 +195,10 @@ class OutputController implements Controller
         return implode(
             PHP_EOL,
             array_map(
-                function (Formatter $formatter) {
+                function (Formatter $formatter): string {
                     $comment = '- <comment>' . $formatter->getName() . '</comment>: ';
-                    $comment .= $formatter->getDescription();
 
-                    return $comment;
+                    return $comment . $formatter->getDescription();
                 },
                 $this->manager->getFormatters()
             )

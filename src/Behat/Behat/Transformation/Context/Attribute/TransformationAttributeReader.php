@@ -22,10 +22,10 @@ use ReflectionMethod;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class TransformationAttributeReader implements AttributeReader
+final readonly class TransformationAttributeReader implements AttributeReader
 {
     public function __construct(
-        private readonly DocBlockHelper $docBlockHelper,
+        private DocBlockHelper $docBlockHelper,
     ) {
     }
 

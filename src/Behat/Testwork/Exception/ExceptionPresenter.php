@@ -28,7 +28,7 @@ final class ExceptionPresenter
     /**
      * @var ExceptionStringer[]
      */
-    private $stringers = [];
+    private array $stringers = [];
 
     private readonly ConfigurablePathPrinter $configurablePathPrinter;
 
@@ -47,7 +47,7 @@ final class ExceptionPresenter
         // The ConfigurablePathPrinter requires a value, but it is not used if printAbsolutePaths is true.
         // Therefore, if the user provided null we can safely cast to '' (the working directory) and tell the printer
         // to show absolute paths.
-        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath ?? '', printAbsolutePaths: $basePath === null, editorUrl: null);
+        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath ?? '', printAbsolutePaths: $basePath === null);
     }
 
     /**
@@ -60,10 +60,8 @@ final class ExceptionPresenter
 
     /**
      * Sets default verbosity to a specified level.
-     *
-     * @param int $defaultVerbosity
      */
-    public function setDefaultVerbosity($defaultVerbosity): void
+    public function setDefaultVerbosity(int $defaultVerbosity): void
     {
         $this->defaultVerbosity = $defaultVerbosity;
     }
@@ -74,7 +72,7 @@ final class ExceptionPresenter
     public function presentException(
         Throwable $exception,
         ?int $verbosity = null,
-        $applyEditorUrl = true,
+        bool $applyEditorUrl = true,
     ): string {
         $verbosity = $verbosity ?: $this->defaultVerbosity;
 

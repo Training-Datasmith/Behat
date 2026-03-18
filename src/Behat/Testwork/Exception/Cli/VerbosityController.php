@@ -21,13 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class VerbosityController implements Controller
+final readonly class VerbosityController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private readonly ExceptionPresenter $exceptionPresenter,
+        private ExceptionPresenter $exceptionPresenter,
     ) {
     }
 
@@ -38,7 +38,7 @@ final class VerbosityController implements Controller
     {
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
         if ($output->getVerbosity() !== OutputInterface::VERBOSITY_NORMAL) {
             $this->exceptionPresenter->setDefaultVerbosity($output->getVerbosity());

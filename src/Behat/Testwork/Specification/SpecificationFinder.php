@@ -25,7 +25,7 @@ final class SpecificationFinder
     /**
      * @var SpecificationLocator<T>[]
      */
-    private $specificationLocators = [];
+    private array $specificationLocators = [];
 
     /**
      * Registers specification locator.
@@ -72,11 +72,10 @@ final class SpecificationFinder
     /**
      * Creates suite specification iterator for provided locator.
      *
-     * @param string|null $locator
      *
      * @return list<SpecificationIterator<T>>
      */
-    private function findSuiteSpecifications(Suite $suite, $locator = null): array
+    private function findSuiteSpecifications(Suite $suite, ?string $locator = null): array
     {
         $iterators = [];
         foreach ($this->specificationLocators as $specificationLocator) {

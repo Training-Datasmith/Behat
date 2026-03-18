@@ -75,13 +75,11 @@ final class BuiltInServiceContainer implements PsrContainerInterface
     /**
      * Gets and validates a service configuration for a service with given ID.
      *
-     * @param string $id
      *
      * @return array|string
-     *
      * @throws WrongServicesConfigurationException
      */
-    private function getAndValidateServiceSchema($id)
+    private function getAndValidateServiceSchema(string $id)
     {
         $schema = $this->schema[$id];
 

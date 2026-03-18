@@ -33,15 +33,12 @@ final class LazyFeatureIterator implements SpecificationIterator
     /**
      * @var string[]
      */
-    private $paths = [];
+    private array $paths;
     /**
      * @var FeatureFilterInterface[]
      */
     private readonly array $filters;
-    /**
-     * @var int
-     */
-    private $position = 0;
+    private int $position = 0;
     /**
      * @var FeatureNode[]
      */
@@ -125,7 +122,7 @@ final class LazyFeatureIterator implements SpecificationIterator
      *
      * @throws SuiteConfigurationException If filter type is not recognised
      */
-    private function createFilter($type, $filterString, Suite $suite): FeatureFilterInterface
+    private function createFilter(int|string $type, $filterString, Suite $suite): FeatureFilterInterface
     {
         if ('role' === $type) {
             return new RoleFilter($filterString);

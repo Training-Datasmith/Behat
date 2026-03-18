@@ -30,7 +30,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ExceptionExtension implements Extension
+final readonly class ExceptionExtension implements Extension
 {
     /*
      * Available services
@@ -42,7 +42,7 @@ final class ExceptionExtension implements Extension
      */
     public const STRINGER_TAG = 'exception.stringer';
 
-    private readonly ServiceProcessor $processor;
+    private ServiceProcessor $processor;
 
     /**
      * Initializes extension.

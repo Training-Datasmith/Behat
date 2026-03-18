@@ -32,12 +32,12 @@ final class TurnipPatternPolicy implements PatternPolicy
     /**
      * @var string[]
      */
-    private $regexCache = [];
+    private array $regexCache = [];
 
     /**
      * @var string[]
      */
-    private static $placeholderPatterns = [
+    private static array $placeholderPatterns = [
         "/(?<!\w)\"[^\"]+\"(?!\w)/",
         "/(?<!\w)'[^']+'(?!\w)/",
         "/(?<!\w|\.|\,)\-?\d+(?:[\.\,]\d+)?(?!\w|\.|\,)/",
@@ -60,7 +60,7 @@ final class TurnipPatternPolicy implements PatternPolicy
         foreach (self::$placeholderPatterns as $replacePattern) {
             $pattern = StrictRegex::replaceCallback(
                 $replacePattern,
-                function () use (&$count) { return ':arg' . ++$count; },
+                function () use (&$count): string { return ':arg' . ++$count; },
                 $pattern
             );
         }
@@ -102,13 +102,9 @@ final class TurnipPatternPolicy implements PatternPolicy
 
     /**
      * Replaces turnip tokens with regex capture groups.
-     *
-     * @param string $regex
      */
-    private function replaceTokensWithRegexCaptureGroups($regex): string
+    private function replaceTokensWithRegexCaptureGroups(string $regex): string
     {
-        $tokenRegex = self::TOKEN_REGEX;
-
         return StrictRegex::replaceCallback(
             self::PLACEHOLDER_REGEXP,
             $this->replaceTokenWithRegexCaptureGroup(...),
@@ -129,25 +125,20 @@ final class TurnipPatternPolicy implements PatternPolicy
 
     /**
      * Replaces turnip optional ending with regex non-capturing optional group.
-     *
-     * @param string $regex
      */
-    private function replaceTurnipOptionalEndingWithRegex($regex): string
+    private function replaceTurnipOptionalEndingWithRegex(string $regex): string
     {
         return StrictRegex::replace(self::OPTIONAL_WORD_REGEXP, '(?:\1)?(?:\2)?(?:\3)?', $regex);
     }
 
     /**
      * Replaces turnip alternative words with regex non-capturing alternating group.
-     *
-     * @param string $regex
      */
-    private function replaceTurnipAlternativeWordsWithRegex($regex): string
+    private function replaceTurnipAlternativeWordsWithRegex(string $regex): string
     {
         $regex = StrictRegex::replace(self::ALTERNATIVE_WORD_REGEXP, '(?:\1|\2)', $regex);
-        $regex = $this->removeEscapingOfAlternationSyntax($regex);
 
-        return $regex;
+        return $this->removeEscapingOfAlternationSyntax($regex);
     }
 
     /**
@@ -159,10 +150,8 @@ final class TurnipPatternPolicy implements PatternPolicy
      * with backslash.
      *
      * This method adds escaping to all slashes in generated snippets.
-     *
-     * @param string $pattern
      */
-    private function escapeAlternationSyntax($pattern): string
+    private function escapeAlternationSyntax(string $pattern): string
     {
         return str_replace('/', '\/', $pattern);
     }
@@ -172,10 +161,8 @@ final class TurnipPatternPolicy implements PatternPolicy
      *
      * This method removes those escaping backslashes from your slashes, so your steps
      * could be matched against your escaped definitions.
-     *
-     * @param string $regex
      */
-    private function removeEscapingOfAlternationSyntax($regex): string
+    private function removeEscapingOfAlternationSyntax(string $regex): string
     {
         return str_replace('\\\/', '/', $regex);
     }

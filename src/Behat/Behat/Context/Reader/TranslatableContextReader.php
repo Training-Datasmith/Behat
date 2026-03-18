@@ -21,13 +21,13 @@ use Symfony\Component\Translation\Translator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class TranslatableContextReader implements ContextReader
+final readonly class TranslatableContextReader implements ContextReader
 {
     /**
      * Initializes loader.
      */
     public function __construct(
-        private readonly Translator $translator,
+        private Translator $translator,
     ) {
     }
 
@@ -53,12 +53,10 @@ final class TranslatableContextReader implements ContextReader
     /**
      * Adds translation resource.
      *
-     * @param string $path
      * @param string $assetsId
-     *
      * @throws UnknownTranslationResourceException
      */
-    private function addTranslationResource($path, $assetsId): void
+    private function addTranslationResource(string $path, $assetsId): void
     {
         match ($ext = pathinfo($path, PATHINFO_EXTENSION)) {
             'yml' => $this->addTranslatorResource('yaml', $path, basename($path, '.' . $ext), $assetsId),
@@ -74,12 +72,10 @@ final class TranslatableContextReader implements ContextReader
     /**
      * Adds resource to translator instance.
      *
-     * @param string $type
      * @param string $path
-     * @param string $language
      * @param string $assetsId
      */
-    private function addTranslatorResource($type, $path, $language, $assetsId): void
+    private function addTranslatorResource(string $type, $path, string $language, $assetsId): void
     {
         $this->translator->addResource($type, $path, $language, $assetsId);
     }

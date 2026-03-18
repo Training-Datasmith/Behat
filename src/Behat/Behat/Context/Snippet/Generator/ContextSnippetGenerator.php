@@ -213,12 +213,11 @@ TPL;
      */
     private function getMethodNumberFromTheMethodName(string $methodName): int
     {
-        $methodNumber = 2;
         if (preg_match('/(\d+)$/', $methodName, $matches)) {
-            $methodNumber = intval($matches[1]);
+            return intval($matches[1]);
         }
 
-        return $methodNumber;
+        return 2;
     }
 
     /**

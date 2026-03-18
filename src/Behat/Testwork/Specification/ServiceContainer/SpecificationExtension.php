@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SpecificationExtension implements Extension
+final readonly class SpecificationExtension implements Extension
 {
     /*
      * Available services
@@ -35,7 +35,7 @@ final class SpecificationExtension implements Extension
      */
     public const LOCATOR_TAG = 'specifications.locator';
 
-    private readonly ServiceProcessor $processor;
+    private ServiceProcessor $processor;
 
     /**
      * Initializes extension.

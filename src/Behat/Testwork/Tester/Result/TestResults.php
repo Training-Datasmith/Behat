@@ -21,7 +21,7 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<int, TestResult>
  */
-final class TestResults implements TestResult, Countable, IteratorAggregate
+final readonly class TestResults implements TestResult, Countable, IteratorAggregate
 {
     public const NO_TESTS = -100;
 
@@ -31,7 +31,7 @@ final class TestResults implements TestResult, Countable, IteratorAggregate
      * @param TestResult[] $results
      */
     public function __construct(
-        private readonly array $results = [],
+        private array $results = [],
     ) {
     }
 

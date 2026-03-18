@@ -23,15 +23,15 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class InteractiveContextIdentifier implements TargetContextIdentifier
+final readonly class InteractiveContextIdentifier implements TargetContextIdentifier
 {
     /**
      * Initialises identifier.
      */
     public function __construct(
-        private readonly TranslatorInterface $translator,
-        private readonly InputInterface $input,
-        private readonly OutputInterface $output,
+        private TranslatorInterface $translator,
+        private InputInterface $input,
+        private OutputInterface $output,
     ) {
     }
 
@@ -60,11 +60,9 @@ final class InteractiveContextIdentifier implements TargetContextIdentifier
     /**
      * Asks user question.
      *
-     * @param string   $message
      * @param string[] $choices
-     * @param string   $default
      */
-    private function askQuestion($message, $choices, $default): string
+    private function askQuestion(string $message, array $choices, string $default): string
     {
         $this->output->writeln('');
         $helper = new QuestionHelper();
