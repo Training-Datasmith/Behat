@@ -1,40 +1,31 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Config\Filter;
 
-use Behat\Config\ConfigConverterInterface;
-use Behat\Config\Converter\ConfigConverterTools;
-use PhpParser\Node\Expr;
-
-class Filter implements FilterInterface, ConfigConverterInterface
+use Behat\Config\Config_Converter_Interface;
+use Behat\Config\Converter\Config_Converter_Tools;
+use Php_Parser\Node\Expr;
+class Filter implements Filter_Interface, Config_Converter_Interface
 {
-    public function __construct(
-        private readonly string $name,
-        private readonly string $value,
-    ) {
+    public function __construct(private readonly string $name, private readonly string $value)
+    {
     }
-
     public function name(): string
     {
         return $this->name;
     }
-
     public function value(): string
     {
         return $this->value;
     }
-
     /**
      * @internal
      */
-    public function toPhpExpr(): Expr
+    public function to_php_expr(): Expr
     {
-        $filterObject = ConfigConverterTools::createObject(static::class);
-
-        ConfigConverterTools::addArgumentsToConstructor([$this->value], $filterObject);
-
-        return $filterObject;
+        $filter_object = Config_Converter_Tools::create_object(static::class);
+        Config_Converter_Tools::add_arguments_to_constructor([$this->value], $filter_object);
+        return $filter_object;
     }
 }

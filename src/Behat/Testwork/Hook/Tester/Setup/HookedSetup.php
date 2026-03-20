@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,50 +8,42 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Hook\Tester\Setup;
 
-use Behat\Testwork\Call\CallResults;
+use Behat\Testwork\Call\Call_Results;
 use Behat\Testwork\Tester\Setup\Setup;
-
 /**
  * Represents hooked test setup.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookedSetup implements Setup
+final readonly class Hooked_Setup implements Setup
 {
     /**
      * Initializes setup.
      */
-    public function __construct(
-        private Setup $setup,
-        private CallResults $hookCallResults,
-    ) {
-    }
-
-    public function isSuccessful()
+    public function __construct(private Setup $setup, private Call_Results $hook_call_results)
     {
-        if ($this->hookCallResults->hasExceptions()) {
+    }
+    public function is_successful()
+    {
+        if ($this->hook_call_results->has_exceptions()) {
             return false;
         }
-
-        return $this->setup->isSuccessful();
+        return $this->setup->is_successful();
     }
-
-    public function hasOutput(): bool
+    public function has_output(): bool
     {
-        if ($this->hookCallResults->hasStdOuts()) {
+        if ($this->hook_call_results->has_std_outs()) {
             return true;
         }
-        return $this->hookCallResults->hasExceptions();
+        return $this->hook_call_results->has_exceptions();
     }
-
     /**
      * Returns hook call results.
      */
-    public function getHookCallResults(): CallResults
+    public function get_hook_call_results(): Call_Results
     {
-        return $this->hookCallResults;
+        return $this->hook_call_results;
     }
 }

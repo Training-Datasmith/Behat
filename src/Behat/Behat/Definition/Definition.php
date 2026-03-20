@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,11 +8,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition;
 
 use Behat\Testwork\Call\Callee;
-
 /**
  * Represents a step definition.
  *
@@ -26,15 +23,13 @@ interface Definition extends Callee
      *
      * @return string
      */
-    public function getType();
-
+    public function get_type();
     /**
      * Returns step pattern exactly as it was defined.
      *
      * @return string
      */
-    public function getPattern();
-
+    public function get_pattern();
     /**
      * Represents definition as a string.
      *

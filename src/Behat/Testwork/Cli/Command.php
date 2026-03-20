@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,19 +8,17 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Cli;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * Extends Symfony console command with a controller-based delegation.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Command extends BaseCommand
+final class Command extends Base_Command
 {
     /**
      * Initializes command.
@@ -29,13 +26,10 @@ final class Command extends BaseCommand
      * @param string       $commandName
      * @param Controller[] $controllers
      */
-    public function __construct(
-        ?string $commandName,
-        private readonly array $controllers,
-    ) {
-        parent::__construct($commandName);
+    public function __construct(?string $command_name, private readonly array $controllers)
+    {
+        parent::__construct($command_name);
     }
-
     /**
      * Configures the command by running controllers prepare().
      */
@@ -45,7 +39,6 @@ final class Command extends BaseCommand
             $controller->configure($this);
         }
     }
-
     /**
      * Executes the current command by executing all controllers action().
      *
@@ -54,14 +47,13 @@ final class Command extends BaseCommand
      *
      * @return int Return code of one of the processors or 0 if none of them returned integer
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(Input_Interface $input, Output_Interface $output): int
     {
         foreach ($this->controllers as $controller) {
             if (is_int($return = $controller->execute($input, $output))) {
                 return $return;
             }
         }
-
         return 0;
     }
 }

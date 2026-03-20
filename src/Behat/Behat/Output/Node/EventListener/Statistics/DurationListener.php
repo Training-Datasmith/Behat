@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,126 +8,101 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Output\Node\Event_Listener\Statistics;
 
-namespace Behat\Behat\Output\Node\EventListener\Statistics;
-
-use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
-use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
-use Behat\Behat\EventDispatcher\Event\BeforeFeatureTested;
-use Behat\Behat\EventDispatcher\Event\BeforeScenarioTested;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface;
+use Behat\Behat\Event_Dispatcher\Event\After_Feature_Tested;
+use Behat\Behat\Event_Dispatcher\Event\After_Scenario_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Before_Feature_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Before_Scenario_Tested;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Like_Interface;
 use Behat\Testwork\Counter\Timer;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\EventListener\EventListener;
-
-class DurationListener implements EventListener
+use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+class Duration_Listener implements Event_Listener
 {
     /**
      * @var array<string, Timer>
      */
-    private array $scenarioTimerStore = [];
-
+    private array $scenario_timer_store = [];
     /**
      * @var array<string, Timer>
      */
-    private array $featureTimerStore = [];
-
+    private array $feature_timer_store = [];
     /**
      * @var array<string, float>
      */
-    private array $resultStore = [];
-
+    private array $result_store = [];
     /**
      * @var array<string, float>
      */
-    private array $featureResultStore = [];
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    private array $feature_result_store = [];
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
     {
-        $this->captureBeforeScenarioEvent($event);
-        $this->captureBeforeFeatureTested($event);
-        $this->captureAfterScenarioEvent($event);
-        $this->captureAfterFeatureEvent($event);
+        $this->capture_before_scenario_event($event);
+        $this->capture_before_feature_tested($event);
+        $this->capture_after_scenario_event($event);
+        $this->capture_after_feature_event($event);
     }
-
-    public function getDuration(ScenarioLikeInterface $scenario): string
+    public function get_duration(Scenario_Like_Interface $scenario): string
     {
-        $key = $this->getHash($scenario);
-
-        return array_key_exists($key, $this->resultStore)
-            ? number_format($this->resultStore[$key], 3, '.', '')
-            : '';
+        $key = $this->get_hash($scenario);
+        return array_key_exists($key, $this->result_store) ? number_format($this->result_store[$key], 3, '.', '') : '';
     }
-
-    public function getFeatureDuration(FeatureNode $feature): string
+    public function get_feature_duration(Feature_Node $feature): string
     {
-        $key = $this->getHash($feature);
-
-        return array_key_exists($key, $this->featureResultStore)
-            ? number_format($this->featureResultStore[$key], 3, '.', '')
-            : '';
+        $key = $this->get_hash($feature);
+        return array_key_exists($key, $this->feature_result_store) ? number_format($this->feature_result_store[$key], 3, '.', '') : '';
     }
-
-    private function captureBeforeFeatureTested(Event $event): void
+    private function capture_before_feature_tested(Event $event): void
     {
-        if (!$event instanceof BeforeFeatureTested) {
+        if (!$event instanceof Before_Feature_Tested) {
             return;
         }
-
-        $this->featureTimerStore[$this->getHash($event->getFeature())] = $this->startTimer();
+        $this->feature_timer_store[$this->get_hash($event->get_feature())] = $this->start_timer();
     }
-
-    private function captureBeforeScenarioEvent(Event $event): void
+    private function capture_before_scenario_event(Event $event): void
     {
-        if (!$event instanceof BeforeScenarioTested) {
+        if (!$event instanceof Before_Scenario_Tested) {
             return;
         }
-
-        $this->scenarioTimerStore[$this->getHash($event->getScenario())] = $this->startTimer();
+        $this->scenario_timer_store[$this->get_hash($event->get_scenario())] = $this->start_timer();
     }
-
-    private function captureAfterScenarioEvent(Event $event): void
+    private function capture_after_scenario_event(Event $event): void
     {
-        if (!$event instanceof AfterScenarioTested) {
+        if (!$event instanceof After_Scenario_Tested) {
             return;
         }
-
-        $key = $this->getHash($event->getScenario());
-        if (isset($this->scenarioTimerStore[$key])) {
-            $timer = $this->scenarioTimerStore[$key];
+        $key = $this->get_hash($event->get_scenario());
+        if (isset($this->scenario_timer_store[$key])) {
+            $timer = $this->scenario_timer_store[$key];
             $timer->stop();
-            $this->resultStore[$key] = $timer->getTime();
-            unset($this->scenarioTimerStore[$key]);
+            $this->result_store[$key] = $timer->get_time();
+            unset($this->scenario_timer_store[$key]);
         }
     }
-
-    private function captureAfterFeatureEvent(Event $event): void
+    private function capture_after_feature_event(Event $event): void
     {
-        if (!$event instanceof AfterFeatureTested) {
+        if (!$event instanceof After_Feature_Tested) {
             return;
         }
-
-        $key = $this->getHash($event->getFeature());
-        if (isset($this->featureTimerStore[$key])) {
-            $timer = $this->featureTimerStore[$key];
+        $key = $this->get_hash($event->get_feature());
+        if (isset($this->feature_timer_store[$key])) {
+            $timer = $this->feature_timer_store[$key];
             $timer->stop();
-            $this->featureResultStore[$key] = $timer->getTime();
-            unset($this->featureTimerStore[$key]);
+            $this->feature_result_store[$key] = $timer->get_time();
+            unset($this->feature_timer_store[$key]);
         }
     }
-
-    protected function getHash(object $node): string
+    protected function get_hash(object $node): string
     {
         return spl_object_hash($node);
     }
-
-    protected function startTimer(): Timer
+    protected function start_timer(): Timer
     {
         $timer = new Timer();
         $timer->start();
-
         return $timer;
     }
 }

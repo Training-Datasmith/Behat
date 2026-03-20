@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,7 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Suite\Exception;
 
 /**
@@ -17,6 +15,6 @@ namespace Behat\Testwork\Suite\Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SuiteSetupException extends SuiteException
+final class Suite_Setup_Exception extends Suite_Exception
 {
 }

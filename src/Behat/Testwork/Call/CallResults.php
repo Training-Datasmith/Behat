@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,13 +8,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Call;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-
 /**
  * Aggregates multiple call results into a collection and provides an informational API on top of that.
  *
@@ -23,54 +20,47 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<int, CallResult>
  */
-final readonly class CallResults implements Countable, IteratorAggregate
+final readonly class Call_Results implements Countable, IteratorAggregate
 {
     /**
      * Initializes call results collection.
      *
      * @param CallResult[] $results
      */
-    public function __construct(
-        private array $results = [],
-    ) {
+    public function __construct(private array $results = [])
+    {
     }
-
     /**
      * Merges results from provided collection into the current one.
      */
-    public static function merge(CallResults $first, CallResults $second): self
+    public static function merge(Call_Results $first, Call_Results $second): self
     {
-        return new self(array_merge($first->toArray(), $second->toArray()));
+        return new self(array_merge($first->to_array(), $second->to_array()));
     }
-
     /**
      * Checks if any call in collection throws an exception.
      */
-    public function hasExceptions(): bool
+    public function has_exceptions(): bool
     {
         foreach ($this->results as $result) {
-            if ($result->hasException()) {
+            if ($result->has_exception()) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Checks if any call in collection produces an output.
      */
-    public function hasStdOuts(): bool
+    public function has_std_outs(): bool
     {
         foreach ($this->results as $result) {
-            if ($result->hasStdOut()) {
+            if ($result->has_std_out()) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Returns amount of results.
      */
@@ -78,7 +68,6 @@ final readonly class CallResults implements Countable, IteratorAggregate
     {
         return count($this->results);
     }
-
     /**
      * Returns collection iterator.
      */
@@ -86,13 +75,12 @@ final readonly class CallResults implements Countable, IteratorAggregate
     {
         return new ArrayIterator($this->results);
     }
-
     /**
      * Returns call results array.
      *
      * @return CallResult[]
      */
-    public function toArray(): array
+    public function to_array(): array
     {
         return $this->results;
     }

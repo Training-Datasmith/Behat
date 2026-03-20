@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,19 +8,17 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\Helper;
 
-use Behat\Gherkin\Node\ExampleNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
-use Behat\Gherkin\Node\StepNode;
-
+use Behat\Gherkin\Node\Example_Node;
+use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
+use Behat\Gherkin\Node\Step_Node;
 /**
  * Calculates width of scenario. Width of scenario = max width of scenario title and scenario step texts.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class WidthCalculator
+final class Width_Calculator
 {
     /**
      * Calculates scenario width.
@@ -31,18 +28,15 @@ final class WidthCalculator
      *
      * @return int
      */
-    public function calculateScenarioWidth(Scenario $scenario, $indentation, $subIndentation)
+    public function calculate_scenario_width(Scenario $scenario, $indentation, $sub_indentation)
     {
-        $length = $this->calculateScenarioHeaderWidth($scenario, $indentation);
-
-        foreach ($scenario->getSteps() as $step) {
-            $stepLength = $this->calculateStepWidth($step, $indentation + $subIndentation);
-            $length = max($length, $stepLength);
+        $length = $this->calculate_scenario_header_width($scenario, $indentation);
+        foreach ($scenario->get_steps() as $step) {
+            $step_length = $this->calculate_step_width($step, $indentation + $sub_indentation);
+            $length = max($length, $step_length);
         }
-
         return $length;
     }
-
     /**
      * Calculates outline examples width.
      *
@@ -51,49 +45,41 @@ final class WidthCalculator
      *
      * @return int
      */
-    public function calculateExampleWidth(ExampleNode $example, $indentation, $subIndentation)
+    public function calculate_example_width(Example_Node $example, $indentation, $sub_indentation)
     {
-        $length = $this->calculateScenarioHeaderWidth($example, $indentation);
-
-        foreach ($example->getSteps() as $step) {
-            $stepLength = $this->calculateStepWidth($step, $indentation + $subIndentation);
-            $length = max($length, $stepLength);
+        $length = $this->calculate_scenario_header_width($example, $indentation);
+        foreach ($example->get_steps() as $step) {
+            $step_length = $this->calculate_step_width($step, $indentation + $sub_indentation);
+            $length = max($length, $step_length);
         }
-
         return $length;
     }
-
     /**
      * Calculates scenario header width.
      *
      * @param int $indentation
      */
-    public function calculateScenarioHeaderWidth(Scenario $scenario, $indentation): int
+    public function calculate_scenario_header_width(Scenario $scenario, $indentation): int
     {
-        $indentText = str_repeat(' ', intval($indentation));
-
-        if ($scenario instanceof ExampleNode) {
-            $header = sprintf('%s%s', $indentText, $scenario->getTitle());
+        $indent_text = str_repeat(' ', intval($indentation));
+        if ($scenario instanceof Example_Node) {
+            $header = sprintf('%s%s', $indent_text, $scenario->get_title());
         } else {
-            $title = $scenario->getTitle();
+            $title = $scenario->get_title();
             $lines = explode("\n", $title ?? '');
-            $header = sprintf('%s%s: %s', $indentText, $scenario->getKeyword(), array_shift($lines));
+            $header = sprintf('%s%s: %s', $indent_text, $scenario->get_keyword(), array_shift($lines));
         }
-
         return mb_strlen(rtrim($header), 'utf8');
     }
-
     /**
      * Calculates step width.
      *
      * @param int $indentation
      */
-    public function calculateStepWidth(StepNode $step, $indentation): int
+    public function calculate_step_width(Step_Node $step, $indentation): int
     {
-        $indentText = str_repeat(' ', intval($indentation));
-
-        $text = sprintf('%s%s %s', $indentText, $step->getKeyword(), $step->getText());
-
+        $indent_text = str_repeat(' ', intval($indentation));
+        $text = sprintf('%s%s %s', $indent_text, $step->get_keyword(), $step->get_text());
         return mb_strlen($text, 'utf8');
     }
 }

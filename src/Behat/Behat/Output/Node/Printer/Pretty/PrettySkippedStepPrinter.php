@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,124 +8,101 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\Pretty;
 
-use Behat\Behat\Output\Node\Printer\Helper\ResultToStringConverter;
-use Behat\Behat\Output\Node\Printer\Helper\StepTextPainter;
-use Behat\Behat\Output\Node\Printer\StepPrinter;
-use Behat\Behat\Tester\Result\DefinedStepResult;
-use Behat\Behat\Tester\Result\StepResult;
-use Behat\Gherkin\Node\ArgumentInterface;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
-use Behat\Gherkin\Node\StepNode;
-use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Output\Node\Printer\Helper\Result_To_String_Converter;
+use Behat\Behat\Output\Node\Printer\Helper\Step_Text_Painter;
+use Behat\Behat\Output\Node\Printer\Step_Printer;
+use Behat\Behat\Tester\Result\Defined_Step_Result;
+use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Gherkin\Node\Argument_Interface;
+use Behat\Gherkin\Node\Py_String_Node;
+use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
+use Behat\Gherkin\Node\Step_Node;
+use Behat\Gherkin\Node\Table_Node;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\OutputPrinter;
-use Behat\Testwork\Tester\Result\IntegerTestResult;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Output\Printer\Output_Printer;
+use Behat\Testwork\Tester\Result\Integer_Test_Result;
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * Prints steps as skipped.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class PrettySkippedStepPrinter implements StepPrinter
+final class Pretty_Skipped_Step_Printer implements Step_Printer
 {
     /**
      * @var string
      */
-    private $indentText;
-    private readonly string $subIndentText;
-
+    private $indent_text;
+    private readonly string $sub_indent_text;
     /**
      * Initializes printer.
      *
      * @param int $indentation
      * @param int $subIndentation
      */
-    public function __construct(
-        private readonly StepTextPainter $textPainter,
-        private readonly ResultToStringConverter $resultConverter,
-        private readonly PrettyPathPrinter $pathPrinter,
-        $indentation = 4,
-        $subIndentation = 2,
-    ) {
-        $this->indentText = str_repeat(' ', intval($indentation));
-        $this->subIndentText = $this->indentText . str_repeat(' ', intval($subIndentation));
-    }
-
-    public function printStep(Formatter $formatter, Scenario $scenario, StepNode $step, StepResult $result): void
+    public function __construct(private readonly Step_Text_Painter $text_painter, private readonly Result_To_String_Converter $result_converter, private readonly Pretty_Path_Printer $path_printer, $indentation = 4, $sub_indentation = 2)
     {
-        $this->printText($formatter->getOutputPrinter(), $step->getKeyword(), $step->getText(), $result);
-        $this->pathPrinter->printStepPath($formatter, $scenario, $step, $result, mb_strlen($this->indentText, 'utf8'));
-        $this->printArguments($formatter, $step->getArguments());
+        $this->indent_text = str_repeat(' ', intval($indentation));
+        $this->sub_indent_text = $this->indent_text . str_repeat(' ', intval($sub_indentation));
     }
-
+    public function print_step(Formatter $formatter, Scenario $scenario, Step_Node $step, Step_Result $result): void
+    {
+        $this->print_text($formatter->get_output_printer(), $step->get_keyword(), $step->get_text(), $result);
+        $this->path_printer->print_step_path($formatter, $scenario, $step, $result, mb_strlen($this->indent_text, 'utf8'));
+        $this->print_arguments($formatter, $step->get_arguments());
+    }
     /**
      * Prints step text.
      *
      * @param string        $stepType
      * @param string        $stepText
      */
-    private function printText(OutputPrinter $printer, $stepType, $stepText, StepResult $result): void
+    private function print_text(Output_Printer $printer, $step_type, $step_text, Step_Result $result): void
     {
-        $style = $this->resultConverter->convertResultCodeToString(TestResult::SKIPPED);
-
-        if ($result instanceof DefinedStepResult && $result->getStepDefinition()) {
-            $definition = $result->getStepDefinition();
-            $stepText = $this->textPainter->paintText(
-                $stepText,
-                $definition,
-                new IntegerTestResult(TestResult::SKIPPED)
-            );
+        $style = $this->result_converter->convert_result_code_to_string(Test_Result::SKIPPED);
+        if ($result instanceof Defined_Step_Result && $result->get_step_definition()) {
+            $definition = $result->get_step_definition();
+            $step_text = $this->text_painter->paint_text($step_text, $definition, new Integer_Test_Result(Test_Result::SKIPPED));
         }
-
-        $printer->write(sprintf('%s{+%s}%s %s{-%s}', $this->indentText, $style, $stepType, $stepText, $style));
+        $printer->write(sprintf('%s{+%s}%s %s{-%s}', $this->indent_text, $style, $step_type, $step_text, $style));
     }
-
     /**
      * Prints step multiline arguments.
      *
      * @param ArgumentInterface[] $arguments
      */
-    private function printArguments(Formatter $formatter, array $arguments): void
+    private function print_arguments(Formatter $formatter, array $arguments): void
     {
-        $style = $this->resultConverter->convertResultCodeToString(TestResult::SKIPPED);
-
+        $style = $this->result_converter->convert_result_code_to_string(Test_Result::SKIPPED);
         foreach ($arguments as $argument) {
-            $text = $this->getArgumentString($argument, !$formatter->getParameter('multiline'));
-
-            $indentedText = implode("\n", array_map($this->subIndent(...), explode("\n", $text)));
-            $formatter->getOutputPrinter()->writeln(sprintf('{+%s}%s{-%s}', $style, $indentedText, $style));
+            $text = $this->get_argument_string($argument, !$formatter->get_parameter('multiline'));
+            $indented_text = implode("\n", array_map($this->sub_indent(...), explode("\n", $text)));
+            $formatter->get_output_printer()->writeln(sprintf('{+%s}%s{-%s}', $style, $indented_text, $style));
         }
     }
-
     /**
      * Returns argument string for provided argument.
      */
-    private function getArgumentString(ArgumentInterface $argument, bool $collapse = false): string
+    private function get_argument_string(Argument_Interface $argument, bool $collapse = false): string
     {
         if ($collapse) {
             return '...';
         }
-
-        if ($argument instanceof PyStringNode) {
+        if ($argument instanceof Py_String_Node) {
             return '"""' . "\n" . $argument . "\n" . '"""';
         }
-        if ($argument instanceof TableNode) {
+        if ($argument instanceof Table_Node) {
             return (string) $argument;
         }
-
         return '';
     }
-
     /**
      * Indents text to the subIndentation level.
      */
-    private function subIndent(string $text): string
+    private function sub_indent(string $text): string
     {
-        return $this->subIndentText . $text;
+        return $this->sub_indent_text . $text;
     }
 }

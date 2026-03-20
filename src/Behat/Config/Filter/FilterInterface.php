@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Config\Filter;
 
-interface FilterInterface
+interface Filter_Interface
 {
     public function name(): string;
-
     public function value(): string;
 }

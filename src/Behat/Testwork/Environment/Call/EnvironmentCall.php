@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,58 +8,47 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Environment\Call;
 
 use Behat\Testwork\Call\Call;
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Environment\Environment;
-
 /**
  * Represents environment-based call.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class EnvironmentCall implements Call
+class Environment_Call implements Call
 {
     /**
      * Initializes call.
      *
      * @param int|null $errorReportingLevel
      */
-    public function __construct(
-        private readonly Environment $environment,
-        private readonly Callee $callee,
-        private readonly array $arguments,
-        private $errorReportingLevel = null,
-    ) {
+    public function __construct(private readonly Environment $environment, private readonly Callee $callee, private readonly array $arguments, private $error_reporting_level = null)
+    {
     }
-
     /**
      * Returns environment this call is executed from.
      */
-    final public function getEnvironment(): Environment
+    final public function get_environment(): Environment
     {
         return $this->environment;
     }
-
-    final public function getCallee(): Callee
+    final public function get_callee(): Callee
     {
         return $this->callee;
     }
-
-    final public function getBoundCallable()
+    final public function get_bound_callable()
     {
-        return $this->environment->bindCallee($this->callee);
+        return $this->environment->bind_callee($this->callee);
     }
-
-    final public function getArguments(): array
+    final public function get_arguments(): array
     {
         return $this->arguments;
     }
-
-    final public function getErrorReportingLevel()
+    final public function get_error_reporting_level()
     {
-        return $this->errorReportingLevel;
+        return $this->error_reporting_level;
     }
 }

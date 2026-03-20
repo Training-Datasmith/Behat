@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,35 +8,33 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Testwork\Tester\Service_Container;
 
-namespace Behat\Testwork\Tester\ServiceContainer;
-
-use Behat\Testwork\Cli\ServiceContainer\CliExtension;
-use Behat\Testwork\Environment\ServiceContainer\EnvironmentExtension;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Behat\Testwork\ServiceContainer\ServiceProcessor;
-use Behat\Testwork\Specification\ServiceContainer\SpecificationExtension;
-use Behat\Testwork\Suite\ServiceContainer\SuiteExtension;
-use Behat\Testwork\Tester\Cli\ExerciseController;
-use Behat\Testwork\Tester\Cli\StrictController;
-use Behat\Testwork\Tester\Handler\StopOnFailureHandler;
-use Behat\Testwork\Tester\Result\Interpretation\SoftInterpretation;
-use Behat\Testwork\Tester\Result\ResultInterpreter;
-use Behat\Testwork\Tester\Runtime\RuntimeExercise;
-use Behat\Testwork\Tester\Runtime\RuntimeSuiteTester;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
+use Behat\Testwork\Cli\Service_Container\Cli_Extension;
+use Behat\Testwork\Environment\Service_Container\Environment_Extension;
+use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
+use Behat\Testwork\Service_Container\Service_Processor;
+use Behat\Testwork\Specification\Service_Container\Specification_Extension;
+use Behat\Testwork\Suite\Service_Container\Suite_Extension;
+use Behat\Testwork\Tester\Cli\Exercise_Controller;
+use Behat\Testwork\Tester\Cli\Strict_Controller;
+use Behat\Testwork\Tester\Handler\Stop_On_Failure_Handler;
+use Behat\Testwork\Tester\Result\Interpretation\Soft_Interpretation;
+use Behat\Testwork\Tester\Result\Result_Interpreter;
+use Behat\Testwork\Tester\Runtime\Runtime_Exercise;
+use Behat\Testwork\Tester\Runtime\Runtime_Suite_Tester;
+use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
 /**
  * Provides tester services.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class TesterExtension implements Extension
+abstract class Tester_Extension implements Extension
 {
     /*
      * Available services
@@ -47,7 +44,6 @@ abstract class TesterExtension implements Extension
     public const SPECIFICATION_TESTER_ID = 'tester.specification';
     public const RESULT_INTERPRETER_ID = 'tester.result.interpreter';
     public const STOP_ON_FAILURE_ID = 'tester.stop_on_failure';
-
     /**
      * Available extension points.
      */
@@ -55,191 +51,139 @@ abstract class TesterExtension implements Extension
     public const SUITE_TESTER_WRAPPER_TAG = 'tester.suite.wrapper';
     public const SPECIFICATION_TESTER_WRAPPER_TAG = 'tester.specification.wrapper';
     public const RESULT_INTERPRETATION_TAG = 'test.result.interpretation';
-
-    private readonly ServiceProcessor $processor;
-
+    private readonly Service_Processor $processor;
     /**
      * Initializes extension.
      */
-    public function __construct(?ServiceProcessor $processor = null)
+    public function __construct(?Service_Processor $processor = null)
     {
-        $this->processor = $processor ?: new ServiceProcessor();
+        $this->processor = $processor ?: new Service_Processor();
     }
-
-    public function getConfigKey()
+    public function get_config_key()
     {
         return 'testers';
     }
-
-    public function initialize(ExtensionManager $extensionManager)
+    public function initialize(Extension_Manager $extension_manager)
     {
     }
-
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(Array_Node_Definition $builder): void
     {
-        $childrenBuilder = $builder
-            ->addDefaultsIfNotSet()
-            ->children()
-        ;
-        $childrenBuilder
-                ->scalarNode('stop_on_failure')
-                ->defaultValue(null)
-        ;
-        $childrenBuilder
-                ->booleanNode('strict')
-                    ->info('Sets the strict mode for result interpretation')
-                    ->defaultFalse()
-        ;
-        $childrenBuilder
-                ->booleanNode('skip')
-                    ->info('Tells tester to skip all tests')
-                    ->defaultFalse()
-        ;
+        $children_builder = $builder->add_defaults_if_not_set()->children();
+        $children_builder->scalar_node('stop_on_failure')->default_value(null);
+        $children_builder->boolean_node('strict')->info('Sets the strict mode for result interpretation')->default_false();
+        $children_builder->boolean_node('skip')->info('Tells tester to skip all tests')->default_false();
     }
-
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
-        $this->loadExerciseController($container, $config['skip']);
-        $this->loadStopOnFailureHandler($container, $config['stop_on_failure']);
-        $this->loadStrictController($container, $config['strict']);
-        $this->loadResultInterpreter($container);
-        $this->loadExercise($container);
-        $this->loadSuiteTester($container);
-        $this->loadSpecificationTester($container);
+        $this->load_exercise_controller($container, $config['skip']);
+        $this->load_stop_on_failure_handler($container, $config['stop_on_failure']);
+        $this->load_strict_controller($container, $config['strict']);
+        $this->load_result_interpreter($container);
+        $this->load_exercise($container);
+        $this->load_suite_tester($container);
+        $this->load_specification_tester($container);
     }
-
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        $this->processExerciseWrappers($container);
-        $this->processSuiteTesterWrappers($container);
-        $this->processSpecificationTesterWrappers($container);
-        $this->processResultInterpretations($container);
+        $this->process_exercise_wrappers($container);
+        $this->process_suite_tester_wrappers($container);
+        $this->process_specification_tester_wrappers($container);
+        $this->process_result_interpretations($container);
     }
-
     /**
      * Loads exercise cli controllers.
      *
      * @param bool          $skip
      */
-    protected function loadExerciseController(ContainerBuilder $container, $skip = false)
+    protected function load_exercise_controller(Container_Builder $container, $skip = false)
     {
-        $definition = new Definition(ExerciseController::class, [
-            new Reference(SuiteExtension::REGISTRY_ID),
-            new Reference(SpecificationExtension::FINDER_ID),
-            new Reference(self::EXERCISE_ID),
-            new Reference(self::RESULT_INTERPRETER_ID),
-            $skip,
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 0]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.exercise', $definition);
+        $definition = new Definition(Exercise_Controller::class, [new Reference(Suite_Extension::REGISTRY_ID), new Reference(Specification_Extension::FINDER_ID), new Reference(self::EXERCISE_ID), new Reference(self::RESULT_INTERPRETER_ID), $skip]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 0]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.exercise', $definition);
     }
-
     /**
      * Loads stop on failure handler.
      */
-    private function loadStopOnFailureHandler(ContainerBuilder $container, ?bool $stopOnFailure): void
+    private function load_stop_on_failure_handler(Container_Builder $container, ?bool $stop_on_failure): void
     {
-        $definition = new Definition(StopOnFailureHandler::class, [
-            new Reference(EventDispatcherExtension::DISPATCHER_ID),
-            new Reference(TesterExtension::RESULT_INTERPRETER_ID),
-        ]);
-
-        if ($stopOnFailure === true) {
-            $definition->addMethodCall('registerListeners');
+        $definition = new Definition(Stop_On_Failure_Handler::class, [new Reference(Event_Dispatcher_Extension::DISPATCHER_ID), new Reference(Tester_Extension::RESULT_INTERPRETER_ID)]);
+        if ($stop_on_failure === true) {
+            $definition->add_method_call('registerListeners');
         }
-        $container->setDefinition(self::STOP_ON_FAILURE_ID, $definition);
+        $container->set_definition(self::STOP_ON_FAILURE_ID, $definition);
     }
-
     /**
      * Loads exercise cli controllers.
      *
      * @param bool          $strict
      */
-    protected function loadStrictController(ContainerBuilder $container, $strict = false)
+    protected function load_strict_controller(Container_Builder $container, $strict = false)
     {
-        $definition = new Definition(StrictController::class, [
-            new Reference(self::RESULT_INTERPRETER_ID),
-            $strict,
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 300]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.strict', $definition);
+        $definition = new Definition(Strict_Controller::class, [new Reference(self::RESULT_INTERPRETER_ID), $strict]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 300]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.strict', $definition);
     }
-
     /**
      * Loads result interpreter controller.
      */
-    protected function loadResultInterpreter(ContainerBuilder $container)
+    protected function load_result_interpreter(Container_Builder $container)
     {
-        $definition = new Definition(ResultInterpreter::class);
-        $container->setDefinition(self::RESULT_INTERPRETER_ID, $definition);
-
-        $definition = new Definition(SoftInterpretation::class);
-        $definition->addTag(self::RESULT_INTERPRETATION_TAG);
-        $container->setDefinition(self::RESULT_INTERPRETATION_TAG . '.soft', $definition);
+        $definition = new Definition(Result_Interpreter::class);
+        $container->set_definition(self::RESULT_INTERPRETER_ID, $definition);
+        $definition = new Definition(Soft_Interpretation::class);
+        $definition->add_tag(self::RESULT_INTERPRETATION_TAG);
+        $container->set_definition(self::RESULT_INTERPRETATION_TAG . '.soft', $definition);
     }
-
     /**
      * Loads exercise tester.
      */
-    protected function loadExercise(ContainerBuilder $container)
+    protected function load_exercise(Container_Builder $container)
     {
-        $definition = new Definition(RuntimeExercise::class, [
-            new Reference(EnvironmentExtension::MANAGER_ID),
-            new Reference(self::SUITE_TESTER_ID),
-        ]);
-        $container->setDefinition(self::EXERCISE_ID, $definition);
+        $definition = new Definition(Runtime_Exercise::class, [new Reference(Environment_Extension::MANAGER_ID), new Reference(self::SUITE_TESTER_ID)]);
+        $container->set_definition(self::EXERCISE_ID, $definition);
     }
-
     /**
      * Loads suite tester.
      */
-    protected function loadSuiteTester(ContainerBuilder $container)
+    protected function load_suite_tester(Container_Builder $container)
     {
-        $definition = new Definition(RuntimeSuiteTester::class, [
-            new Reference(self::SPECIFICATION_TESTER_ID),
-        ]);
-        $container->setDefinition(self::SUITE_TESTER_ID, $definition);
+        $definition = new Definition(Runtime_Suite_Tester::class, [new Reference(self::SPECIFICATION_TESTER_ID)]);
+        $container->set_definition(self::SUITE_TESTER_ID, $definition);
     }
-
     /**
      * Loads specification tester.
      */
-    abstract protected function loadSpecificationTester(ContainerBuilder $container);
-
+    abstract protected function load_specification_tester(Container_Builder $container);
     /**
      * Processes all registered exercise wrappers.
      */
-    protected function processExerciseWrappers(ContainerBuilder $container)
+    protected function process_exercise_wrappers(Container_Builder $container)
     {
-        $this->processor->processWrapperServices($container, self::EXERCISE_ID, self::EXERCISE_WRAPPER_TAG);
+        $this->processor->process_wrapper_services($container, self::EXERCISE_ID, self::EXERCISE_WRAPPER_TAG);
     }
-
     /**
      * Processes all registered suite tester wrappers.
      */
-    protected function processSuiteTesterWrappers(ContainerBuilder $container)
+    protected function process_suite_tester_wrappers(Container_Builder $container)
     {
-        $this->processor->processWrapperServices($container, self::SUITE_TESTER_ID, self::SUITE_TESTER_WRAPPER_TAG);
+        $this->processor->process_wrapper_services($container, self::SUITE_TESTER_ID, self::SUITE_TESTER_WRAPPER_TAG);
     }
-
     /**
      * Processes all registered specification tester wrappers.
      */
-    protected function processSpecificationTesterWrappers(ContainerBuilder $container)
+    protected function process_specification_tester_wrappers(Container_Builder $container)
     {
-        $this->processor->processWrapperServices($container, self::SPECIFICATION_TESTER_ID, self::SPECIFICATION_TESTER_WRAPPER_TAG);
+        $this->processor->process_wrapper_services($container, self::SPECIFICATION_TESTER_ID, self::SPECIFICATION_TESTER_WRAPPER_TAG);
     }
-
     /**
      * Processes all registered result interpretations.
      */
-    protected function processResultInterpretations(ContainerBuilder $container)
+    protected function process_result_interpretations(Container_Builder $container)
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::RESULT_INTERPRETATION_TAG);
-        $definition = $container->getDefinition(self::RESULT_INTERPRETER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::RESULT_INTERPRETATION_TAG);
+        $definition = $container->get_definition(self::RESULT_INTERPRETER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerResultInterpretation', [$reference]);
+            $definition->add_method_call('registerResultInterpretation', [$reference]);
         }
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,54 +8,45 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\OutlineNode;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Outline_Node;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\EventDispatcher\Event\AfterSetup;
+use Behat\Testwork\Event_Dispatcher\Event\After_Setup;
 use Behat\Testwork\Tester\Setup\Setup;
-
 /**
  * Represents an event right after outline setup.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AfterOutlineSetup extends OutlineTested implements AfterSetup
+final class After_Outline_Setup extends Outline_Tested implements After_Setup
 {
     /**
      * Initializes event.
      */
-    public function __construct(
-        Environment $env,
-        private readonly FeatureNode $feature,
-        private readonly OutlineNode $outline,
-        private readonly Setup $setup,
-    ) {
+    public function __construct(Environment $env, private readonly Feature_Node $feature, private readonly Outline_Node $outline, private readonly Setup $setup)
+    {
         parent::__construct($env);
     }
-
     /**
      * Returns feature.
      */
-    public function getFeature(): FeatureNode
+    public function get_feature(): Feature_Node
     {
         return $this->feature;
     }
-
     /**
      * Returns outline node.
      */
-    public function getOutline(): OutlineNode
+    public function get_outline(): Outline_Node
     {
         return $this->outline;
     }
-
     /**
      * Returns current test setup.
      */
-    public function getSetup(): Setup
+    public function get_setup(): Setup
     {
         return $this->setup;
     }

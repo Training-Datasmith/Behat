@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,44 +8,39 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Testwork\EventDispatcher\Event;
+namespace Behat\Testwork\Event_Dispatcher\Event;
 
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Suite\Suite;
-
 /**
  * Represents an event which holds references to current suite and environment.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class LifecycleEvent extends Event
+abstract class Lifecycle_Event extends Event
 {
     /**
      * Initializes scenario event.
      */
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
+    public function __construct(private readonly Environment $environment)
+    {
     }
-
     /**
      * Returns suite in which this event was fired.
      *
      * @return Suite
      */
-    public function getSuite()
+    public function get_suite()
     {
-        return $this->environment->getSuite();
+        return $this->environment->get_suite();
     }
-
     /**
      * Returns environment in which this event was fired.
      *
      * @return Environment
      */
-    public function getEnvironment()
+    public function get_environment()
     {
         return $this->environment;
     }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,22 +8,20 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Tester;
 
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioInterface as Scenario;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Interface as Scenario;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\Test_Result;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
-
 /**
  * Prepares and tests provided scenario object against provided environment.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ScenarioTester
+interface Scenario_Tester
 {
     /**
      * Sets up example for a test.
@@ -33,8 +30,7 @@ interface ScenarioTester
      *
      * @return Setup
      */
-    public function setUp(Environment $env, FeatureNode $feature, Scenario $scenario, $skip);
-
+    public function set_up(Environment $env, Feature_Node $feature, Scenario $scenario, $skip);
     /**
      * Tests example.
      *
@@ -42,8 +38,7 @@ interface ScenarioTester
      *
      * @return TestResult
      */
-    public function test(Environment $env, FeatureNode $feature, Scenario $scenario, $skip);
-
+    public function test(Environment $env, Feature_Node $feature, Scenario $scenario, $skip);
     /**
      * Tears down example after a test.
      *
@@ -51,5 +46,5 @@ interface ScenarioTester
      *
      * @return Teardown
      */
-    public function tearDown(Environment $env, FeatureNode $feature, Scenario $scenario, $skip, TestResult $result);
+    public function tear_down(Environment $env, Feature_Node $feature, Scenario $scenario, $skip, Test_Result $result);
 }

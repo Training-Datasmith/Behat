@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,16 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Exception\Stringer;
 
 use Exception;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Util\ThrowableToStringMapper;
-use PHPUnit_Framework_Exception;
-use PHPUnit_Framework_TestFailure;
+use Php_Unit\Framework\Test_Failure;
+use Php_Unit\Util\Throwable_To_String_Mapper;
+use Php_Unit_framework_exception;
+use Php_Unit_framework_test_Failure;
 use Throwable;
-
 /**
  * Strings PHPUnit assertion exceptions.
  *
@@ -26,15 +23,13 @@ use Throwable;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class PHPUnitExceptionStringer implements ExceptionStringer
+final class Php_Unit_Exception_Stringer implements Exception_Stringer
 {
-    public function supportsException(Exception $exception): bool
+    public function supports_exception(Exception $exception): bool
     {
-        return $exception instanceof PHPUnit_Framework_Exception
-            || $exception instanceof \PHPUnit\Framework\Exception;
+        return $exception instanceof Php_Unit_framework_exception || $exception instanceof \Php_Unit\Framework\Exception;
     }
-
-    public function stringException(Exception $exception, $verbosity): string
+    public function string_exception(Exception $exception, $verbosity): string
     {
         // PHPUnit assertion exceptions do not include detailed expected / observed info in their messages. Instead,
         // test result printers within PHPUnit are expected to format and present that information separately. The
@@ -61,37 +56,28 @@ final class PHPUnitExceptionStringer implements ExceptionStringer
         // * Catch the failures within your Context classes and format them yourself. For example, you could implement
         //   a generic wrapper to call like `MyClass::formatFailure(fn () => Assert::assertSame(1, 2, 'Uh-oh'))`.
         // * Contribute a PR to Behat to add support for the newer PHPUnit version :)
-
         try {
-            if (class_exists(ThrowableToStringMapper::class)) {
+            if (class_exists(Throwable_To_String_Mapper::class)) {
                 // PHPUnit 10.0.0 onwards
-                return trim(ThrowableToStringMapper::map($exception));
+                return trim(Throwable_To_String_Mapper::map($exception));
             }
-
-            if (class_exists(TestFailure::class)) {
+            if (class_exists(Test_Failure::class)) {
                 // PHPUnit 6.0.0 - 9.x
-                return trim(TestFailure::exceptionToString($exception));
+                return trim(Test_Failure::exception_to_string($exception));
             }
-
-            if (class_exists(PHPUnit_Framework_TestFailure::class)) {
+            if (class_exists(Php_Unit_framework_test_Failure::class)) {
                 // PHPUnit < 6 (support ended in 2016)
-                return trim(PHPUnit_Framework_TestFailure::exceptionToString($exception));
+                return trim(Php_Unit_framework_test_Failure::exception_to_string($exception));
             }
-
             // PHPUnit must be present, because we got a PHPUnit exception. So it must be a newer version with a
             // formatter class / method we don't know about.
-            return sprintf(
-                <<<TEXT
-                %s
-                !! Could not render more details of this %s.
-                   Behat does not support automatically formatting assertion failures for your PHPUnit version.
-                   See %s for details.
-                TEXT,
-                $exception->getMessage(),
-                $exception::class,
-                self::class,
-            );
-        } catch (Throwable $phpunitException) {
+            return sprintf(<<<TEXT
+            %s
+            !! Could not render more details of this %s.
+               Behat does not support automatically formatting assertion failures for your PHPUnit version.
+               See %s for details.
+            TEXT, $exception->get_message(), $exception::class, self::class);
+        } catch (Throwable $phpunit_exception) {
             // PHPUnit does not guarantee BC on the classes / methods we're calling.
             //
             // So it is likely that it looked like a version we expected, but the method signature or internal typing
@@ -100,22 +86,13 @@ final class PHPUnitExceptionStringer implements ExceptionStringer
             // It is also possible that there's something in the user input (e.g. a value passed to $expect) that is
             // causing an error when PHPUnit tries to stringify it - but PHPUnit is generally quite robust about
             // catching those situations and reporting them within the message body.
-            return sprintf(
-                <<<TEXT
-                %s
-                !! There was an error trying to render more details of this %s.
-                   You are probably using a PHPUnit version that Behat cannot automatically display failures for.
-                   See %s for details of PHPUnit support.
-                   [%s] %s at %s:%s
-                TEXT,
-                $exception->getMessage(),
-                $exception::class,
-                self::class,
-                $phpunitException::class,
-                $phpunitException->getMessage(),
-                $phpunitException->getFile(),
-                $phpunitException->getLine(),
-            );
+            return sprintf(<<<TEXT
+            %s
+            !! There was an error trying to render more details of this %s.
+               You are probably using a PHPUnit version that Behat cannot automatically display failures for.
+               See %s for details of PHPUnit support.
+               [%s] %s at %s:%s
+            TEXT, $exception->get_message(), $exception::class, self::class, $phpunit_exception::class, $phpunit_exception->get_message(), $phpunit_exception->get_file(), $phpunit_exception->get_line());
         }
     }
 }

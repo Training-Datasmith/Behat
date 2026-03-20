@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Exception\Stringer;
 
-use Behat\Testwork\Exception\ExceptionPresenter;
+use Behat\Testwork\Exception\Exception_Presenter;
 use Exception;
-
 /**
  * Finds a best way to present as a string particular.
  *
@@ -22,15 +19,14 @@ use Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ExceptionStringer
+interface Exception_Stringer
 {
     /**
      * Checks if stringer supports provided exception.
      *
      * @return bool
      */
-    public function supportsException(Exception $exception);
-
+    public function supports_exception(Exception $exception);
     /**
      * Strings provided exception.
      *
@@ -38,5 +34,5 @@ interface ExceptionStringer
      *
      * @return string
      */
-    public function stringException(Exception $exception, $verbosity);
+    public function string_exception(Exception $exception, $verbosity);
 }

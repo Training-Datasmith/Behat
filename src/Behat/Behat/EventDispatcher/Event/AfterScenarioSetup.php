@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,51 +8,42 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\EventDispatcher\Event\AfterSetup;
+use Behat\Testwork\Event_Dispatcher\Event\After_Setup;
 use Behat\Testwork\Tester\Setup\Setup;
-
 /**
  * Represents an event after scenario setup.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AfterScenarioSetup extends ScenarioTested implements AfterSetup
+final class After_Scenario_Setup extends Scenario_Tested implements After_Setup
 {
     /**
      * Initializes event.
      */
-    public function __construct(
-        Environment $env,
-        private readonly FeatureNode $feature,
-        private readonly Scenario $scenario,
-        private readonly Setup $setup,
-    ) {
+    public function __construct(Environment $env, private readonly Feature_Node $feature, private readonly Scenario $scenario, private readonly Setup $setup)
+    {
         parent::__construct($env);
     }
-
     /**
      * Returns feature.
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function get_feature(): \Behat\Gherkin\Node\Feature_Node
     {
         return $this->feature;
     }
-
-    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
+    public function get_scenario(): \Behat\Gherkin\Node\Scenario_Like_Interface
     {
         return $this->scenario;
     }
-
     /**
      * Returns current test setup.
      */
-    public function getSetup(): \Behat\Testwork\Tester\Setup\Setup
+    public function get_setup(): \Behat\Testwork\Tester\Setup\Setup
     {
         return $this->setup;
     }

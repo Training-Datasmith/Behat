@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,86 +8,70 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Testwork\Service_Container\Configuration;
 
-namespace Behat\Testwork\ServiceContainer\Configuration;
-
-use Behat\Config\ConfigInterface;
-use Behat\Testwork\ServiceContainer\Exception\ConfigurationLoadingException;
+use Behat\Config\Config_Interface;
+use Behat\Testwork\Service_Container\Exception\Configuration_Loading_Exception;
 use Closure;
-
 use function str_ends_with;
-
 use Symfony\Component\Yaml\Yaml;
-
 /**
  * Loads configuration from different sources.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ConfigurationLoader
+final class Configuration_Loader
 {
-    private ?bool $profileFound = null;
+    private ?bool $profile_found = null;
     /**
      * @var array
      */
-    private $debugInformation = [
-        'environment_variable_name' => 'none',
-        'environment_variable_content' => 'none',
-        'configuration_file_path' => 'none',
-    ];
-
+    private $debug_information = ['environment_variable_name' => 'none', 'environment_variable_content' => 'none', 'configuration_file_path' => 'none'];
     /**
      * Constructs reader.
      *
      * @param string|null $environmentVariable Environment variable name
      * @param string|null $configurationPath       Configuration file path
      */
-    public function __construct(
-        private $environmentVariable = null,
-        private $configurationPath = null,
-    ) {
+    public function __construct(private $environment_variable = null, private $configuration_path = null)
+    {
     }
-
     /**
      * Sets environment variable name.
      *
      * @param string|null $variable
      */
-    public function setEnvironmentVariableName($variable): void
+    public function set_environment_variable_name($variable): void
     {
-        $this->environmentVariable = $variable;
+        $this->environment_variable = $variable;
     }
-
     /**
      * Returns environment variable name.
      *
      * @return string|null
      */
-    public function getEnvironmentVariableName()
+    public function get_environment_variable_name()
     {
-        return $this->environmentVariable;
+        return $this->environment_variable;
     }
-
     /**
      * Sets configuration file path.
      *
      * @param string|null $path
      */
-    public function setConfigurationFilePath($path): void
+    public function set_configuration_file_path($path): void
     {
-        $this->configurationPath = $path;
+        $this->configuration_path = $path;
     }
-
     /**
      * Returns configuration file path.
      *
      * @return string|null
      */
-    public function getConfigurationFilePath()
+    public function get_configuration_file_path()
     {
-        return $this->configurationPath;
+        return $this->configuration_path;
     }
-
     /**
      * Reads configuration sequence for specific profile.
      *
@@ -98,42 +81,32 @@ final class ConfigurationLoader
      *
      * @throws ConfigurationLoadingException
      */
-    public function loadConfiguration($profile = 'default'): array
+    public function load_configuration($profile = 'default'): array
     {
-        $this->profileFound = false;
-
-        $configs = $this->loadEnvironmentConfiguration();
-
+        $this->profile_found = false;
+        $configs = $this->load_environment_configuration();
         // second is file configuration (if there is some)
-        if ($this->configurationPath) {
-            $this->debugInformation['configuration_file_path'] = $this->configurationPath;
-
-            foreach ($this->loadFileConfiguration($this->configurationPath, $profile) as $config) {
+        if ($this->configuration_path) {
+            $this->debug_information['configuration_file_path'] = $this->configuration_path;
+            foreach ($this->load_file_configuration($this->configuration_path, $profile) as $config) {
                 $configs[] = $config;
             }
         }
-
         // if specific profile has not been found
-        if ('default' !== $profile && !$this->profileFound) {
-            throw new ConfigurationLoadingException(sprintf(
-                'Can not find configuration for `%s` profile.',
-                $profile
-            ));
+        if ('default' !== $profile && !$this->profile_found) {
+            throw new Configuration_Loading_Exception(sprintf('Can not find configuration for `%s` profile.', $profile));
         }
-
         return $configs;
     }
-
     /**
      * Returns array with configuration debug information.
      *
      * @return array
      */
-    public function debugInformation()
+    public function debug_information()
     {
-        return $this->debugInformation;
+        return $this->debug_information;
     }
-
     /**
      * Loads information from environment variable.
      *
@@ -141,35 +114,23 @@ final class ConfigurationLoader
      *
      * @throws ConfigurationLoadingException If environment variable environment var is set to invalid JSON
      */
-    private function loadEnvironmentConfiguration(): array
+    private function load_environment_configuration(): array
     {
         $configs = [];
-
-        if (!$this->environmentVariable) {
+        if (!$this->environment_variable) {
             return $configs;
         }
-
-        $this->debugInformation['environment_variable_name'] = $this->environmentVariable;
-
-        if ($envConfig = getenv($this->environmentVariable)) {
-            $config = @json_decode($envConfig, true);
-
-            $this->debugInformation['environment_variable_content'] = $envConfig;
-
+        $this->debug_information['environment_variable_name'] = $this->environment_variable;
+        if ($env_config = getenv($this->environment_variable)) {
+            $config = @json_decode($env_config, true);
+            $this->debug_information['environment_variable_content'] = $env_config;
             if (!$config) {
-                throw new ConfigurationLoadingException(sprintf(
-                    'Environment variable `%s` should contain a valid JSON, but it is set to `%s`.',
-                    $this->environmentVariable,
-                    $envConfig
-                ));
+                throw new Configuration_Loading_Exception(sprintf('Environment variable `%s` should contain a valid JSON, but it is set to `%s`.', $this->environment_variable, $env_config));
             }
-
             $configs[] = $config;
         }
-
         return $configs;
     }
-
     /**
      * Loads information from YAML configuration file.
      *
@@ -180,105 +141,84 @@ final class ConfigurationLoader
      *
      * @phpstan-impure
      */
-    private function loadFileConfiguration($configPath, $profile): array
+    private function load_file_configuration($config_path, $profile): array
     {
-        if (!is_file($configPath) || !is_readable($configPath)) {
-            throw new ConfigurationLoadingException(sprintf('Configuration file `%s` not found.', $configPath));
+        if (!is_file($config_path) || !is_readable($config_path)) {
+            throw new Configuration_Loading_Exception(sprintf('Configuration file `%s` not found.', $config_path));
         }
-
-        $basePath = rtrim(dirname($configPath), DIRECTORY_SEPARATOR);
-
-        if (str_ends_with($configPath, '.php')) {
-            $phpConfig = $this->getPHPConfigObjectClosure($configPath)();
-
-            if (!$phpConfig instanceof ConfigInterface) {
-                throw new ConfigurationLoadingException(sprintf('Configuration file `%s` must return an instance of `%s`.', $configPath, ConfigInterface::class));
+        $base_path = rtrim(dirname($config_path), DIRECTORY_SEPARATOR);
+        if (str_ends_with($config_path, '.php')) {
+            $php_config = $this->get_php_config_object_closure($config_path)();
+            if (!$php_config instanceof Config_Interface) {
+                throw new Configuration_Loading_Exception(sprintf('Configuration file `%s` must return an instance of `%s`.', $config_path, Config_Interface::class));
             }
-
-            $config = $phpConfig->toArray();
+            $config = $php_config->to_array();
         } else {
-            $config = (array) Yaml::parse(file_get_contents($configPath));
+            $config = (array) Yaml::parse(file_get_contents($config_path));
         }
-
-        return $this->loadConfigs($basePath, $config, $profile);
+        return $this->load_configs($base_path, $config, $profile);
     }
-
     /**
      * Scope isolated include.
      *
      * Prevents access to $this/self from included files.
      */
-    private function getPHPConfigObjectClosure(string $configPath): Closure
+    private function get_php_config_object_closure(string $config_path): Closure
     {
-        return Closure::bind(fn (): mixed => require $configPath, null, null);
+        return Closure::bind(fn(): mixed => require $config_path, null, null);
     }
-
     /**
      * Loads configs for provided config and profile.
      *
      * @param string $profile
      */
-    private function loadConfigs(string $basePath, array $config, $profile): array
+    private function load_configs(string $base_path, array $config, $profile): array
     {
         $configs = [];
-
-        $profile = $this->getProfileName($config, $profile);
-
+        $profile = $this->get_profile_name($config, $profile);
         // first load default profile from current config, but only if custom profile requested
         if ('default' !== $profile && isset($config['default'])) {
             $configs[] = $config['default'];
         }
-
         // then recursively load profiles from imports
         if (isset($config['imports']) && is_array($config['imports'])) {
-            $configs = array_merge($configs, $this->loadImports($basePath, $config['imports'], $profile));
+            $configs = array_merge($configs, $this->load_imports($base_path, $config['imports'], $profile));
         }
-
         // then load specific profile from current config
         if (isset($config[$profile])) {
             $configs[] = $config[$profile];
-            $this->profileFound = true;
+            $this->profile_found = true;
         }
-
-        if (!$this->profileFound && isset($config['preferredProfileName'])) {
-            throw new ConfigurationLoadingException(sprintf(
-                'Can not find configuration for `%s` profile.',
-                $config['preferredProfileName']
-            ));
+        if (!$this->profile_found && isset($config['preferredProfileName'])) {
+            throw new Configuration_Loading_Exception(sprintf('Can not find configuration for `%s` profile.', $config['preferredProfileName']));
         }
-
         return $configs;
     }
-
     /**
      * Get the name of the requested profile, after considering any preferred profile name.
      */
-    private function getProfileName(array $config, string $profile): string
+    private function get_profile_name(array $config, string $profile): string
     {
         if (isset($config['preferredProfileName']) && 'default' === $profile) {
             return $config['preferredProfileName'];
         }
-
         return $profile;
     }
-
     /**
      * Loads all provided imports.
      *
      * @param string $basePath
      */
-    private function loadImports(string $basePath, array $paths, string $profile): array
+    private function load_imports(string $base_path, array $paths, string $profile): array
     {
         $configs = [];
         foreach ($paths as $path) {
-            foreach ($this->parseImport($basePath, $path, $profile) as $importConfig) {
-                $configs[] = $importConfig;
+            foreach ($this->parse_import($base_path, $path, $profile) as $import_config) {
+                $configs[] = $import_config;
             }
         }
-
         return $configs;
     }
-
     /**
      * Parses import.
      *
@@ -286,19 +226,14 @@ final class ConfigurationLoader
      *
      * @throws ConfigurationLoadingException If import file not found
      */
-    private function parseImport(string $basePath, $path, string $profile): array
+    private function parse_import(string $base_path, $path, string $profile): array
     {
-        if (!file_exists($path) && file_exists($basePath . DIRECTORY_SEPARATOR . $path)) {
-            $path = $basePath . DIRECTORY_SEPARATOR . $path;
+        if (!file_exists($path) && file_exists($base_path . DIRECTORY_SEPARATOR . $path)) {
+            $path = $base_path . DIRECTORY_SEPARATOR . $path;
         }
-
         if (!file_exists($path)) {
-            throw new ConfigurationLoadingException(sprintf(
-                'Can not import `%s` configuration file. File not found.',
-                $path
-            ));
+            throw new Configuration_Loading_Exception(sprintf('Can not import `%s` configuration file. File not found.', $path));
         }
-
-        return $this->loadFileConfiguration($path, $profile);
+        return $this->load_file_configuration($path, $profile);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,105 +8,91 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Snippet;
 
-use Behat\Behat\Snippet\Appender\SnippetAppender;
-use Behat\Behat\Snippet\Printer\SnippetPrinter;
-
+use Behat\Behat\Snippet\Appender\Snippet_Appender;
+use Behat\Behat\Snippet\Printer\Snippet_Printer;
 /**
  * Prints or appends snippets to a specific environment using registered appenders and printers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class SnippetWriter
+final class Snippet_Writer
 {
     /**
      * @var SnippetAppender[]
      */
     private array $appenders = [];
-
     /**
      * Registers snippet appender.
      */
-    public function registerSnippetAppender(SnippetAppender $appender): void
+    public function register_snippet_appender(Snippet_Appender $appender): void
     {
         $this->appenders[] = $appender;
     }
-
     /**
      * Appends snippets to appropriate targets.
      *
      * @param AggregateSnippet[] $snippets
      */
-    public function appendSnippets(array $snippets): void
+    public function append_snippets(array $snippets): void
     {
         foreach ($snippets as $snippet) {
-            $this->appendSnippet($snippet);
+            $this->append_snippet($snippet);
         }
     }
-
     /**
      * Prints snippets using provided printer.
      *
      * @param AggregateSnippet[] $snippets
      */
-    public function printSnippets(SnippetPrinter $printer, array $snippets): void
+    public function print_snippets(Snippet_Printer $printer, array $snippets): void
     {
-        $printableSnippets = [];
+        $printable_snippets = [];
         foreach ($snippets as $snippet) {
-            foreach ($snippet->getTargets() as $target) {
-                $targetSnippets = [];
-
-                if (isset($printableSnippets[$target])) {
-                    $targetSnippets = $printableSnippets[$target];
+            foreach ($snippet->get_targets() as $target) {
+                $target_snippets = [];
+                if (isset($printable_snippets[$target])) {
+                    $target_snippets = $printable_snippets[$target];
                 }
-
-                $targetSnippets[] = $snippet;
-                $printableSnippets[$target] = $targetSnippets;
+                $target_snippets[] = $snippet;
+                $printable_snippets[$target] = $target_snippets;
             }
         }
-
-        foreach ($printableSnippets as $target => $targetSnippets) {
-            $printer->printSnippets($target, $targetSnippets);
+        foreach ($printable_snippets as $target => $target_snippets) {
+            $printer->print_snippets($target, $target_snippets);
         }
     }
-
     /**
      * Prints undefined steps using provided printer.
      *
      * @param UndefinedStep[] $undefinedSteps
      */
-    public function printUndefinedSteps(SnippetPrinter $printer, array $undefinedSteps): void
+    public function print_undefined_steps(Snippet_Printer $printer, array $undefined_steps): void
     {
-        $printableSteps = [];
-        foreach ($undefinedSteps as $undefinedStep) {
-            $suiteName = $undefinedStep->getEnvironment()->getSuite()->getName();
-            $step = $undefinedStep->getStep();
-
-            if (!isset($printableSteps[$suiteName])) {
-                $printableSteps[$suiteName] = [];
+        $printable_steps = [];
+        foreach ($undefined_steps as $undefined_step) {
+            $suite_name = $undefined_step->get_environment()->get_suite()->get_name();
+            $step = $undefined_step->get_step();
+            if (!isset($printable_steps[$suite_name])) {
+                $printable_steps[$suite_name] = [];
             }
-
-            $printableSteps[$suiteName][$step->getText()] = $step;
+            $printable_steps[$suite_name][$step->get_text()] = $step;
         }
-
-        foreach ($printableSteps as $suiteName => $steps) {
-            $printer->printUndefinedSteps($suiteName, array_values($steps));
+        foreach ($printable_steps as $suite_name => $steps) {
+            $printer->print_undefined_steps($suite_name, array_values($steps));
         }
     }
-
     /**
      * Appends snippet to appropriate targets.
      */
-    private function appendSnippet(AggregateSnippet $snippet): void
+    private function append_snippet(Aggregate_Snippet $snippet): void
     {
         foreach ($this->appenders as $appender) {
-            if (!$appender->supportsSnippet($snippet)) {
+            if (!$appender->supports_snippet($snippet)) {
                 continue;
             }
-
-            $appender->appendSnippet($snippet);
+            $appender->append_snippet($snippet);
         }
     }
 }

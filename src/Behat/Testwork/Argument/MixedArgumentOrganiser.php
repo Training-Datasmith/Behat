@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,29 +8,26 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Argument;
 
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Testwork\Argument\Exception\UnexpectedMultilineArgumentException;
+use Behat\Gherkin\Node\Py_String_Node;
+use Behat\Gherkin\Node\Table_Node;
+use Behat\Testwork\Argument\Exception\Unexpected_Multiline_Argument_Exception;
 use ReflectionClass;
-use ReflectionException;
-use ReflectionFunctionAbstract;
+use Reflection_Exception;
+use Reflection_Function_Abstract;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
-
 /**
  * Organises function arguments using its reflection.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class MixedArgumentOrganiser implements ArgumentOrganiser
+final class Mixed_Argument_Organiser implements Argument_Organiser
 {
-    private array $definedArguments = [];
-
+    private array $defined_arguments = [];
     /**
      * Organises arguments using function reflection.
      *
@@ -39,11 +35,10 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    public function organiseArguments(ReflectionFunctionAbstract $function, array $arguments): array
+    public function organise_arguments(Reflection_Function_Abstract $function, array $arguments): array
     {
-        return $this->prepareArguments($function, $arguments);
+        return $this->prepare_arguments($function, $arguments);
     }
-
     /**
      * Prepares arguments based on provided parameters.
      *
@@ -51,52 +46,32 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    private function prepareArguments(ReflectionFunctionAbstract $function, array $arguments): array
+    private function prepare_arguments(Reflection_Function_Abstract $function, array $arguments): array
     {
-        $parameters = $function->getParameters();
-
-        $this->markAllArgumentsUndefined();
-
-        [$named, $typehinted, $numbered] = $this->splitArguments($parameters, $arguments);
-
-        $wasMultilineProvided = $this->hasMultilineArgument($numbered);
-
-        $arguments =
-            $this->prepareNamedArguments($parameters, $named) +
-            $this->prepareTypehintedArguments($parameters, $typehinted) +
-            $this->prepareNumberedArguments($parameters, $numbered) +
-            $this->prepareDefaultArguments($parameters);
-
+        $parameters = $function->get_parameters();
+        $this->mark_all_arguments_undefined();
+        [$named, $typehinted, $numbered] = $this->split_arguments($parameters, $arguments);
+        $was_multiline_provided = $this->has_multiline_argument($numbered);
+        $arguments = $this->prepare_named_arguments($parameters, $named) + $this->prepare_typehinted_arguments($parameters, $typehinted) + $this->prepare_numbered_arguments($parameters, $numbered) + $this->prepare_default_arguments($parameters);
         // If a parameter was a TableNode or a PystringNode, but has been removed from the final arguments,
         // then it's an error in the feature file.
-        if ($wasMultilineProvided && !$this->hasMultilineArgument($arguments)) {
-            throw new UnexpectedMultilineArgumentException(
-                sprintf(
-                    'You have passed a TableNode or PystringNode, but it was not used by %s.',
-                    $function instanceof ReflectionMethod
-                        ? $function->class.'::'.$function->getName()
-                        : $function->getName(),
-                ),
-            );
+        if ($was_multiline_provided && !$this->has_multiline_argument($arguments)) {
+            throw new Unexpected_Multiline_Argument_Exception(sprintf('You have passed a TableNode or PystringNode, but it was not used by %s.', $function instanceof ReflectionMethod ? $function->class . '::' . $function->get_name() : $function->get_name()));
         }
-
-        return $this->reorderArguments($parameters, $arguments);
+        return $this->reorder_arguments($parameters, $arguments);
     }
-
     /**
      * @param array<mixed> $arguments
      */
-    private function hasMultilineArgument(array $arguments): bool
+    private function has_multiline_argument(array $arguments): bool
     {
         foreach ($arguments as $argument) {
-            if ($argument instanceof TableNode || $argument instanceof PyStringNode) {
+            if ($argument instanceof Table_Node || $argument instanceof Py_String_Node) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Splits arguments into three separate arrays - named, numbered and typehinted.
      *
@@ -105,73 +80,61 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return array{array<string, mixed>, list<mixed>, list<mixed>}
      */
-    private function splitArguments(array $parameters, array $arguments): array
+    private function split_arguments(array $parameters, array $arguments): array
     {
-        $parameterNames = array_map(
-            fn (ReflectionParameter $parameter): string => $parameter->getName(),
-            $parameters
-        );
-
-        $namedArguments = [];
-        $numberedArguments = [];
-        $typehintedArguments = [];
+        $parameter_names = array_map(fn(ReflectionParameter $parameter): string => $parameter->get_name(), $parameters);
+        $named_arguments = [];
+        $numbered_arguments = [];
+        $typehinted_arguments = [];
         foreach ($arguments as $key => $val) {
-            if ($this->isStringKeyAndExistsInParameters($key, $parameterNames)) {
-                $namedArguments[$key] = $val;
-            } elseif ($this->isParameterTypehintedInArgumentList($parameters, $val)) {
-                $typehintedArguments[] = $val;
+            if ($this->is_string_key_and_exists_in_parameters($key, $parameter_names)) {
+                $named_arguments[$key] = $val;
+            } elseif ($this->is_parameter_typehinted_in_argument_list($parameters, $val)) {
+                $typehinted_arguments[] = $val;
             } else {
-                $numberedArguments[] = $val;
+                $numbered_arguments[] = $val;
             }
         }
-
-        return [$namedArguments, $typehintedArguments, $numberedArguments];
+        return [$named_arguments, $typehinted_arguments, $numbered_arguments];
     }
-
     /**
      * Checks that provided argument key is a string and it matches some parameter name.
      *
      * @param string[] $parameterNames
      */
-    private function isStringKeyAndExistsInParameters(int|string $argumentKey, array $parameterNames): bool
+    private function is_string_key_and_exists_in_parameters(int|string $argument_key, array $parameter_names): bool
     {
-        return is_string($argumentKey) && in_array($argumentKey, $parameterNames);
+        return is_string($argument_key) && in_array($argument_key, $parameter_names);
     }
-
     /**
      * Check if a given value is typehinted in the argument list.
      *
      * @param  ReflectionParameter[] $parameters
      */
-    private function isParameterTypehintedInArgumentList(array $parameters, $value): bool
+    private function is_parameter_typehinted_in_argument_list(array $parameters, $value): bool
     {
         if (!is_object($value)) {
             return false;
         }
-
         foreach ($parameters as $parameter) {
-            if ($this->isValueMatchesTypehintedParameter($value, $parameter)) {
+            if ($this->is_value_matches_typehinted_parameter($value, $parameter)) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Checks if value matches typehint of provided parameter.
      */
-    private function isValueMatchesTypehintedParameter(object $value, ReflectionParameter $parameter): bool
+    private function is_value_matches_typehinted_parameter(object $value, ReflectionParameter $parameter): bool
     {
-        foreach ($this->getReflectionClassesFromParameter($parameter) as $typehintRefl) {
-            if ($typehintRefl->isInstance($value)) {
+        foreach ($this->get_reflection_classes_from_parameter($parameter) as $typehint_refl) {
+            if ($typehint_refl->is_instance($value)) {
                 return true;
             }
         }
-
         return false;
     }
-
     /**
      * Captures argument values based on their respective names.
      *
@@ -180,22 +143,18 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    private function prepareNamedArguments(array $parameters, array $namedArguments): array
+    private function prepare_named_arguments(array $parameters, array $named_arguments): array
     {
         $arguments = [];
-
         foreach ($parameters as $num => $parameter) {
-            $name = $parameter->getName();
-
-            if (array_key_exists($name, $namedArguments)) {
-                $arguments[$name] = $namedArguments[$name];
-                $this->markArgumentDefined($num);
+            $name = $parameter->get_name();
+            if (array_key_exists($name, $named_arguments)) {
+                $arguments[$name] = $named_arguments[$name];
+                $this->mark_argument_defined($num);
             }
         }
-
         return $arguments;
     }
-
     /**
      * Captures argument values for typehinted arguments based on the given candidates.
      *
@@ -215,30 +174,15 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[] Ordered list of arguments, index is the constructor argument position, value is what will be injected
      */
-    private function prepareTypehintedArguments(array $parameters, array $typehintedArguments): array
+    private function prepare_typehinted_arguments(array $parameters, array $typehinted_arguments): array
     {
         $arguments = [];
-
-        $candidates = $typehintedArguments;
-
-        $this->applyPredicateToTypehintedArguments(
-            $parameters,
-            $candidates,
-            $arguments,
-            $this->classMatchingPredicateForTypehintedArguments(...)
-        );
-
+        $candidates = $typehinted_arguments;
+        $this->apply_predicate_to_typehinted_arguments($parameters, $candidates, $arguments, $this->class_matching_predicate_for_typehinted_arguments(...));
         // This iteration maps up everything else, providing the argument is an instanceof the parameter.
-        $this->applyPredicateToTypehintedArguments(
-            $parameters,
-            $candidates,
-            $arguments,
-            $this->isInstancePredicateForTypehintedArguments(...)
-        );
-
+        $this->apply_predicate_to_typehinted_arguments($parameters, $candidates, $arguments, $this->is_instance_predicate_for_typehinted_arguments(...));
         return $arguments;
     }
-
     /**
      * Filtered out superfluous parameters for matching up typehinted arguments.
      *
@@ -246,61 +190,46 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return ReflectionParameter[]             Filtered $parameters
      */
-    private function filterApplicableTypehintedParameters(array $parameters): array
+    private function filter_applicable_typehinted_parameters(array $parameters): array
     {
-        return array_filter(
-            $parameters,
-            fn ($parameter, $num): bool => !$this->isArgumentDefined($num)
-            && $this->getReflectionClassesFromParameter($parameter),
-            ARRAY_FILTER_USE_BOTH
-        );
+        return array_filter($parameters, fn($parameter, $num): bool => !$this->is_argument_defined($num) && $this->get_reflection_classes_from_parameter($parameter), ARRAY_FILTER_USE_BOTH);
     }
-
     /**
      * @return ReflectionClass[]
      */
-    private function getReflectionClassesFromParameter(ReflectionParameter $parameter): array
+    private function get_reflection_classes_from_parameter(ReflectionParameter $parameter): array
     {
         $classes = [];
-
-        if (!$parameter->hasType()) {
+        if (!$parameter->has_type()) {
             return $classes;
         }
-
-        $type = $parameter->getType();
-
+        $type = $parameter->get_type();
         if ($type instanceof ReflectionNamedType) {
             $types = [$type];
         } elseif ($type instanceof ReflectionUnionType) {
-            $types = $type->getTypes();
+            $types = $type->get_types();
         } else {
             $types = [];
         }
-
         foreach ($types as $type) {
             // ReflectionUnionType::getTypes is only documented as returning ReflectionType[]
             if (!$type instanceof ReflectionNamedType) {
                 continue;
             }
-
-            $typeString = $type->getName();
-
-            if ($typeString == 'self') {
-                $typeString = $parameter->getDeclaringClass();
-            } elseif ($typeString == 'parent') {
-                $typeString = $parameter->getDeclaringClass()->getParentClass();
+            $type_string = $type->get_name();
+            if ($type_string == 'self') {
+                $type_string = $parameter->get_declaring_class();
+            } elseif ($type_string == 'parent') {
+                $type_string = $parameter->get_declaring_class()->get_parent_class();
             }
-
             try {
-                $classes[] = new ReflectionClass($typeString);
-            } catch (ReflectionException) {
+                $classes[] = new ReflectionClass($type_string);
+            } catch (Reflection_Exception) {
                 continue;
             }
         }
-
         return $classes;
     }
-
     /**
      * Applies a predicate for each candidate when matching up typehinted arguments.
      * This passes through to another loop of the candidates in @matchParameterToCandidateUsingPredicate,
@@ -311,19 +240,13 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      * @param  mixed[]               &$arguments  Argument mapping
      * @param  callable              $predicate   Callable predicate to apply to each candidate
      */
-    private function applyPredicateToTypehintedArguments(
-        array $parameters,
-        array &$candidates,
-        array &$arguments,
-        \Closure $predicate,
-    ): void {
-        $filtered = $this->filterApplicableTypehintedParameters($parameters);
-
+    private function apply_predicate_to_typehinted_arguments(array $parameters, array &$candidates, array &$arguments, \Closure $predicate): void
+    {
+        $filtered = $this->filter_applicable_typehinted_parameters($parameters);
         foreach ($filtered as $parameter) {
-            $this->matchParameterToCandidateUsingPredicate($parameter, $candidates, $arguments, $predicate);
+            $this->match_parameter_to_candidate_using_predicate($parameter, $candidates, $arguments, $predicate);
         }
     }
-
     /**
      * Applies a predicate for each candidate when matching up typehinted arguments.
      * This helps to avoid repetition when looping them, as multiple passes are needed over the parameters / candidates.
@@ -335,53 +258,41 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return bool Returns true if a candidate has been matched to the given parameter, otherwise false
      */
-    public function matchParameterToCandidateUsingPredicate(
-        ReflectionParameter $parameter,
-        array &$candidates,
-        array &$arguments,
-        $predicate,
-    ): bool {
-        foreach ($candidates as $candidateIndex => $candidate) {
-            foreach ($this->getReflectionClassesFromParameter($parameter) as $class) {
+    public function match_parameter_to_candidate_using_predicate(ReflectionParameter $parameter, array &$candidates, array &$arguments, $predicate): bool
+    {
+        foreach ($candidates as $candidate_index => $candidate) {
+            foreach ($this->get_reflection_classes_from_parameter($parameter) as $class) {
                 if ($predicate($class, $candidate)) {
-                    $num = $parameter->getPosition();
-
+                    $num = $parameter->get_position();
                     $arguments[$num] = $candidate;
-
-                    $this->markArgumentDefined($num);
-
-                    unset($candidates[$candidateIndex]);
-
+                    $this->mark_argument_defined($num);
+                    unset($candidates[$candidate_index]);
                     return true;
                 }
             }
         }
-
         return false;
     }
-
     /**
      * Typehinted argument predicate to check if the argument and parameter classes match equally.
      *
      * @param  ReflectionClass $reflectionClass Typehinted argument
      * @param  mixed           $candidate       Resolved argument
      */
-    private function classMatchingPredicateForTypehintedArguments(ReflectionClass $reflectionClass, $candidate): bool
+    private function class_matching_predicate_for_typehinted_arguments(ReflectionClass $reflection_class, $candidate): bool
     {
-        return $reflectionClass->getName() === $candidate::class;
+        return $reflection_class->get_name() === $candidate::class;
     }
-
     /**
      * Typehinted argument predicate to check if the argument is an instance of the parameter.
      *
      * @param  ReflectionClass $reflectionClass Typehinted argument
      * @param  mixed           $candidate       Resolved argument
      */
-    private function isInstancePredicateForTypehintedArguments(ReflectionClass $reflectionClass, $candidate): bool
+    private function is_instance_predicate_for_typehinted_arguments(ReflectionClass $reflection_class, $candidate): bool
     {
-        return $reflectionClass->isInstance($candidate);
+        return $reflection_class->is_instance($candidate);
     }
-
     /**
      * Captures argument values for undefined arguments based on their respective numbers.
      *
@@ -390,25 +301,21 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    private function prepareNumberedArguments(array $parameters, array $numberedArguments): array
+    private function prepare_numbered_arguments(array $parameters, array $numbered_arguments): array
     {
         $arguments = [];
-
         $increment = 0;
         foreach (array_keys($parameters) as $num) {
-            if ($this->isArgumentDefined($num)) {
+            if ($this->is_argument_defined($num)) {
                 continue;
             }
-
-            if (array_key_exists($increment, $numberedArguments)) {
-                $arguments[$num] = $numberedArguments[$increment++];
-                $this->markArgumentDefined($num);
+            if (array_key_exists($increment, $numbered_arguments)) {
+                $arguments[$num] = $numbered_arguments[$increment++];
+                $this->mark_argument_defined($num);
             }
         }
-
         return $arguments;
     }
-
     /**
      * Captures argument values for undefined arguments based on parameters defaults.
      *
@@ -416,24 +323,20 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    private function prepareDefaultArguments(array $parameters): array
+    private function prepare_default_arguments(array $parameters): array
     {
         $arguments = [];
-
         foreach ($parameters as $num => $parameter) {
-            if ($this->isArgumentDefined($num)) {
+            if ($this->is_argument_defined($num)) {
                 continue;
             }
-
-            if ($parameter->isDefaultValueAvailable()) {
-                $arguments[$num] = $parameter->getDefaultValue();
-                $this->markArgumentDefined($num);
+            if ($parameter->is_default_value_available()) {
+                $arguments[$num] = $parameter->get_default_value();
+                $this->mark_argument_defined($num);
             }
         }
-
         return $arguments;
     }
-
     /**
      * Reorders arguments based on their respective parameters order.
      *
@@ -441,50 +344,44 @@ final class MixedArgumentOrganiser implements ArgumentOrganiser
      *
      * @return mixed[]
      */
-    private function reorderArguments(array $parameters, array $arguments): array
+    private function reorder_arguments(array $parameters, array $arguments): array
     {
-        $orderedArguments = [];
-
+        $ordered_arguments = [];
         foreach ($parameters as $num => $parameter) {
-            $name = $parameter->getName();
-
+            $name = $parameter->get_name();
             if (array_key_exists($num, $arguments)) {
-                $orderedArguments[$num] = $arguments[$num];
+                $ordered_arguments[$num] = $arguments[$num];
             } elseif (array_key_exists($name, $arguments)) {
-                $orderedArguments[$name] = $arguments[$name];
+                $ordered_arguments[$name] = $arguments[$name];
             }
         }
-
-        return $orderedArguments;
+        return $ordered_arguments;
     }
-
     /**
      * Marks arguments at all positions as undefined.
      *
      * This is used to share state between get*Arguments() methods.
      */
-    private function markAllArgumentsUndefined(): void
+    private function mark_all_arguments_undefined(): void
     {
-        $this->definedArguments = [];
+        $this->defined_arguments = [];
     }
-
     /**
      * Marks an argument at provided position as defined.
      *
      * @param int $position
      */
-    private function markArgumentDefined($position): void
+    private function mark_argument_defined($position): void
     {
-        $this->definedArguments[$position] = true;
+        $this->defined_arguments[$position] = true;
     }
-
     /**
      * Checks if an argument at provided position is defined.
      *
      * @param int $position
      */
-    private function isArgumentDefined($position): bool
+    private function is_argument_defined($position): bool
     {
-        return isset($this->definedArguments[$position]);
+        return isset($this->defined_arguments[$position]);
     }
 }

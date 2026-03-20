@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,18 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Ordering\Orderer;
 
-use Behat\Testwork\Specification\SpecificationArrayIterator;
-use Behat\Testwork\Specification\SpecificationIterator;
-
+use Behat\Testwork\Specification\Specification_Array_Iterator;
+use Behat\Testwork\Specification\Specification_Iterator;
 /**
  * Prioritises Suites and Features into reverse order.
  *
  * @author Ciaran McNulty <mail@ciaranmcnulty.com>
  */
-final class ReverseOrderer implements Orderer
+final class Reverse_Orderer implements Orderer
 {
     /**
      * @template T
@@ -29,13 +26,11 @@ final class ReverseOrderer implements Orderer
      *
      * @return list<SpecificationIterator<T>>
      */
-    public function order(array $scenarioIterators): array
+    public function order(array $scenario_iterators): array
     {
-        $orderedFeatures = $this->orderFeatures($scenarioIterators);
-
-        return $this->orderSuites($orderedFeatures);
+        $ordered_features = $this->order_features($scenario_iterators);
+        return $this->order_suites($ordered_features);
     }
-
     /**
      * @template T
      *
@@ -43,21 +38,15 @@ final class ReverseOrderer implements Orderer
      *
      * @return list<SpecificationIterator<T>>
      */
-    private function orderFeatures(array $scenarioIterators): array
+    private function order_features(array $scenario_iterators): array
     {
-        $orderedSuites = [];
-
-        foreach ($scenarioIterators as $scenarioIterator) {
-            $orderedSpecifications = array_reverse(iterator_to_array($scenarioIterator));
-            $orderedSuites[] = new SpecificationArrayIterator(
-                $scenarioIterator->getSuite(),
-                $orderedSpecifications
-            );
+        $ordered_suites = [];
+        foreach ($scenario_iterators as $scenario_iterator) {
+            $ordered_specifications = array_reverse(iterator_to_array($scenario_iterator));
+            $ordered_suites[] = new Specification_Array_Iterator($scenario_iterator->get_suite(), $ordered_specifications);
         }
-
-        return $orderedSuites;
+        return $ordered_suites;
     }
-
     /**
      * @template T
      *
@@ -65,12 +54,11 @@ final class ReverseOrderer implements Orderer
      *
      * @return SpecificationIterator<T>[]
      */
-    private function orderSuites(array $orderedSuites): array
+    private function order_suites(array $ordered_suites): array
     {
-        return array_reverse($orderedSuites);
+        return array_reverse($ordered_suites);
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
         return 'reverse';
     }

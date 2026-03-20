@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,54 +8,40 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Suite\Cli;
 
 use Behat\Testwork\Cli\Controller;
-use Behat\Testwork\Suite\SuiteBootstrapper;
-use Behat\Testwork\Suite\SuiteRepository;
+use Behat\Testwork\Suite\Suite_Bootstrapper;
+use Behat\Testwork\Suite\Suite_Repository;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Input\Input_Option;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * Initializes registered test suites.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class InitializationController implements Controller
+final readonly class Initialization_Controller implements Controller
 {
     /**
      * Initializes controller.
      */
-    public function __construct(
-        private SuiteRepository $repository,
-        private SuiteBootstrapper $bootstrapper,
-    ) {
+    public function __construct(private Suite_Repository $repository, private Suite_Bootstrapper $bootstrapper)
+    {
     }
-
     public function configure(Command $command): void
     {
-        $command->addOption(
-            '--init',
-            null,
-            InputOption::VALUE_NONE,
-            'Initialize all registered test suites.'
-        );
+        $command->add_option('--init', null, Input_Option::VALUE_NONE, 'Initialize all registered test suites.');
     }
-
-    public function execute(InputInterface $input, OutputInterface $output): ?int
+    public function execute(Input_Interface $input, Output_Interface $output): ?int
     {
-        if (!$input->getOption('init')) {
+        if (!$input->get_option('init')) {
             return null;
         }
-
-        $suites = $this->repository->getSuites();
-        $this->bootstrapper->bootstrapSuites($suites);
-
+        $suites = $this->repository->get_suites();
+        $this->bootstrapper->bootstrap_suites($suites);
         $output->write(PHP_EOL);
-
         return 0;
     }
 }

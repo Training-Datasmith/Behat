@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,7 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Tester\Result;
 
 /**
@@ -17,28 +15,25 @@ namespace Behat\Testwork\Tester\Result;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class IntegerTestResult implements TestResult
+final class Integer_Test_Result implements Test_Result
 {
     /**
      * Initializes test result.
      *
      * @param TestResult::* $resultCode
      */
-    public function __construct(
-        private $resultCode,
-    ) {
-    }
-
-    public function isPassed(): bool
+    public function __construct(private $result_code)
     {
-        return self::PASSED == $this->getResultCode();
     }
-
+    public function is_passed(): bool
+    {
+        return self::PASSED == $this->get_result_code();
+    }
     /**
      * @return TestResult::*
      */
-    public function getResultCode()
+    public function get_result_code()
     {
-        return $this->resultCode;
+        return $this->result_code;
     }
 }

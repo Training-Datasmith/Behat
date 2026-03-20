@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,14 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Helper_Container\Argument;
 
-namespace Behat\Behat\HelperContainer\Argument;
-
-use Behat\Behat\Context\Argument\ArgumentResolver;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
+use Behat\Behat\Context\Argument\Argument_Resolver;
+use Psr\Container\Container_Exception_Interface;
+use Psr\Container\Container_Interface;
 use ReflectionClass;
-
 /**
  * Resolves arguments using provided service container.
  *
@@ -24,24 +21,21 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ServicesResolver implements ArgumentResolver
+final readonly class Services_Resolver implements Argument_Resolver
 {
     /**
      * Initialises resolver.
      */
-    public function __construct(
-        private ContainerInterface $container,
-    ) {
+    public function __construct(private Container_Interface $container)
+    {
     }
-
     /**
      * @throws ContainerExceptionInterface
      */
-    public function resolveArguments(ReflectionClass $classReflection, array $arguments): array
+    public function resolve_arguments(ReflectionClass $class_reflection, array $arguments): array
     {
-        return array_map($this->resolveArgument(...), $arguments);
+        return array_map($this->resolve_argument(...), $arguments);
     }
-
     /**
      * Attempts to resolve singular argument from container.
      *
@@ -50,12 +44,11 @@ final readonly class ServicesResolver implements ArgumentResolver
      *
      * @throws ContainerExceptionInterface
      */
-    private function resolveArgument($value)
+    private function resolve_argument($value)
     {
         if (is_string($value) && 0 === mb_strpos($value, '@')) {
             return $this->container->get(mb_substr($value, 1));
         }
-
         return $value;
     }
 }

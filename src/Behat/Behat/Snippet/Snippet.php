@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,11 +8,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Snippet;
 
-use Behat\Gherkin\Node\StepNode;
-
+use Behat\Gherkin\Node\Step_Node;
 /**
  * Step definition snippet.
  *
@@ -26,33 +23,29 @@ interface Snippet
      *
      * @return string
      */
-    public function getType();
-
+    public function get_type();
     /**
      * Returns snippet unique ID (step type independent).
      *
      * @return string
      */
-    public function getHash();
-
+    public function get_hash();
     /**
      * Returns definition snippet text.
      *
      * @return string
      */
-    public function getSnippet();
-
+    public function get_snippet();
     /**
      * Returns step which asked for this snippet.
      *
      * @return StepNode
      */
-    public function getStep();
-
+    public function get_step();
     /**
      * Returns snippet target.
      *
      * @return string
      */
-    public function getTarget();
+    public function get_target();
 }

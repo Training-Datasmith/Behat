@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,17 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Testwork\ServiceContainer\Exception;
+namespace Behat\Testwork\Service_Container\Exception;
 
 use RuntimeException;
-
 /**
  * Extension exception.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class ExtensionException extends RuntimeException implements ServiceContainerException
+class Extension_Exception extends RuntimeException implements Service_Container_Exception
 {
     /**
      * Initializes exception.
@@ -27,20 +24,17 @@ class ExtensionException extends RuntimeException implements ServiceContainerExc
      * @param string $message
      * @param string $extensionName
      */
-    public function __construct(
-        $message,
-        private $extensionName,
-    ) {
+    public function __construct($message, private $extension_name)
+    {
         parent::__construct($message);
     }
-
     /**
      * Returns name of the extension that caused exception.
      *
      * @return string
      */
-    public function getExtensionName()
+    public function get_extension_name()
     {
-        return $this->extensionName;
+        return $this->extension_name;
     }
 }

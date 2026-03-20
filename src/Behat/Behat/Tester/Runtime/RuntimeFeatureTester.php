@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,24 +8,22 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Tester\Runtime;
 
-use Behat\Behat\Tester\OutlineTester;
-use Behat\Behat\Tester\ScenarioTester;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\OutlineNode;
+use Behat\Behat\Tester\Outline_Tester;
+use Behat\Behat\Tester\Scenario_Tester;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Outline_Node;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\IntegerTestResult;
-use Behat\Testwork\Tester\Result\TestResult;
-use Behat\Testwork\Tester\Result\TestResults;
-use Behat\Testwork\Tester\Result\TestWithSetupResult;
+use Behat\Testwork\Tester\Result\Integer_Test_Result;
+use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\Test_Results;
+use Behat\Testwork\Tester\Result\Test_With_Setup_Result;
 use Behat\Testwork\Tester\Setup\Setup;
-use Behat\Testwork\Tester\Setup\SuccessfulSetup;
-use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
+use Behat\Testwork\Tester\Setup\Successful_Setup;
+use Behat\Testwork\Tester\Setup\Successful_Teardown;
 use Behat\Testwork\Tester\Setup\Teardown;
-use Behat\Testwork\Tester\SpecificationTester;
-
+use Behat\Testwork\Tester\Specification_Tester;
 /**
  * Tester executing feature tests in the runtime.
  *
@@ -34,39 +31,31 @@ use Behat\Testwork\Tester\SpecificationTester;
  *
  * @implements SpecificationTester<FeatureNode>
  */
-final readonly class RuntimeFeatureTester implements SpecificationTester
+final readonly class Runtime_Feature_Tester implements Specification_Tester
 {
-    public function __construct(
-        private ScenarioTester $scenarioTester,
-        private OutlineTester $outlineTester,
-    ) {
-    }
-
-    public function setUp(Environment $env, $spec, $skip): Setup
+    public function __construct(private Scenario_Tester $scenario_tester, private Outline_Tester $outline_tester)
     {
-        return new SuccessfulSetup();
     }
-
-    public function test(Environment $env, $spec, $skip = false): TestResult
+    public function set_up(Environment $env, $spec, $skip): Setup
+    {
+        return new Successful_Setup();
+    }
+    public function test(Environment $env, $spec, $skip = false): Test_Result
     {
         $results = [];
-        foreach ($spec->getScenarios() as $scenario) {
-            $tester = $scenario instanceof OutlineNode ? $this->outlineTester : $this->scenarioTester;
-
-            $setup = $tester->setUp($env, $spec, $scenario, $skip);
-            $localSkip = !$setup->isSuccessful() || $skip;
-            $testResult = $tester->test($env, $spec, $scenario, $localSkip);
-            $teardown = $tester->tearDown($env, $spec, $scenario, $localSkip, $testResult);
-
-            $integerResult = new IntegerTestResult($testResult->getResultCode());
-            $results[] = new TestWithSetupResult($setup, $integerResult, $teardown);
+        foreach ($spec->get_scenarios() as $scenario) {
+            $tester = $scenario instanceof Outline_Node ? $this->outline_tester : $this->scenario_tester;
+            $setup = $tester->set_up($env, $spec, $scenario, $skip);
+            $local_skip = !$setup->is_successful() || $skip;
+            $test_result = $tester->test($env, $spec, $scenario, $local_skip);
+            $teardown = $tester->tear_down($env, $spec, $scenario, $local_skip, $test_result);
+            $integer_result = new Integer_Test_Result($test_result->get_result_code());
+            $results[] = new Test_With_Setup_Result($setup, $integer_result, $teardown);
         }
-
-        return new TestResults($results);
+        return new Test_Results($results);
     }
-
-    public function tearDown(Environment $env, $spec, $skip, TestResult $result): Teardown
+    public function tear_down(Environment $env, $spec, $skip, Test_Result $result): Teardown
     {
-        return new SuccessfulTeardown();
+        return new Successful_Teardown();
     }
 }

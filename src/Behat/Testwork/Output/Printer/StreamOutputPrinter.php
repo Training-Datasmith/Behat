@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,100 +8,82 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Output\Printer;
 
-use Behat\Testwork\Output\Printer\Factory\OutputFactory;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Behat\Testwork\Output\Printer\Factory\Output_Factory;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * @author Wouter J <wouter@wouterj.nl>
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class StreamOutputPrinter implements OutputPrinter
+class Stream_Output_Printer implements Output_Printer
 {
-    private ?OutputInterface $output = null;
-
-    public function __construct(
-        private readonly OutputFactory $outputFactory,
-    ) {
-    }
-
-    protected function getOutputFactory(): \Behat\Testwork\Output\Printer\Factory\OutputFactory
+    private ?Output_Interface $output = null;
+    public function __construct(private readonly Output_Factory $output_factory)
     {
-        return $this->outputFactory;
     }
-
-    public function setOutputPath($path): void
+    protected function get_output_factory(): \Behat\Testwork\Output\Printer\Factory\Output_Factory
     {
-        $this->outputFactory->setOutputPath($path);
+        return $this->output_factory;
+    }
+    public function set_output_path($path): void
+    {
+        $this->output_factory->set_output_path($path);
         $this->flush();
     }
-
-    public function getOutputPath()
+    public function get_output_path()
     {
-        return $this->outputFactory->getOutputPath();
+        return $this->output_factory->get_output_path();
     }
-
-    public function setOutputStyles(array $styles): void
+    public function set_output_styles(array $styles): void
     {
-        $this->outputFactory->setOutputStyles($styles);
+        $this->output_factory->set_output_styles($styles);
         $this->flush();
     }
-
-    public function getOutputStyles()
+    public function get_output_styles()
     {
-        return $this->outputFactory->getOutputStyles();
+        return $this->output_factory->get_output_styles();
     }
-
-    public function setOutputDecorated($decorated): void
+    public function set_output_decorated($decorated): void
     {
-        $this->outputFactory->setOutputDecorated($decorated);
+        $this->output_factory->set_output_decorated($decorated);
         $this->flush();
     }
-
-    public function isOutputDecorated()
+    public function is_output_decorated()
     {
-        return $this->outputFactory->isOutputDecorated();
+        return $this->output_factory->is_output_decorated();
     }
-
-    public function setOutputVerbosity($level): void
+    public function set_output_verbosity($level): void
     {
-        $this->outputFactory->setOutputVerbosity($level);
+        $this->output_factory->set_output_verbosity($level);
         $this->flush();
     }
-
-    public function getOutputVerbosity()
+    public function get_output_verbosity()
     {
-        return $this->outputFactory->getOutputVerbosity();
+        return $this->output_factory->get_output_verbosity();
     }
-
     public function write($messages): void
     {
-        $this->getWritingStream()->write($messages, false);
+        $this->get_writing_stream()->write($messages, false);
     }
-
     public function writeln($messages = ''): void
     {
-        $this->getWritingStream()->write($messages, true);
+        $this->get_writing_stream()->write($messages, true);
     }
-
     public function flush(): void
     {
         $this->output = null;
     }
-
     /**
      * Returns output instance, prepared to write.
      *
      * @return OutputInterface
      */
-    final protected function getWritingStream()
+    final protected function get_writing_stream()
     {
-        if (!$this->output instanceof OutputInterface) {
-            $this->output = $this->outputFactory->createOutput();
+        if (!$this->output instanceof Output_Interface) {
+            $this->output = $this->output_factory->create_output();
         }
-
         return $this->output;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,77 +8,60 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Ordering\Cli;
 
 use Behat\Testwork\Cli\Controller;
-use Behat\Testwork\Ordering\Exception\InvalidOrderException;
-use Behat\Testwork\Ordering\OrderedExercise;
+use Behat\Testwork\Ordering\Exception\Invalid_Order_Exception;
+use Behat\Testwork\Ordering\Ordered_Exercise;
 use Behat\Testwork\Ordering\Orderer\Orderer;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Input\Input_Option;
+use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
 /**
  * Preloads scenarios and then modifies the order when --order is passed.
  *
  * @author Ciaran McNulty <mail@ciaranmcnulty.com>
  */
-final class OrderController implements Controller
+final class Order_Controller implements Controller
 {
     private array $orderers = [];
-
     /**
      * @param EventDispatcherInterface $eventDispatcher deprecated, will be removed in the next major version
      */
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        private readonly OrderedExercise $exercise,
-    ) {
+    public function __construct(Event_Dispatcher_Interface $event_dispatcher, private readonly Ordered_Exercise $exercise)
+    {
     }
-
     /**
      * Configures command to be executable by the controller.
      */
-    public function configure(SymfonyCommand $command): void
+    public function configure(Symfony_Command $command): void
     {
-        $command->addOption(
-            '--order',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Set an order in which to execute the specifications (this will result in slower feedback).'
-        );
+        $command->add_option('--order', null, Input_Option::VALUE_REQUIRED, 'Set an order in which to execute the specifications (this will result in slower feedback).');
     }
-
     /**
      * Executes controller.
      *
      * @return int|null
      */
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(Input_Interface $input, Output_Interface $output): null
     {
-        $orderer = $input->getOption('order');
-
+        $orderer = $input->get_option('order');
         if (!$orderer) {
             return null;
         }
-
         if (!array_key_exists($orderer, $this->orderers)) {
-            throw new InvalidOrderException(sprintf("Order option '%s' was not recognised", $orderer));
+            throw new Invalid_Order_Exception(sprintf("Order option '%s' was not recognised", $orderer));
         }
-
-        $this->exercise->setOrderer($this->orderers[$orderer]);
-
+        $this->exercise->set_orderer($this->orderers[$orderer]);
         return null;
     }
-
     /**
      * Register a new available controller.
      */
-    public function registerOrderer(Orderer $orderer): void
+    public function register_orderer(Orderer $orderer): void
     {
-        $this->orderers[$orderer->getName()] = $orderer;
+        $this->orderers[$orderer->get_name()] = $orderer;
     }
 }

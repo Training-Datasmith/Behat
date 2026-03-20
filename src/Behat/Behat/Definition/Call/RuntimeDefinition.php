@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,22 +8,19 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Call;
 
 use Behat\Behat\Definition\Definition;
-use Behat\Testwork\Call\RuntimeCallee;
+use Behat\Testwork\Call\Runtime_Callee;
 use Stringable;
-
 /**
  * Represents a step definition created and executed in the runtime.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class RuntimeDefinition extends RuntimeCallee implements Stringable, Definition
+abstract class Runtime_Definition extends Runtime_Callee implements Stringable, Definition
 {
     private bool $used = false;
-
     /**
      * Initializes definition.
      *
@@ -32,42 +28,33 @@ abstract class RuntimeDefinition extends RuntimeCallee implements Stringable, De
      * @param string      $pattern
      * @param callable    $callable
      */
-    public function __construct(
-        private $type,
-        private $pattern,
-        callable|array $callable,
-        ?string $description = null,
-    ) {
+    public function __construct(private $type, private $pattern, callable|array $callable, ?string $description = null)
+    {
         parent::__construct($callable, $description);
     }
-
-    public function getType()
+    public function get_type()
     {
         return $this->type;
     }
-
-    public function getPattern()
+    public function get_pattern()
     {
         return $this->pattern;
     }
-
     public function __toString(): string
     {
-        return $this->getType() . ' ' . $this->getPattern();
+        return $this->get_type() . ' ' . $this->get_pattern();
     }
-
     /**
      * @internal
      */
-    public function markAsUsed(): void
+    public function mark_as_used(): void
     {
         $this->used = true;
     }
-
     /**
      * @internal
      */
-    public function hasBeenUsed(): bool
+    public function has_been_used(): bool
     {
         return $this->used;
     }

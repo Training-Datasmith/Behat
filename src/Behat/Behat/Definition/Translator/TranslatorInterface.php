@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Behat\Definition\Translator;
 
 /**
  * @method string getLocale()
  */
-interface TranslatorInterface extends \Symfony\Contracts\Translation\TranslatorInterface
+interface Translator_Interface extends \Symfony\Contracts\Translation\Translator_Interface
 {
 }

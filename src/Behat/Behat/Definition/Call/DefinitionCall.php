@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,15 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Call;
 
 use Behat\Behat\Definition\Definition;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\StepNode;
-use Behat\Testwork\Environment\Call\EnvironmentCall;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Step_Node;
+use Behat\Testwork\Environment\Call\Environment_Call;
 use Behat\Testwork\Environment\Environment;
-
 /**
  * Enhances environment call with definition information.
  *
@@ -25,36 +22,28 @@ use Behat\Testwork\Environment\Environment;
  *
  * @method Definition getCallee()
  */
-final class DefinitionCall extends EnvironmentCall
+final class Definition_Call extends Environment_Call
 {
     /**
      * Initializes definition call.
      *
      * @param int|null $errorReportingLevel
      */
-    public function __construct(
-        Environment $environment,
-        private readonly FeatureNode $feature,
-        private readonly StepNode $step,
-        Definition $definition,
-        array $arguments,
-        $errorReportingLevel = null,
-    ) {
-        parent::__construct($environment, $definition, $arguments, $errorReportingLevel);
+    public function __construct(Environment $environment, private readonly Feature_Node $feature, private readonly Step_Node $step, Definition $definition, array $arguments, $error_reporting_level = null)
+    {
+        parent::__construct($environment, $definition, $arguments, $error_reporting_level);
     }
-
     /**
      * Returns step feature node.
      */
-    public function getFeature(): FeatureNode
+    public function get_feature(): Feature_Node
     {
         return $this->feature;
     }
-
     /**
      * Returns definition step node.
      */
-    public function getStep(): StepNode
+    public function get_step(): Step_Node
     {
         return $this->step;
     }

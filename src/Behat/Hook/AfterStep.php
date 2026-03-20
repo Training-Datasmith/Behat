@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,27 +8,23 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Hook;
 
 use Attribute;
-
 /**
  * Represents an Attribute for AfterStep hook.
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class AfterStep implements Hook
+final class After_Step implements Hook
 {
     /**
      * @param string|null $filterString
      */
-    public function __construct(
-        public $filterString = null,
-    ) {
-    }
-
-    public function getFilterString(): ?string
+    public function __construct(public $filter_string = null)
     {
-        return $this->filterString;
+    }
+    public function get_filter_string(): ?string
+    {
+        return $this->filter_string;
     }
 }

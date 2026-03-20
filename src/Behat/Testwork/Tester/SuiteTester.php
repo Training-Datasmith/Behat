@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,15 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Tester;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Specification\SpecificationIterator;
-use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Tester\Result\Test_Result;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
-
 /**
  * Prepares and tests provided suite specifications against provided environment.
  *
@@ -25,7 +22,7 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @template TSpec
  */
-interface SuiteTester
+interface Suite_Tester
 {
     /**
      * Sets up suite for a test.
@@ -35,8 +32,7 @@ interface SuiteTester
      *
      * @return Setup
      */
-    public function setUp(Environment $env, SpecificationIterator $iterator, $skip);
-
+    public function set_up(Environment $env, Specification_Iterator $iterator, $skip);
     /**
      * Tests provided suite specifications.
      *
@@ -45,8 +41,7 @@ interface SuiteTester
      *
      * @return TestResult
      */
-    public function test(Environment $env, SpecificationIterator $iterator, $skip);
-
+    public function test(Environment $env, Specification_Iterator $iterator, $skip);
     /**
      * Tears down suite after a test.
      *
@@ -55,5 +50,5 @@ interface SuiteTester
      *
      * @return Teardown
      */
-    public function tearDown(Environment $env, SpecificationIterator $iterator, $skip, TestResult $result);
+    public function tear_down(Environment $env, Specification_Iterator $iterator, $skip, Test_Result $result);
 }

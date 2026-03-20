@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,17 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Environment;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Environment\Handler\ContextEnvironmentHandler;
-use Behat\Behat\Context\Exception\ContextNotFoundException;
-use Behat\Behat\HelperContainer\Environment\ServiceContainerEnvironment;
+use Behat\Behat\Context\Environment\Handler\Context_Environment_Handler;
+use Behat\Behat\Context\Exception\Context_Not_Found_Exception;
+use Behat\Behat\Helper_Container\Environment\Service_Container_Environment;
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Suite\Suite;
-use Psr\Container\ContainerInterface;
-
+use Psr\Container\Container_Interface;
 /**
  * Context environment based on a list of instantiated context objects.
  *
@@ -27,68 +24,57 @@ use Psr\Container\ContainerInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class InitializedContextEnvironment implements ContextEnvironment, ServiceContainerEnvironment
+final class Initialized_Context_Environment implements Context_Environment, Service_Container_Environment
 {
-    private ?ContainerInterface $serviceContainer = null;
-
+    private ?Container_Interface $service_container = null;
     /**
      * @var array<class-string<Context>, Context>
      *
      * TODO use a class-string-map type to have an accurate type once https://github.com/phpstan/phpstan/issues/9521 is implemented
      */
     private array $contexts = [];
-
     /**
      * Initializes environment.
      */
-    public function __construct(
-        private readonly Suite $suite,
-    ) {
+    public function __construct(private readonly Suite $suite)
+    {
     }
-
     /**
      * Registers context instance in the environment.
      */
-    public function registerContext(Context $context): void
+    public function register_context(Context $context): void
     {
         $this->contexts[$context::class] = $context;
     }
-
-    public function setServiceContainer(?ContainerInterface $container = null): void
+    public function set_service_container(?Container_Interface $container = null): void
     {
-        $this->serviceContainer = $container;
+        $this->service_container = $container;
     }
-
-    public function getSuite(): Suite
+    public function get_suite(): Suite
     {
         return $this->suite;
     }
-
-    public function hasContexts(): bool
+    public function has_contexts(): bool
     {
         return count($this->contexts) > 0;
     }
-
-    public function getContextClasses(): array
+    public function get_context_classes(): array
     {
         return array_keys($this->contexts);
     }
-
-    public function hasContextClass($class): bool
+    public function has_context_class($class): bool
     {
         return isset($this->contexts[$class]);
     }
-
     /**
      * Returns list of registered context instances.
      *
      * @return list<Context>
      */
-    public function getContexts(): array
+    public function get_contexts(): array
     {
         return array_values($this->contexts);
     }
-
     /**
      * Returns registered context by its class name.
      *
@@ -100,31 +86,23 @@ final class InitializedContextEnvironment implements ContextEnvironment, Service
      *
      * @throws ContextNotFoundException If context is not in the environment
      */
-    public function getContext($class)
+    public function get_context($class)
     {
-        if (!$this->hasContextClass($class)) {
-            throw new ContextNotFoundException(sprintf(
-                '`%s` context is not found in the suite environment. Have you registered it?',
-                $class
-            ), $class);
+        if (!$this->has_context_class($class)) {
+            throw new Context_Not_Found_Exception(sprintf('`%s` context is not found in the suite environment. Have you registered it?', $class), $class);
         }
-
         return $this->contexts[$class];
     }
-
-    public function getServiceContainer(): ?ContainerInterface
+    public function get_service_container(): ?Container_Interface
     {
-        return $this->serviceContainer;
+        return $this->service_container;
     }
-
-    public function bindCallee(Callee $callee)
+    public function bind_callee(Callee $callee)
     {
-        $callable = $callee->getCallable();
-
-        if ($callee->isAnInstanceMethod() && is_array($callable)) {
-            return [$this->getContext($callable[0]), $callable[1]];
+        $callable = $callee->get_callable();
+        if ($callee->is_an_instance_method() && is_array($callable)) {
+            return [$this->get_context($callable[0]), $callable[1]];
         }
-
         return $callable;
     }
 }

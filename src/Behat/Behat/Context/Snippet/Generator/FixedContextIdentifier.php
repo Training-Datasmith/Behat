@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,29 +8,24 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Snippet\Generator;
 
-use Behat\Behat\Context\Environment\ContextEnvironment;
-
+use Behat\Behat\Context\Environment\Context_Environment;
 /**
  * Identifier that always returns same context, if it is defined in the suite.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class FixedContextIdentifier implements TargetContextIdentifier
+final readonly class Fixed_Context_Identifier implements Target_Context_Identifier
 {
-    public function __construct(
-        private ?string $contextClass = null,
-    ) {
-    }
-
-    public function guessTargetContextClass(ContextEnvironment $environment): ?string
+    public function __construct(private ?string $context_class = null)
     {
-        if (is_string($this->contextClass) && $environment->hasContextClass($this->contextClass)) {
-            return $this->contextClass;
+    }
+    public function guess_target_context_class(Context_Environment $environment): ?string
+    {
+        if (is_string($this->context_class) && $environment->has_context_class($this->context_class)) {
+            return $this->context_class;
         }
-
         return null;
     }
 }

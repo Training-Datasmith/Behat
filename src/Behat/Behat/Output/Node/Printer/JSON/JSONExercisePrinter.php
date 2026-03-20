@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,56 +8,37 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\JSON;
 
-use Behat\Behat\Output\Node\EventListener\JSON\JSONDurationListener;
-use Behat\Behat\Output\Node\Printer\ExercisePrinter;
-use Behat\Behat\Output\Statistics\PhaseStatistics;
+use Behat\Behat\Output\Node\Event_Listener\JSON\Json_Duration_Listener;
+use Behat\Behat\Output\Node\Printer\Exercise_Printer;
+use Behat\Behat\Output\Statistics\Phase_Statistics;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\JSONOutputPrinter;
-use Behat\Testwork\Tester\Result\TestResult;
-
-final readonly class JSONExercisePrinter implements ExercisePrinter
+use Behat\Testwork\Output\Printer\Json_Output_Printer;
+use Behat\Testwork\Tester\Result\Test_Result;
+final readonly class Json_Exercise_Printer implements Exercise_Printer
 {
-    public function __construct(
-        private PhaseStatistics $statistics,
-        private JSONDurationListener $durationListener,
-    ) {
+    public function __construct(private Phase_Statistics $statistics, private Json_Duration_Listener $duration_listener)
+    {
     }
-
-    public function printHeader(Formatter $formatter): void
+    public function print_header(Formatter $formatter): void
     {
         $this->statistics->reset();
-
-        $outputPrinter = $formatter->getOutputPrinter();
-        assert($outputPrinter instanceof JSONOutputPrinter);
-        $outputPrinter->createNewFile();
+        $output_printer = $formatter->get_output_printer();
+        assert($output_printer instanceof Json_Output_Printer);
+        $output_printer->create_new_file();
     }
-
-    public function printFooter(Formatter $formatter): void
+    public function print_footer(Formatter $formatter): void
     {
-        $stats = $this->statistics->getScenarioStatCounts();
-
-        $totalCount = 0 === count($stats) ? 0 : array_sum($stats);
-
-        $outputPrinter = $formatter->getOutputPrinter();
-        assert($outputPrinter instanceof JSONOutputPrinter);
-
-        $exerciseAttributes = [
-            'tests' => $totalCount,
-            'skipped' => $stats[TestResult::SKIPPED],
-            'failed' => $stats[TestResult::FAILED],
-            'pending' => $stats[TestResult::PENDING],
-            'undefined' => $stats[TestResult::UNDEFINED],
-        ];
-
-        if ($formatter->getParameter('timer')) {
-            $exerciseAttributes['time'] = (float) $this->durationListener->getExerciseDuration();
+        $stats = $this->statistics->get_scenario_stat_counts();
+        $total_count = 0 === count($stats) ? 0 : array_sum($stats);
+        $output_printer = $formatter->get_output_printer();
+        assert($output_printer instanceof Json_Output_Printer);
+        $exercise_attributes = ['tests' => $total_count, 'skipped' => $stats[Test_Result::SKIPPED], 'failed' => $stats[Test_Result::FAILED], 'pending' => $stats[Test_Result::PENDING], 'undefined' => $stats[Test_Result::UNDEFINED]];
+        if ($formatter->get_parameter('timer')) {
+            $exercise_attributes['time'] = (float) $this->duration_listener->get_exercise_duration();
         }
-
-        $outputPrinter->extendExerciseAttributes($exerciseAttributes);
-
-        $formatter->getOutputPrinter()->flush();
+        $output_printer->extend_exercise_attributes($exercise_attributes);
+        $formatter->get_output_printer()->flush();
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,7 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Suite\Exception;
 
 /**
@@ -17,7 +15,7 @@ namespace Behat\Testwork\Suite\Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ParameterNotFoundException extends SuiteException
+final class Parameter_Not_Found_Exception extends Suite_Exception
 {
     /**
      * Initializes exception.
@@ -26,20 +24,16 @@ final class ParameterNotFoundException extends SuiteException
      * @param string $name
      * @param string $parameter
      */
-    public function __construct(
-        $message,
-        $name,
-        private $parameter,
-    ) {
+    public function __construct($message, $name, private $parameter)
+    {
         parent::__construct($message, $name);
     }
-
     /**
      * Returns parameter that caused exception.
      *
      * @return string
      */
-    public function getParameter()
+    public function get_parameter()
     {
         return $this->parameter;
     }

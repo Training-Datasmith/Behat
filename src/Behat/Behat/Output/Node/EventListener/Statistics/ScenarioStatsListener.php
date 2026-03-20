@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,78 +8,66 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Output\Node\Event_Listener\Statistics;
 
-namespace Behat\Behat\Output\Node\EventListener\Statistics;
-
-use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
-use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
-use Behat\Behat\EventDispatcher\Event\BeforeFeatureTested;
-use Behat\Behat\Output\Statistics\ScenarioStat;
+use Behat\Behat\Event_Dispatcher\Event\After_Feature_Tested;
+use Behat\Behat\Event_Dispatcher\Event\After_Scenario_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Before_Feature_Tested;
+use Behat\Behat\Output\Statistics\Scenario_Stat;
 use Behat\Behat\Output\Statistics\Statistics;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\EventListener\EventListener;
-
+use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
 /**
  * Listens and records scenario events to the statistics.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ScenarioStatsListener implements EventListener
+final class Scenario_Stats_Listener implements Event_Listener
 {
-    private ?string $currentFeaturePath = null;
-
-    public function __construct(
-        private readonly Statistics $statistics,
-    ) {
-    }
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    private ?string $current_feature_path = null;
+    public function __construct(private readonly Statistics $statistics)
     {
-        $this->captureCurrentFeaturePathOnBeforeFeatureEvent($event);
-        $this->forgetCurrentFeaturePathOnAfterFeatureEvent($event);
-        $this->captureScenarioOrExampleStatsOnAfterEvent($event);
     }
-
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+    {
+        $this->capture_current_feature_path_on_before_feature_event($event);
+        $this->forget_current_feature_path_on_after_feature_event($event);
+        $this->capture_scenario_or_example_stats_on_after_event($event);
+    }
     /**
      * Captures current feature file path to the ivar on feature BEFORE event.
      */
-    private function captureCurrentFeaturePathOnBeforeFeatureEvent(Event $event): void
+    private function capture_current_feature_path_on_before_feature_event(Event $event): void
     {
-        if (!$event instanceof BeforeFeatureTested) {
+        if (!$event instanceof Before_Feature_Tested) {
             return;
         }
-
-        $this->currentFeaturePath = $event->getFeature()->getFile();
+        $this->current_feature_path = $event->get_feature()->get_file();
     }
-
     /**
      * Removes current feature file path from the ivar on feature AFTER event.
      */
-    private function forgetCurrentFeaturePathOnAfterFeatureEvent(\Behat\Testwork\Event\Event $event): void
+    private function forget_current_feature_path_on_after_feature_event(\Behat\Testwork\Event\Event $event): void
     {
-        if (!$event instanceof AfterFeatureTested) {
+        if (!$event instanceof After_Feature_Tested) {
             return;
         }
-
-        $this->currentFeaturePath = null;
+        $this->current_feature_path = null;
     }
-
     /**
      * Captures scenario or example stats on their AFTER event.
      */
-    private function captureScenarioOrExampleStatsOnAfterEvent(Event $event): void
+    private function capture_scenario_or_example_stats_on_after_event(Event $event): void
     {
-        if (!$event instanceof AfterScenarioTested) {
+        if (!$event instanceof After_Scenario_Tested) {
             return;
         }
-
-        $scenario = $event->getScenario();
-        $title = $scenario->getTitle();
-        $path = sprintf('%s:%d', $this->currentFeaturePath, $scenario->getLine());
-        $resultCode = $event->getTestResult()->getResultCode();
-
-        $stat = new ScenarioStat($title, $path, $resultCode);
-        $this->statistics->registerScenarioStat($stat);
+        $scenario = $event->get_scenario();
+        $title = $scenario->get_title();
+        $path = sprintf('%s:%d', $this->current_feature_path, $scenario->get_line());
+        $result_code = $event->get_test_result()->get_result_code();
+        $stat = new Scenario_Stat($title, $path, $result_code);
+        $this->statistics->register_scenario_stat($stat);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,19 +8,17 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Hook\Call;
 
-use Behat\Testwork\Call\RuntimeCallee;
+use Behat\Testwork\Call\Runtime_Callee;
 use Behat\Testwork\Hook\Hook;
 use Stringable;
-
 /**
  * Represents a hook executed during the execution runtime.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class RuntimeHook extends RuntimeCallee implements Stringable, Hook
+abstract class Runtime_Hook extends Runtime_Callee implements Stringable, Hook
 {
     /**
      * Initializes hook.
@@ -29,21 +26,16 @@ abstract class RuntimeHook extends RuntimeCallee implements Stringable, Hook
      * @param string      $scopeName
      * @param callable    $callable
      */
-    public function __construct(
-        private $scopeName,
-        callable|array $callable,
-        ?string $description = null,
-    ) {
+    public function __construct(private $scope_name, callable|array $callable, ?string $description = null)
+    {
         parent::__construct($callable, $description);
     }
-
-    public function getScopeName()
+    public function get_scope_name()
     {
-        return $this->scopeName;
+        return $this->scope_name;
     }
-
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->get_name();
     }
 }

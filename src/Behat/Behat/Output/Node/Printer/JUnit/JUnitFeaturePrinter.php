@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,78 +8,52 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Output\Node\Printer\J_Unit;
 
-namespace Behat\Behat\Output\Node\Printer\JUnit;
-
-use Behat\Behat\Output\Node\EventListener\JUnit\JUnitDurationListener;
-use Behat\Behat\Output\Node\Printer\FeaturePrinter;
-use Behat\Behat\Output\Statistics\PhaseStatistics;
-use Behat\Gherkin\Node\FeatureNode;
+use Behat\Behat\Output\Node\Event_Listener\J_Unit\J_Unit_Duration_Listener;
+use Behat\Behat\Output\Node\Printer\Feature_Printer;
+use Behat\Behat\Output\Statistics\Phase_Statistics;
+use Behat\Gherkin\Node\Feature_Node;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\JUnitOutputPrinter;
-use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Output\Printer\J_Unit_Output_Printer;
+use Behat\Testwork\Path_Options\Printer\Configurable_Path_Printer;
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * Prints the <testsuite> element.
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-final class JUnitFeaturePrinter implements FeaturePrinter
+final class J_Unit_Feature_Printer implements Feature_Printer
 {
-    private ?FeatureNode $currentFeature = null;
-
-    public function __construct(
-        private readonly PhaseStatistics $statistics,
-        private readonly ?JUnitDurationListener $durationListener = null,
-        private readonly ?ConfigurablePathPrinter $configurablePathPrinter = null,
-    ) {
+    private ?Feature_Node $current_feature = null;
+    public function __construct(private readonly Phase_Statistics $statistics, private readonly ?J_Unit_Duration_Listener $duration_listener = null, private readonly ?Configurable_Path_Printer $configurable_path_printer = null)
+    {
     }
-
-    public function printHeader(Formatter $formatter, FeatureNode $feature): void
+    public function print_header(Formatter $formatter, Feature_Node $feature): void
     {
         $this->statistics->reset();
-        $this->currentFeature = $feature;
+        $this->current_feature = $feature;
         /** @var JUnitOutputPrinter $outputPrinter */
-        $outputPrinter = $formatter->getOutputPrinter();
-        $outputPrinter->addTestsuite();
+        $output_printer = $formatter->get_output_printer();
+        $output_printer->add_testsuite();
     }
-
-    public function printFooter(Formatter $formatter, TestResult $result): void
+    public function print_footer(Formatter $formatter, Test_Result $result): void
     {
-        $stats = $this->statistics->getScenarioStatCounts();
-
-        $totalCount = 0 === count($stats) ? 0 : array_sum($stats);
-
+        $stats = $this->statistics->get_scenario_stat_counts();
+        $total_count = 0 === count($stats) ? 0 : array_sum($stats);
         /** @var JUnitOutputPrinter $outputPrinter */
-        $outputPrinter = $formatter->getOutputPrinter();
-
-        $featureAttributes = [
-            'name' => $this->currentFeature->getTitle(),
-        ];
-
-        $file = $this->currentFeature->getFile();
-        if ($file && $this->configurablePathPrinter instanceof ConfigurablePathPrinter) {
-            $featureAttributes['file'] = $this->configurablePathPrinter->processPathsInText(
-                $file,
-                applyEditorUrl: false,
-            );
+        $output_printer = $formatter->get_output_printer();
+        $feature_attributes = ['name' => $this->current_feature->get_title()];
+        $file = $this->current_feature->get_file();
+        if ($file && $this->configurable_path_printer instanceof Configurable_Path_Printer) {
+            $feature_attributes['file'] = $this->configurable_path_printer->process_paths_in_text($file, applyEditorUrl: false);
         }
-
-        $featureAttributes += [
-            'tests' => $totalCount,
-            'skipped' => $stats[TestResult::SKIPPED],
-            'failures' => $stats[TestResult::FAILED],
-            'errors' => $stats[TestResult::PENDING] + $stats[TestResult::UNDEFINED],
-        ];
-
-        if ($formatter->getParameter('timer') && $this->durationListener instanceof JUnitDurationListener) {
-            $featureAttributes['time'] = $this->durationListener->getFeatureDuration($this->currentFeature);
+        $feature_attributes += ['tests' => $total_count, 'skipped' => $stats[Test_Result::SKIPPED], 'failures' => $stats[Test_Result::FAILED], 'errors' => $stats[Test_Result::PENDING] + $stats[Test_Result::UNDEFINED]];
+        if ($formatter->get_parameter('timer') && $this->duration_listener instanceof J_Unit_Duration_Listener) {
+            $feature_attributes['time'] = $this->duration_listener->get_feature_duration($this->current_feature);
         }
-
-        $outputPrinter->extendTestsuiteAttributes($featureAttributes);
-
+        $output_printer->extend_testsuite_attributes($feature_attributes);
         $this->statistics->reset();
-        $this->currentFeature = null;
+        $this->current_feature = null;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Argument;
 
-use Behat\Behat\Context\Environment\Handler\ContextEnvironmentHandler;
+use Behat\Behat\Context\Environment\Handler\Context_Environment_Handler;
 use ReflectionClass;
-
 /**
  * Resolves arguments of context constructors.
  *
@@ -22,7 +19,7 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ArgumentResolver
+interface Argument_Resolver
 {
     /**
      * Resolves context constructor arguments.
@@ -31,5 +28,5 @@ interface ArgumentResolver
      *
      * @return mixed[]
      */
-    public function resolveArguments(ReflectionClass $classReflection, array $arguments);
+    public function resolve_arguments(ReflectionClass $class_reflection, array $arguments);
 }

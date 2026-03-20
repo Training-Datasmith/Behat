@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,11 +8,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Argument;
 
 use Behat\Testwork\Environment\Environment;
-
 /**
  * Adapts SuiteScopedResolverFactory to new ArgumentResolverFactory interface.
  *
@@ -23,18 +20,16 @@ use Behat\Testwork\Environment\Environment;
  *
  * @deprecated since 3.4. Use `ArgumentResolverFactory` instead
  */
-final readonly class SuiteScopedResolverFactoryAdapter implements ArgumentResolverFactory
+final readonly class Suite_Scoped_Resolver_Factory_Adapter implements Argument_Resolver_Factory
 {
     /**
      * Initialises adapter.
      */
-    public function __construct(
-        private SuiteScopedResolverFactory $factory,
-    ) {
-    }
-
-    public function createArgumentResolvers(Environment $environment)
+    public function __construct(private Suite_Scoped_Resolver_Factory $factory)
     {
-        return $this->factory->generateArgumentResolvers($environment->getSuite());
+    }
+    public function create_argument_resolvers(Environment $environment)
+    {
+        return $this->factory->generate_argument_resolvers($environment->get_suite());
     }
 }

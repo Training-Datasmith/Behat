@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,104 +8,81 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Cli;
 
-use Behat\Behat\Util\StrictRegex;
+use Behat\Behat\Util\Strict_Regex;
 use Behat\Config\Config;
-use Behat\Config\Converter\ConfigConverterTools;
-use Behat\Config\Converter\CustomPrettyPrinter;
-use Behat\Config\Converter\UsedClassesCollector;
-use Behat\Testwork\ServiceContainer\Configuration\ConfigurationLoader;
-use Behat\Testwork\ServiceContainer\Exception\ConfigurationLoadingException;
-use PhpParser\Node\Stmt\Nop;
-use PhpParser\Node\Stmt\Return_;
-use PhpParser\NodeTraverser;
+use Behat\Config\Converter\Config_Converter_Tools;
+use Behat\Config\Converter\Custom_Pretty_Printer;
+use Behat\Config\Converter\Used_Classes_Collector;
+use Behat\Testwork\Service_Container\Configuration\Configuration_Loader;
+use Behat\Testwork\Service_Container\Exception\Configuration_Loading_Exception;
+use Php_Parser\Node\Stmt\Nop;
+use Php_Parser\Node\Stmt\Return_;
+use Php_Parser\Node_Traverser;
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Output\Output_Interface;
 use Symfony\Component\Yaml\Yaml;
-
-final class ConvertConfigCommand extends BaseCommand
+final class Convert_Config_Command extends Base_Command
 {
-    private OutputInterface $output;
-
-    public function __construct(
-        private readonly ConfigurationLoader $configurationLoader,
-    ) {
+    private Output_Interface $output;
+    public function __construct(private readonly Configuration_Loader $configuration_loader)
+    {
         parent::__construct('convert-config');
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(Input_Interface $input, Output_Interface $output): int
     {
         $this->output = $output;
-        $configPath = $this->configurationLoader->getConfigurationFilePath();
-        if (str_ends_with((string) $configPath, '.php')) {
-            throw new ConfigurationLoadingException(sprintf('Configuration file `%s` is already in PHP format', $configPath));
+        $config_path = $this->configuration_loader->get_configuration_file_path();
+        if (str_ends_with((string) $config_path, '.php')) {
+            throw new Configuration_Loading_Exception(sprintf('Configuration file `%s` is already in PHP format', $config_path));
         }
-
         $this->output->writeln(['', 'Starting conversion']);
-        $this->convertFile($configPath);
+        $this->convert_file($config_path);
         $this->output->writeln(['Conversion finished', '']);
-
         return 0;
     }
-
-    private function convertFile(string $filePath): string
+    private function convert_file(string $file_path): string
     {
-        $this->output->writeln('Converting configuration file: ' . $filePath);
-
-        $yamlConfig = (array) Yaml::parse(file_get_contents($filePath));
-
-        if (isset($yamlConfig[Config::IMPORTS_SETTING])) {
-            $imports = $yamlConfig[Config::IMPORTS_SETTING];
-            $basePath = rtrim(dirname($filePath), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            $newImports = [];
+        $this->output->writeln('Converting configuration file: ' . $file_path);
+        $yaml_config = (array) Yaml::parse(file_get_contents($file_path));
+        if (isset($yaml_config[Config::IMPORTS_SETTING])) {
+            $imports = $yaml_config[Config::IMPORTS_SETTING];
+            $base_path = rtrim(dirname($file_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $new_imports = [];
             foreach ($imports as $import) {
-                $import = $basePath . $import;
-                $newImports[] = substr($this->convertFile($import), strlen($basePath));
+                $import = $base_path . $import;
+                $new_imports[] = substr($this->convert_file($import), strlen($base_path));
             }
-            $yamlConfig[Config::IMPORTS_SETTING] = $newImports;
+            $yaml_config[Config::IMPORTS_SETTING] = $new_imports;
         }
-
-        $config = new Config($yamlConfig);
-
-        $expr = $config->toPhpExpr();
-
-        $configStms = [new Return_($expr)];
-
-        $traverser = new NodeTraverser();
-        $usedClasssesCollector = new UsedClassesCollector();
-        $traverser->addVisitor($usedClasssesCollector);
-        $configStms = $traverser->traverse($configStms);
-
-        $useStmts = [];
-
-        $usedClasses = $usedClasssesCollector->getUsedClasses();
-        sort($usedClasses);
-        foreach ($usedClasses as $usedClass) {
-            $useStmts[] = ConfigConverterTools::createUseStatement($usedClass);
+        $config = new Config($yaml_config);
+        $expr = $config->to_php_expr();
+        $config_stms = [new Return_($expr)];
+        $traverser = new Node_Traverser();
+        $used_classses_collector = new Used_Classes_Collector();
+        $traverser->add_visitor($used_classses_collector);
+        $config_stms = $traverser->traverse($config_stms);
+        $use_stmts = [];
+        $used_classes = $used_classses_collector->get_used_classes();
+        sort($used_classes);
+        foreach ($used_classes as $used_class) {
+            $use_stmts[] = Config_Converter_Tools::create_use_statement($used_class);
         }
-        if ($useStmts !== []) {
-            $useStmts[] = new Nop();
+        if ($use_stmts !== []) {
+            $use_stmts[] = new Nop();
         }
-
-        $stmts = [...$useStmts, ...$configStms, new Nop()];
-
+        $stmts = [...$use_stmts, ...$config_stms, new Nop()];
         // Find the name of the output file
-        $outputFileName = $filePath;
+        $output_file_name = $file_path;
         // First, handle cases where `.dist` is part of the extension
-        $outputFileName = StrictRegex::replace('/(\.ya?ml)\.dist$|\.dist\.(ya?ml)$/', '.dist.php', $outputFileName);
+        $output_file_name = Strict_Regex::replace('/(\.ya?ml)\.dist$|\.dist\.(ya?ml)$/', '.dist.php', $output_file_name);
         // Then, handle regular `.yaml` or `.yml` files
-        $outputFileName = StrictRegex::replace('/\.(ya?ml)$/', '.php', $outputFileName);
-
-        $printer = new CustomPrettyPrinter();
-
-        file_put_contents($outputFileName, $printer->prettyPrintFile($stmts));
-
-        unlink($filePath);
-
-        return $outputFileName;
+        $output_file_name = Strict_Regex::replace('/\.(ya?ml)$/', '.php', $output_file_name);
+        $printer = new Custom_Pretty_Printer();
+        file_put_contents($output_file_name, $printer->pretty_print_file($stmts));
+        unlink($file_path);
+        return $output_file_name;
     }
 }

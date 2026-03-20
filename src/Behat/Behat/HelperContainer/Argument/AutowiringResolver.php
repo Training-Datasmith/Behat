@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,14 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Helper_Container\Argument;
 
-namespace Behat\Behat\HelperContainer\Argument;
-
-use Behat\Behat\Context\Argument\ArgumentResolver;
-use Behat\Behat\HelperContainer\ArgumentAutowirer;
-use Psr\Container\ContainerInterface;
+use Behat\Behat\Context\Argument\Argument_Resolver;
+use Behat\Behat\Helper_Container\Argument_Autowirer;
+use Psr\Container\Container_Interface;
 use ReflectionClass;
-
 /**
  * Resolves arguments that weren't resolved before by autowiring.
  *
@@ -24,24 +21,21 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AutowiringResolver implements ArgumentResolver
+final readonly class Autowiring_Resolver implements Argument_Resolver
 {
-    private ArgumentAutowirer $autowirer;
-
+    private Argument_Autowirer $autowirer;
     /**
      * Initialises resolver.
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container_Interface $container)
     {
-        $this->autowirer = new ArgumentAutowirer($container);
+        $this->autowirer = new Argument_Autowirer($container);
     }
-
-    public function resolveArguments(ReflectionClass $classReflection, array $arguments)
+    public function resolve_arguments(ReflectionClass $class_reflection, array $arguments)
     {
-        if ($constructor = $classReflection->getConstructor()) {
-            return $this->autowirer->autowireArguments($constructor, $arguments);
+        if ($constructor = $class_reflection->get_constructor()) {
+            return $this->autowirer->autowire_arguments($constructor, $arguments);
         }
-
         return $arguments;
     }
 }

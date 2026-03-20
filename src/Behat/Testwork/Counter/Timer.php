@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Counter;
 
-use Behat\Testwork\Counter\Exception\TimerException;
+use Behat\Testwork\Counter\Exception\Timer_Exception;
 use Stringable;
-
 /**
  * Provides time counting functionality.
  *
@@ -22,17 +19,15 @@ use Stringable;
  */
 final class Timer implements Stringable
 {
-    private ?float $starTime = null;
-    private ?float $stopTime = null;
-
+    private ?float $star_time = null;
+    private ?float $stop_time = null;
     /**
      * Starts timer.
      */
     public function start(): void
     {
-        $this->starTime = microtime(true);
+        $this->star_time = microtime(true);
     }
-
     /**
      * Stops timer.
      *
@@ -40,57 +35,49 @@ final class Timer implements Stringable
      */
     public function stop(): void
     {
-        if (!$this->starTime) {
-            throw new TimerException('You can not stop timer that has not been started.');
+        if (!$this->star_time) {
+            throw new Timer_Exception('You can not stop timer that has not been started.');
         }
-
-        $this->stopTime = microtime(true);
+        $this->stop_time = microtime(true);
     }
-
     /**
      * @return float
      *
      * @throws TimerException If timer has not been started
      */
-    public function getTime(): int|float
+    public function get_time(): int|float
     {
-        if (!$this->starTime) {
-            throw new TimerException('You can not get time from timer that never been started.');
+        if (!$this->star_time) {
+            throw new Timer_Exception('You can not get time from timer that never been started.');
         }
-
-        $stopTime = $this->stopTime;
-        if (!$this->stopTime) {
-            $stopTime = microtime(true);
+        $stop_time = $this->stop_time;
+        if (!$this->stop_time) {
+            $stop_time = microtime(true);
         }
-
-        return $stopTime - $this->starTime;
+        return $stop_time - $this->star_time;
     }
-
     /**
      * Returns number of minutes passed.
      */
-    public function getMinutes(): int
+    public function get_minutes(): int
     {
-        return intval(floor($this->getTime() / 60));
+        return intval(floor($this->get_time() / 60));
     }
-
     /**
      * Returns number of seconds passed.
      */
-    public function getSeconds(): float
+    public function get_seconds(): float
     {
-        return round($this->getTime() - ($this->getMinutes() * 60), 3);
+        return round($this->get_time() - $this->get_minutes() * 60, 3);
     }
-
     /**
      * Returns string representation of time passed.
      */
     public function __toString(): string
     {
-        if (!$this->starTime || !$this->stopTime) {
+        if (!$this->star_time || !$this->stop_time) {
             return '0m0s';
         }
-
-        return sprintf('%dm%.2fs', $this->getMinutes(), $this->getSeconds());
+        return sprintf('%dm%.2fs', $this->get_minutes(), $this->get_seconds());
     }
 }

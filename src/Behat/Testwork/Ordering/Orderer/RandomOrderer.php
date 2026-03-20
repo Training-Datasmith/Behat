@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,18 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Ordering\Orderer;
 
-use Behat\Testwork\Specification\SpecificationArrayIterator;
-use Behat\Testwork\Specification\SpecificationIterator;
-
+use Behat\Testwork\Specification\Specification_Array_Iterator;
+use Behat\Testwork\Specification\Specification_Iterator;
 /**
  * Prioritises Suites and Features into random order.
  *
  * @author Ciaran McNulty <mail@ciaranmcnulty.com>
  */
-final class RandomOrderer implements Orderer
+final class Random_Orderer implements Orderer
 {
     /**
      * @template T
@@ -29,14 +26,12 @@ final class RandomOrderer implements Orderer
      *
      * @return list<SpecificationIterator<T>>
      */
-    public function order(array $scenarioIterators): array
+    public function order(array $scenario_iterators): array
     {
-        $orderedFeatures = $this->orderFeatures($scenarioIterators);
-        shuffle($orderedFeatures);
-
-        return $orderedFeatures;
+        $ordered_features = $this->order_features($scenario_iterators);
+        shuffle($ordered_features);
+        return $ordered_features;
     }
-
     /**
      * @template T
      *
@@ -44,23 +39,17 @@ final class RandomOrderer implements Orderer
      *
      * @return list<SpecificationIterator<T>>
      */
-    private function orderFeatures(array $scenarioIterators): array
+    private function order_features(array $scenario_iterators): array
     {
-        $orderedSuites = [];
-
-        foreach ($scenarioIterators as $scenarioIterator) {
-            $orderedSpecifications = iterator_to_array($scenarioIterator);
-            shuffle($orderedSpecifications);
-            $orderedSuites[] = new SpecificationArrayIterator(
-                $scenarioIterator->getSuite(),
-                $orderedSpecifications
-            );
+        $ordered_suites = [];
+        foreach ($scenario_iterators as $scenario_iterator) {
+            $ordered_specifications = iterator_to_array($scenario_iterator);
+            shuffle($ordered_specifications);
+            $ordered_suites[] = new Specification_Array_Iterator($scenario_iterator->get_suite(), $ordered_specifications);
         }
-
-        return $orderedSuites;
+        return $ordered_suites;
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
         return 'random';
     }

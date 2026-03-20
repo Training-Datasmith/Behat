@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,34 +8,30 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Helper_Container\Call\Filter;
 
-namespace Behat\Behat\HelperContainer\Call\Filter;
-
-use Behat\Behat\Definition\Call\DefinitionCall;
-use Behat\Behat\HelperContainer\ArgumentAutowirer;
-use Behat\Behat\HelperContainer\Environment\ServiceContainerEnvironment;
-use Behat\Behat\HelperContainer\Exception\UnsupportedCallException;
-use Behat\Behat\Transformation\Call\TransformationCall;
+use Behat\Behat\Definition\Call\Definition_Call;
+use Behat\Behat\Helper_Container\Argument_Autowirer;
+use Behat\Behat\Helper_Container\Environment\Service_Container_Environment;
+use Behat\Behat\Helper_Container\Exception\Unsupported_Call_Exception;
+use Behat\Behat\Transformation\Call\Transformation_Call;
 use Behat\Behat\Transformation\Transformation;
 use Behat\Testwork\Call\Call;
-use Behat\Testwork\Call\Filter\CallFilter;
-use Behat\Testwork\Environment\Call\EnvironmentCall;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-
+use Behat\Testwork\Call\Filter\Call_Filter;
+use Behat\Testwork\Environment\Call\Environment_Call;
+use Psr\Container\Container_Exception_Interface;
+use Psr\Container\Container_Interface;
 /**
  * Dynamically resolves call arguments using the service container.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ServicesResolver implements CallFilter
+final class Services_Resolver implements Call_Filter
 {
-    public function supportsCall(Call $call): bool
+    public function supports_call(Call $call): bool
     {
-        return ($call instanceof DefinitionCall || $call instanceof TransformationCall)
-            && $call->getEnvironment() instanceof ServiceContainerEnvironment;
+        return ($call instanceof Definition_Call || $call instanceof Transformation_Call) && $call->get_environment() instanceof Service_Container_Environment;
     }
-
     /**
      * Filters a call and returns a new one.
      *
@@ -45,18 +40,15 @@ final class ServicesResolver implements CallFilter
      * @throws UnsupportedCallException
      * @throws ContainerExceptionInterface
      */
-    public function filterCall(Call $call)
+    public function filter_call(Call $call)
     {
-        if ($container = $this->getContainer($call)) {
-            $autowirer = new ArgumentAutowirer($container);
-            $newArguments = $autowirer->autowireArguments($call->getCallee()->getReflection(), $call->getArguments());
-
-            return $this->repackageCallIfNewArguments($call, $newArguments);
+        if ($container = $this->get_container($call)) {
+            $autowirer = new Argument_Autowirer($container);
+            $new_arguments = $autowirer->autowire_arguments($call->get_callee()->get_reflection(), $call->get_arguments());
+            return $this->repackage_call_if_new_arguments($call, $new_arguments);
         }
-
         return $call;
     }
-
     /**
      * Gets container from the call.
      *
@@ -64,109 +56,66 @@ final class ServicesResolver implements CallFilter
      *
      * @throws UnsupportedCallException if given call is not EnvironmentCall or environment is not ServiceContainerEnvironment
      */
-    private function getContainer(Call $call)
+    private function get_container(Call $call)
     {
-        if (!$call instanceof EnvironmentCall) {
-            throw new UnsupportedCallException(sprintf(
-                'ServicesResolver can not filter `%s` call.',
-                $call::class
-            ), $call);
+        if (!$call instanceof Environment_Call) {
+            throw new Unsupported_Call_Exception(sprintf('ServicesResolver can not filter `%s` call.', $call::class), $call);
         }
-
-        $environment = $call->getEnvironment();
-
-        if (!$environment instanceof ServiceContainerEnvironment) {
-            throw new UnsupportedCallException(sprintf(
-                'ServicesResolver can not filter `%s` call.',
-                $call::class
-            ), $call);
+        $environment = $call->get_environment();
+        if (!$environment instanceof Service_Container_Environment) {
+            throw new Unsupported_Call_Exception(sprintf('ServicesResolver can not filter `%s` call.', $call::class), $call);
         }
-
-        return $environment->getServiceContainer();
+        return $environment->get_service_container();
     }
-
     /**
      * Repackages old calls with new arguments, but only if two differ.
      *
      *
      * @throws UnsupportedCallException if given call is not DefinitionCall or TransformationCall
      */
-    private function repackageCallIfNewArguments(Call $call, array $arguments): \Behat\Testwork\Call\Call|\Behat\Behat\Definition\Call\DefinitionCall|\Behat\Behat\Transformation\Call\TransformationCall
+    private function repackage_call_if_new_arguments(Call $call, array $arguments): \Behat\Testwork\Call\Call|\Behat\Behat\Definition\Call\Definition_Call|\Behat\Behat\Transformation\Call\Transformation_Call
     {
-        if ($arguments === $call->getArguments()) {
+        if ($arguments === $call->get_arguments()) {
             return $call;
         }
-
-        return $this->repackageCallWithNewArguments($call, $arguments);
+        return $this->repackage_call_with_new_arguments($call, $arguments);
     }
-
     /**
      * Repackages old calls with new arguments.
      *
      * @throws UnsupportedCallException
      */
-    private function repackageCallWithNewArguments(Call $call, array $newArguments): DefinitionCall|TransformationCall
+    private function repackage_call_with_new_arguments(Call $call, array $new_arguments): Definition_Call|Transformation_Call
     {
-        if ($call instanceof DefinitionCall) {
-            return $this->repackageDefinitionCall($call, $newArguments);
+        if ($call instanceof Definition_Call) {
+            return $this->repackage_definition_call($call, $new_arguments);
         }
-
-        if ($call instanceof TransformationCall) {
-            return $this->repackageTransformationCall($call, $newArguments);
+        if ($call instanceof Transformation_Call) {
+            return $this->repackage_transformation_call($call, $new_arguments);
         }
-
-        throw new UnsupportedCallException(
-            sprintf(
-                'ServicesResolver can not filter `%s` call.',
-                $call::class
-            ),
-            $call
-        );
+        throw new Unsupported_Call_Exception(sprintf('ServicesResolver can not filter `%s` call.', $call::class), $call);
     }
-
     /**
      * Repackages definition call with new arguments.
      *
      * @throws UnsupportedCallException
      */
-    private function repackageDefinitionCall(DefinitionCall $call, array $newArguments): DefinitionCall
+    private function repackage_definition_call(Definition_Call $call, array $new_arguments): Definition_Call
     {
-        $definition = $call->getCallee();
-
-        return new DefinitionCall(
-            $call->getEnvironment(),
-            $call->getFeature(),
-            $call->getStep(),
-            $definition,
-            $newArguments,
-            $call->getErrorReportingLevel()
-        );
+        $definition = $call->get_callee();
+        return new Definition_Call($call->get_environment(), $call->get_feature(), $call->get_step(), $definition, $new_arguments, $call->get_error_reporting_level());
     }
-
     /**
      * Repackages transformation call with new arguments.
      *
      * @throws UnsupportedCallException
      */
-    private function repackageTransformationCall(TransformationCall $call, array $newArguments): TransformationCall
+    private function repackage_transformation_call(Transformation_Call $call, array $new_arguments): Transformation_Call
     {
-        $transformation = $call->getCallee();
-
+        $transformation = $call->get_callee();
         if (!$transformation instanceof Transformation) {
-            throw new UnsupportedCallException(
-                sprintf(
-                    'Something is wrong in callee associated with `%s` call.',
-                    $call::class
-                ),
-                $call
-            );
+            throw new Unsupported_Call_Exception(sprintf('Something is wrong in callee associated with `%s` call.', $call::class), $call);
         }
-
-        return new TransformationCall(
-            $call->getEnvironment(),
-            $call->getDefinition(),
-            $transformation,
-            $newArguments
-        );
+        return new Transformation_Call($call->get_environment(), $call->get_definition(), $transformation, $new_arguments);
     }
 }

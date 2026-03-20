@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Config;
 
-interface ConfigInterface
+interface Config_Interface
 {
-    public function toArray(): array;
+    public function to_array(): array;
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,22 +8,20 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Tester;
 
-use Behat\Behat\Tester\Result\StepResult;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\StepNode;
+use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Step_Node;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
-
 /**
  * Prepares and tests provided step object against provided environment.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface StepTester
+interface Step_Tester
 {
     /**
      * Sets up step for a test.
@@ -33,8 +30,7 @@ interface StepTester
      *
      * @return Setup
      */
-    public function setUp(Environment $env, FeatureNode $feature, StepNode $step, $skip);
-
+    public function set_up(Environment $env, Feature_Node $feature, Step_Node $step, $skip);
     /**
      * Tests step.
      *
@@ -42,8 +38,7 @@ interface StepTester
      *
      * @return StepResult
      */
-    public function test(Environment $env, FeatureNode $feature, StepNode $step, $skip);
-
+    public function test(Environment $env, Feature_Node $feature, Step_Node $step, $skip);
     /**
      * Tears down step after a test.
      *
@@ -51,5 +46,5 @@ interface StepTester
      *
      * @return Teardown
      */
-    public function tearDown(Environment $env, FeatureNode $feature, StepNode $step, $skip, StepResult $result);
+    public function tear_down(Environment $env, Feature_Node $feature, Step_Node $step, $skip, Step_Result $result);
 }

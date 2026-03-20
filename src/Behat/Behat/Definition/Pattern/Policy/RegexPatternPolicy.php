@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,103 +8,82 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Pattern\Policy;
 
 use function array_keys;
-
-use Behat\Behat\Definition\Exception\InvalidPatternException;
+use Behat\Behat\Definition\Exception\Invalid_Pattern_Exception;
 use Behat\Behat\Definition\Pattern\Pattern;
-use Behat\Behat\Definition\Pattern\SimpleStepMethodNameSuggester;
-use Behat\Behat\Definition\Pattern\StepMethodNameSuggester;
-
-use Behat\Behat\Util\StrictRegex;
-
+use Behat\Behat\Definition\Pattern\Simple_Step_Method_Name_Suggester;
+use Behat\Behat\Definition\Pattern\Step_Method_Name_Suggester;
+use Behat\Behat\Util\Strict_Regex;
 /**
  * Defines a way to handle regex patterns.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RegexPatternPolicy implements PatternPolicy
+final class Regex_Pattern_Policy implements Pattern_Policy
 {
     /**
      * @var array<string,string>
      */
-    private static array $replacePatterns = [
-        "/(?<=\W|^)\\\'(?:((?!\\').)*)\\\'(?=\W|$)/" => "'([^']*)'", // Single quoted strings
-        '/(?<=\W|^)\"(?:[^\"]*)\"(?=\W|$)/' => '"([^"]*)"', // Double quoted strings
-        '/(?<=\W|^)(\d+)(?=\W|$)/' => '(\\d+)', // Numbers
+    private static array $replace_patterns = [
+        "/(?<=\\W|^)\\\\'(?:((?!\\').)*)\\\\'(?=\\W|\$)/" => "'([^']*)'",
+        // Single quoted strings
+        '/(?<=\W|^)\"(?:[^\"]*)\"(?=\W|$)/' => '"([^"]*)"',
+        // Double quoted strings
+        '/(?<=\W|^)(\d+)(?=\W|$)/' => '(\d+)',
     ];
-
-    public function __construct(
-        private readonly StepMethodNameSuggester $methodNameSuggester = new SimpleStepMethodNameSuggester(),
-    ) {
+    public function __construct(private readonly Step_Method_Name_Suggester $method_name_suggester = new Simple_Step_Method_Name_Suggester())
+    {
     }
-
-    public function supportsPatternType($type): bool
+    public function supports_pattern_type($type): bool
     {
         return 'regex' === $type;
     }
-
-    public function generatePattern($stepText): Pattern
+    public function generate_pattern($step_text): Pattern
     {
-        $methodName = $this->methodNameSuggester->suggest(
-            StrictRegex::replace(array_keys(self::$replacePatterns), '', $this->escapeStepText($stepText)),
-        );
-        $stepRegex = $this->generateRegex($stepText);
-        $placeholderCount = $this->countPlaceholders($stepText, $stepRegex);
-
-        return new Pattern($methodName, '/^' . $stepRegex . '$/', $placeholderCount);
+        $method_name = $this->method_name_suggester->suggest(Strict_Regex::replace(array_keys(self::$replace_patterns), '', $this->escape_step_text($step_text)));
+        $step_regex = $this->generate_regex($step_text);
+        $placeholder_count = $this->count_placeholders($step_text, $step_regex);
+        return new Pattern($method_name, '/^' . $step_regex . '$/', $placeholder_count);
     }
-
-    public function supportsPattern($pattern): bool
+    public function supports_pattern($pattern): bool
     {
-        return (bool) preg_match('/^(?:\\{.*\\}|([~\\/#`]).*\1)[imsxADSUXJu]*$/s', $pattern);
+        return (bool) preg_match('/^(?:\{.*\}|([~\/#`]).*\1)[imsxADSUXJu]*$/s', $pattern);
     }
-
-    public function transformPatternToRegex($pattern)
+    public function transform_pattern_to_regex($pattern)
     {
         if (false === @preg_match($pattern, 'anything')) {
             $error = error_get_last();
-            $errorMessage = $error['message'] ?? '';
-
-            throw new InvalidPatternException(sprintf('The regex `%s` is invalid: %s', $pattern, $errorMessage));
+            $error_message = $error['message'] ?? '';
+            throw new Invalid_Pattern_Exception(sprintf('The regex `%s` is invalid: %s', $pattern, $error_message));
         }
-
         return $pattern;
     }
-
     /**
      * Generates regex from step text.
      *
      * @param string $stepText
      */
-    private function generateRegex($stepText): string
+    private function generate_regex($step_text): string
     {
-        return StrictRegex::replace(
-            array_keys(self::$replacePatterns),
-            array_values(self::$replacePatterns),
-            $this->escapeStepText($stepText)
-        );
+        return Strict_Regex::replace(array_keys(self::$replace_patterns), array_values(self::$replace_patterns), $this->escape_step_text($step_text));
     }
-
     /**
      * Counts regex placeholders using provided text.
      *
      * @param string $stepText
      */
-    private function countPlaceholders($stepText, string $stepRegex): int
+    private function count_placeholders($step_text, string $step_regex): int
     {
-        preg_match('/^' . $stepRegex . '$/', $stepText, $matches);
-
+        preg_match('/^' . $step_regex . '$/', $step_text, $matches);
         return count($matches) ? count($matches) - 1 : 0;
     }
-
     /**
      * Returns escaped step text.
      */
-    private function escapeStepText(string $stepText): string
+    private function escape_step_text(string $step_text): string
     {
-        return StrictRegex::replace('/([\/\[\]\(\)\\\^\$\.\|\?\*\+\'])/', '\\\\$1', $stepText);
+        return Strict_Regex::replace('/([\/\[\]\(\)\\\\^\$\.\|\?\*\+\'])/', '\\\\$1', $step_text);
     }
 }

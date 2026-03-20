@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,39 +8,35 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\NodeInterface;
-use Behat\Testwork\EventDispatcher\Event\LifecycleEvent;
-
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Node_Interface;
+use Behat\Testwork\Event_Dispatcher\Event\Lifecycle_Event;
 /**
  * Represents a feature event.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class FeatureTested extends LifecycleEvent implements GherkinNodeTested
+abstract class Feature_Tested extends Lifecycle_Event implements Gherkin_Node_Tested
 {
     public const BEFORE = 'tester.feature_tested.before';
     public const AFTER_SETUP = 'tester.feature_tested.after_setup';
     public const BEFORE_TEARDOWN = 'tester.feature_tested.before_teardown';
     public const AFTER = 'tester.feature_tested.after';
-
     /**
      * Returns feature.
      *
      * @return FeatureNode
      */
-    abstract public function getFeature();
-
+    abstract public function get_feature();
     /**
      * Returns node.
      *
      * @return NodeInterface
      */
-    final public function getNode()
+    final public function get_node()
     {
-        return $this->getFeature();
+        return $this->get_feature();
     }
 }

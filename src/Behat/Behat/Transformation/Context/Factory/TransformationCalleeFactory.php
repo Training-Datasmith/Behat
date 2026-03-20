@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,21 +8,19 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Transformation\Context\Factory;
 
-use Behat\Behat\Transformation\SimpleArgumentTransformation;
+use Behat\Behat\Transformation\Simple_Argument_Transformation;
 use Behat\Behat\Transformation\Transformation;
-use Behat\Behat\Transformation\Transformation\ColumnBasedTableTransformation;
-use Behat\Behat\Transformation\Transformation\PatternTransformation;
-use Behat\Behat\Transformation\Transformation\ReturnTypeTransformation;
-use Behat\Behat\Transformation\Transformation\RowBasedTableTransformation;
-use Behat\Behat\Transformation\Transformation\TableColumnTransformation;
-use Behat\Behat\Transformation\Transformation\TableRowTransformation;
-use Behat\Behat\Transformation\Transformation\TokenNameAndReturnTypeTransformation;
-use Behat\Behat\Transformation\Transformation\TokenNameTransformation;
+use Behat\Behat\Transformation\Transformation\Column_Based_Table_Transformation;
+use Behat\Behat\Transformation\Transformation\Pattern_Transformation;
+use Behat\Behat\Transformation\Transformation\Return_Type_Transformation;
+use Behat\Behat\Transformation\Transformation\Row_Based_Table_Transformation;
+use Behat\Behat\Transformation\Transformation\Table_Column_Transformation;
+use Behat\Behat\Transformation\Transformation\Table_Row_Transformation;
+use Behat\Behat\Transformation\Transformation\Token_Name_And_Return_Type_Transformation;
+use Behat\Behat\Transformation\Transformation\Token_Name_Transformation;
 use ReflectionMethod;
-
 /**
  * Generates the callee for a transformation.
  *
@@ -31,36 +28,25 @@ use ReflectionMethod;
  *
  * @internal
  */
-class TransformationCalleeFactory
+class Transformation_Callee_Factory
 {
-    public static function create(string $contextClass, ReflectionMethod $method, string $pattern, ?string $description): Transformation
+    public static function create(string $context_class, ReflectionMethod $method, string $pattern, ?string $description): Transformation
     {
-        $callable = [$contextClass, $method->getName()];
-
-        foreach (self::simpleTransformations() as $transformation) {
-            if ($transformation::supportsPatternAndMethod($pattern, $method)) {
+        $callable = [$context_class, $method->get_name()];
+        foreach (self::simple_transformations() as $transformation) {
+            if ($transformation::supports_pattern_and_method($pattern, $method)) {
                 return new $transformation($pattern, $callable, $description);
             }
         }
-
-        return new PatternTransformation($pattern, $callable, $description);
+        return new Pattern_Transformation($pattern, $callable, $description);
     }
-
     /**
      * Returns list of default transformations.
      *
      * @return list<class-string<SimpleArgumentTransformation>>
      */
-    private static function simpleTransformations(): array
+    private static function simple_transformations(): array
     {
-        return [
-            RowBasedTableTransformation::class,
-            ColumnBasedTableTransformation::class,
-            TableRowTransformation::class,
-            TableColumnTransformation::class,
-            TokenNameAndReturnTypeTransformation::class,
-            ReturnTypeTransformation::class,
-            TokenNameTransformation::class,
-        ];
+        return [Row_Based_Table_Transformation::class, Column_Based_Table_Transformation::class, Table_Row_Transformation::class, Table_Column_Transformation::class, Token_Name_And_Return_Type_Transformation::class, Return_Type_Transformation::class, Token_Name_Transformation::class];
     }
 }

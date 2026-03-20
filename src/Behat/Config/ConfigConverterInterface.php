@@ -1,18 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Config;
 
-use PhpParser\Node\Expr;
-
+use Php_Parser\Node\Expr;
 /**
  * @internal
  */
-interface ConfigConverterInterface
+interface Config_Converter_Interface
 {
     /**
      * @internal
      */
-    public function toPhpExpr(): Expr;
+    public function to_php_expr(): Expr;
 }

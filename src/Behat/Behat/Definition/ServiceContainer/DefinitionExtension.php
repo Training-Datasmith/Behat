@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,47 +8,45 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Definition\Service_Container;
 
-namespace Behat\Behat\Definition\ServiceContainer;
-
-use Behat\Behat\Context\Annotation\DocBlockHelper;
-use Behat\Behat\Context\ServiceContainer\ContextExtension;
-use Behat\Behat\Definition\Cli\AvailableDefinitionsController;
-use Behat\Behat\Definition\Cli\UnusedDefinitionsController;
-use Behat\Behat\Definition\Context\Annotation\DefinitionAnnotationReader;
-use Behat\Behat\Definition\Context\Attribute\DefinitionAttributeReader;
-use Behat\Behat\Definition\DefinitionFinder;
-use Behat\Behat\Definition\DefinitionRepository;
-use Behat\Behat\Definition\DefinitionWriter;
-use Behat\Behat\Definition\Pattern\PatternTransformer;
-use Behat\Behat\Definition\Pattern\Policy\RegexPatternPolicy;
-use Behat\Behat\Definition\Pattern\Policy\TurnipPatternPolicy;
-use Behat\Behat\Definition\Pattern\SimpleStepMethodNameSuggester;
-use Behat\Behat\Definition\Printer\ConsoleDefinitionInformationPrinter;
-use Behat\Behat\Definition\Printer\ConsoleDefinitionListPrinter;
-use Behat\Behat\Definition\Search\RepositorySearchEngine;
-use Behat\Behat\Definition\Translator\DefinitionTranslator;
-use Behat\Behat\Gherkin\ServiceContainer\GherkinExtension;
-use Behat\Testwork\Argument\ServiceContainer\ArgumentExtension;
-use Behat\Testwork\Cli\ServiceContainer\CliExtension;
-use Behat\Testwork\Environment\ServiceContainer\EnvironmentExtension;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Behat\Testwork\ServiceContainer\ServiceProcessor;
-use Behat\Testwork\Suite\ServiceContainer\SuiteExtension;
-use Behat\Testwork\Translator\ServiceContainer\TranslatorExtension;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
+use Behat\Behat\Context\Annotation\Doc_Block_Helper;
+use Behat\Behat\Context\Service_Container\Context_Extension;
+use Behat\Behat\Definition\Cli\Available_Definitions_Controller;
+use Behat\Behat\Definition\Cli\Unused_Definitions_Controller;
+use Behat\Behat\Definition\Context\Annotation\Definition_Annotation_Reader;
+use Behat\Behat\Definition\Context\Attribute\Definition_Attribute_Reader;
+use Behat\Behat\Definition\Definition_Finder;
+use Behat\Behat\Definition\Definition_Repository;
+use Behat\Behat\Definition\Definition_Writer;
+use Behat\Behat\Definition\Pattern\Pattern_Transformer;
+use Behat\Behat\Definition\Pattern\Policy\Regex_Pattern_Policy;
+use Behat\Behat\Definition\Pattern\Policy\Turnip_Pattern_Policy;
+use Behat\Behat\Definition\Pattern\Simple_Step_Method_Name_Suggester;
+use Behat\Behat\Definition\Printer\Console_Definition_Information_Printer;
+use Behat\Behat\Definition\Printer\Console_Definition_List_Printer;
+use Behat\Behat\Definition\Search\Repository_Search_Engine;
+use Behat\Behat\Definition\Translator\Definition_Translator;
+use Behat\Behat\Gherkin\Service_Container\Gherkin_Extension;
+use Behat\Testwork\Argument\Service_Container\Argument_Extension;
+use Behat\Testwork\Cli\Service_Container\Cli_Extension;
+use Behat\Testwork\Environment\Service_Container\Environment_Extension;
+use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
+use Behat\Testwork\Service_Container\Service_Processor;
+use Behat\Testwork\Suite\Service_Container\Suite_Extension;
+use Behat\Testwork\Translator\Service_Container\Translator_Extension;
+use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
 /**
  * Extends Behat with definition services.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class DefinitionExtension implements Extension
+final readonly class Definition_Extension implements Extension
 {
     /*
      * Available services
@@ -60,270 +57,196 @@ final readonly class DefinitionExtension implements Extension
     public const WRITER_ID = 'definition.writer';
     public const DEFINITION_TRANSLATOR_ID = 'definition.translator';
     public const STEP_METHOD_NAME_SUGGESTER_ID = 'definition.step_method_name_suggester_id';
-
     /*
      * Available extension points
      */
     public const SEARCH_ENGINE_TAG = 'definition.search_engine';
     public const PATTERN_POLICY_TAG = 'definition.pattern_policy';
     public const DOC_BLOCK_HELPER_ID = 'definition.doc_block_helper';
-
-    private ServiceProcessor $processor;
-
+    private Service_Processor $processor;
     /**
      * Initializes compiler pass.
      */
-    public function __construct(?ServiceProcessor $processor = null)
+    public function __construct(?Service_Processor $processor = null)
     {
-        $this->processor = $processor ?: new ServiceProcessor();
+        $this->processor = $processor ?: new Service_Processor();
     }
-
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'definitions';
     }
-
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extension_manager): void
     {
     }
-
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(Array_Node_Definition $builder): void
     {
-        $builder
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('print_unused_definitions')
-            ->defaultFalse()
-        ;
+        $builder->add_defaults_if_not_set()->children()->scalar_node('print_unused_definitions')->default_false();
     }
-
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
-        $this->loadFinder($container);
-        $this->loadRepository($container);
-        $this->loadWriter($container);
-        $this->loadPatternTransformer($container);
-        $this->loadDefinitionTranslator($container);
-        $this->loadDefaultSearchEngines($container);
-        $this->loadStepMethodNameSuggester($container);
-        $this->loadDefaultPatternPolicies($container);
-        $this->loadAnnotationReader($container);
-        $this->loadAttributeReader($container);
-        $this->loadDefinitionPrinters($container);
-        $this->loadControllers($container, $config['print_unused_definitions']);
-        $this->loadDocblockHelper($container);
+        $this->load_finder($container);
+        $this->load_repository($container);
+        $this->load_writer($container);
+        $this->load_pattern_transformer($container);
+        $this->load_definition_translator($container);
+        $this->load_default_search_engines($container);
+        $this->load_step_method_name_suggester($container);
+        $this->load_default_pattern_policies($container);
+        $this->load_annotation_reader($container);
+        $this->load_attribute_reader($container);
+        $this->load_definition_printers($container);
+        $this->load_controllers($container, $config['print_unused_definitions']);
+        $this->load_docblock_helper($container);
     }
-
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        $this->processSearchEngines($container);
-        $this->processPatternPolicies($container);
+        $this->process_search_engines($container);
+        $this->process_pattern_policies($container);
     }
-
     /**
      * Loads definition finder.
      */
-    private function loadFinder(ContainerBuilder $container): void
+    private function load_finder(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionFinder::class);
-        $container->setDefinition(self::FINDER_ID, $definition);
+        $definition = new Definition(Definition_Finder::class);
+        $container->set_definition(self::FINDER_ID, $definition);
     }
-
     /**
      * Loads definition repository.
      */
-    private function loadRepository(ContainerBuilder $container): void
+    private function load_repository(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionRepository::class, [
-            new Reference(EnvironmentExtension::MANAGER_ID),
-        ]);
-        $container->setDefinition(self::REPOSITORY_ID, $definition);
+        $definition = new Definition(Definition_Repository::class, [new Reference(Environment_Extension::MANAGER_ID)]);
+        $container->set_definition(self::REPOSITORY_ID, $definition);
     }
-
     /**
      * Loads definition writer.
      */
-    private function loadWriter(ContainerBuilder $container): void
+    private function load_writer(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionWriter::class, [
-            new Reference(EnvironmentExtension::MANAGER_ID),
-            new Reference(self::REPOSITORY_ID),
-        ]);
-        $container->setDefinition(self::WRITER_ID, $definition);
+        $definition = new Definition(Definition_Writer::class, [new Reference(Environment_Extension::MANAGER_ID), new Reference(self::REPOSITORY_ID)]);
+        $container->set_definition(self::WRITER_ID, $definition);
     }
-
     /**
      * Loads definition pattern transformer.
      */
-    private function loadPatternTransformer(ContainerBuilder $container): void
+    private function load_pattern_transformer(Container_Builder $container): void
     {
-        $definition = new Definition(PatternTransformer::class);
-        $container->setDefinition(self::PATTERN_TRANSFORMER_ID, $definition);
+        $definition = new Definition(Pattern_Transformer::class);
+        $container->set_definition(self::PATTERN_TRANSFORMER_ID, $definition);
     }
-
     /**
      * Loads definition translator.
      */
-    private function loadDefinitionTranslator(ContainerBuilder $container): void
+    private function load_definition_translator(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionTranslator::class, [
-            new Reference(TranslatorExtension::TRANSLATOR_ID),
-        ]);
-        $container->setDefinition(self::DEFINITION_TRANSLATOR_ID, $definition);
+        $definition = new Definition(Definition_Translator::class, [new Reference(Translator_Extension::TRANSLATOR_ID)]);
+        $container->set_definition(self::DEFINITION_TRANSLATOR_ID, $definition);
     }
-
     /**
      * Loads default search engines.
      */
-    private function loadDefaultSearchEngines(ContainerBuilder $container): void
+    private function load_default_search_engines(Container_Builder $container): void
     {
-        $definition = new Definition(RepositorySearchEngine::class, [
-            new Reference(self::REPOSITORY_ID),
-            new Reference(self::PATTERN_TRANSFORMER_ID),
-            new Reference(self::DEFINITION_TRANSLATOR_ID),
-            new Reference(ArgumentExtension::PREG_MATCH_ARGUMENT_ORGANISER_ID),
-        ]);
-        $definition->addTag(self::SEARCH_ENGINE_TAG, ['priority' => 50]);
-        $container->setDefinition(self::SEARCH_ENGINE_TAG . '.repository', $definition);
+        $definition = new Definition(Repository_Search_Engine::class, [new Reference(self::REPOSITORY_ID), new Reference(self::PATTERN_TRANSFORMER_ID), new Reference(self::DEFINITION_TRANSLATOR_ID), new Reference(Argument_Extension::PREG_MATCH_ARGUMENT_ORGANISER_ID)]);
+        $definition->add_tag(self::SEARCH_ENGINE_TAG, ['priority' => 50]);
+        $container->set_definition(self::SEARCH_ENGINE_TAG . '.repository', $definition);
     }
-
-    private function loadStepMethodNameSuggester(ContainerBuilder $container): void
+    private function load_step_method_name_suggester(Container_Builder $container): void
     {
-        $definition = new Definition(SimpleStepMethodNameSuggester::class);
-        $container->setDefinition(self::STEP_METHOD_NAME_SUGGESTER_ID, $definition);
+        $definition = new Definition(Simple_Step_Method_Name_Suggester::class);
+        $container->set_definition(self::STEP_METHOD_NAME_SUGGESTER_ID, $definition);
     }
-
     /**
      * Loads default pattern policies.
      */
-    private function loadDefaultPatternPolicies(ContainerBuilder $container): void
+    private function load_default_pattern_policies(Container_Builder $container): void
     {
-        $definition = new Definition(TurnipPatternPolicy::class, [
-            new Reference(self::STEP_METHOD_NAME_SUGGESTER_ID),
-        ]);
-        $definition->addTag(self::PATTERN_POLICY_TAG, ['priority' => 50]);
-        $container->setDefinition(self::PATTERN_POLICY_TAG . '.turnip', $definition);
-
-        $definition = new Definition(RegexPatternPolicy::class, [
-            new Reference(self::STEP_METHOD_NAME_SUGGESTER_ID),
-        ]);
-        $definition->addTag(self::PATTERN_POLICY_TAG, ['priority' => 60]);
-        $container->setDefinition(self::PATTERN_POLICY_TAG . '.regex', $definition);
+        $definition = new Definition(Turnip_Pattern_Policy::class, [new Reference(self::STEP_METHOD_NAME_SUGGESTER_ID)]);
+        $definition->add_tag(self::PATTERN_POLICY_TAG, ['priority' => 50]);
+        $container->set_definition(self::PATTERN_POLICY_TAG . '.turnip', $definition);
+        $definition = new Definition(Regex_Pattern_Policy::class, [new Reference(self::STEP_METHOD_NAME_SUGGESTER_ID)]);
+        $definition->add_tag(self::PATTERN_POLICY_TAG, ['priority' => 60]);
+        $container->set_definition(self::PATTERN_POLICY_TAG . '.regex', $definition);
     }
-
     /**
      * Loads definition annotation reader.
      */
-    private function loadAnnotationReader(ContainerBuilder $container): void
+    private function load_annotation_reader(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionAnnotationReader::class);
-        $definition->addTag(ContextExtension::ANNOTATION_READER_TAG, ['priority' => 50]);
-        $container->setDefinition(ContextExtension::ANNOTATION_READER_TAG . '.definition', $definition);
+        $definition = new Definition(Definition_Annotation_Reader::class);
+        $definition->add_tag(Context_Extension::ANNOTATION_READER_TAG, ['priority' => 50]);
+        $container->set_definition(Context_Extension::ANNOTATION_READER_TAG . '.definition', $definition);
     }
-
     /**
      * Loads definition Attribute reader.
      */
-    private function loadAttributeReader(ContainerBuilder $container): void
+    private function load_attribute_reader(Container_Builder $container): void
     {
-        $definition = new Definition(DefinitionAttributeReader::class, [
-            new Reference(self::DOC_BLOCK_HELPER_ID),
-        ]);
-        $definition->addTag(ContextExtension::ATTRIBUTE_READER_TAG, ['priority' => 50]);
-        $container->setDefinition(ContextExtension::ATTRIBUTE_READER_TAG . '.definition', $definition);
+        $definition = new Definition(Definition_Attribute_Reader::class, [new Reference(self::DOC_BLOCK_HELPER_ID)]);
+        $definition->add_tag(Context_Extension::ATTRIBUTE_READER_TAG, ['priority' => 50]);
+        $container->set_definition(Context_Extension::ATTRIBUTE_READER_TAG . '.definition', $definition);
     }
-
     /**
      * Loads definition printers.
      */
-    private function loadDefinitionPrinters(ContainerBuilder $container): void
+    private function load_definition_printers(Container_Builder $container): void
     {
-        $definition = new Definition(ConsoleDefinitionInformationPrinter::class, [
-            new Reference(CliExtension::OUTPUT_ID),
-            new Reference(self::PATTERN_TRANSFORMER_ID),
-            new Reference(self::DEFINITION_TRANSLATOR_ID),
-            new Reference(GherkinExtension::KEYWORDS_ID),
-        ]);
-        $container->setDefinition($this->getInformationPrinterId(), $definition);
-
-        $definition = new Definition(ConsoleDefinitionListPrinter::class, [
-            new Reference(CliExtension::OUTPUT_ID),
-            new Reference(self::PATTERN_TRANSFORMER_ID),
-            new Reference(self::DEFINITION_TRANSLATOR_ID),
-            new Reference(GherkinExtension::KEYWORDS_ID),
-        ]);
-        $container->setDefinition($this->getListPrinterId(), $definition);
+        $definition = new Definition(Console_Definition_Information_Printer::class, [new Reference(Cli_Extension::OUTPUT_ID), new Reference(self::PATTERN_TRANSFORMER_ID), new Reference(self::DEFINITION_TRANSLATOR_ID), new Reference(Gherkin_Extension::KEYWORDS_ID)]);
+        $container->set_definition($this->get_information_printer_id(), $definition);
+        $definition = new Definition(Console_Definition_List_Printer::class, [new Reference(Cli_Extension::OUTPUT_ID), new Reference(self::PATTERN_TRANSFORMER_ID), new Reference(self::DEFINITION_TRANSLATOR_ID), new Reference(Gherkin_Extension::KEYWORDS_ID)]);
+        $container->set_definition($this->get_list_printer_id(), $definition);
     }
-
-    private function loadControllers(ContainerBuilder $container, bool $printUnusedDefinitions): void
+    private function load_controllers(Container_Builder $container, bool $print_unused_definitions): void
     {
-        $definition = new Definition(AvailableDefinitionsController::class, [
-            new Reference(SuiteExtension::REGISTRY_ID),
-            new Reference(self::WRITER_ID),
-            new Reference($this->getListPrinterId()),
-            new Reference($this->getInformationPrinterId()),
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 500]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.available_definitions', $definition);
-
-        $definition = new Definition(UnusedDefinitionsController::class, [
-            new Reference(self::REPOSITORY_ID),
-            new Reference(EventDispatcherExtension::DISPATCHER_ID),
-            new Reference($this->getInformationPrinterId()),
-            $printUnusedDefinitions,
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 300]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.unused_definitions', $definition);
+        $definition = new Definition(Available_Definitions_Controller::class, [new Reference(Suite_Extension::REGISTRY_ID), new Reference(self::WRITER_ID), new Reference($this->get_list_printer_id()), new Reference($this->get_information_printer_id())]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 500]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.available_definitions', $definition);
+        $definition = new Definition(Unused_Definitions_Controller::class, [new Reference(self::REPOSITORY_ID), new Reference(Event_Dispatcher_Extension::DISPATCHER_ID), new Reference($this->get_information_printer_id()), $print_unused_definitions]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 300]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.unused_definitions', $definition);
     }
-
     /**
      * Loads DocBlockHelper.
      */
-    private function loadDocblockHelper(ContainerBuilder $container): void
+    private function load_docblock_helper(Container_Builder $container): void
     {
-        $definition = new Definition(DocBlockHelper::class);
-
-        $container->setDefinition(self::DOC_BLOCK_HELPER_ID, $definition);
+        $definition = new Definition(Doc_Block_Helper::class);
+        $container->set_definition(self::DOC_BLOCK_HELPER_ID, $definition);
     }
-
     /**
      * Processes all search engines in the container.
      */
-    private function processSearchEngines(ContainerBuilder $container): void
+    private function process_search_engines(Container_Builder $container): void
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::SEARCH_ENGINE_TAG);
-        $definition = $container->getDefinition(self::FINDER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::SEARCH_ENGINE_TAG);
+        $definition = $container->get_definition(self::FINDER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerSearchEngine', [$reference]);
+            $definition->add_method_call('registerSearchEngine', [$reference]);
         }
     }
-
     /**
      * Processes all pattern policies.
      */
-    private function processPatternPolicies(ContainerBuilder $container): void
+    private function process_pattern_policies(Container_Builder $container): void
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::PATTERN_POLICY_TAG);
-        $definition = $container->getDefinition(self::PATTERN_TRANSFORMER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::PATTERN_POLICY_TAG);
+        $definition = $container->get_definition(self::PATTERN_TRANSFORMER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerPatternPolicy', [$reference]);
+            $definition->add_method_call('registerPatternPolicy', [$reference]);
         }
     }
-
     /**
      * returns list printer service id.
      */
-    private function getListPrinterId(): string
+    private function get_list_printer_id(): string
     {
         return 'definition.list_printer';
     }
-
     /**
      * Returns information printer service id.
      */
-    private function getInformationPrinterId(): string
+    private function get_information_printer_id(): string
     {
         return 'definition.information_printer';
     }

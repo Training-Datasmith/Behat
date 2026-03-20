@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,17 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Output\Node\Event_Listener\Flow;
 
-namespace Behat\Behat\Output\Node\EventListener\Flow;
-
-use Behat\Behat\EventDispatcher\Event\AfterStepSetup;
-use Behat\Behat\EventDispatcher\Event\AfterStepTested;
-use Behat\Behat\EventDispatcher\Event\BackgroundTested;
-use Behat\Behat\EventDispatcher\Event\FeatureTested;
+use Behat\Behat\Event_Dispatcher\Event\After_Step_Setup;
+use Behat\Behat\Event_Dispatcher\Event\After_Step_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Background_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Feature_Tested;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\EventListener\EventListener;
-
+use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
 /**
  * Behat only first background fires listener.
  *
@@ -31,143 +28,120 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class OnlyFirstBackgroundFiresListener implements EventListener
+class Only_First_Background_Fires_Listener implements Event_Listener
 {
-    private bool $firstBackgroundEnded = false;
-    private bool $inBackground = false;
-    private bool $stepSetupHadOutput = false;
-
+    private bool $first_background_ended = false;
+    private bool $in_background = false;
+    private bool $step_setup_had_output = false;
     /**
      * Initializes listener.
      */
-    public function __construct(
-        private readonly EventListener $descendant,
-    ) {
-    }
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function __construct(private readonly Event_Listener $descendant)
     {
-        $this->flushStatesIfBeginningOfTheFeature($eventName);
-        $this->markBeginningOrEndOfTheBackground($eventName);
-
-        if ($this->isSkippableEvent($event)) {
+    }
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+    {
+        $this->flush_states_if_beginning_of_the_feature($event_name);
+        $this->mark_beginning_or_end_of_the_background($event_name);
+        if ($this->is_skippable_event($event)) {
             return;
         }
-
-        $this->markFirstBackgroundPrintedAfterBackground($eventName);
-
-        $this->descendant->listenEvent($formatter, $event, $eventName);
+        $this->mark_first_background_printed_after_background($event_name);
+        $this->descendant->listen_event($formatter, $event, $event_name);
     }
-
     /**
      * Flushes state if the event is the BEFORE feature.
      *
      * @param string $eventName
      */
-    private function flushStatesIfBeginningOfTheFeature($eventName): void
+    private function flush_states_if_beginning_of_the_feature($event_name): void
     {
-        if (FeatureTested::BEFORE !== $eventName) {
+        if (Feature_Tested::BEFORE !== $event_name) {
             return;
         }
-
-        $this->firstBackgroundEnded = false;
-        $this->inBackground = false;
+        $this->first_background_ended = false;
+        $this->in_background = false;
     }
-
     /**
      * Marks beginning or end of the background.
      *
      * @param string $eventName
      */
-    private function markBeginningOrEndOfTheBackground($eventName): void
+    private function mark_beginning_or_end_of_the_background($event_name): void
     {
-        if (BackgroundTested::BEFORE === $eventName) {
-            $this->inBackground = true;
+        if (Background_Tested::BEFORE === $event_name) {
+            $this->in_background = true;
         }
-
-        if (BackgroundTested::AFTER === $eventName) {
-            $this->inBackground = false;
+        if (Background_Tested::AFTER === $event_name) {
+            $this->in_background = false;
         }
     }
-
     /**
      * Marks first background printed.
      *
      * @param string $eventName
      */
-    private function markFirstBackgroundPrintedAfterBackground($eventName): void
+    private function mark_first_background_printed_after_background($event_name): void
     {
-        if (BackgroundTested::AFTER !== $eventName) {
+        if (Background_Tested::AFTER !== $event_name) {
             return;
         }
-
-        $this->firstBackgroundEnded = true;
+        $this->first_background_ended = true;
     }
-
     /**
      * Checks if provided event is skippable.
      *
      * @return bool
      */
-    private function isSkippableEvent(Event $event)
+    private function is_skippable_event(Event $event)
     {
-        if (!$this->firstBackgroundEnded) {
+        if (!$this->first_background_ended) {
             return false;
         }
-
-        return $event instanceof BackgroundTested || $this->isNonFailingConsequentBackgroundStep($event);
+        return $event instanceof Background_Tested || $this->is_non_failing_consequent_background_step($event);
     }
-
     /**
      * Checks if provided event is a non-failing step in consequent background.
      *
      * @return bool
      */
-    private function isNonFailingConsequentBackgroundStep(Event $event)
+    private function is_non_failing_consequent_background_step(Event $event)
     {
-        if (!$this->inBackground) {
+        if (!$this->in_background) {
             return false;
         }
-
-        return !$this->isStepEventWithOutput($event);
+        return !$this->is_step_event_with_output($event);
     }
-
     /**
      * Checks if provided event is a step event which setup or teardown produced any output.
      */
-    private function isStepEventWithOutput(Event $event): bool
+    private function is_step_event_with_output(Event $event): bool
     {
-        if ($this->isBeforeStepEventWithOutput($event)) {
+        if ($this->is_before_step_event_with_output($event)) {
             return true;
         }
-        return $this->isAfterStepWithOutput($event);
+        return $this->is_after_step_with_output($event);
     }
-
     /**
      * Checks if provided event is a BEFORE step with setup that produced output.
      */
-    private function isBeforeStepEventWithOutput(Event $event): bool
+    private function is_before_step_event_with_output(Event $event): bool
     {
-        if ($event instanceof AfterStepSetup && $event->hasOutput()) {
-            $this->stepSetupHadOutput = true;
-
+        if ($event instanceof After_Step_Setup && $event->has_output()) {
+            $this->step_setup_had_output = true;
             return true;
         }
-
         return false;
     }
-
     /**
      * Checks if provided event is an AFTER step with teardown that produced output.
      */
-    private function isAfterStepWithOutput(Event $event): bool
+    private function is_after_step_with_output(Event $event): bool
     {
-        if ($event instanceof AfterStepTested && ($this->stepSetupHadOutput || $event->hasOutput())) {
-            $this->stepSetupHadOutput = false;
-
+        if ($event instanceof After_Step_Tested && ($this->step_setup_had_output || $event->has_output())) {
+            $this->step_setup_had_output = false;
             return true;
         }
-
         return false;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,30 +8,27 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioInterface;
-
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Interface;
 /**
  * Represents an event of scenario-like structure (Scenario, Background, Example).
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ScenarioLikeTested extends GherkinNodeTested
+interface Scenario_Like_Tested extends Gherkin_Node_Tested
 {
     /**
      * Returns feature node.
      *
      * @return FeatureNode
      */
-    public function getFeature();
-
+    public function get_feature();
     /**
      * Returns scenario node.
      *
      * @return ScenarioInterface
      */
-    public function getScenario();
+    public function get_scenario();
 }

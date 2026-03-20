@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,126 +8,100 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Snippet\Service_Container;
 
-namespace Behat\Behat\Snippet\ServiceContainer;
-
-use Behat\Behat\Snippet\Cli\SnippetsController;
-use Behat\Behat\Snippet\Printer\ConsoleSnippetPrinter;
-use Behat\Behat\Snippet\SnippetRegistry;
-use Behat\Behat\Snippet\SnippetWriter;
-use Behat\Testwork\Cli\ServiceContainer\CliExtension;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Behat\Testwork\ServiceContainer\ServiceProcessor;
-use Behat\Testwork\Translator\ServiceContainer\TranslatorExtension;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
+use Behat\Behat\Snippet\Cli\Snippets_Controller;
+use Behat\Behat\Snippet\Printer\Console_Snippet_Printer;
+use Behat\Behat\Snippet\Snippet_Registry;
+use Behat\Behat\Snippet\Snippet_Writer;
+use Behat\Testwork\Cli\Service_Container\Cli_Extension;
+use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
+use Behat\Testwork\Service_Container\Service_Processor;
+use Behat\Testwork\Translator\Service_Container\Translator_Extension;
+use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
 /**
  * Provides snippet generation, printing and appending functionality.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class SnippetExtension implements Extension
+class Snippet_Extension implements Extension
 {
     /*
      * Available services
      */
     public const REGISTRY_ID = 'snippet.registry';
     public const WRITER_ID = 'snippet.writer';
-
     /*
      * Available extension points
      */
     public const GENERATOR_TAG = 'snippet.generator';
     public const APPENDER_TAG = 'snippet.appender';
-
-    private readonly ServiceProcessor $processor;
-
+    private readonly Service_Processor $processor;
     /**
      * Initializes extension.
      */
-    public function __construct(?ServiceProcessor $processor = null)
+    public function __construct(?Service_Processor $processor = null)
     {
-        $this->processor = $processor ?: new ServiceProcessor();
+        $this->processor = $processor ?: new Service_Processor();
     }
-
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'snippets';
     }
-
-    public function initialize(ExtensionManager $extensionManager)
+    public function initialize(Extension_Manager $extension_manager)
     {
     }
-
-    public function configure(ArrayNodeDefinition $builder)
+    public function configure(Array_Node_Definition $builder)
     {
     }
-
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
-        $this->loadController($container);
-        $this->loadRegistry($container);
-        $this->loadWriter($container);
+        $this->load_controller($container);
+        $this->load_registry($container);
+        $this->load_writer($container);
     }
-
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        $this->processGenerators($container);
-        $this->processAppenders($container);
+        $this->process_generators($container);
+        $this->process_appenders($container);
     }
-
-    protected function loadController(ContainerBuilder $container)
+    protected function load_controller(Container_Builder $container)
     {
-        $definition = new Definition(ConsoleSnippetPrinter::class, [
-            new Reference(CliExtension::OUTPUT_ID),
-            new Reference(TranslatorExtension::TRANSLATOR_ID),
-        ]);
-        $container->setDefinition('snippet.printer', $definition);
-
-        $definition = new Definition(SnippetsController::class, [
-            new Reference(self::REGISTRY_ID),
-            new Reference(self::WRITER_ID),
-            new Reference('snippet.printer'),
-            new Reference(EventDispatcherExtension::DISPATCHER_ID),
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 400]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.snippet', $definition);
+        $definition = new Definition(Console_Snippet_Printer::class, [new Reference(Cli_Extension::OUTPUT_ID), new Reference(Translator_Extension::TRANSLATOR_ID)]);
+        $container->set_definition('snippet.printer', $definition);
+        $definition = new Definition(Snippets_Controller::class, [new Reference(self::REGISTRY_ID), new Reference(self::WRITER_ID), new Reference('snippet.printer'), new Reference(Event_Dispatcher_Extension::DISPATCHER_ID)]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 400]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.snippet', $definition);
     }
-
-    protected function loadRegistry(ContainerBuilder $container)
+    protected function load_registry(Container_Builder $container)
     {
-        $definition = new Definition(SnippetRegistry::class);
-        $container->setDefinition(self::REGISTRY_ID, $definition);
+        $definition = new Definition(Snippet_Registry::class);
+        $container->set_definition(self::REGISTRY_ID, $definition);
     }
-
-    protected function loadWriter(ContainerBuilder $container)
+    protected function load_writer(Container_Builder $container)
     {
-        $definition = new Definition(SnippetWriter::class);
-        $container->setDefinition(self::WRITER_ID, $definition);
+        $definition = new Definition(Snippet_Writer::class);
+        $container->set_definition(self::WRITER_ID, $definition);
     }
-
-    protected function processGenerators(ContainerBuilder $container)
+    protected function process_generators(Container_Builder $container)
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::GENERATOR_TAG);
-        $definition = $container->getDefinition(self::REGISTRY_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::GENERATOR_TAG);
+        $definition = $container->get_definition(self::REGISTRY_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerSnippetGenerator', [$reference]);
+            $definition->add_method_call('registerSnippetGenerator', [$reference]);
         }
     }
-
-    protected function processAppenders(ContainerBuilder $container)
+    protected function process_appenders(Container_Builder $container)
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::APPENDER_TAG);
-        $definition = $container->getDefinition(self::WRITER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::APPENDER_TAG);
+        $definition = $container->get_definition(self::WRITER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerSnippetAppender', [$reference]);
+            $definition->add_method_call('registerSnippetAppender', [$reference]);
         }
     }
 }

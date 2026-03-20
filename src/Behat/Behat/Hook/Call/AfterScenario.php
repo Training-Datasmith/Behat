@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,17 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Hook\Call;
 
-use Behat\Behat\Hook\Scope\ScenarioScope;
-
+use Behat\Behat\Hook\Scope\Scenario_Scope;
 /**
  * Represents an AfterScenario hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class AfterScenario extends RuntimeScenarioHook
+final class After_Scenario extends Runtime_Scenario_Hook
 {
     /**
      * Initializes hook.
@@ -28,12 +25,11 @@ final class AfterScenario extends RuntimeScenarioHook
      * @param callable    $callable
      * @param string|null $description
      */
-    public function __construct($filterString, $callable, $description = null)
+    public function __construct($filter_string, $callable, $description = null)
     {
-        parent::__construct(ScenarioScope::AFTER, $filterString, $callable, $description);
+        parent::__construct(Scenario_Scope::AFTER, $filter_string, $callable, $description);
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
         return 'AfterScenario';
     }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,145 +8,106 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Service_Container;
 
-namespace Behat\Behat\EventDispatcher\ServiceContainer;
-
-use Behat\Behat\EventDispatcher\Cli\StopOnFailureController;
-use Behat\Behat\EventDispatcher\Event\ExampleTested;
-use Behat\Behat\EventDispatcher\Event\ScenarioTested;
-use Behat\Behat\EventDispatcher\Tester\EventDispatchingBackgroundTester;
-use Behat\Behat\EventDispatcher\Tester\EventDispatchingFeatureTester;
-use Behat\Behat\EventDispatcher\Tester\EventDispatchingOutlineTester;
-use Behat\Behat\EventDispatcher\Tester\EventDispatchingScenarioTester;
-use Behat\Behat\EventDispatcher\Tester\EventDispatchingStepTester;
-use Behat\Behat\Tester\ServiceContainer\TesterExtension;
-use Behat\Testwork\Cli\ServiceContainer\CliExtension;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension as BaseExtension;
-use Behat\Testwork\Tester\ServiceContainer\TesterExtension as TestworkTesterExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
+use Behat\Behat\Event_Dispatcher\Cli\Stop_On_Failure_Controller;
+use Behat\Behat\Event_Dispatcher\Event\Example_Tested;
+use Behat\Behat\Event_Dispatcher\Event\Scenario_Tested;
+use Behat\Behat\Event_Dispatcher\Tester\Event_Dispatching_Background_Tester;
+use Behat\Behat\Event_Dispatcher\Tester\Event_Dispatching_Feature_Tester;
+use Behat\Behat\Event_Dispatcher\Tester\Event_Dispatching_Outline_Tester;
+use Behat\Behat\Event_Dispatcher\Tester\Event_Dispatching_Scenario_Tester;
+use Behat\Behat\Event_Dispatcher\Tester\Event_Dispatching_Step_Tester;
+use Behat\Behat\Tester\Service_Container\Tester_Extension;
+use Behat\Testwork\Cli\Service_Container\Cli_Extension;
+use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension as BaseExtension;
+use Behat\Testwork\Tester\Service_Container\Tester_Extension as TestworkTesterExtension;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
 /**
  * Extends Testwork EventDispatcherExtension with additional event-dispatching testers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class EventDispatcherExtension extends BaseExtension
+class Event_Dispatcher_Extension extends Base_Extension
 {
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
         parent::load($container, $config);
-
-        $this->loadStopOnFailureController($container);
-        $this->loadEventDispatchingBackgroundTester($container);
-        $this->loadEventDispatchingFeatureTester($container);
-        $this->loadEventDispatchingOutlineTester($container);
-        $this->loadEventDispatchingScenarioTester($container);
-        $this->loadEventDispatchingExampleTester($container);
-        $this->loadEventDispatchingStepTester($container);
-        $this->loadTickingStepTester($container);
+        $this->load_stop_on_failure_controller($container);
+        $this->load_event_dispatching_background_tester($container);
+        $this->load_event_dispatching_feature_tester($container);
+        $this->load_event_dispatching_outline_tester($container);
+        $this->load_event_dispatching_scenario_tester($container);
+        $this->load_event_dispatching_example_tester($container);
+        $this->load_event_dispatching_step_tester($container);
+        $this->load_ticking_step_tester($container);
     }
-
     /**
      * Loads stop on failure controller.
      */
-    protected function loadStopOnFailureController(ContainerBuilder $container)
+    protected function load_stop_on_failure_controller(Container_Builder $container)
     {
-        $definition = new Definition(StopOnFailureController::class, [
-            new Reference(EventDispatcherExtension::DISPATCHER_ID),
-        ]);
-        $definition->addMethodCall('setStopOnFailureHandler', [new Reference(TestworkTesterExtension::STOP_ON_FAILURE_ID)]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 100]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.stop_on_failure', $definition);
+        $definition = new Definition(Stop_On_Failure_Controller::class, [new Reference(Event_Dispatcher_Extension::DISPATCHER_ID)]);
+        $definition->add_method_call('setStopOnFailureHandler', [new Reference(Testwork_Tester_Extension::STOP_ON_FAILURE_ID)]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 100]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.stop_on_failure', $definition);
     }
-
     /**
      * Loads event-dispatching background tester.
      */
-    protected function loadEventDispatchingBackgroundTester(ContainerBuilder $container)
+    protected function load_event_dispatching_background_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingBackgroundTester::class, [
-            new Reference(TesterExtension::BACKGROUND_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-        ]);
-        $definition->addTag(TesterExtension::BACKGROUND_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::BACKGROUND_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Background_Tester::class, [new Reference(Tester_Extension::BACKGROUND_TESTER_ID), new Reference(self::DISPATCHER_ID)]);
+        $definition->add_tag(Tester_Extension::BACKGROUND_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::BACKGROUND_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * Loads event-dispatching feature tester.
      */
-    protected function loadEventDispatchingFeatureTester(ContainerBuilder $container)
+    protected function load_event_dispatching_feature_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingFeatureTester::class, [
-            new Reference(TesterExtension::SPECIFICATION_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-        ]);
-        $definition->addTag(TesterExtension::SPECIFICATION_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::SPECIFICATION_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Feature_Tester::class, [new Reference(Tester_Extension::SPECIFICATION_TESTER_ID), new Reference(self::DISPATCHER_ID)]);
+        $definition->add_tag(Tester_Extension::SPECIFICATION_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::SPECIFICATION_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * Loads event-dispatching outline tester.
      */
-    protected function loadEventDispatchingOutlineTester(ContainerBuilder $container)
+    protected function load_event_dispatching_outline_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingOutlineTester::class, [
-            new Reference(TesterExtension::OUTLINE_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-        ]);
-        $definition->addTag(TesterExtension::OUTLINE_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::OUTLINE_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Outline_Tester::class, [new Reference(Tester_Extension::OUTLINE_TESTER_ID), new Reference(self::DISPATCHER_ID)]);
+        $definition->add_tag(Tester_Extension::OUTLINE_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::OUTLINE_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * Loads event-dispatching scenario tester.
      */
-    protected function loadEventDispatchingScenarioTester(ContainerBuilder $container)
+    protected function load_event_dispatching_scenario_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingScenarioTester::class, [
-            new Reference(TesterExtension::SCENARIO_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-            ScenarioTested::BEFORE,
-            ScenarioTested::AFTER_SETUP,
-            ScenarioTested::BEFORE_TEARDOWN,
-            ScenarioTested::AFTER,
-        ]);
-        $definition->addTag(TesterExtension::SCENARIO_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::SCENARIO_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Scenario_Tester::class, [new Reference(Tester_Extension::SCENARIO_TESTER_ID), new Reference(self::DISPATCHER_ID), Scenario_Tested::BEFORE, Scenario_Tested::AFTER_SETUP, Scenario_Tested::BEFORE_TEARDOWN, Scenario_Tested::AFTER]);
+        $definition->add_tag(Tester_Extension::SCENARIO_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::SCENARIO_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * Loads event-dispatching example tester.
      */
-    protected function loadEventDispatchingExampleTester(ContainerBuilder $container)
+    protected function load_event_dispatching_example_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingScenarioTester::class, [
-            new Reference(TesterExtension::EXAMPLE_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-            ExampleTested::BEFORE,
-            ExampleTested::AFTER_SETUP,
-            ExampleTested::BEFORE_TEARDOWN,
-            ExampleTested::AFTER,
-        ]);
-        $definition->addTag(TesterExtension::EXAMPLE_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::EXAMPLE_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Scenario_Tester::class, [new Reference(Tester_Extension::EXAMPLE_TESTER_ID), new Reference(self::DISPATCHER_ID), Example_Tested::BEFORE, Example_Tested::AFTER_SETUP, Example_Tested::BEFORE_TEARDOWN, Example_Tested::AFTER]);
+        $definition->add_tag(Tester_Extension::EXAMPLE_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::EXAMPLE_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * Loads event-dispatching step tester.
      */
-    protected function loadEventDispatchingStepTester(ContainerBuilder $container)
+    protected function load_event_dispatching_step_tester(Container_Builder $container)
     {
-        $definition = new Definition(EventDispatchingStepTester::class, [
-            new Reference(TesterExtension::STEP_TESTER_ID),
-            new Reference(self::DISPATCHER_ID),
-        ]);
-        $definition->addTag(TesterExtension::STEP_TESTER_WRAPPER_TAG, ['priority' => -9999]);
-        $container->setDefinition(TesterExtension::STEP_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
+        $definition = new Definition(Event_Dispatching_Step_Tester::class, [new Reference(Tester_Extension::STEP_TESTER_ID), new Reference(self::DISPATCHER_ID)]);
+        $definition->add_tag(Tester_Extension::STEP_TESTER_WRAPPER_TAG, ['priority' => -9999]);
+        $container->set_definition(Tester_Extension::STEP_TESTER_WRAPPER_TAG . '.event_dispatching', $definition);
     }
-
     /**
      * This method used in the past to load the TickingStepTester to work around
      * a bug with the scope of declare(ticks) in PHP < 7.1. Since we don't
@@ -158,7 +118,7 @@ class EventDispatcherExtension extends BaseExtension
      *
      * @deprecated
      */
-    protected function loadTickingStepTester(ContainerBuilder $container)
+    protected function load_ticking_step_tester(Container_Builder $container)
     {
     }
 }

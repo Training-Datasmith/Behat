@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,64 +8,55 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Output\Node\Event_Listener\Statistics;
 
-namespace Behat\Behat\Output\Node\EventListener\Statistics;
-
-use Behat\Behat\Output\Node\Printer\StatisticsPrinter;
+use Behat\Behat\Output\Node\Printer\Statistics_Printer;
 use Behat\Behat\Output\Statistics\Statistics;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\EventDispatcher\Event\ExerciseCompleted;
+use Behat\Testwork\Event_Dispatcher\Event\Exercise_Completed;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\EventListener\EventListener;
-
+use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
 /**
  * Collects general suite stats such as time and memory during its execution and prints it afterwards.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class StatisticsListener implements EventListener
+final readonly class Statistics_Listener implements Event_Listener
 {
     /**
      * Initializes listener.
      */
-    public function __construct(
-        private Statistics $statistics,
-        private StatisticsPrinter $printer,
-    ) {
-    }
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function __construct(private Statistics $statistics, private Statistics_Printer $printer)
     {
-        $this->startTimerOnBeforeExercise($eventName);
-        $this->printStatisticsOnAfterExerciseEvent($formatter, $eventName);
     }
-
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+    {
+        $this->start_timer_on_before_exercise($event_name);
+        $this->print_statistics_on_after_exercise_event($formatter, $event_name);
+    }
     /**
      * Starts timer on exercise BEFORE event.
      *
      * @param string $eventName
      */
-    private function startTimerOnBeforeExercise($eventName): void
+    private function start_timer_on_before_exercise($event_name): void
     {
-        if (ExerciseCompleted::BEFORE !== $eventName) {
+        if (Exercise_Completed::BEFORE !== $event_name) {
             return;
         }
-
-        $this->statistics->startTimer();
+        $this->statistics->start_timer();
     }
-
     /**
      * Prints statistics on after exercise event.
      *
      * @param string    $eventName
      */
-    private function printStatisticsOnAfterExerciseEvent(Formatter $formatter, $eventName): void
+    private function print_statistics_on_after_exercise_event(Formatter $formatter, $event_name): void
     {
-        if (ExerciseCompleted::AFTER !== $eventName) {
+        if (Exercise_Completed::AFTER !== $event_name) {
             return;
         }
-
-        $this->statistics->stopTimer();
-        $this->printer->printStatistics($formatter, $this->statistics);
+        $this->statistics->stop_timer();
+        $this->printer->print_statistics($formatter, $this->statistics);
     }
 }

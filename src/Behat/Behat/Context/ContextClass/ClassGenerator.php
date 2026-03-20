@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Context\Context_Class;
 
-namespace Behat\Behat\Context\ContextClass;
-
-use Behat\Behat\Context\Suite\Setup\SuiteWithContextsSetup;
+use Behat\Behat\Context\Suite\Setup\Suite_With_Contexts_Setup;
 use Behat\Testwork\Suite\Suite;
-
 /**
  * Generates context classes (as a string).
  *
@@ -22,7 +19,7 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ClassGenerator
+interface Class_Generator
 {
     /**
      * Checks if generator supports provided context class.
@@ -31,8 +28,7 @@ interface ClassGenerator
      *
      * @return bool
      */
-    public function supportsSuiteAndClass(Suite $suite, $contextClass);
-
+    public function supports_suite_and_class(Suite $suite, $context_class);
     /**
      * Generates context class code.
      *
@@ -40,5 +36,5 @@ interface ClassGenerator
      *
      * @return string The context class source code
      */
-    public function generateClass(Suite $suite, $contextClass);
+    public function generate_class(Suite $suite, $context_class);
 }

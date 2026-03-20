@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,7 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Pattern;
 
 /**
@@ -19,35 +17,28 @@ namespace Behat\Behat\Definition\Pattern;
  */
 final readonly class Pattern
 {
-    public function __construct(
-        private string $suggestedMethodName,
-        private string $pattern,
-        private int $placeholderCount = 0,
-    ) {
+    public function __construct(private string $suggested_method_name, private string $pattern, private int $placeholder_count = 0)
+    {
     }
-
     /**
      * Returns canonical step text.
      *
      * @deprecated see getSuggestedMethodName
      */
-    public function getCanonicalText(): string
+    public function get_canonical_text(): string
     {
-        return $this->suggestedMethodName;
+        return $this->suggested_method_name;
     }
-
-    public function getSuggestedMethodName(): string
+    public function get_suggested_method_name(): string
     {
-        return $this->suggestedMethodName;
+        return $this->suggested_method_name;
     }
-
-    public function getPattern(): string
+    public function get_pattern(): string
     {
         return $this->pattern;
     }
-
-    public function getPlaceholderCount(): int
+    public function get_placeholder_count(): int
     {
-        return $this->placeholderCount;
+        return $this->placeholder_count;
     }
 }

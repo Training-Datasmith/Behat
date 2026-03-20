@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,37 +8,32 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Hook\Call;
 
-use Behat\Behat\Hook\Scope\ScenarioScope;
-use Behat\Gherkin\Filter\NameFilter;
-use Behat\Gherkin\Filter\TagFilter;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioInterface;
-use Behat\Testwork\Hook\Call\RuntimeFilterableHook;
-use Behat\Testwork\Hook\Scope\HookScope;
-
+use Behat\Behat\Hook\Scope\Scenario_Scope;
+use Behat\Gherkin\Filter\Name_Filter;
+use Behat\Gherkin\Filter\Tag_Filter;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Interface;
+use Behat\Testwork\Hook\Call\Runtime_Filterable_Hook;
+use Behat\Testwork\Hook\Scope\Hook_Scope;
 /**
  * Represents a scenario hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class RuntimeScenarioHook extends RuntimeFilterableHook
+abstract class Runtime_Scenario_Hook extends Runtime_Filterable_Hook
 {
-    public function filterMatches(HookScope $scope)
+    public function filter_matches(Hook_Scope $scope)
     {
-        if (!$scope instanceof ScenarioScope) {
+        if (!$scope instanceof Scenario_Scope) {
             return false;
         }
-
-        if (null === ($filterString = $this->getFilterString())) {
+        if (null === $filter_string = $this->get_filter_string()) {
             return true;
         }
-
-        return $this->isMatch($scope->getFeature(), $scope->getScenario(), $filterString);
+        return $this->is_match($scope->get_feature(), $scope->get_scenario(), $filter_string);
     }
-
     /**
      * Checks if nodes match filter.
      *
@@ -47,19 +41,16 @@ abstract class RuntimeScenarioHook extends RuntimeFilterableHook
      *
      * @return bool
      */
-    protected function isMatch(FeatureNode $feature, ScenarioInterface $scenario, $filterString)
+    protected function is_match(Feature_Node $feature, Scenario_Interface $scenario, $filter_string)
     {
-        if (str_contains($filterString, '@')) {
-            return $this->isMatchTagFilter($feature, $scenario, $filterString);
+        if (str_contains($filter_string, '@')) {
+            return $this->is_match_tag_filter($feature, $scenario, $filter_string);
         }
-
-        if (!empty($filterString)) {
-            return $this->isMatchNameFilter($scenario, $filterString);
+        if (!empty($filter_string)) {
+            return $this->is_match_name_filter($scenario, $filter_string);
         }
-
         return false;
     }
-
     /**
      * Checks if node match tag filter.
      *
@@ -67,13 +58,11 @@ abstract class RuntimeScenarioHook extends RuntimeFilterableHook
      *
      * @return bool
      */
-    protected function isMatchTagFilter(FeatureNode $feature, ScenarioInterface $scenario, $filterString)
+    protected function is_match_tag_filter(Feature_Node $feature, Scenario_Interface $scenario, $filter_string)
     {
-        $filter = new TagFilter($filterString);
-
-        return $filter->isScenarioMatch($feature, $scenario);
+        $filter = new Tag_Filter($filter_string);
+        return $filter->is_scenario_match($feature, $scenario);
     }
-
     /**
      * Checks if scenario matches name filter.
      *
@@ -81,10 +70,9 @@ abstract class RuntimeScenarioHook extends RuntimeFilterableHook
      *
      * @return bool
      */
-    protected function isMatchNameFilter(ScenarioInterface $scenario, $filterString)
+    protected function is_match_name_filter(Scenario_Interface $scenario, $filter_string)
     {
-        $filter = new NameFilter($filterString);
-
-        return $filter->isScenarioMatch($scenario);
+        $filter = new Name_Filter($filter_string);
+        return $filter->is_scenario_match($scenario);
     }
 }

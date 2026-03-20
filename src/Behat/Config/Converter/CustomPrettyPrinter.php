@@ -1,36 +1,31 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Behat\Config\Converter;
 
-use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\PrettyPrinter\Standard;
-
-class CustomPrettyPrinter extends Standard
+use Php_Parser\Node\Expr\Array_;
+use Php_Parser\Node\Expr\Method_Call;
+use Php_Parser\Pretty_Printer\Standard;
+class Custom_Pretty_Printer extends Standard
 {
-    protected function pExpr_Array(Array_ $node): string
+    protected function p_expr_array(Array_ $node): string
     {
-        $printedArray = '[';
-        $printedArray .= $this->pCommaSeparatedMultiline($node->items, true);
-
-        return $printedArray . ($this->nl . ']');
+        $printed_array = '[';
+        $printed_array .= $this->p_comma_separated_multiline($node->items, true);
+        return $printed_array . ($this->nl . ']');
     }
-
-    protected function pExpr_MethodCall(MethodCall $node): string
+    protected function p_expr_method_call(Method_Call $node): string
     {
-        $result = $this->pDereferenceLhs($node->var);
+        $result = $this->p_dereference_lhs($node->var);
         $this->indent();
-        $result .= $this->nl . '->' . $this->pObjectProperty($node->name) . '(';
+        $result .= $this->nl . '->' . $this->p_object_property($node->name) . '(';
         if (count($node->args) > 1) {
-            $result .= $this->pCommaSeparatedMultiline($node->args, false) . $this->nl;
+            $result .= $this->p_comma_separated_multiline($node->args, false) . $this->nl;
         } else {
-            $result .= $this->pCommaSeparated($node->args);
+            $result .= $this->p_comma_separated($node->args);
         }
         $result .= ')';
         $this->outdent();
-
         return $result;
     }
 }

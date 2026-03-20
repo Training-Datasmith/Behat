@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,20 +8,18 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Hook\Call;
 
-use Behat\Testwork\Call\Exception\BadCallbackException;
-use Behat\Testwork\Hook\Scope\HookScope;
-use Behat\Testwork\Hook\Scope\SuiteScope;
+use Behat\Testwork\Call\Exception\Bad_Callback_Exception;
+use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Testwork\Hook\Scope\Suite_Scope;
 use Behat\Testwork\Suite\Suite;
-
 /**
  * Represents suite hook executed in the runtime.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class RuntimeSuiteHook extends RuntimeFilterableHook
+abstract class Runtime_Suite_Hook extends Runtime_Filterable_Hook
 {
     /**
      * Initializes hook.
@@ -34,40 +31,34 @@ abstract class RuntimeSuiteHook extends RuntimeFilterableHook
      *
      * @throws BadCallbackException If callback is method, but not a static one
      */
-    public function __construct($scopeName, $filterString, $callable, $description = null)
+    public function __construct($scope_name, $filter_string, $callable, $description = null)
     {
-        parent::__construct($scopeName, $filterString, $callable, $description);
-
-        $this->throwIfInstanceMethod($callable, 'Suite');
+        parent::__construct($scope_name, $filter_string, $callable, $description);
+        $this->throw_if_instance_method($callable, 'Suite');
     }
-
-    public function filterMatches(HookScope $scope)
+    public function filter_matches(Hook_Scope $scope)
     {
-        if (!$scope instanceof SuiteScope) {
+        if (!$scope instanceof Suite_Scope) {
             return false;
         }
-        if (null === ($filterString = $this->getFilterString())) {
+        if (null === $filter_string = $this->get_filter_string()) {
             return true;
         }
-
-        if (!empty($filterString)) {
-            return $this->isSuiteMatch($scope->getSuite(), $filterString);
+        if (!empty($filter_string)) {
+            return $this->is_suite_match($scope->get_suite(), $filter_string);
         }
-
         return false;
     }
-
     /**
      * Checks if Feature matches specified filter.
      *
      * @param string $filterString
      */
-    private function isSuiteMatch(Suite $suite, $filterString): bool
+    private function is_suite_match(Suite $suite, $filter_string): bool
     {
-        if ('/' === $filterString[0]) {
-            return 1 === preg_match($filterString, $suite->getName());
+        if ('/' === $filter_string[0]) {
+            return 1 === preg_match($filter_string, $suite->get_name());
         }
-
-        return false !== mb_strpos($suite->getName(), $filterString, 0, 'utf8');
+        return false !== mb_strpos($suite->get_name(), $filter_string, 0, 'utf8');
     }
 }

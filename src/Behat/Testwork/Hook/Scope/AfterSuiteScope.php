@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,53 +8,43 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Hook\Scope;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Specification\SpecificationIterator;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * Represents a scope for AfterSuite hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AfterSuiteScope implements SuiteScope, AfterTestScope
+final readonly class After_Suite_Scope implements Suite_Scope, After_Test_Scope
 {
     /**
      * Initializes scope.
      *
      * @param SpecificationIterator<mixed> $iterator
      */
-    public function __construct(
-        private Environment $environment,
-        private SpecificationIterator $iterator,
-        private TestResult $result,
-    ) {
+    public function __construct(private Environment $environment, private Specification_Iterator $iterator, private Test_Result $result)
+    {
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
         return self::AFTER;
     }
-
-    public function getSuite()
+    public function get_suite()
     {
-        return $this->environment->getSuite();
+        return $this->environment->get_suite();
     }
-
-    public function getEnvironment(): Environment
+    public function get_environment(): Environment
     {
         return $this->environment;
     }
-
-    public function getSpecificationIterator(): SpecificationIterator
+    public function get_specification_iterator(): Specification_Iterator
     {
         return $this->iterator;
     }
-
-    public function getTestResult(): TestResult
+    public function get_test_result(): Test_Result
     {
         return $this->result;
     }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,14 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Testwork\EventDispatcher\Event;
+namespace Behat\Testwork\Event_Dispatcher\Event;
 
 /**
  * Represents an event just before test setup is started.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface BeforeTested
+interface Before_Tested
 {
 }

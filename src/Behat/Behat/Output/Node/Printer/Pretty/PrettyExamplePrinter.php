@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,55 +8,47 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\Pretty;
 
-use Behat\Behat\Output\Node\Printer\ExamplePrinter;
-use Behat\Gherkin\Node\ExampleNode;
-use Behat\Gherkin\Node\FeatureNode;
+use Behat\Behat\Output\Node\Printer\Example_Printer;
+use Behat\Gherkin\Node\Example_Node;
+use Behat\Gherkin\Node\Feature_Node;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\OutputPrinter;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Output\Printer\Output_Printer;
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * Prints example header (usually simply an example row) and footer.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class PrettyExamplePrinter implements ExamplePrinter
+final class Pretty_Example_Printer implements Example_Printer
 {
     /**
      * @var string
      */
-    private $indentText;
-
+    private $indent_text;
     /**
      * Initializes printer.
      *
      * @param int $indentation
      */
-    public function __construct(
-        private readonly PrettyPathPrinter $pathPrinter,
-        $indentation = 6,
-    ) {
-        $this->indentText = str_repeat(' ', intval($indentation));
-    }
-
-    public function printHeader(Formatter $formatter, FeatureNode $feature, ExampleNode $example): void
+    public function __construct(private readonly Pretty_Path_Printer $path_printer, $indentation = 6)
     {
-        $this->printTitle($formatter->getOutputPrinter(), $example);
-        $this->pathPrinter->printScenarioPath($formatter, $feature, $example, mb_strlen($this->indentText, 'utf8'));
+        $this->indent_text = str_repeat(' ', intval($indentation));
     }
-
-    public function printFooter(Formatter $formatter, TestResult $result): void
+    public function print_header(Formatter $formatter, Feature_Node $feature, Example_Node $example): void
+    {
+        $this->print_title($formatter->get_output_printer(), $example);
+        $this->path_printer->print_scenario_path($formatter, $feature, $example, mb_strlen($this->indent_text, 'utf8'));
+    }
+    public function print_footer(Formatter $formatter, Test_Result $result): void
     {
     }
-
     /**
      * Prints example title.
      */
-    private function printTitle(OutputPrinter $printer, ExampleNode $example): void
+    private function print_title(Output_Printer $printer, Example_Node $example): void
     {
-        $printer->write(sprintf('%s%s', $this->indentText, $example->getTitle()));
+        $printer->write(sprintf('%s%s', $this->indent_text, $example->get_title()));
     }
 }

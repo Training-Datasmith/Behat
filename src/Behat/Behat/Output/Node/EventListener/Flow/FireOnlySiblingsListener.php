@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,13 +8,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Behat\Output\Node\EventListener\Flow;
+namespace Behat\Behat\Output\Node\Event_Listener\Flow;
 
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\EventListener\EventListener;
-
+use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
 /**
  * Behat fire only siblings listener.
  *
@@ -24,35 +21,28 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class FireOnlySiblingsListener implements EventListener
+class Fire_Only_Siblings_Listener implements Event_Listener
 {
-    private bool $inContext = false;
-
+    private bool $in_context = false;
     /**
      * Initializes listener.
      *
      * @param string        $beforeEventName
      * @param string        $afterEventName
      */
-    public function __construct(
-        private $beforeEventName,
-        private $afterEventName,
-        private readonly EventListener $descendant,
-    ) {
-    }
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function __construct(private $before_event_name, private $after_event_name, private readonly Event_Listener $descendant)
     {
-        if ($this->beforeEventName === $eventName) {
-            $this->inContext = true;
+    }
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+    {
+        if ($this->before_event_name === $event_name) {
+            $this->in_context = true;
         }
-
-        if ($this->inContext) {
-            $this->descendant->listenEvent($formatter, $event, $eventName);
+        if ($this->in_context) {
+            $this->descendant->listen_event($formatter, $event, $event_name);
         }
-
-        if ($this->afterEventName === $eventName) {
-            $this->inContext = false;
+        if ($this->after_event_name === $event_name) {
+            $this->in_context = false;
         }
     }
 }

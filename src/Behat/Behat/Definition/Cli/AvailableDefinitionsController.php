@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,80 +8,58 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Cli;
 
-use Behat\Behat\Definition\DefinitionWriter;
-use Behat\Behat\Definition\Printer\ConsoleDefinitionInformationPrinter;
-use Behat\Behat\Definition\Printer\ConsoleDefinitionListPrinter;
+use Behat\Behat\Definition\Definition_Writer;
+use Behat\Behat\Definition\Printer\Console_Definition_Information_Printer;
+use Behat\Behat\Definition\Printer\Console_Definition_List_Printer;
 use Behat\Testwork\Cli\Controller;
-use Behat\Testwork\Suite\SuiteRepository;
+use Behat\Testwork\Suite\Suite_Repository;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Input\Input_Option;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * Shows all currently available definitions to the user.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AvailableDefinitionsController implements Controller
+final readonly class Available_Definitions_Controller implements Controller
 {
     /**
      * Initializes controller.
      */
-    public function __construct(
-        private SuiteRepository $suiteRepository,
-        private DefinitionWriter $writer,
-        private ConsoleDefinitionListPrinter $listPrinter,
-        private ConsoleDefinitionInformationPrinter $infoPrinter,
-    ) {
+    public function __construct(private Suite_Repository $suite_repository, private Definition_Writer $writer, private Console_Definition_List_Printer $list_printer, private Console_Definition_Information_Printer $info_printer)
+    {
     }
-
     public function configure(Command $command): void
     {
-        $command->addOption(
-            '--definitions',
-            '-d',
-            InputOption::VALUE_REQUIRED,
-            'Print all available step definitions:' . PHP_EOL .
-            '- use <info>--definitions l</info> to just list definition expressions.' . PHP_EOL .
-            '- use <info>--definitions i</info> to show definitions with extended info.' . PHP_EOL .
-            "- use <info>--definitions 'needle'</info> to find specific definitions." . PHP_EOL .
-            'Use <info>--lang</info> to see definitions in specific language.'
-        );
+        $command->add_option('--definitions', '-d', Input_Option::VALUE_REQUIRED, 'Print all available step definitions:' . PHP_EOL . '- use <info>--definitions l</info> to just list definition expressions.' . PHP_EOL . '- use <info>--definitions i</info> to show definitions with extended info.' . PHP_EOL . "- use <info>--definitions 'needle'</info> to find specific definitions." . PHP_EOL . 'Use <info>--lang</info> to see definitions in specific language.');
     }
-
-    public function execute(InputInterface $input, OutputInterface $output): ?int
+    public function execute(Input_Interface $input, Output_Interface $output): ?int
     {
-        if (null === $argument = $input->getOption('definitions')) {
+        if (null === $argument = $input->get_option('definitions')) {
             return null;
         }
-
-        $printer = $this->getDefinitionPrinter($argument);
-        foreach ($this->suiteRepository->getSuites() as $suite) {
-            $this->writer->printSuiteDefinitions($printer, $suite);
+        $printer = $this->get_definition_printer($argument);
+        foreach ($this->suite_repository->get_suites() as $suite) {
+            $this->writer->print_suite_definitions($printer, $suite);
         }
-
         return 0;
     }
-
     /**
      * Returns definition printer for provided option argument.
      *
      * @param string $argument
      */
-    private function getDefinitionPrinter($argument): ConsoleDefinitionListPrinter|ConsoleDefinitionInformationPrinter
+    private function get_definition_printer($argument): Console_Definition_List_Printer|Console_Definition_Information_Printer
     {
         if ('l' === $argument) {
-            return $this->listPrinter;
+            return $this->list_printer;
         }
-
         if ('i' !== $argument) {
-            $this->infoPrinter->setSearchCriterion($argument);
+            $this->info_printer->set_search_criterion($argument);
         }
-
-        return $this->infoPrinter;
+        return $this->info_printer;
     }
 }

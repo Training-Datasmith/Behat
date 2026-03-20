@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,15 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Testwork\Output\Node\EventListener;
+namespace Behat\Testwork\Output\Node\Event_Listener;
 
 use ArrayIterator;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
 use Countable;
 use IteratorAggregate;
-
 /**
  * Used to compose formatter event listeners.
  *
@@ -25,30 +22,26 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<int, EventListener>
  */
-class ChainEventListener implements EventListener, Countable, IteratorAggregate
+class Chain_Event_Listener implements Event_Listener, Countable, IteratorAggregate
 {
     /**
      * Initializes collection.
      *
      * @param EventListener[] $listeners
      */
-    public function __construct(
-        private readonly array $listeners,
-    ) {
+    public function __construct(private readonly array $listeners)
+    {
     }
-
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function listen_event(Formatter $formatter, Event $event, $event_name): void
     {
         foreach ($this->listeners as $listener) {
-            $listener->listenEvent($formatter, $event, $eventName);
+            $listener->listen_event($formatter, $event, $event_name);
         }
     }
-
     public function count(): int
     {
         return count($this->listeners);
     }
-
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->listeners);

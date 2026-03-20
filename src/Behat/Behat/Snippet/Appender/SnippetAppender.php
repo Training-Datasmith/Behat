@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Snippet\Appender;
 
-use Behat\Behat\Snippet\AggregateSnippet;
-use Behat\Behat\Snippet\SnippetWriter;
-
+use Behat\Behat\Snippet\Aggregate_Snippet;
+use Behat\Behat\Snippet\Snippet_Writer;
 /**
  * Appends snippets to its targets. Used by SnippetWriter.
  *
@@ -22,17 +19,16 @@ use Behat\Behat\Snippet\SnippetWriter;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface SnippetAppender
+interface Snippet_Appender
 {
     /**
      * Checks if appender supports snippet.
      *
      * @return bool
      */
-    public function supportsSnippet(AggregateSnippet $snippet);
-
+    public function supports_snippet(Aggregate_Snippet $snippet);
     /**
      * Appends snippet to the source.
      */
-    public function appendSnippet(AggregateSnippet $snippet);
+    public function append_snippet(Aggregate_Snippet $snippet);
 }

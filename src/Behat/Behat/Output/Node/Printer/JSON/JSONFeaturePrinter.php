@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,71 +8,45 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\JSON;
 
-use Behat\Behat\Output\Node\EventListener\JSON\JSONDurationListener;
-use Behat\Behat\Output\Node\Printer\FeaturePrinter;
-use Behat\Behat\Output\Statistics\PhaseStatistics;
-use Behat\Gherkin\Node\FeatureNode;
+use Behat\Behat\Output\Node\Event_Listener\JSON\Json_Duration_Listener;
+use Behat\Behat\Output\Node\Printer\Feature_Printer;
+use Behat\Behat\Output\Statistics\Phase_Statistics;
+use Behat\Gherkin\Node\Feature_Node;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\JSONOutputPrinter;
-use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
-use Behat\Testwork\Tester\Result\TestResult;
-
-final class JSONFeaturePrinter implements FeaturePrinter
+use Behat\Testwork\Output\Printer\Json_Output_Printer;
+use Behat\Testwork\Path_Options\Printer\Configurable_Path_Printer;
+use Behat\Testwork\Tester\Result\Test_Result;
+final class Json_Feature_Printer implements Feature_Printer
 {
-    private FeatureNode $currentFeature;
-
-    public function __construct(
-        private readonly PhaseStatistics $statistics,
-        private readonly JSONDurationListener $durationListener,
-        private readonly ConfigurablePathPrinter $configurablePathPrinter,
-    ) {
+    private Feature_Node $current_feature;
+    public function __construct(private readonly Phase_Statistics $statistics, private readonly Json_Duration_Listener $duration_listener, private readonly Configurable_Path_Printer $configurable_path_printer)
+    {
     }
-
-    public function printHeader(Formatter $formatter, FeatureNode $feature): void
+    public function print_header(Formatter $formatter, Feature_Node $feature): void
     {
         $this->statistics->reset();
-        $this->currentFeature = $feature;
-        $outputPrinter = $formatter->getOutputPrinter();
-        assert($outputPrinter instanceof JSONOutputPrinter);
-        $outputPrinter->addFeature();
+        $this->current_feature = $feature;
+        $output_printer = $formatter->get_output_printer();
+        assert($output_printer instanceof Json_Output_Printer);
+        $output_printer->add_feature();
     }
-
-    public function printFooter(Formatter $formatter, TestResult $result): void
+    public function print_footer(Formatter $formatter, Test_Result $result): void
     {
-        $stats = $this->statistics->getScenarioStatCounts();
-
-        $totalCount = 0 === count($stats) ? 0 : array_sum($stats);
-
-        $outputPrinter = $formatter->getOutputPrinter();
-        assert($outputPrinter instanceof JSONOutputPrinter);
-
-        $featureAttributes = [
-            'name' => $this->currentFeature->getTitle() ?? '',
-        ];
-
-        $file = $this->currentFeature->getFile();
+        $stats = $this->statistics->get_scenario_stat_counts();
+        $total_count = 0 === count($stats) ? 0 : array_sum($stats);
+        $output_printer = $formatter->get_output_printer();
+        assert($output_printer instanceof Json_Output_Printer);
+        $feature_attributes = ['name' => $this->current_feature->get_title() ?? ''];
+        $file = $this->current_feature->get_file();
         if ($file) {
-            $featureAttributes['file'] = $this->configurablePathPrinter->processPathsInText(
-                $file,
-                applyEditorUrl: false,
-            );
+            $feature_attributes['file'] = $this->configurable_path_printer->process_paths_in_text($file, applyEditorUrl: false);
         }
-
-        $featureAttributes += [
-            'tests' => $totalCount,
-            'skipped' => $stats[TestResult::SKIPPED],
-            'failed' => $stats[TestResult::FAILED],
-            'pending' => $stats[TestResult::PENDING],
-            'undefined' => $stats[TestResult::UNDEFINED],
-        ];
-
-        if ($formatter->getParameter('timer')) {
-            $featureAttributes['time'] = (float) $this->durationListener->getFeatureDuration($this->currentFeature);
+        $feature_attributes += ['tests' => $total_count, 'skipped' => $stats[Test_Result::SKIPPED], 'failed' => $stats[Test_Result::FAILED], 'pending' => $stats[Test_Result::PENDING], 'undefined' => $stats[Test_Result::UNDEFINED]];
+        if ($formatter->get_parameter('timer')) {
+            $feature_attributes['time'] = (float) $this->duration_listener->get_feature_duration($this->current_feature);
         }
-
-        $outputPrinter->extendFeatureAttributes($featureAttributes);
+        $output_printer->extend_feature_attributes($feature_attributes);
     }
 }

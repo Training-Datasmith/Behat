@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,17 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Argument;
 
-use ReflectionFunctionAbstract;
-
+use Reflection_Function_Abstract;
 /**
  * Organises function arguments using its reflection.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ArgumentOrganiser
+interface Argument_Organiser
 {
     /**
      * Organises arguments using function reflection.
@@ -28,5 +25,5 @@ interface ArgumentOrganiser
      *
      * @return mixed[]
      */
-    public function organiseArguments(ReflectionFunctionAbstract $function, array $arguments);
+    public function organise_arguments(Reflection_Function_Abstract $function, array $arguments);
 }

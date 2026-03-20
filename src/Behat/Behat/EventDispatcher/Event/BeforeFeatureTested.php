@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,34 +8,29 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\Feature_Node;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\EventDispatcher\Event\BeforeTested;
-
+use Behat\Testwork\Event_Dispatcher\Event\Before_Tested;
 /**
  * Represents an event before feature tested.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class BeforeFeatureTested extends FeatureTested implements BeforeTested
+final class Before_Feature_Tested extends Feature_Tested implements Before_Tested
 {
     /**
      * Initializes event.
      */
-    public function __construct(
-        Environment $env,
-        private readonly FeatureNode $feature,
-    ) {
+    public function __construct(Environment $env, private readonly Feature_Node $feature)
+    {
         parent::__construct($env);
     }
-
     /**
      * Returns feature.
      */
-    public function getFeature(): FeatureNode
+    public function get_feature(): Feature_Node
     {
         return $this->feature;
     }

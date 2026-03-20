@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,67 +8,50 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Hook\Context\Attribute;
 
-use Behat\Behat\Context\Annotation\DocBlockHelper;
-use Behat\Behat\Context\Attribute\AttributeReader;
-use Behat\Hook\AfterFeature;
-use Behat\Hook\AfterScenario;
-use Behat\Hook\AfterStep;
-use Behat\Hook\AfterSuite;
-use Behat\Hook\BeforeFeature;
-use Behat\Hook\BeforeScenario;
-use Behat\Hook\BeforeStep;
-use Behat\Hook\BeforeSuite;
+use Behat\Behat\Context\Annotation\Doc_Block_Helper;
+use Behat\Behat\Context\Attribute\Attribute_Reader;
+use Behat\Hook\After_Feature;
+use Behat\Hook\After_Scenario;
+use Behat\Hook\After_Step;
+use Behat\Hook\After_Suite;
+use Behat\Hook\Before_Feature;
+use Behat\Hook\Before_Scenario;
+use Behat\Hook\Before_Step;
+use Behat\Hook\Before_Suite;
 use Behat\Hook\Hook;
-use Behat\Testwork\Hook\Call\RuntimeHook;
-use ReflectionAttribute;
+use Behat\Testwork\Hook\Call\Runtime_Hook;
+use Reflection_Attribute;
 use ReflectionMethod;
-
-final readonly class HookAttributeReader implements AttributeReader
+final readonly class Hook_Attribute_Reader implements Attribute_Reader
 {
     /**
      * @var array<class-string<Hook>, class-string<RuntimeHook>>
      */
-    private const KNOWN_ATTRIBUTES = [
-        AfterFeature::class => \Behat\Behat\Hook\Call\AfterFeature::class,
-        AfterScenario::class => \Behat\Behat\Hook\Call\AfterScenario::class,
-        AfterStep::class => \Behat\Behat\Hook\Call\AfterStep::class,
-        BeforeFeature::class => \Behat\Behat\Hook\Call\BeforeFeature::class,
-        BeforeScenario::class => \Behat\Behat\Hook\Call\BeforeScenario::class,
-        BeforeStep::class => \Behat\Behat\Hook\Call\BeforeStep::class,
-        BeforeSuite::class => \Behat\Testwork\Hook\Call\BeforeSuite::class,
-        AfterSuite::class => \Behat\Testwork\Hook\Call\AfterSuite::class,
-    ];
-
+    private const KNOWN_ATTRIBUTES = [After_Feature::class => \Behat\Behat\Hook\Call\After_Feature::class, After_Scenario::class => \Behat\Behat\Hook\Call\After_Scenario::class, After_Step::class => \Behat\Behat\Hook\Call\After_Step::class, Before_Feature::class => \Behat\Behat\Hook\Call\Before_Feature::class, Before_Scenario::class => \Behat\Behat\Hook\Call\Before_Scenario::class, Before_Step::class => \Behat\Behat\Hook\Call\Before_Step::class, Before_Suite::class => \Behat\Testwork\Hook\Call\Before_Suite::class, After_Suite::class => \Behat\Testwork\Hook\Call\After_Suite::class];
     /**
      * Initializes reader.
      */
-    public function __construct(
-        private DocBlockHelper $docBlockHelper,
-    ) {
+    public function __construct(private Doc_Block_Helper $doc_block_helper)
+    {
     }
-
     /**
      * @return list<RuntimeHook>
      */
-    public function readCallees(string $contextClass, ReflectionMethod $method): array
+    public function read_callees(string $context_class, ReflectionMethod $method): array
     {
-        $attributes = $method->getAttributes(Hook::class, ReflectionAttribute::IS_INSTANCEOF);
-
+        $attributes = $method->get_attributes(Hook::class, Reflection_Attribute::IS_INSTANCEOF);
         $callees = [];
         foreach ($attributes as $attribute) {
-            $class = self::KNOWN_ATTRIBUTES[$attribute->getName()];
-            $callable = [$contextClass, $method->getName()];
+            $class = self::KNOWN_ATTRIBUTES[$attribute->get_name()];
+            $callable = [$context_class, $method->get_name()];
             $description = null;
-            if ($docBlock = $method->getDocComment()) {
-                $description = $this->docBlockHelper->extractDescription($docBlock);
+            if ($doc_block = $method->get_doc_comment()) {
+                $description = $this->doc_block_helper->extract_description($doc_block);
             }
-
-            $callees[] = new $class($attribute->newInstance()->getFilterString(), $callable, $description);
+            $callees[] = new $class($attribute->new_instance()->get_filter_string(), $callable, $description);
         }
-
         return $callees;
     }
 }

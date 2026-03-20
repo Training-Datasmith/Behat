@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,107 +8,72 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Output\Cli;
 
 use Behat\Testwork\Cli\Controller;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\OutputManager;
+use Behat\Testwork\Output\Output_Manager;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\Input_Interface;
+use Symfony\Component\Console\Input\Input_Option;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * Configures formatters based on user input.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class OutputController implements Controller
+class Output_Controller implements Controller
 {
     /**
      * Initializes controller.
      */
-    public function __construct(
-        private readonly OutputManager $manager,
-    ) {
+    public function __construct(private readonly Output_Manager $manager)
+    {
     }
-
     public function configure(Command $command): void
     {
-        $command
-            ->addOption(
-                '--format',
-                '-f',
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'How to format tests output. <comment>pretty</comment> is default.' . PHP_EOL .
-                'Available formats are:' . PHP_EOL . $this->getFormatterDescriptions() .
-                'You can use multiple formats at the same time.'
-            )
-            ->addOption(
-                '--out',
-                '-o',
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Write format output to a file/directory instead of' . PHP_EOL .
-                'STDOUT <comment>(output_path)</comment>. You can also provide different' . PHP_EOL .
-                'outputs to multiple formats. This option is mandatory for the junit formatter.'
-            )
-            ->addOption(
-                '--format-settings',
-                null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Set formatters parameters using json object.' . PHP_EOL .
-                'Keys are parameter names, values are values.'
-            );
+        $command->add_option('--format', '-f', Input_Option::VALUE_REQUIRED | Input_Option::VALUE_IS_ARRAY, 'How to format tests output. <comment>pretty</comment> is default.' . PHP_EOL . 'Available formats are:' . PHP_EOL . $this->get_formatter_descriptions() . 'You can use multiple formats at the same time.')->add_option('--out', '-o', Input_Option::VALUE_REQUIRED | Input_Option::VALUE_IS_ARRAY, 'Write format output to a file/directory instead of' . PHP_EOL . 'STDOUT <comment>(output_path)</comment>. You can also provide different' . PHP_EOL . 'outputs to multiple formats. This option is mandatory for the junit formatter.')->add_option('--format-settings', null, Input_Option::VALUE_REQUIRED | Input_Option::VALUE_IS_ARRAY, 'Set formatters parameters using json object.' . PHP_EOL . 'Keys are parameter names, values are values.');
     }
-
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(Input_Interface $input, Output_Interface $output): null
     {
-        $formats = $input->getOption('format');
-        $outputs = $input->getOption('out');
-
-        $this->configureFormatters($formats, $input, $output);
-        $this->configureOutputs($formats, $outputs, $output->isDecorated());
-
+        $formats = $input->get_option('format');
+        $outputs = $input->get_option('out');
+        $this->configure_formatters($formats, $input, $output);
+        $this->configure_outputs($formats, $outputs, $output->is_decorated());
         return null;
     }
-
     /**
      * Configures formatters based on container, input and output configurations.
      */
-    protected function configureFormatters(array $formats, InputInterface $input, OutputInterface $output)
+    protected function configure_formatters(array $formats, Input_Interface $input, Output_Interface $output)
     {
-        $this->enableFormatters($formats);
-        $this->setFormattersParameters($input, $output);
+        $this->enable_formatters($formats);
+        $this->set_formatters_parameters($input, $output);
     }
-
     /**
      * Enables formatters.
      */
-    protected function enableFormatters(array $formats)
+    protected function enable_formatters(array $formats)
     {
         if (count($formats)) {
-            $this->manager->disableAllFormatters();
+            $this->manager->disable_all_formatters();
             foreach ($formats as $format) {
-                $this->manager->enableFormatter($format);
+                $this->manager->enable_formatter($format);
             }
         }
     }
-
     /**
      * Sets formatters parameters based on input & output.
      */
-    protected function setFormattersParameters(InputInterface $input, OutputInterface $output)
+    protected function set_formatters_parameters(Input_Interface $input, Output_Interface $output)
     {
-        $this->manager->setFormattersParameter('output_decorate', $output->isDecorated());
-
-        if ($input->getOption('format-settings')) {
-            foreach ($input->getOption('format-settings') as $jsonSettings) {
-                $this->loadJsonSettings($jsonSettings);
+        $this->manager->set_formatters_parameter('output_decorate', $output->is_decorated());
+        if ($input->get_option('format-settings')) {
+            foreach ($input->get_option('format-settings') as $json_settings) {
+                $this->load_json_settings($json_settings);
             }
         }
     }
-
     /**
      * Locates output path from relative one.
      *
@@ -117,14 +81,12 @@ class OutputController implements Controller
      *
      * @return string
      */
-    protected function locateOutputPath($path)
+    protected function locate_output_path($path)
     {
-        if ($this->isAbsolutePath($path)) {
+        if ($this->is_absolute_path($path)) {
             return $path;
         }
-
         $path = getcwd() . DIRECTORY_SEPARATOR . $path;
-
         if (!file_exists($path)) {
             touch($path);
             $path = realpath($path);
@@ -132,96 +94,71 @@ class OutputController implements Controller
         } else {
             $path = realpath($path);
         }
-
         return $path;
     }
-
     /**
      * Initializes multiple formatters with different outputs.
      */
-    private function configureOutputs(array $formats, array $outputs, bool $decorated = false): void
+    private function configure_outputs(array $formats, array $outputs, bool $decorated = false): void
     {
-        if (1 == count($outputs) && !$this->isStandardOutput($outputs[0])) {
-            $outputPath = $this->locateOutputPath($outputs[0]);
-
-            $this->manager->setFormattersParameter('output_path', $outputPath);
-            $this->manager->setFormattersParameter('output_decorate', $decorated);
-
+        if (1 == count($outputs) && !$this->is_standard_output($outputs[0])) {
+            $output_path = $this->locate_output_path($outputs[0]);
+            $this->manager->set_formatters_parameter('output_path', $output_path);
+            $this->manager->set_formatters_parameter('output_decorate', $decorated);
             return;
         }
-
         foreach ($outputs as $i => $out) {
-            if ($this->isStandardOutput($out)) {
+            if ($this->is_standard_output($out)) {
                 continue;
             }
-
-            $outputPath = $this->locateOutputPath($out);
+            $output_path = $this->locate_output_path($out);
             if (isset($formats[$i])) {
-                $this->manager->setFormatterParameter($formats[$i], 'output_path', $outputPath);
-                $this->manager->setFormatterParameter($formats[$i], 'output_decorate', $decorated);
+                $this->manager->set_formatter_parameter($formats[$i], 'output_path', $output_path);
+                $this->manager->set_formatter_parameter($formats[$i], 'output_decorate', $decorated);
             }
         }
     }
-
     /**
      * Checks if provided output identifier represents standard output.
      *
      * @param string $outputId
      */
-    private function isStandardOutput($outputId): bool
+    private function is_standard_output($output_id): bool
     {
-        return 'std' === $outputId || 'null' === $outputId || 'false' === $outputId;
+        return 'std' === $output_id || 'null' === $output_id || 'false' === $output_id;
     }
-
     /**
      * Returns whether the file path is an absolute path.
      *
      * @param string $file A file path
      */
-    private function isAbsolutePath($file): bool
+    private function is_absolute_path($file): bool
     {
-        return $file[0] == '/' || $file[0] == '\\'
-            || (
-                strlen($file) > 3 && ctype_alpha($file[0])
-                && $file[1] == ':'
-                && ($file[2] == '\\' || $file[2] == '/')
-            )
-            || null !== parse_url($file, PHP_URL_SCHEME);
+        return $file[0] == '/' || $file[0] == '\\' || strlen($file) > 3 && ctype_alpha($file[0]) && $file[1] == ':' && ($file[2] == '\\' || $file[2] == '/') || null !== parse_url($file, PHP_URL_SCHEME);
     }
-
     /**
      * Returns formatters description.
      */
-    private function getFormatterDescriptions(): string
+    private function get_formatter_descriptions(): string
     {
-        return implode(
-            PHP_EOL,
-            array_map(
-                function (Formatter $formatter): string {
-                    $comment = '- <comment>' . $formatter->getName() . '</comment>: ';
-
-                    return $comment . $formatter->getDescription();
-                },
-                $this->manager->getFormatters()
-            )
-        ) . PHP_EOL;
+        return implode(PHP_EOL, array_map(function (Formatter $formatter): string {
+            $comment = '- <comment>' . $formatter->get_name() . '</comment>: ';
+            return $comment . $formatter->get_description();
+        }, $this->manager->get_formatters())) . PHP_EOL;
     }
-
     /**
      * Loads JSON settings as formatter parameters.
      *
      * @param string $jsonSettings
      */
-    private function loadJsonSettings($jsonSettings): void
+    private function load_json_settings($json_settings): void
     {
-        $settings = @json_decode($jsonSettings, true);
-
+        $settings = @json_decode($json_settings, true);
         if (!is_array($settings)) {
             return;
         }
-
         foreach ($settings as $name => $value) {
-            $this->manager->setFormattersParameter($name, $value);
+            $this->manager->set_formatters_parameter($name, $value);
         }
     }
 }

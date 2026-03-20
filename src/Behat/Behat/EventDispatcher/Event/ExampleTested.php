@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,15 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Behat\Behat\EventDispatcher\Event;
+namespace Behat\Behat\Event_Dispatcher\Event;
 
 /**
  * Represents an example event.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ExampleTested
+interface Example_Tested
 {
     public const BEFORE = 'tester.example_tested.before';
     public const AFTER_SETUP = 'tester.example_tested.after_setup';

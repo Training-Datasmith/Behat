@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,12 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Definition\Exception;
 
 use Behat\Behat\Definition\Definition;
 use RuntimeException;
-
 /**
  * Represents an exception caused by a redundant step definition.
  *
@@ -23,7 +20,7 @@ use RuntimeException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class RedundantStepException extends RuntimeException implements SearchException
+final class Redundant_Step_Exception extends RuntimeException implements Search_Exception
 {
     /**
      * Initializes redundant exception.
@@ -33,14 +30,7 @@ final class RedundantStepException extends RuntimeException implements SearchExc
      */
     public function __construct(Definition $step2, Definition $step1)
     {
-        $message = sprintf(
-            "Step \"%s\" is already defined in %s\n\n%s\n%s",
-            $step2->getPattern(),
-            $step1->getPath(),
-            $step1->getPath(),
-            $step2->getPath()
-        );
-
+        $message = sprintf("Step \"%s\" is already defined in %s\n\n%s\n%s", $step2->get_pattern(), $step1->get_path(), $step1->get_path(), $step2->get_path());
         parent::__construct($message);
     }
 }

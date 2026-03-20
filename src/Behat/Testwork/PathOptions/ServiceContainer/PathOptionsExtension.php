@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,99 +8,60 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Testwork\Path_Options\Service_Container;
 
-namespace Behat\Testwork\PathOptions\ServiceContainer;
-
-use Behat\Testwork\Cli\ServiceContainer\CliExtension;
-use Behat\Testwork\PathOptions\Cli\PathOptionsController;
-use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
+use Behat\Testwork\Cli\Service_Container\Cli_Extension;
+use Behat\Testwork\Path_Options\Cli\Path_Options_Controller;
+use Behat\Testwork\Path_Options\Printer\Configurable_Path_Printer;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
+use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
+use Symfony\Component\Config\Definition\Builder\Node_Builder;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
 /**
  * Provides management of paths in the output.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class PathOptionsExtension implements Extension
+final class Path_Options_Extension implements Extension
 {
     public const CONFIGURABLE_PATH_PRINTER_ID = 'configurable.path.printer';
-
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'path_options';
     }
-
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extension_manager): void
     {
     }
-
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(Array_Node_Definition $builder): void
     {
-        $builder = $builder
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('print_absolute_paths')
-            ->defaultFalse()
-            ->end();
+        $builder = $builder->add_defaults_if_not_set()->children()->scalar_node('print_absolute_paths')->default_false()->end();
         /** @var NodeBuilder $builder */
-        $builder
-            ->scalarNode('editor_url')
-            ->defaultNull()
-            ->end()
-        ;
-        $builder
-            ->arrayNode('remove_prefix')
-            ->scalarPrototype()
-            ->defaultValue([])
-            ->end()
-        ;
+        $builder->scalar_node('editor_url')->default_null()->end();
+        $builder->array_node('remove_prefix')->scalar_prototype()->default_value([])->end();
     }
-
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
-        $this->loadConfigurablePathPrinter(
-            $container,
-            $config['print_absolute_paths'],
-            $config['editor_url'] ?? null,
-            $config['remove_prefix']
-        );
-        $this->loadPathOptionsController($container);
+        $this->load_configurable_path_printer($container, $config['print_absolute_paths'], $config['editor_url'] ?? null, $config['remove_prefix']);
+        $this->load_path_options_controller($container);
     }
-
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
     }
-
     /**
      * @param string[] $removePrefix
      */
-    private function loadConfigurablePathPrinter(
-        ContainerBuilder $container,
-        bool $printAbsolutePaths,
-        ?string $editorUrl,
-        array $removePrefix = [],
-    ): void {
-        $definition = new Definition(ConfigurablePathPrinter::class, [
-            '%paths.base%',
-            $printAbsolutePaths,
-            $editorUrl,
-            $removePrefix,
-        ]);
-        $container->setDefinition(self::CONFIGURABLE_PATH_PRINTER_ID, $definition);
-    }
-
-    private function loadPathOptionsController(ContainerBuilder $container): void
+    private function load_configurable_path_printer(Container_Builder $container, bool $print_absolute_paths, ?string $editor_url, array $remove_prefix = []): void
     {
-        $definition = new Definition(PathOptionsController::class, [
-            new Reference(self::CONFIGURABLE_PATH_PRINTER_ID),
-        ]);
-        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 1000]);
-        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.path', $definition);
+        $definition = new Definition(Configurable_Path_Printer::class, ['%paths.base%', $print_absolute_paths, $editor_url, $remove_prefix]);
+        $container->set_definition(self::CONFIGURABLE_PATH_PRINTER_ID, $definition);
+    }
+    private function load_path_options_controller(Container_Builder $container): void
+    {
+        $definition = new Definition(Path_Options_Controller::class, [new Reference(self::CONFIGURABLE_PATH_PRINTER_ID)]);
+        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 1000]);
+        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.path', $definition);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,14 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Statistics;
 
-use Behat\Behat\Tester\Result\StepResult;
+use Behat\Behat\Tester\Result\Step_Result;
 use Behat\Testwork\Counter\Memory;
 use Behat\Testwork\Counter\Timer;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * A TotalStatistics decorator to get statistics per phase.
  *
@@ -25,146 +22,130 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-final class PhaseStatistics implements Statistics
+final class Phase_Statistics implements Statistics
 {
-    private TotalStatistics $statistics;
-
+    private Total_Statistics $statistics;
     public function __construct()
     {
-        $this->statistics = new TotalStatistics();
+        $this->statistics = new Total_Statistics();
     }
-
     /**
      * Resets the statistics.
      */
     public function reset(): void
     {
-        $this->statistics = new TotalStatistics();
+        $this->statistics = new Total_Statistics();
     }
-
     /**
      * Starts timer.
      */
-    public function startTimer(): void
+    public function start_timer(): void
     {
-        $this->statistics->startTimer();
+        $this->statistics->start_timer();
     }
-
     /**
      * Stops timer.
      */
-    public function stopTimer(): void
+    public function stop_timer(): void
     {
-        $this->statistics->stopTimer();
+        $this->statistics->stop_timer();
     }
-
     /**
      * Returns timer object.
      */
-    public function getTimer(): Timer
+    public function get_timer(): Timer
     {
-        return $this->statistics->getTimer();
+        return $this->statistics->get_timer();
     }
-
     /**
      * Returns memory usage object.
      */
-    public function getMemory(): Memory
+    public function get_memory(): Memory
     {
-        return $this->statistics->getMemory();
+        return $this->statistics->get_memory();
     }
-
     /**
      * Registers scenario stat.
      */
-    public function registerScenarioStat(ScenarioStat $stat): void
+    public function register_scenario_stat(Scenario_Stat $stat): void
     {
-        $this->statistics->registerScenarioStat($stat);
+        $this->statistics->register_scenario_stat($stat);
     }
-
     /**
      * Registers step stat.
      */
-    public function registerStepStat(StepStat $stat): void
+    public function register_step_stat(Step_Stat $stat): void
     {
-        $this->statistics->registerStepStat($stat);
+        $this->statistics->register_step_stat($stat);
     }
-
     /**
      * Registers hook stat.
      */
-    public function registerHookStat(HookStat $stat): void
+    public function register_hook_stat(Hook_Stat $stat): void
     {
-        $this->statistics->registerHookStat($stat);
+        $this->statistics->register_hook_stat($stat);
     }
-
     /**
      * Returns counters for different scenario result codes.
      *
      * @return array<TestResult::*, int>
      */
-    public function getScenarioStatCounts(): array
+    public function get_scenario_stat_counts(): array
     {
-        return $this->statistics->getScenarioStatCounts();
+        return $this->statistics->get_scenario_stat_counts();
     }
-
     /**
      * Returns skipped scenario stats.
      *
      * @return ScenarioStat[]
      */
-    public function getSkippedScenarios()
+    public function get_skipped_scenarios()
     {
-        return $this->statistics->getSkippedScenarios();
+        return $this->statistics->get_skipped_scenarios();
     }
-
     /**
      * Returns failed scenario stats.
      *
      * @return ScenarioStat[]
      */
-    public function getFailedScenarios()
+    public function get_failed_scenarios()
     {
-        return $this->statistics->getFailedScenarios();
+        return $this->statistics->get_failed_scenarios();
     }
-
     /**
      * Returns counters for different step result codes.
      *
      * @return array<StepResult::*, int>
      */
-    public function getStepStatCounts()
+    public function get_step_stat_counts()
     {
-        return $this->statistics->getStepStatCounts();
+        return $this->statistics->get_step_stat_counts();
     }
-
     /**
      * Returns failed step stats.
      *
      * @return StepStat[]
      */
-    public function getFailedSteps()
+    public function get_failed_steps()
     {
-        return $this->statistics->getFailedSteps();
+        return $this->statistics->get_failed_steps();
     }
-
     /**
      * Returns pending step stats.
      *
      * @return StepStat[]
      */
-    public function getPendingSteps()
+    public function get_pending_steps()
     {
-        return $this->statistics->getPendingSteps();
+        return $this->statistics->get_pending_steps();
     }
-
     /**
      * Returns failed hook stats.
      *
      * @return HookStat[]
      */
-    public function getFailedHookStats()
+    public function get_failed_hook_stats()
     {
-        return $this->statistics->getFailedHookStats();
+        return $this->statistics->get_failed_hook_stats();
     }
 }

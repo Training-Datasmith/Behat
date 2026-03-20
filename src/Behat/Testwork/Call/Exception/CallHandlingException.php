@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,35 +8,30 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Call\Exception;
 
 use Behat\Testwork\Call\Call;
 use RuntimeException;
-
 /**
  * Represents exceptions thrown during call handling phase.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class CallHandlingException extends RuntimeException implements CallException
+final class Call_Handling_Exception extends RuntimeException implements Call_Exception
 {
     /**
      * Initializes exception.
      *
      * @param string $message
      */
-    public function __construct(
-        $message,
-        private readonly Call $call,
-    ) {
+    public function __construct($message, private readonly Call $call)
+    {
         parent::__construct($message);
     }
-
     /**
      * Returns call that caused exception.
      */
-    public function getCall(): Call
+    public function get_call(): Call
     {
         return $this->call;
     }

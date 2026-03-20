@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,40 +8,34 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Snippet;
 
-use Behat\Gherkin\Node\StepNode;
+use Behat\Gherkin\Node\Step_Node;
 use Behat\Testwork\Environment\Environment;
-
 /**
  * Represents an undefined step in a specific environment.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class UndefinedStep
+final readonly class Undefined_Step
 {
     /**
      * Initializes undefined step.
      */
-    public function __construct(
-        private Environment $environment,
-        private StepNode $step,
-    ) {
+    public function __construct(private Environment $environment, private Step_Node $step)
+    {
     }
-
     /**
      * Returns environment that needs this step.
      */
-    public function getEnvironment(): Environment
+    public function get_environment(): Environment
     {
         return $this->environment;
     }
-
     /**
      * Returns undefined step node.
      */
-    public function getStep(): StepNode
+    public function get_step(): Step_Node
     {
         return $this->step;
     }

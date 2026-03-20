@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,64 +8,52 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Snippet;
 
 use Behat\Behat\Snippet\Snippet;
-use Behat\Gherkin\Node\StepNode;
-
+use Behat\Gherkin\Node\Step_Node;
 /**
  * Represents a definition snippet for a context class.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ContextSnippet implements Snippet
+final readonly class Context_Snippet implements Snippet
 {
     /**
      * Initializes definition snippet.
      *
      * @param string[] $usedClasses
      */
-    public function __construct(
-        private StepNode $step,
-        private string $template,
-        private string $contextClass,
-        private array $usedClasses = [],
-    ) {
+    public function __construct(private Step_Node $step, private string $template, private string $context_class, private array $used_classes = [])
+    {
     }
-
-    public function getType(): string
+    public function get_type(): string
     {
         return 'context';
     }
-
-    public function getHash(): string
+    public function get_hash(): string
     {
         return md5($this->template);
     }
-
-    public function getSnippet(): string
+    public function get_snippet(): string
     {
-        return sprintf($this->template, $this->step->getKeywordType());
+        return sprintf($this->template, $this->step->get_keyword_type());
     }
-
-    public function getStep(): StepNode
+    public function get_step(): Step_Node
     {
         return $this->step;
     }
-
-    public function getTarget(): string
+    public function get_target(): string
     {
-        return $this->contextClass;
+        return $this->context_class;
     }
-
     /**
      * Returns the classes used in the snippet which should be imported.
      *
      * @return string[]
      */
-    public function getUsedClasses(): array
+    public function get_used_classes(): array
     {
-        return $this->usedClasses;
+        return $this->used_classes;
     }
 }

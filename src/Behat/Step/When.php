@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,11 +8,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Step;
 
 use Attribute;
-
 /**
  * Represents an Attribute for When steps.
  */
@@ -23,12 +20,10 @@ final class When implements Definition
     /**
      * @param string|null $pattern
      */
-    public function __construct(
-        public $pattern = null,
-    ) {
+    public function __construct(public $pattern = null)
+    {
     }
-
-    public function getPattern(): ?string
+    public function get_pattern(): ?string
     {
         return $this->pattern;
     }

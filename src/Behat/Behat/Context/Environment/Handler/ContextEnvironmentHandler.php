@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,24 +8,22 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Context\Environment\Handler;
 
-use Behat\Behat\Context\Argument\ArgumentResolverFactory;
-use Behat\Behat\Context\Argument\NullFactory;
-use Behat\Behat\Context\Argument\SuiteScopedResolverFactory;
-use Behat\Behat\Context\Argument\SuiteScopedResolverFactoryAdapter;
+use Behat\Behat\Context\Argument\Argument_Resolver_Factory;
+use Behat\Behat\Context\Argument\Null_Factory;
+use Behat\Behat\Context\Argument\Suite_Scoped_Resolver_Factory;
+use Behat\Behat\Context\Argument\Suite_Scoped_Resolver_Factory_Adapter;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\ContextClass\ClassResolver;
-use Behat\Behat\Context\ContextFactory;
-use Behat\Behat\Context\Environment\InitializedContextEnvironment;
-use Behat\Behat\Context\Environment\UninitializedContextEnvironment;
+use Behat\Behat\Context\Context_Class\Class_Resolver;
+use Behat\Behat\Context\Context_Factory;
+use Behat\Behat\Context\Environment\Initialized_Context_Environment;
+use Behat\Behat\Context\Environment\Uninitialized_Context_Environment;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\Exception\EnvironmentIsolationException;
-use Behat\Testwork\Environment\Handler\EnvironmentHandler;
-use Behat\Testwork\Suite\Exception\SuiteConfigurationException;
+use Behat\Testwork\Environment\Exception\Environment_Isolation_Exception;
+use Behat\Testwork\Environment\Handler\Environment_Handler;
+use Behat\Testwork\Suite\Exception\Suite_Configuration_Exception;
 use Behat\Testwork\Suite\Suite;
-
 /**
  * Handles build and initialisation of the context-based environments.
  *
@@ -34,99 +31,76 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ContextEnvironmentHandler implements EnvironmentHandler
+final class Context_Environment_Handler implements Environment_Handler
 {
-    private readonly ArgumentResolverFactory $resolverFactory;
+    private readonly Argument_Resolver_Factory $resolver_factory;
     /**
      * @var ClassResolver[]
      */
-    private array $classResolvers = [];
-
+    private array $class_resolvers = [];
     /**
      * Initializes handler.
      *
      * @param ArgumentResolverFactory|SuiteScopedResolverFactory $resolverFactory
      */
-    public function __construct(
-        private readonly ContextFactory $contextFactory,
-        $resolverFactory = null,
-    ) {
-        if ($resolverFactory && !$resolverFactory instanceof ArgumentResolverFactory) {
-            $resolverFactory = new SuiteScopedResolverFactoryAdapter($resolverFactory);
+    public function __construct(private readonly Context_Factory $context_factory, $resolver_factory = null)
+    {
+        if ($resolver_factory && !$resolver_factory instanceof Argument_Resolver_Factory) {
+            $resolver_factory = new Suite_Scoped_Resolver_Factory_Adapter($resolver_factory);
         }
-
-        $this->resolverFactory = $resolverFactory ?: new NullFactory();
+        $this->resolver_factory = $resolver_factory ?: new Null_Factory();
     }
-
     /**
      * Registers context class resolver.
      */
-    public function registerClassResolver(ClassResolver $resolver): void
+    public function register_class_resolver(Class_Resolver $resolver): void
     {
-        $this->classResolvers[] = $resolver;
+        $this->class_resolvers[] = $resolver;
     }
-
-    public function supportsSuite(Suite $suite)
+    public function supports_suite(Suite $suite)
     {
-        return $suite->hasSetting('contexts');
+        return $suite->has_setting('contexts');
     }
-
-    public function buildEnvironment(Suite $suite): Environment
+    public function build_environment(Suite $suite): Environment
     {
-        $environment = new UninitializedContextEnvironment($suite);
-        foreach ($this->getNormalizedContextSettings($suite) as $context) {
-            $environment->registerContextClass($this->resolveClass($context[0]), $context[1]);
+        $environment = new Uninitialized_Context_Environment($suite);
+        foreach ($this->get_normalized_context_settings($suite) as $context) {
+            $environment->register_context_class($this->resolve_class($context[0]), $context[1]);
         }
-
         return $environment;
     }
-
-    public function supportsEnvironmentAndSubject(Environment $environment, $testSubject = null): bool
+    public function supports_environment_and_subject(Environment $environment, $test_subject = null): bool
     {
-        return $environment instanceof UninitializedContextEnvironment;
+        return $environment instanceof Uninitialized_Context_Environment;
     }
-
-    public function isolateEnvironment(Environment $environment, $testSubject = null): InitializedContextEnvironment
+    public function isolate_environment(Environment $environment, $test_subject = null): Initialized_Context_Environment
     {
-        if (!$environment instanceof UninitializedContextEnvironment) {
-            throw new EnvironmentIsolationException(sprintf(
-                'ContextEnvironmentHandler does not support isolation of `%s` environment.',
-                $environment::class
-            ), $environment);
+        if (!$environment instanceof Uninitialized_Context_Environment) {
+            throw new Environment_Isolation_Exception(sprintf('ContextEnvironmentHandler does not support isolation of `%s` environment.', $environment::class), $environment);
         }
-
-        $initialisedEnvironment = new InitializedContextEnvironment($environment->getSuite());
-        $resolvers = $this->resolverFactory->createArgumentResolvers($initialisedEnvironment);
-
-        foreach ($environment->getContextClassesWithArguments() as $class => $arguments) {
-            $context = $this->contextFactory->createContext($class, $arguments, $resolvers);
-            $initialisedEnvironment->registerContext($context);
+        $initialised_environment = new Initialized_Context_Environment($environment->get_suite());
+        $resolvers = $this->resolver_factory->create_argument_resolvers($initialised_environment);
+        foreach ($environment->get_context_classes_with_arguments() as $class => $arguments) {
+            $context = $this->context_factory->create_context($class, $arguments, $resolvers);
+            $initialised_environment->register_context($context);
         }
-
-        return $initialisedEnvironment;
+        return $initialised_environment;
     }
-
     /**
      * Returns normalized suite context settings.
      */
-    private function getNormalizedContextSettings(Suite $suite): array
+    private function get_normalized_context_settings(Suite $suite): array
     {
-        return array_map(
-            function (array|string $context): array {
-                $class = $context;
-                $arguments = [];
-
-                if (is_array($context)) {
-                    $class = current(array_keys($context));
-                    $arguments = $context[$class];
-                }
-
-                return [$class, $arguments];
-            },
-            $this->getSuiteContexts($suite)
-        );
+        return array_map(function (array|string $context): array {
+            $class = $context;
+            $arguments = [];
+            if (is_array($context)) {
+                $class = current(array_keys($context));
+                $arguments = $context[$class];
+            }
+            return [$class, $arguments];
+        }, $this->get_suite_contexts($suite));
     }
-
     /**
      * Returns array of context classes configured for the provided suite.
      *
@@ -134,22 +108,13 @@ final class ContextEnvironmentHandler implements EnvironmentHandler
      *
      * @throws SuiteConfigurationException If `contexts` setting is not an array
      */
-    private function getSuiteContexts(Suite $suite)
+    private function get_suite_contexts(Suite $suite)
     {
-        if (!is_array($suite->getSetting('contexts'))) {
-            throw new SuiteConfigurationException(
-                sprintf(
-                    '`contexts` setting of the "%s" suite is expected to be an array, %s given.',
-                    $suite->getName(),
-                    gettype($suite->getSetting('contexts'))
-                ),
-                $suite->getName()
-            );
+        if (!is_array($suite->get_setting('contexts'))) {
+            throw new Suite_Configuration_Exception(sprintf('`contexts` setting of the "%s" suite is expected to be an array, %s given.', $suite->get_name(), gettype($suite->get_setting('contexts'))), $suite->get_name());
         }
-
-        return $suite->getSetting('contexts');
+        return $suite->get_setting('contexts');
     }
-
     /**
      * Resolves class using registered class resolvers.
      *
@@ -157,14 +122,13 @@ final class ContextEnvironmentHandler implements EnvironmentHandler
      *
      * @return string
      */
-    private function resolveClass($class)
+    private function resolve_class($class)
     {
-        foreach ($this->classResolvers as $resolver) {
-            if ($resolver->supportsClass($class)) {
-                return $resolver->resolveClass($class);
+        foreach ($this->class_resolvers as $resolver) {
+            if ($resolver->supports_class($class)) {
+                return $resolver->resolve_class($class);
             }
         }
-
         return $class;
     }
 }

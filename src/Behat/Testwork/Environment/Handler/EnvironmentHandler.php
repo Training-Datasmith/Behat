@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,13 +8,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Environment\Handler;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\EnvironmentManager;
+use Behat\Testwork\Environment\Environment_Manager;
 use Behat\Testwork\Suite\Suite;
-
 /**
  * Handles test environment building and isolation.
  *
@@ -23,33 +20,30 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface EnvironmentHandler
+interface Environment_Handler
 {
     /**
      * Checks if handler supports provided suite.
      *
      * @return bool
      */
-    public function supportsSuite(Suite $suite);
-
+    public function supports_suite(Suite $suite);
     /**
      * Builds environment object based on provided suite.
      *
      * @return Environment
      */
-    public function buildEnvironment(Suite $suite);
-
+    public function build_environment(Suite $suite);
     /**
      * Checks if handler supports provided environment.
      *
      * @return bool
      */
-    public function supportsEnvironmentAndSubject(Environment $environment, $testSubject = null);
-
+    public function supports_environment_and_subject(Environment $environment, $test_subject = null);
     /**
      * Isolates provided environment.
      *
      * @return Environment
      */
-    public function isolateEnvironment(Environment $environment, $testSubject = null);
+    public function isolate_environment(Environment $environment, $test_subject = null);
 }

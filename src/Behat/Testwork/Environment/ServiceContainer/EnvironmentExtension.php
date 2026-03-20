@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,18 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Testwork\Environment\Service_Container;
 
-namespace Behat\Testwork\Environment\ServiceContainer;
-
-use Behat\Testwork\Environment\EnvironmentManager;
-use Behat\Testwork\Environment\Handler\StaticEnvironmentHandler;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Behat\Testwork\ServiceContainer\ServiceProcessor;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-
+use Behat\Testwork\Environment\Environment_Manager;
+use Behat\Testwork\Environment\Handler\Static_Environment_Handler;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
+use Behat\Testwork\Service_Container\Service_Processor;
+use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
 /**
  * Testwork test environment extension.
  *
@@ -28,96 +25,82 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class EnvironmentExtension implements Extension
+final readonly class Environment_Extension implements Extension
 {
     /*
      * Available services
      */
     public const MANAGER_ID = 'environment.manager';
-
     /*
      * Available extension points
      */
     public const HANDLER_TAG = 'environment.handler';
     public const READER_TAG = 'environment.reader';
-
-    private ServiceProcessor $processor;
-
+    private Service_Processor $processor;
     /**
      * Initializes extension.
      */
-    public function __construct(?ServiceProcessor $processor = null)
+    public function __construct(?Service_Processor $processor = null)
     {
-        $this->processor = $processor ?: new ServiceProcessor();
+        $this->processor = $processor ?: new Service_Processor();
     }
-
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'environments';
     }
-
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extension_manager): void
     {
     }
-
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(Array_Node_Definition $builder): void
     {
     }
-
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(Container_Builder $container, array $config): void
     {
-        $this->loadManager($container);
-        $this->loadStaticEnvironmentHandler($container);
+        $this->load_manager($container);
+        $this->load_static_environment_handler($container);
     }
-
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        $this->processHandlers($container);
-        $this->processReaders($container);
+        $this->process_handlers($container);
+        $this->process_readers($container);
     }
-
     /**
      * Loads environment manager.
      */
-    private function loadManager(ContainerBuilder $container): void
+    private function load_manager(Container_Builder $container): void
     {
-        $definition = new Definition(EnvironmentManager::class);
-        $container->setDefinition(self::MANAGER_ID, $definition);
+        $definition = new Definition(Environment_Manager::class);
+        $container->set_definition(self::MANAGER_ID, $definition);
     }
-
     /**
      * Loads static environments handler.
      */
-    private function loadStaticEnvironmentHandler(ContainerBuilder $container): void
+    private function load_static_environment_handler(Container_Builder $container): void
     {
-        $definition = new Definition(StaticEnvironmentHandler::class);
-        $definition->addTag(self::HANDLER_TAG, ['priority' => 0]);
-        $container->setDefinition(self::HANDLER_TAG . '.static', $definition);
+        $definition = new Definition(Static_Environment_Handler::class);
+        $definition->add_tag(self::HANDLER_TAG, ['priority' => 0]);
+        $container->set_definition(self::HANDLER_TAG . '.static', $definition);
     }
-
     /**
      * Processes all environment handlers.
      */
-    private function processHandlers(ContainerBuilder $container): void
+    private function process_handlers(Container_Builder $container): void
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::HANDLER_TAG);
-        $definition = $container->getDefinition(self::MANAGER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::HANDLER_TAG);
+        $definition = $container->get_definition(self::MANAGER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerEnvironmentHandler', [$reference]);
+            $definition->add_method_call('registerEnvironmentHandler', [$reference]);
         }
     }
-
     /**
      * Processes all environment readers.
      */
-    private function processReaders(ContainerBuilder $container): void
+    private function process_readers(Container_Builder $container): void
     {
-        $references = $this->processor->findAndSortTaggedServices($container, self::READER_TAG);
-        $definition = $container->getDefinition(self::MANAGER_ID);
-
+        $references = $this->processor->find_and_sort_tagged_services($container, self::READER_TAG);
+        $definition = $container->get_definition(self::MANAGER_ID);
         foreach ($references as $reference) {
-            $definition->addMethodCall('registerEnvironmentReader', [$reference]);
+            $definition->add_method_call('registerEnvironmentReader', [$reference]);
         }
     }
 }

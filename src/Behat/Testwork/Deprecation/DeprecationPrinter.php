@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,54 +8,39 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Deprecation;
 
-use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Behat\Testwork\Path_Options\Printer\Configurable_Path_Printer;
+use Symfony\Component\Console\Output\Output_Interface;
 /**
  * Prints collected deprecations at the end of the test run.
  */
-final readonly class DeprecationPrinter
+final readonly class Deprecation_Printer
 {
-    public function __construct(
-        private DeprecationCollector $collector,
-        private ConfigurablePathPrinter $pathPrinter,
-    ) {
+    public function __construct(private Deprecation_Collector $collector, private Configurable_Path_Printer $path_printer)
+    {
     }
-
     /**
      * Prints all collected deprecations.
      */
-    public function printDeprecations(OutputInterface $output): void
+    public function print_deprecations(Output_Interface $output): void
     {
-        if (!$this->collector->hasDeprecations()) {
+        if (!$this->collector->has_deprecations()) {
             return;
         }
-
-        $deprecations = $this->collector->getDeprecations();
-        $totalCount = $this->collector->getDeprecationCount();
-        $uniqueCount = count($deprecations);
-
+        $deprecations = $this->collector->get_deprecations();
+        $total_count = $this->collector->get_deprecation_count();
+        $unique_count = count($deprecations);
         $output->writeln('');
-        $output->writeln(sprintf(
-            '<comment>%d deprecation%s triggered (%d unique):</comment>',
-            $totalCount,
-            $totalCount === 1 ? '' : 's',
-            $uniqueCount
-        ));
+        $output->writeln(sprintf('<comment>%d deprecation%s triggered (%d unique):</comment>', $total_count, $total_count === 1 ? '' : 's', $unique_count));
         $output->writeln('');
-
         foreach ($deprecations as $message => $info) {
-            $countText = $info['count'] > 1 ? sprintf(' <comment>(%dx)</comment>', $info['count']) : '';
-            $output->writeln(sprintf('  <comment>⚠</comment> %s%s', $message, $countText));
-
+            $count_text = $info['count'] > 1 ? sprintf(' <comment>(%dx)</comment>', $info['count']) : '';
+            $output->writeln(sprintf('  <comment>⚠</comment> %s%s', $message, $count_text));
             $location = sprintf('%s:%d', $info['file'], $info['line']);
-            $processedLocation = $this->pathPrinter->processPathsInText($location);
-            $output->writeln(sprintf('    <comment>→</comment> %s', $processedLocation));
+            $processed_location = $this->path_printer->process_paths_in_text($location);
+            $output->writeln(sprintf('    <comment>→</comment> %s', $processed_location));
         }
-
         $output->writeln('');
     }
 }

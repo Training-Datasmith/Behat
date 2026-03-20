@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,14 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Testwork\Tester;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\Test_Result;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
-
 /**
  * Prepares and tests provided specification against provided environment.
  *
@@ -24,7 +21,7 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @template TSpec
  */
-interface SpecificationTester
+interface Specification_Tester
 {
     /**
      * Sets up specification for a test.
@@ -34,8 +31,7 @@ interface SpecificationTester
      *
      * @return Setup
      */
-    public function setUp(Environment $env, $spec, $skip);
-
+    public function set_up(Environment $env, $spec, $skip);
     /**
      * Tests provided specification.
      *
@@ -45,7 +41,6 @@ interface SpecificationTester
      * @return TestResult
      */
     public function test(Environment $env, $spec, $skip);
-
     /**
      * Tears down specification after a test.
      *
@@ -54,5 +49,5 @@ interface SpecificationTester
      *
      * @return Teardown
      */
-    public function tearDown(Environment $env, $spec, $skip, TestResult $result);
+    public function tear_down(Environment $env, $spec, $skip, Test_Result $result);
 }

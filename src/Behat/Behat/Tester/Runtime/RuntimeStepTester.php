@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,118 +8,102 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Tester\Runtime;
 
-use Behat\Behat\Definition\Call\DefinitionCall;
-use Behat\Behat\Definition\Call\RuntimeDefinition;
-use Behat\Behat\Definition\DefinitionFinder;
-use Behat\Behat\Definition\Exception\SearchException;
-use Behat\Behat\Definition\SearchResult;
-use Behat\Behat\Definition\Translator\TranslatedDefinition;
-use Behat\Behat\Tester\Result\ExecutedStepResult;
-use Behat\Behat\Tester\Result\FailedStepSearchResult;
-use Behat\Behat\Tester\Result\SkippedStepResult;
-use Behat\Behat\Tester\Result\StepResult;
-use Behat\Behat\Tester\Result\UndefinedStepResult;
-use Behat\Behat\Tester\StepTester;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\StepNode;
-use Behat\Testwork\Call\CallCenter;
+use Behat\Behat\Definition\Call\Definition_Call;
+use Behat\Behat\Definition\Call\Runtime_Definition;
+use Behat\Behat\Definition\Definition_Finder;
+use Behat\Behat\Definition\Exception\Search_Exception;
+use Behat\Behat\Definition\Search_Result;
+use Behat\Behat\Definition\Translator\Translated_Definition;
+use Behat\Behat\Tester\Result\Executed_Step_Result;
+use Behat\Behat\Tester\Result\Failed_Step_Search_Result;
+use Behat\Behat\Tester\Result\Skipped_Step_Result;
+use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Behat\Tester\Result\Undefined_Step_Result;
+use Behat\Behat\Tester\Step_Tester;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Step_Node;
+use Behat\Testwork\Call\Call_Center;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Setup\Setup;
-use Behat\Testwork\Tester\Setup\SuccessfulSetup;
-use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
+use Behat\Testwork\Tester\Setup\Successful_Setup;
+use Behat\Testwork\Tester\Setup\Successful_Teardown;
 use Behat\Testwork\Tester\Setup\Teardown;
-
 /**
  * Tester executing step tests in the runtime.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class RuntimeStepTester implements StepTester
+final readonly class Runtime_Step_Tester implements Step_Tester
 {
     /**
      * Initialize tester.
      */
-    public function __construct(
-        private DefinitionFinder $definitionFinder,
-        private CallCenter $callCenter,
-    ) {
-    }
-
-    public function setUp(Environment $env, FeatureNode $feature, StepNode $step, $skip): Setup
+    public function __construct(private Definition_Finder $definition_finder, private Call_Center $call_center)
     {
-        return new SuccessfulSetup();
     }
-
-    public function test(Environment $env, FeatureNode $feature, StepNode $step, $skip = false): StepResult
+    public function set_up(Environment $env, Feature_Node $feature, Step_Node $step, $skip): Setup
+    {
+        return new Successful_Setup();
+    }
+    public function test(Environment $env, Feature_Node $feature, Step_Node $step, $skip = false): Step_Result
     {
         try {
-            $search = $this->searchDefinition($env, $feature, $step);
-            $result = $this->testDefinition($env, $feature, $step, $search, $skip);
-        } catch (SearchException $exception) {
-            $result = new FailedStepSearchResult($exception);
+            $search = $this->search_definition($env, $feature, $step);
+            $result = $this->test_definition($env, $feature, $step, $search, $skip);
+        } catch (Search_Exception $exception) {
+            $result = new Failed_Step_Search_Result($exception);
         }
-
         return $result;
     }
-
-    public function tearDown(Environment $env, FeatureNode $feature, StepNode $step, $skip, StepResult $result): Teardown
+    public function tear_down(Environment $env, Feature_Node $feature, Step_Node $step, $skip, Step_Result $result): Teardown
     {
-        return new SuccessfulTeardown();
+        return new Successful_Teardown();
     }
-
     /**
      * Searches for a definition.
      *
      * @return SearchResult
      */
-    private function searchDefinition(Environment $env, FeatureNode $feature, StepNode $step)
+    private function search_definition(Environment $env, Feature_Node $feature, Step_Node $step)
     {
-        return $this->definitionFinder->findDefinition($env, $feature, $step);
+        return $this->definition_finder->find_definition($env, $feature, $step);
     }
-
     /**
      * Tests found definition.
      *
      * @param bool      $skip
      */
-    private function testDefinition(Environment $env, FeatureNode $feature, StepNode $step, SearchResult $search, $skip): StepResult
+    private function test_definition(Environment $env, Feature_Node $feature, Step_Node $step, Search_Result $search, $skip): Step_Result
     {
-        if (!$search->hasMatch()) {
-            return new UndefinedStepResult();
+        if (!$search->has_match()) {
+            return new Undefined_Step_Result();
         }
-
-        $definition = $search->getMatchedDefinition();
+        $definition = $search->get_matched_definition();
         // If the definition found is a translated definition, we need to mark the original definition
-        if ($definition instanceof TranslatedDefinition) {
-            $definition = $definition->getOriginalDefinition();
+        if ($definition instanceof Translated_Definition) {
+            $definition = $definition->get_original_definition();
         }
         // If a definition has been found, we mark it as used even if it may be skipped,
         // as we want to count skipped definitions as used
-        if ($definition instanceof RuntimeDefinition) {
-            $definition->markAsUsed();
+        if ($definition instanceof Runtime_Definition) {
+            $definition->mark_as_used();
         }
-
         if ($skip) {
-            return new SkippedStepResult($search);
+            return new Skipped_Step_Result($search);
         }
-
-        $call = $this->createDefinitionCall($env, $feature, $search, $step);
-        $result = $this->callCenter->makeCall($call);
-
-        return new ExecutedStepResult($search, $result);
+        $call = $this->create_definition_call($env, $feature, $search, $step);
+        $result = $this->call_center->make_call($call);
+        return new Executed_Step_Result($search, $result);
     }
-
     /**
      * Creates definition call.
      */
-    private function createDefinitionCall(Environment $env, FeatureNode $feature, SearchResult $search, StepNode $step): DefinitionCall
+    private function create_definition_call(Environment $env, Feature_Node $feature, Search_Result $search, Step_Node $step): Definition_Call
     {
-        $definition = $search->getMatchedDefinition();
-        $arguments = $search->getMatchedArguments();
-
-        return new DefinitionCall($env, $feature, $step, $definition, $arguments);
+        $definition = $search->get_matched_definition();
+        $arguments = $search->get_matched_arguments();
+        return new Definition_Call($env, $feature, $step, $definition, $arguments);
     }
 }

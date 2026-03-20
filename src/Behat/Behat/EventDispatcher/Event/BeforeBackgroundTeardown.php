@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,43 +8,35 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Behat\Behat\Event_Dispatcher\Event;
 
-namespace Behat\Behat\EventDispatcher\Event;
-
-use Behat\Gherkin\Node\BackgroundNode;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface;
+use Behat\Gherkin\Node\Background_Node;
+use Behat\Gherkin\Node\Feature_Node;
+use Behat\Gherkin\Node\Scenario_Like_Interface;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\EventDispatcher\Event\BeforeTeardown;
-use Behat\Testwork\Tester\Result\TestResult;
-
+use Behat\Testwork\Event_Dispatcher\Event\Before_Teardown;
+use Behat\Testwork\Tester\Result\Test_Result;
 /**
  * Represents an event right before background teardown.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class BeforeBackgroundTeardown extends BackgroundTested implements BeforeTeardown
+final class Before_Background_Teardown extends Background_Tested implements Before_Teardown
 {
     /**
      * Initializes event.
      */
-    public function __construct(
-        Environment $env,
-        private readonly FeatureNode $feature,
-        private readonly BackgroundNode $background,
-        private readonly TestResult $result,
-    ) {
+    public function __construct(Environment $env, private readonly Feature_Node $feature, private readonly Background_Node $background, private readonly Test_Result $result)
+    {
         parent::__construct($env);
     }
-
     /**
      * Returns feature.
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function get_feature(): \Behat\Gherkin\Node\Feature_Node
     {
         return $this->feature;
     }
-
     /**
      * Returns scenario node.
      *
@@ -53,23 +44,21 @@ final class BeforeBackgroundTeardown extends BackgroundTested implements BeforeT
      *
      * @return ScenarioLikeInterface
      */
-    public function getScenario(): \Behat\Gherkin\Node\BackgroundNode
+    public function get_scenario(): \Behat\Gherkin\Node\Background_Node
     {
         return $this->background;
     }
-
     /**
      * Returns background node.
      */
-    public function getBackground(): \Behat\Gherkin\Node\BackgroundNode
+    public function get_background(): \Behat\Gherkin\Node\Background_Node
     {
         return $this->background;
     }
-
     /**
      * Returns current test result.
      */
-    public function getTestResult(): \Behat\Testwork\Tester\Result\TestResult
+    public function get_test_result(): \Behat\Testwork\Tester\Result\Test_Result
     {
         return $this->result;
     }

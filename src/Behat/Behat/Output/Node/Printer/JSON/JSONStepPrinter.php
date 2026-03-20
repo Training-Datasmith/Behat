@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,62 +8,44 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Behat\Behat\Output\Node\Printer\JSON;
 
-use Behat\Behat\Output\Node\Printer\StepPrinter;
-use Behat\Behat\Tester\Result\StepResult;
-use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
-use Behat\Gherkin\Node\StepNode;
-use Behat\Testwork\Exception\ExceptionPresenter;
+use Behat\Behat\Output\Node\Printer\Step_Printer;
+use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
+use Behat\Gherkin\Node\Step_Node;
+use Behat\Testwork\Exception\Exception_Presenter;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\JSONOutputPrinter;
-use Behat\Testwork\Tester\Result\ExceptionResult;
-use Behat\Testwork\Tester\Result\TestResult;
-
-final readonly class JSONStepPrinter implements StepPrinter
+use Behat\Testwork\Output\Printer\Json_Output_Printer;
+use Behat\Testwork\Tester\Result\Exception_Result;
+use Behat\Testwork\Tester\Result\Test_Result;
+final readonly class Json_Step_Printer implements Step_Printer
 {
-    public function __construct(
-        private ExceptionPresenter $exceptionPresenter,
-    ) {
+    public function __construct(private Exception_Presenter $exception_presenter)
+    {
     }
-
-    public function printStep(
-        Formatter $formatter,
-        Scenario $scenario,
-        StepNode $step,
-        StepResult $result,
-    ): void {
-        $outputPrinter = $formatter->getOutputPrinter();
-        assert($outputPrinter instanceof JSONOutputPrinter);
-
-        $message = $step->getKeyword() . ' ' . $step->getText();
-
-        if ($result instanceof ExceptionResult && $result->hasException()) {
-            $message .= ': ' . $this->exceptionPresenter->presentException(
-                $result->getException(),
-                applyEditorUrl: false
-            );
+    public function print_step(Formatter $formatter, Scenario $scenario, Step_Node $step, Step_Result $result): void
+    {
+        $output_printer = $formatter->get_output_printer();
+        assert($output_printer instanceof Json_Output_Printer);
+        $message = $step->get_keyword() . ' ' . $step->get_text();
+        if ($result instanceof Exception_Result && $result->has_exception()) {
+            $message .= ': ' . $this->exception_presenter->present_exception($result->get_exception(), applyEditorUrl: false);
         }
-
         $attributes = ['message' => $message];
-
-        $outputPrinter->addCurrentScenarioAttributes(['line' => $step->getLine()]);
-
-        switch ($result->getResultCode()) {
-            case TestResult::FAILED:
+        $output_printer->add_current_scenario_attributes(['line' => $step->get_line()]);
+        switch ($result->get_result_code()) {
+            case Test_Result::FAILED:
                 $attributes['type'] = 'failed';
-                $outputPrinter->addScenarioChild('failures', $attributes);
+                $output_printer->add_scenario_child('failures', $attributes);
                 break;
-
-            case TestResult::PENDING:
+            case Test_Result::PENDING:
                 $attributes['type'] = 'pending';
-                $outputPrinter->addScenarioChild('failures', $attributes);
+                $output_printer->add_scenario_child('failures', $attributes);
                 break;
-
-            case TestResult::UNDEFINED:
+            case Test_Result::UNDEFINED:
                 $attributes['type'] = 'undefined';
-                $outputPrinter->addScenarioChild('failures', $attributes);
+                $output_printer->add_scenario_child('failures', $attributes);
                 break;
         }
     }
