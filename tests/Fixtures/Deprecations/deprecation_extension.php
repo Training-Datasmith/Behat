@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Testwork\Deprecation\Deprecation_Collector;
 use Behat\Testwork\Service_Container\Extension;
 use Behat\Testwork\Service_Container\Extension_Manager;

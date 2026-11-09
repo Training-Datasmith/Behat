@@ -1,0 +1,1369 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Behat\\Behat\\Application_Factory\:\:get_default_formatter_factories\(\) has invalid return type Behat\\Behat\\Formatter_Factory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Application_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Application_Factory\:\:get_default_formatter_factories\(\) should return list\<Behat\\Behat\\Formatter_Factory\> but returns array\{Behat\\Behat\\Output\\Service_Container\\Formatter\\Pretty_Formatter_Factory, Behat\\Behat\\Output\\Service_Container\\Formatter\\Progress_Formatter_Factory, Behat\\Behat\\Output\\Service_Container\\Formatter\\J_Unit_Formatter_Factory, Behat\\Behat\\Output\\Service_Container\\Formatter\\JSON_Formatter_Factory\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Application_Factory.php
+
+		-
+			message: '#^Parameter \#2 \$factories of class Behat\\Testwork\\Output\\Service_Container\\Output_Extension constructor expects array\<Behat\\Testwork\\Output\\Service_Container\\Formatter\\Formatter_Factory\>, list\<Behat\\Behat\\Formatter_Factory\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Application_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Context\\Attribute\\Attribute_Reader\:\:read_callees\(\) has invalid return type Behat\\Behat\\Context\\Attribute\\Runtime_Callee\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Context/Attribute/Attribute_Reader.php
+
+		-
+			message: '#^Method Behat\\Behat\\Context\\Reader\\Attribute_Context_Reader\:\:read_context_callees\(\) has invalid return type Behat\\Behat\\Context\\Reader\\Runtime_Callee\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Context/Reader/Attribute_Context_Reader.php
+
+		-
+			message: '#^Method Behat\\Behat\\Context\\Reader\\Attribute_Context_Reader\:\:read_method_callees\(\) has invalid return type Behat\\Behat\\Context\\Reader\\Runtime_Callee\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Context/Reader/Attribute_Context_Reader.php
+
+		-
+			message: '#^Method Behat\\Behat\\Context\\Reader\\Attribute_Context_Reader\:\:read_parent_callees\(\) has invalid return type Behat\\Behat\\Context\\Reader\\Runtime_Callee\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Context/Reader/Attribute_Context_Reader.php
+
+		-
+			message: '#^Call to method has_match\(\) on an unknown class Behat\\Behat\\Definition\\Search\\Search_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Definition_Finder.php
+
+		-
+			message: '#^Method Behat\\Behat\\Definition\\Definition_Finder\:\:find_definition\(\) should return Behat\\Behat\\Definition\\Search_Result but returns Behat\\Behat\\Definition\\Search\\Search_Result\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Definition/Definition_Finder.php
+
+		-
+			message: '#^Call to method getEndLine\(\) on an unknown class Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Printer/Console_Definition_Information_Printer.php
+
+		-
+			message: '#^Call to method getFileName\(\) on an unknown class Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Printer/Console_Definition_Information_Printer.php
+
+		-
+			message: '#^Call to method getStartLine\(\) on an unknown class Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Printer/Console_Definition_Information_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$function of method Behat\\Testwork\\Argument\\Argument_Organiser\:\:organise_arguments\(\) expects ReflectionFunctionAbstract, Behat\\Testwork\\Call\\ReflectionFunctionAbstract given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Definition/Search/Repository_Search_Engine.php
+
+		-
+			message: '#^Method Behat\\Behat\\Definition\\Search\\Search_Engine\:\:search_definition\(\) has invalid return type Behat\\Behat\\Definition\\Search\\Search_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Search/Search_Engine.php
+
+		-
+			message: '#^Call to an undefined method Behat\\Behat\\Definition\\Translator\\Translator_Interface\:\:get_locale\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Translator/Definition_Translator.php
+
+		-
+			message: '#^Method Behat\\Behat\\Definition\\Translator\\Translated_Definition\:\:get_reflection\(\) has invalid return type Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Definition/Translator/Translated_Definition.php
+
+		-
+			message: '#^PHPDoc tag @return with type Behat\\Gherkin\\Node\\ScenarioLikeInterface is not subtype of native type Behat\\Gherkin\\Node\\BackgroundNode\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/After_Background_Setup.php
+
+		-
+			message: '#^PHPDoc tag @return with type Behat\\Gherkin\\Node\\ScenarioLikeInterface is not subtype of native type Behat\\Gherkin\\Node\\BackgroundNode\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/After_Background_Tested.php
+
+		-
+			message: '#^Method Behat\\Behat\\Event_Dispatcher\\Event\\After_Scenario_Setup\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/After_Scenario_Setup.php
+
+		-
+			message: '#^Method Behat\\Behat\\Event_Dispatcher\\Event\\After_Scenario_Tested\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/After_Scenario_Tested.php
+
+		-
+			message: '#^Call to an undefined method Behat\\Behat\\Event_Dispatcher\\Event\\Background_Tested\:\:getBackground\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/Background_Tested.php
+
+		-
+			message: '#^PHPDoc tag @return with type Behat\\Gherkin\\Node\\ScenarioLikeInterface is not subtype of native type Behat\\Gherkin\\Node\\BackgroundNode\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/Before_Background_Teardown.php
+
+		-
+			message: '#^PHPDoc tag @return with type Behat\\Gherkin\\Node\\ScenarioLikeInterface is not subtype of native type Behat\\Gherkin\\Node\\BackgroundNode\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/Before_Background_Tested.php
+
+		-
+			message: '#^Method Behat\\Behat\\Event_Dispatcher\\Event\\Before_Scenario_Teardown\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/Before_Scenario_Teardown.php
+
+		-
+			message: '#^Method Behat\\Behat\\Event_Dispatcher\\Event\\Before_Scenario_Tested\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Event_Dispatcher/Event/Before_Scenario_Tested.php
+
+		-
+			message: '#^Call to an undefined method Behat\\Behat\\Definition\\Translator\\Translator_Interface\:\:get_locale\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Behat/Behat/Gherkin/Cli/Syntax_Controller.php
+
+		-
+			message: '#^Instantiated class Behat\\Behat\\Gherkin\\Specification\\Locator\\Lazy_Feature_Iterator not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Gherkin/Specification/Locator/Filesystem_Scenarios_List_Locator.php
+
+		-
+			message: '#^Method Behat\\Behat\\Gherkin\\Specification\\Locator\\Filesystem_Scenarios_List_Locator\:\:locate_specifications\(\) should return Behat\\Testwork\\Specification\\Specification_Iterator but returns Behat\\Behat\\Gherkin\\Specification\\Locator\\Lazy_Feature_Iterator\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Gherkin/Specification/Locator/Filesystem_Scenarios_List_Locator.php
+
+		-
+			message: '#^Method Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver_Factory\:\:create_argument_resolvers\(\) should return array\<Behat\\Behat\\Context\\Argument\\Argument_Resolver\> but returns list\<Behat\\Behat\\Helper_Container\\Argument\\Argument_Resolver\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Argument/Services_Resolver_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver_Factory\:\:create_resolvers\(\) has invalid return type Behat\\Behat\\Helper_Container\\Argument\\Argument_Resolver\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Argument/Services_Resolver_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver_Factory\:\:create_resolvers\(\) should return list\<Behat\\Behat\\Helper_Container\\Argument\\Argument_Resolver\> but returns array\{Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver, Behat\\Behat\\Helper_Container\\Argument\\Autowiring_Resolver\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Argument/Services_Resolver_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver_Factory\:\:create_resolvers\(\) should return list\<Behat\\Behat\\Helper_Container\\Argument\\Argument_Resolver\> but returns array\{Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Argument/Services_Resolver_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Helper_Container\\Argument\\Services_Resolver_Factory\:\:generate_argument_resolvers\(\) should return array\<Behat\\Behat\\Context\\Argument\\Argument_Resolver\> but returns list\<Behat\\Behat\\Helper_Container\\Argument\\Argument_Resolver\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Argument/Services_Resolver_Factory.php
+
+		-
+			message: '#^Parameter \#1 \$reflection of method Behat\\Behat\\Helper_Container\\Argument_Autowirer\:\:autowire_arguments\(\) expects ReflectionFunctionAbstract, Behat\\Testwork\\Call\\ReflectionFunctionAbstract given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Call/Filter/Services_Resolver.php
+
+		-
+			message: '#^Parameter \#4 \$definition of class Behat\\Behat\\Definition\\Call\\Definition_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Helper_Container/Call/Filter/Services_Resolver.php
+
+		-
+			message: '#^PHPDoc tag @throws with type Behat\\Behat\\Hook\\Call\\Bad_Callback_Exception is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/Behat/Behat/Hook/Call/Runtime_Feature_Hook.php
+
+		-
+			message: '#^Parameter \#1 \$scenario of method Behat\\Gherkin\\Filter\\NameFilter\:\:isScenarioMatch\(\) expects Behat\\Gherkin\\Node\\ScenarioInterface, Behat\\Gherkin\\Node\\ScenarioLikeInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Hook/Call/Runtime_Scenario_Hook.php
+
+		-
+			message: '#^Parameter \#2 \$scenario of method Behat\\Gherkin\\Filter\\TagFilter\:\:isScenarioMatch\(\) expects Behat\\Gherkin\\Node\\ScenarioInterface, Behat\\Gherkin\\Node\\ScenarioLikeInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Hook/Call/Runtime_Scenario_Hook.php
+
+		-
+			message: '#^Method Behat\\Behat\\Hook\\Context\\Attribute\\Hook_Attribute_Reader\:\:read_callees\(\) has invalid return type Behat\\Behat\\Hook\\Context\\Attribute\\Runtime_Hook\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Hook/Context/Attribute/Hook_Attribute_Reader.php
+
+		-
+			message: '#^Method Behat\\Behat\\Hook\\Context\\Attribute\\Hook_Attribute_Reader\:\:read_callees\(\) should return list\<Behat\\Behat\\Hook\\Context\\Attribute\\Runtime_Hook\> but returns list\<Behat\\Behat\\Hook\\Call\\After_Feature\|Behat\\Behat\\Hook\\Call\\After_Scenario\|Behat\\Behat\\Hook\\Call\\After_Step\|Behat\\Behat\\Hook\\Call\\Before_Feature\|Behat\\Behat\\Hook\\Call\\Before_Scenario\|Behat\\Behat\\Hook\\Call\\Before_Step\|Behat\\Testwork\\Hook\\Call\\After_Suite\|Behat\\Testwork\\Hook\\Call\\Before_Suite\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Hook/Context/Attribute/Hook_Attribute_Reader.php
+
+		-
+			message: '#^PHPDoc tag @var for constant Behat\\Behat\\Hook\\Context\\Attribute\\Hook_Attribute_Reader\:\:KNOWN_ATTRIBUTES with type array\<class\-string\<Behat\\Hook\\Hook\>, class\-string\<Behat\\Behat\\Hook\\Context\\Attribute\\Runtime_Hook\>\> is not subtype of value array\{Behat\\Hook\\After_Feature\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\After_Feature'', Behat\\Hook\\After_Scenario\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\After_Scenario'', Behat\\Hook\\After_Step\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\After_Step'', Behat\\Hook\\Before_Feature\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\Before_Feature'', Behat\\Hook\\Before_Scenario\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\Before_Scenario'', Behat\\Hook\\Before_Step\: ''Behat\\\\Behat\\\\Hook\\\\Call\\\\Before_Step'', Behat\\Hook\\Before_Suite\: ''Behat\\\\Testwork\\\\Hook\\\\Call\\\\Before_Suite'', Behat\\Hook\\After_Suite\: ''Behat\\\\Testwork\\\\Hook\\\\Call\\\\After_Suite''\}\.$#'
+			identifier: classConstant.phpDocType
+			count: 1
+			path: src/Behat/Behat/Hook/Context/Attribute/Hook_Attribute_Reader.php
+
+		-
+			message: '#^Method Behat\\Behat\\Hook\\Scope\\After_Scenario_Scope\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Hook/Scope/After_Scenario_Scope.php
+
+		-
+			message: '#^Method Behat\\Behat\\Hook\\Scope\\Before_Scenario_Scope\:\:get_scenario\(\) should return Behat\\Gherkin\\Node\\ScenarioInterface but returns Behat\\Gherkin\\Node\\ScenarioLikeInterface\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Hook/Scope/Before_Scenario_Scope.php
+
+		-
+			message: '#^Parameter \#4 \$events of method Behat\\Behat\\Output\\Node\\Printer\\Example_Row_Printer\:\:print_example_row\(\) expects array\<Behat\\Behat\\Output\\Node\\Printer\\After_Step_Tested\>, array\<Behat\\Behat\\Event_Dispatcher\\Event\\After_Step_Tested\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Event_Listener/AST/Outline_Table_Listener.php
+
+		-
+			message: '#^Parameter \#4 \$results of method Behat\\Behat\\Output\\Node\\Printer\\Outline_Table_Printer\:\:print_header\(\) expects array\<Behat\\Behat\\Output\\Node\\Printer\\Step_Result\>, array\<Behat\\Behat\\Tester\\Result\\Step_Result\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Event_Listener/AST/Outline_Table_Listener.php
+
+		-
+			message: '#^Parameter \#2 \$result of method Behat\\Behat\\Output\\Node\\Printer\\Scenario_Printer\:\:print_footer\(\) expects Behat\\Testwork\\Tester\\Result\\Test_Result, Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Event_Listener/AST/Scenario_Node_Listener.php
+
+		-
+			message: '#^Parameter \$events of method Behat\\Behat\\Output\\Node\\Printer\\Example_Row_Printer\:\:print_example_row\(\) has invalid type Behat\\Behat\\Output\\Node\\Printer\\After_Step_Tested\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Example_Row_Printer.php
+
+		-
+			message: '#^Call to method create_new_file\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Exercise_Printer.php
+
+		-
+			message: '#^Call to method extend_exercise_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Exercise_Printer.php
+
+		-
+			message: '#^Call to method flush\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Exercise_Printer.php
+
+		-
+			message: '#^Call to method add_feature\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Feature_Printer.php
+
+		-
+			message: '#^Call to method extend_feature_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Feature_Printer.php
+
+		-
+			message: '#^Call to method add_current_scenario_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Scenario_Printer.php
+
+		-
+			message: '#^Call to method add_scenario\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Scenario_Printer.php
+
+		-
+			message: '#^Call to method add_feature_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Setup_Printer.php
+
+		-
+			message: '#^Call to method add_scenario_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Setup_Printer.php
+
+		-
+			message: '#^Call to method add_suite_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Setup_Printer.php
+
+		-
+			message: '#^Call to method add_current_scenario_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Step_Printer.php
+
+		-
+			message: '#^Call to method add_scenario_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Step_Printer.php
+
+		-
+			message: '#^Call to method add_suite\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Suite_Printer.php
+
+		-
+			message: '#^Call to method extend_suite_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/JSON/JSON_Suite_Printer.php
+
+		-
+			message: '#^Call to method add_testsuite\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Feature_Printer.php
+
+		-
+			message: '#^Call to method extend_testsuite_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Feature_Printer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$outputPrinter contains unknown class Behat\\Behat\\Output\\Node\\Printer\\J_Unit\\J_Unit_Output_Printer\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Feature_Printer.php
+
+		-
+			message: '#^Variable \$outputPrinter in PHPDoc tag @var does not match assigned variable \$output_printer\.$#'
+			identifier: varTag.differentVariable
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Feature_Printer.php
+
+		-
+			message: '#^Call to method add_testcase\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Scenario_Printer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$outputPrinter contains unknown class Behat\\Behat\\Output\\Node\\Printer\\J_Unit\\J_Unit_Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Scenario_Printer.php
+
+		-
+			message: '#^Variable \$outputPrinter in PHPDoc tag @var does not match assigned variable \$output_printer\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Scenario_Printer.php
+
+		-
+			message: '#^Call to method add_testcase_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Setup_Printer.php
+
+		-
+			message: '#^Call to method add_current_test_case_attributes\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Step_Printer.php
+
+		-
+			message: '#^Call to method add_testcase_child\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Step_Printer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$outputPrinter contains unknown class Behat\\Behat\\Output\\Node\\Printer\\J_Unit\\J_Unit_Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Step_Printer.php
+
+		-
+			message: '#^Variable \$outputPrinter in PHPDoc tag @var does not match assigned variable \$output_printer\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Step_Printer.php
+
+		-
+			message: '#^Call to method create_new_file\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Suite_Printer.php
+
+		-
+			message: '#^Call to method flush\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Suite_Printer.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$outputPrinter contains unknown class Behat\\Behat\\Output\\Node\\Printer\\J_Unit\\J_Unit_Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Suite_Printer.php
+
+		-
+			message: '#^Variable \$outputPrinter in PHPDoc tag @var does not match assigned variable \$output_printer\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Suite_Printer.php
+
+		-
+			message: '#^Call to an undefined method Behat\\Behat\\Output\\Statistics\\Step_Stat\:\:getText\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/List_Printer.php
+
+		-
+			message: '#^Parameter \$results of method Behat\\Behat\\Output\\Node\\Printer\\Outline_Table_Printer\:\:print_header\(\) has invalid type Behat\\Behat\\Output\\Node\\Printer\\Step_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Example_Printer\:\:print_title\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Printer.php
+
+		-
+			message: '#^Call to method get_exception\(\) on an unknown class Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Call to method has_exception\(\) on an unknown class Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Example_Row_Printer\:\:print_step_exceptions_and_std_out\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$result of method Behat\\Behat\\Output\\Node\\Printer\\Helper\\Result_To_String_Converter\:\:convert_result_to_string\(\) expects Behat\\Testwork\\Tester\\Result\\Test_Result, Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Parameter \#2 \$events of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Example_Row_Printer\:\:print_step_exceptions_and_std_out\(\) expects array\<Behat\\Testwork\\Event_Dispatcher\\Event\\After_Tested\>, array\<Behat\\Behat\\Output\\Node\\Printer\\After_Step_Tested\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Parameter \$events of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Example_Row_Printer\:\:print_example_row\(\) has invalid type Behat\\Behat\\Output\\Node\\Printer\\After_Step_Tested\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Example_Row_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Feature_Printer\:\:print_description\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Feature_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Feature_Printer\:\:print_tags\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Feature_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Feature_Printer\:\:print_title\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Feature_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Outline_Printer\:\:print_examples_table_header\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Outline_Table_Printer\:\:print_examples_table_header\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \#4 \$result of method Behat\\Behat\\Output\\Node\\Printer\\Step_Printer\:\:print_step\(\) expects Behat\\Behat\\Tester\\Result\\Step_Result, Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Step_Result given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \#4 \$results of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Outline_Table_Printer\:\:print_examples_steps\(\) expects array\<Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Step_Result\>, array\<Behat\\Behat\\Output\\Node\\Printer\\Step_Result\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \$results of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Outline_Table_Printer\:\:print_examples_steps\(\) has invalid type Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Step_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Parameter \$results of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Outline_Table_Printer\:\:print_header\(\) has invalid type Behat\\Behat\\Output\\Node\\Printer\\Step_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Outline_Table_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Path_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Path_Printer\:\:print_defined_step_path\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Path_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Scenario_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Scenario_Printer\:\:print_description\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Scenario_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Scenario_Printer\:\:print_keyword\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Scenario_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Scenario_Printer\:\:print_tags\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Scenario_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Scenario_Printer\:\:print_title\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Scenario_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Setup_Printer\:\:print_setup_hook_call_result\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Setup_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Setup_Printer\:\:print_teardown_hook_call_result\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Setup_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Skipped_Step_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Skipped_Step_Printer\:\:print_text\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Skipped_Step_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Counter_Printer\:\:print_counters\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_failed_hooks_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_scenarios_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_step_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Statistics_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Step_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Step_Printer\:\:print_exception\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Step_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Step_Printer\:\:print_std_out\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Step_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Pretty\\Pretty_Step_Printer\:\:print_text\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Pretty/Pretty_Step_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Counter_Printer\:\:print_counters\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_failed_hooks_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_scenarios_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Statistics_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\List_Printer\:\:print_step_list\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Statistics_Printer.php
+
+		-
+			message: '#^Call to method write\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 5
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Step_Printer.php
+
+		-
+			message: '#^Call to method writeln\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Step_Printer.php
+
+		-
+			message: '#^Parameter \#1 \$printer of method Behat\\Behat\\Output\\Node\\Printer\\Progress\\Progress_Step_Printer\:\:print_std_out\(\) expects Behat\\Testwork\\Output\\Printer\\Output_Printer, Behat\\Testwork\\Output\\Output_Printer given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Output/Node/Printer/Progress/Progress_Step_Printer.php
+
+		-
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
+			count: 1
+			path: src/Behat/Behat/Output/Statistics/Scenario_Stat.php
+
+		-
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
+			count: 1
+			path: src/Behat/Behat/Output/Statistics/Step_Stat.php
+
+		-
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
+			count: 1
+			path: src/Behat/Behat/Output/Statistics/Step_Stat_V2.php
+
+		-
+			message: '#^Parameter \#1 \$exceptions of method Behat\\Behat\\Snippet\\Printer\\Console_Snippet_Printer\:\:print_snippet_generation_failures\(\) expects array\<Behat\\Behat\\Snippet\\Printer\\Cannot_Generate_Step_Pattern_Exception\>, list\<Behat\\Behat\\Context\\Snippet\\Generator\\Cannot_Generate_Step_Pattern_Exception\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Snippet/Cli/Snippets_Controller.php
+
+		-
+			message: '#^PHPDoc tag @throws with type Behat\\Behat\\Snippet\\Generator\\Cannot_Generate_Step_Pattern_Exception is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/Behat/Behat/Snippet/Generator/Snippet_Generator.php
+
+		-
+			message: '#^Access to property \$step_text on an unknown class Behat\\Behat\\Snippet\\Printer\\Cannot_Generate_Step_Pattern_Exception\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Console_Snippet_Printer.php
+
+		-
+			message: '#^Call to method get_snippet\(\) on an unknown class Behat\\Behat\\Snippet\\Printer\\Aggregate_Snippet\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Console_Snippet_Printer.php
+
+		-
+			message: '#^Call to method get_used_classes\(\) on an unknown class Behat\\Behat\\Snippet\\Printer\\Aggregate_Snippet\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Console_Snippet_Printer.php
+
+		-
+			message: '#^Parameter \$exceptions of method Behat\\Behat\\Snippet\\Printer\\Console_Snippet_Printer\:\:print_snippet_generation_failures\(\) has invalid type Behat\\Behat\\Snippet\\Printer\\Cannot_Generate_Step_Pattern_Exception\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Console_Snippet_Printer.php
+
+		-
+			message: '#^Parameter \$snippets of method Behat\\Behat\\Snippet\\Printer\\Console_Snippet_Printer\:\:print_snippets\(\) has invalid type Behat\\Behat\\Snippet\\Printer\\Aggregate_Snippet\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Console_Snippet_Printer.php
+
+		-
+			message: '#^Parameter \$snippets of method Behat\\Behat\\Snippet\\Printer\\Snippet_Printer\:\:print_snippets\(\) has invalid type Behat\\Behat\\Snippet\\Printer\\Aggregate_Snippet\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Snippet/Printer/Snippet_Printer.php
+
+		-
+			message: '#^Parameter \#2 \$snippets of method Behat\\Behat\\Snippet\\Printer\\Snippet_Printer\:\:print_snippets\(\) expects array\<Behat\\Behat\\Snippet\\Printer\\Aggregate_Snippet\>, list\<Behat\\Behat\\Snippet\\Aggregate_Snippet\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Snippet/Snippet_Writer.php
+
+		-
+			message: '#^Parameter \#1 \$results of class Behat\\Testwork\\Tester\\Result\\Test_Results constructor expects array\<Behat\\Testwork\\Tester\\Result\\Test_Result\>, list\<Behat\\Behat\\Tester\\Test_Result\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Tester/Runtime/Runtime_Background_Tester.php
+
+		-
+			message: '#^Method Behat\\Behat\\Tester\\Step_Container_Tester\:\:test\(\) has invalid return type Behat\\Behat\\Tester\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Tester/Step_Container_Tester.php
+
+		-
+			message: '#^Method Behat\\Behat\\Tester\\Step_Container_Tester\:\:test\(\) should return list\<Behat\\Behat\\Tester\\Test_Result\> but returns list\<Behat\\Testwork\\Tester\\Result\\Test_With_Setup_Result\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Tester/Step_Container_Tester.php
+
+		-
+			message: '#^Parameter \#4 \$definition of class Behat\\Behat\\Definition\\Call\\Definition_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Call/Filter/Definition_Arguments_Transformer.php
+
+		-
+			message: '#^Call to an undefined static method Behat\\Behat\\Transformation\\Context\\Factory\\Simple_Argument_Transformation\:\:supports_pattern_and_method\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Behat/Behat/Transformation/Context/Factory/Transformation_Callee_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Transformation\\Context\\Factory\\Transformation_Callee_Factory\:\:create\(\) should return Behat\\Behat\\Transformation\\Transformation but returns Behat\\Behat\\Transformation\\Context\\Factory\\Simple_Argument_Transformation\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Context/Factory/Transformation_Callee_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Transformation\\Context\\Factory\\Transformation_Callee_Factory\:\:simple_transformations\(\) has invalid return type Behat\\Behat\\Transformation\\Context\\Factory\\Simple_Argument_Transformation\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Transformation/Context/Factory/Transformation_Callee_Factory.php
+
+		-
+			message: '#^Method Behat\\Behat\\Transformation\\Context\\Factory\\Transformation_Callee_Factory\:\:simple_transformations\(\) should return list\<class\-string\<Behat\\Behat\\Transformation\\Context\\Factory\\Simple_Argument_Transformation\>\> but returns array\{''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Row_Based_Table_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Column_Based_Table_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Table_Row_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Table_Column_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Token_Name_And_Return_Type_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Return_Type_Transformation'', ''Behat\\\\Behat\\\\Transformation\\\\Transformation\\\\Token_Name_Transformation''\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Context/Factory/Transformation_Callee_Factory.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Column_Based_Table_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Pattern_Transformation.php
+
+		-
+			message: '#^Call to method getParameters\(\) on an unknown class Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Return_Type_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Return_Type_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Row_Based_Table_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Table_Column_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Table_Row_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Token_Name_And_Return_Type_Transformation.php
+
+		-
+			message: '#^Parameter \#2 \$definition of class Behat\\Behat\\Transformation\\Call\\Transformation_Call constructor expects Behat\\Behat\\Definition\\Definition, Behat\\Testwork\\Call\\Callee given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Behat/Transformation/Transformation/Token_Name_Transformation.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$predicate with type callable is not subtype of native type Closure\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Behat/Testwork/Argument/Mixed_Argument_Organiser.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Call_Center\:\:handle_call\(\) should return Behat\\Testwork\\Call\\Call_Result but returns Behat\\Testwork\\Call\\Handler\\Call_Result\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Testwork/Call/Call_Center.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Callee\:\:get_reflection\(\) has invalid return type Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Call/Callee.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Handler\\Call_Handler\:\:handle_call\(\) has invalid return type Behat\\Testwork\\Call\\Handler\\Call_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Call/Handler/Call_Handler.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Handler\\Runtime_Call_Handler\:\:handle_call\(\) has invalid return type Behat\\Testwork\\Call\\Handler\\Call_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Handler\\Runtime_Call_Handler\:\:handle_call\(\) should return Behat\\Testwork\\Call\\Handler\\Call_Result but returns Behat\\Testwork\\Call\\Call_Result\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php
+
+		-
+			message: '#^Parameter \#1 \$function of method Behat\\Testwork\\Argument\\Validator\:\:validate_arguments\(\) expects ReflectionFunctionAbstract, Behat\\Testwork\\Call\\ReflectionFunctionAbstract given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Call\\Runtime_Callee\:\:get_reflection\(\) has invalid return type Behat\\Testwork\\Call\\ReflectionFunctionAbstract\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Call/Runtime_Callee.php
+
+		-
+			message: '#^PHPDoc tag @return with type Behat\\Testwork\\Call\\ReflectionFunctionAbstract is not subtype of native type ReflectionFunction\|ReflectionMethod\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Testwork/Call/Runtime_Callee.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Counter\\Timer\:\:get_time\(\) never returns int so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Behat/Testwork/Counter/Timer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\After_Exercise_Aborted\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/After_Exercise_Aborted.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\After_Exercise_Completed\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/After_Exercise_Completed.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\After_Exercise_Setup\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/After_Exercise_Setup.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\After_Tested\:\:get_test_result\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/After_Tested.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\Before_Exercise_Completed\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/Before_Exercise_Completed.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\Before_Exercise_Teardown\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/Before_Exercise_Teardown.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\Before_Teardown\:\:get_test_result\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/Before_Teardown.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\Exercise_Completed\:\:get_specification_iterators\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/Exercise_Completed.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Event_Dispatcher\\Event\\Suite_Tested\:\:get_specification_iterator\(\) has invalid return type Behat\\Testwork\\Event_Dispatcher\\Event\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Event/Suite_Tested.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Event_Dispatcher\\Tester\\Event_Dispatching_Exercise\:\:set_up\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Tester/Event_Dispatching_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Event_Dispatcher\\Tester\\Event_Dispatching_Exercise\:\:tear_down\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Tester/Event_Dispatching_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Event_Dispatcher\\Tester\\Event_Dispatching_Exercise\:\:test\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Event_Dispatcher/Tester/Event_Dispatching_Exercise.php
+
+		-
+			message: '#^PHPDoc tag @throws with type Behat\\Testwork\\Hook\\Call\\Bad_Callback_Exception is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/Behat/Testwork/Hook/Call/Runtime_Suite_Hook.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Hook\\Hook_Dispatcher\:\:dispatch_hook\(\) has invalid return type Behat\\Testwork\\Hook\\Call_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Hook/Hook_Dispatcher.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Hook\\Hook_Dispatcher\:\:dispatch_hook\(\) should return Behat\\Testwork\\Hook\\Call_Result but returns Behat\\Testwork\\Call\\Call_Result\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Testwork/Hook/Hook_Dispatcher.php
+
+		-
+			message: '#^Parameter \#1 \$results of class Behat\\Testwork\\Call\\Call_Results constructor expects array\<Behat\\Testwork\\Call\\Call_Result\>, list\<Behat\\Testwork\\Hook\\Call_Result\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Behat/Testwork/Hook/Hook_Dispatcher.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Hook\\Scope\\After_Test_Scope\:\:get_test_result\(\) has invalid return type Behat\\Testwork\\Hook\\Scope\\Test_Result\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Hook/Scope/After_Test_Scope.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Hook\\Scope\\Suite_Scope\:\:get_specification_iterator\(\) has invalid return type Behat\\Testwork\\Hook\\Scope\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Hook/Scope/Suite_Scope.php
+
+		-
+			message: '#^PHPDoc tag @return with type int\|null is not subtype of native type null\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Behat/Testwork/Ordering/Cli/Order_Controller.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:order\(\) has invalid return type Behat\\Testwork\\Ordering\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:order\(\) has invalid type Behat\\Testwork\\Ordering\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:set_up\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:tear_down\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:test\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Property Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:\$ordered has unknown class Behat\\Testwork\\Ordering\\Specification_Iterator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Property Behat\\Testwork\\Ordering\\Ordered_Exercise\:\:\$unordered has unknown class Behat\\Testwork\\Ordering\\Specification_Iterator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Ordered_Exercise.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Noop_Orderer\:\:order\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Noop_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Orderer\:\:order\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Orderer\:\:order\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Random_Orderer\:\:order\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Random_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Random_Orderer\:\:order_features\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Random_Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Random_Orderer\:\:order\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Random_Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Random_Orderer\:\:order_features\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Random_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order_features\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order_suites\(\) has invalid return type Behat\\Testwork\\Ordering\\Orderer\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order_features\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Template type T of method Behat\\Testwork\\Ordering\\Orderer\\Reverse_Orderer\:\:order_suites\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Ordering/Orderer/Reverse_Orderer.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Output\\Formatter\:\:get_output_printer\(\) has invalid return type Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Formatter.php
+
+		-
+			message: '#^Call to an undefined method Behat\\Testwork\\Event\\Event\:\:get_name\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Node_Event_Listening_Formatter.php
+
+		-
+			message: '#^Call to method set_output_decorated\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Output_Manager.php
+
+		-
+			message: '#^Call to method set_output_path\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Output_Manager.php
+
+		-
+			message: '#^Call to method set_output_styles\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Output_Manager.php
+
+		-
+			message: '#^Call to method set_output_verbosity\(\) on an unknown class Behat\\Testwork\\Output\\Output_Printer\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Output_Manager.php
+
+		-
+			message: '#^Instantiated class Behat\\Testwork\\Output\\Printer\\Factory\\Output_Formatter not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Printer/Factory/Console_Output_Factory.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Output\\Printer\\Factory\\Console_Output_Factory\:\:create_output_formatter\(\) should return Symfony\\Component\\Console\\Formatter\\OutputFormatter but returns Behat\\Testwork\\Output\\Printer\\Factory\\Output_Formatter\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Testwork/Output/Printer/Factory/Console_Output_Factory.php
+
+		-
+			message: '#^Access to an undefined property DOMDocument\:\:\$format_output\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Behat/Testwork/Output/Printer/J_Unit_Output_Printer.php
+
+		-
+			message: '#^Variable \$rootNode in PHPDoc tag @var does not match assigned variable \$root_node\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: src/Behat/Testwork/Service_Container/Configuration/Configuration_Tree.php
+
+		-
+			message: '#^PHPDoc tag @var for property Behat\\Testwork\\Service_Container\\Extension_Manager\:\:\$located_extensions with type Behat\\Testwork\\Service_Container\\Extension\[string\] is not subtype of native type array\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Behat/Testwork/Service_Container/Extension_Manager.php
+
+		-
+			message: '#^Template type TSpec of method Behat\\Testwork\\Specification\\Grouped_Specification_Iterator\:\:group\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Behat/Testwork/Specification/Grouped_Specification_Iterator.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Specification\\Locator\\Specification_Locator\:\:locate_specifications\(\) has invalid return type Behat\\Testwork\\Specification\\Locator\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Specification/Locator/Specification_Locator.php
+
+		-
+			message: '#^Template type T is declared as covariant, but occurs in invariant position in return type of method Behat\\Testwork\\Specification\\Locator\\Specification_Locator\:\:locate_specifications\(\)\.$#'
+			identifier: generics.variance
+			count: 1
+			path: src/Behat/Testwork/Specification/Locator/Specification_Locator.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Tester\\Cli\\Exercise_Controller\:\:find_specifications\(\) has invalid return type Behat\\Testwork\\Tester\\Cli\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Cli/Exercise_Controller.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Tester\\Cli\\Exercise_Controller\:\:find_suites_specifications\(\) has invalid return type Behat\\Testwork\\Tester\\Cli\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Cli/Exercise_Controller.php
+
+		-
+			message: '#^Method Behat\\Testwork\\Tester\\Cli\\Exercise_Controller\:\:find_suites_specifications\(\) should return array\<Behat\\Testwork\\Tester\\Cli\\Specification_Iterator\> but returns list\<Behat\\Testwork\\Specification\\Specification_Iterator\<mixed\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Behat/Testwork/Tester/Cli/Exercise_Controller.php
+
+		-
+			message: '#^Parameter \$specifications of method Behat\\Testwork\\Tester\\Cli\\Exercise_Controller\:\:test_specifications\(\) has invalid type Behat\\Testwork\\Tester\\Cli\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Cli/Exercise_Controller.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Exercise\:\:set_up\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Exercise\:\:tear_down\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Exercise\:\:test\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Runtime\\Runtime_Exercise\:\:set_up\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Runtime/Runtime_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Runtime\\Runtime_Exercise\:\:tear_down\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Runtime/Runtime_Exercise.php
+
+		-
+			message: '#^Parameter \$iterators of method Behat\\Testwork\\Tester\\Runtime\\Runtime_Exercise\:\:test\(\) has invalid type Behat\\Testwork\\Tester\\Specification_Iterator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Behat/Testwork/Tester/Runtime/Runtime_Exercise.php

@@ -110,8 +110,8 @@ final class Config_Converter_Tools_Test extends TestCase
      */
     public function testCanRemoveDefaultArgumentsFromMethodCalls(string $class, string $method, array $args, string $expect): void
     {
-        $expr = Config_Converter_Tools::createObject($class);
-        $expr = Config_Converter_Tools::addMethodCall($class, $method, $args, $expr);
+        $expr = Config_Converter_Tools::create_object($class);
+        $expr = Config_Converter_Tools::add_method_call($class, $method, $args, $expr);
         $printer = new Standard();
         $code = str_replace('\\' . $class, '%CLASS%', $printer->prettyPrintExpr($expr));
         $this->assertSame($expect, $code);
@@ -158,9 +158,9 @@ final class Config_Converter_Tools_Test extends TestCase
      */
     public function testAddMethodCallValidatesInput(string $class, string $method, array $args, string $expect): void
     {
-        $expr = Config_Converter_Tools::createObject($class);
+        $expr = Config_Converter_Tools::create_object($class);
         $this->expectExceptionMessage($expect);
-        Config_Converter_Tools::addMethodCall($class, $method, $args, $expr);
+        Config_Converter_Tools::add_method_call($class, $method, $args, $expr);
     }
 
     public static function providerErrorReportingToConstants(): array
@@ -228,11 +228,11 @@ final class Config_Converter_Tools_Test extends TestCase
     public function testErrorReportingToConstants(mixed $reporting, string $expect): void
     {
         // Can be used with any method, but might as well test with the one that has the expected signature
-        $expr = Config_Converter_Tools::createObject(Tester_Options::class);
-        $expr = Config_Converter_Tools::addMethodCall(
+        $expr = Config_Converter_Tools::create_object(Tester_Options::class);
+        $expr = Config_Converter_Tools::add_method_call(
             Tester_Options::class,
             'withErrorReporting',
-            [Config_Converter_Tools::errorReportingToConstants($reporting)],
+            [Config_Converter_Tools::error_reporting_to_constants($reporting)],
             $expr,
         );
 

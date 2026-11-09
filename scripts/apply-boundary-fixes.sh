@@ -39,6 +39,31 @@ perl -pi -e '
   s/->get_node\(\)/->getNode()/g;
 ' src/Behat/Config/Converter/Config_Converter_Tools.php
 
+grep -q 'use PhpParser\\Node\\Name\\FullyQualified' src/Behat/Config/Converter/Config_Converter_Tools.php || \
+  perl -pi -e 's/use PhpParser\\Node\\Expr\\New_;/use PhpParser\\Node\\Expr\\New_;\nuse PhpParser\\Node\\Name\\FullyQualified;/' \
+    src/Behat/Config/Converter/Config_Converter_Tools.php
+
+# find_class_file path resolution is maintained in Suite_With_Contexts_Setup.php (PSR-4 empty prefix + flat Studly_Snake files).
+
+perl -0777 -pi -e 's/use Symfony\\\\Contracts\\\\Translation\\\\TranslatorInterface;\n\n/\n/s; s/extends TranslatorInterface/extends \\\\Symfony\\\\Contracts\\\\Translation\\\\TranslatorInterface/' \
+  src/Behat/Behat/Definition/Translator/Translator_Interface.php
+
+perl -pi -e '
+  s/\$scenario->getTitle\(\)/\$scenario->getName()/g;
+' \
+  src/Behat/Behat/Output/Node/Printer/JSON/JSON_Scenario_Printer.php \
+  src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Scenario_Printer.php
+
+perl -pi -e '
+  s/\@Before_Feature/\@BeforeFeature/g;
+  s/\@After_Feature/\@AfterFeature/g;
+  s/\@Before_Scenario/\@BeforeScenario/g;
+  s/\@After_Scenario/\@AfterScenario/g;
+  s/\@Before_Step/\@BeforeStep/g;
+  s/\@After_Step/\@AfterStep/g;
+' tests/Fixtures/Hooks/features/bootstrap/Feature_Context_Annotations.php
+
+
 perl -pi -e '
   s/public function enter_node/public function enterNode/;
   s/->to_string\(\)/->toString()/g;

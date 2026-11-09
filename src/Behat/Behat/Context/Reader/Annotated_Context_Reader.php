@@ -135,7 +135,7 @@ final class Annotated_Context_Reader implements Context_Reader
      */
     private function is_empty(string $doc_line): bool
     {
-        return '' == $doc_line;
+        return '' === $doc_line;
     }
 
     /**

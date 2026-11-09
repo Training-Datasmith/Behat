@@ -1,3 +1,6 @@
+includes:
+    - phpstan-baseline.neon
+
 parameters:
     level: 5
     paths:
@@ -6,14 +9,12 @@ parameters:
         -
             identifier: class.notFound
             paths:
-                - src/Behat/Testwork/Exception/Stringer/PHPUnitExceptionStringer.php
+                - src/Behat/Testwork/Exception/Stringer/PHP_Unit_Exception_Stringer.php
         -
             identifier: constructor.unusedParameter
             paths:
-                - src/Behat/Behat/Definition/Printer/ConsoleDefinitionPrinter.php
-                - src/Behat/Behat/EventDispatcher/Cli/StopOnFailureController.php
-                - src/Behat/Behat/Output/Node/Printer/JUnit/JUnitScenarioPrinter.php
-                - src/Behat/Behat/Output/Node/Printer/ListPrinter.php
-                - src/Behat/Behat/Tester/Runtime/RuntimeFeatureTester.php
-                - src/Behat/Behat/Transformation/Transformation/ReturnTypeTransformation.php
-                - src/Behat/Testwork/Ordering/Cli/OrderController.php
+                - src/Behat/Behat/Definition/Printer/Console_Definition_Printer.php
+                - src/Behat/Behat/Output/Node/Printer/J_Unit/J_Unit_Scenario_Printer.php
+                - src/Behat/Behat/Output/Node/Printer/List_Printer.php
+                - src/Behat/Behat/Transformation/Transformation/Return_Type_Transformation.php
+                - src/Behat/Testwork/Ordering/Cli/Order_Controller.php

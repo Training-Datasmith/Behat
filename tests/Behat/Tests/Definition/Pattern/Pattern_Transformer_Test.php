@@ -17,9 +17,9 @@ class Pattern_Transformer_Test extends TestCase
     public function testTransformPatternToRegexCache(): void
     {
         $policy = $this->createStub(Pattern_Policy::class);
-        $policy->method('supportsPattern')
+        $policy->method('supports_pattern')
             ->willReturn(true);
-        $policy->method('transformPatternToRegex')
+        $policy->method('transform_pattern_to_regex')
             ->will($this->returnValueMap([
                 ['hello world', '/hello world/'],
                 ['hi world', '/hi world/'],
@@ -41,16 +41,16 @@ class Pattern_Transformer_Test extends TestCase
     {
         // first pattern
         $policy1 = $this->createMock(Pattern_Policy::class);
-        $policy1->method('supportsPattern')->willReturn(true);
+        $policy1->method('supports_pattern')->willReturn(true);
         $policy1->expects($this->exactly(2))
-            ->method('transformPatternToRegex')
+            ->method('transform_pattern_to_regex')
             ->with($this->equalTo('hello world'))
             ->willReturn('/hello world/');
 
         // second pattern
         $policy2 = $this->createMock(Pattern_Policy::class);
-        $policy2->expects($this->never())->method('supportsPattern');
-        $policy2->expects($this->never())->method('transformPatternToRegex');
+        $policy2->expects($this->never())->method('supports_pattern');
+        $policy2->expects($this->never())->method('transform_pattern_to_regex');
 
         $testedInstance = new Pattern_Transformer();
         $testedInstance->register_pattern_policy($policy1);
@@ -68,11 +68,11 @@ class Pattern_Transformer_Test extends TestCase
     public function testTransformPatternToRegexNoMatch(): void
     {
         $policy = $this->createMock(Pattern_Policy::class);
-        $policy->method('supportsPattern')
+        $policy->method('supports_pattern')
             ->with($this->equalTo('hello world'))
             ->willReturn(false);
         $policy->expects($this->never())
-            ->method('transformPatternToRegex');
+            ->method('transform_pattern_to_regex');
 
         $testedInstance = new Pattern_Transformer();
         $testedInstance->register_pattern_policy($policy);

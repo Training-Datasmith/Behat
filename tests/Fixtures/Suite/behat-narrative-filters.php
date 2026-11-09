@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Config\Config;
 use Behat\Config\Filter\Narrative_Filter;
 use Behat\Config\Profile;

@@ -42,7 +42,7 @@ final readonly class J_Unit_Scenario_Printer
     public function print_open_tag(Formatter $formatter, FeatureNode $feature, ScenarioLikeInterface $scenario, Test_Result $result, ?string $file = null): void
     {
         assert($scenario instanceof NamedScenarioInterface);
-        $name = implode(' ', array_map(trim(...), explode("\n", $scenario->getTitle() ?? '')));
+        $name = implode(' ', array_map(trim(...), explode("\n", $scenario->getName() ?? '')));
         /** @var J_Unit_Output_Printer $outputPrinter */
         $output_printer = $formatter->get_output_printer();
         $test_case_attributes = ['name' => $name, 'classname' => $feature->getTitle(), 'status' => $this->result_converter->convert_result_to_string($result)];

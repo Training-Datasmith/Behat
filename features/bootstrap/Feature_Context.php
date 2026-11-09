@@ -364,7 +364,7 @@ EOL;
         $path = $this->workingDir . '/' . $path;
         Assert::assertFileExists($path);
 
-        $fileContent = trim(file_get_contents($path));
+        $fileContent = trim((string) file_get_contents($path));
         // Normalize the line endings in the output
         if ("\n" !== PHP_EOL) {
             $fileContent = str_replace(PHP_EOL, "\n", $fileContent);
@@ -379,13 +379,13 @@ EOL;
         $path = $this->workingDir.'/'.$path;
         Assert::assertFileExists($path);
 
-        $fileContent = trim(file_get_contents($path));
+        $fileContent = trim((string) file_get_contents($path));
         // Normalize the line endings in the output
         if ("\n" !== PHP_EOL) {
             $fileContent = str_replace(PHP_EOL, "\n", $fileContent);
         }
 
-        Assert::assertEquals($text, $fileContent);
+        Assert::assertEquals((string) $text, $fileContent);
     }
 
     #[Then(':path file should contain text:')]
@@ -513,19 +513,25 @@ EOL;
     {
         Assert::assertFileExists($path);
 
-        $fileContent = trim(file_get_contents($path));
+        $fileContent = trim((string) file_get_contents($path));
 
         $fileContent = preg_replace('/time="\d\.\d{3}"/U', 'time="-IGNORE-VALUE-"', $fileContent);
 
         $fileContent = $this->normalizePhpFileLineNumbers((string) $fileContent);
 
+        $fileDom = new DOMDocument();
+        $fileDom->loadXML($fileContent);
+        $fileDom->formatOutput = true;
+        $fileContent = trim($fileDom->saveXML(null, LIBXML_NOEMPTYTAG));
+
+        $expected = (string) $text;
         // The placeholder is necessary because of different separators on Unix and Windows environments
-        $text = str_replace('-DIRECTORY-SEPARATOR-', DIRECTORY_SEPARATOR, $text);
+        $expected = str_replace('-DIRECTORY-SEPARATOR-', DIRECTORY_SEPARATOR, $expected);
         // used for absolute paths
-        $text = str_replace('%%WORKING_DIR%%', realpath($this->workingDir . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $text);
+        $expected = str_replace('%%WORKING_DIR%%', realpath($this->workingDir . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $expected);
 
         $dom = new DOMDocument();
-        $dom->loadXML($text);
+        $dom->loadXML($expected);
         $dom->formatOutput = true;
 
         Assert::assertEquals(trim($dom->saveXML(null, LIBXML_NOEMPTYTAG)), $fileContent);
@@ -535,7 +541,7 @@ EOL;
     {
         Assert::assertFileExists($path);
 
-        $fileContent = trim(file_get_contents($path));
+        $fileContent = trim((string) file_get_contents($path));
 
         $data = json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 
@@ -545,20 +551,21 @@ EOL;
 
         $fileContent = $this->normalizePhpFileLineNumbers((string) $fileContent);
 
-        $text = str_replace(
+        $expected = (string) $text;
+        $expected = str_replace(
             '-DIRECTORY-SEPARATOR-',
             // use the correct representation of directory separators in json for each OS
             trim(json_encode(DIRECTORY_SEPARATOR, JSON_UNESCAPED_SLASHES), '"'),
-            $text
+            $expected
         );
         // used for absolute paths
-        $text = str_replace(
+        $expected = str_replace(
             '%%WORKING_DIR%%',
             trim(json_encode(realpath($this->workingDir . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, JSON_UNESCAPED_SLASHES), '"'),
-            $text
+            $expected
         );
 
-        Assert::assertEquals($text, $fileContent);
+        Assert::assertEquals($expected, $fileContent);
     }
 
     private function getExpectedOutput(PyStringNode $expectedText): string

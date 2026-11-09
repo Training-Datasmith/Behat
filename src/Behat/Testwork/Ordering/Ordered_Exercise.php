@@ -27,7 +27,7 @@ use Behat\Testwork\Tester\Result\Test_Result;
  */
 final class Ordered_Exercise implements Exercise
 {
-    private \Behat\Testwork\Ordering\Orderer\Noop_Orderer|Orderer $orderer;
+    private Noop_Orderer|Orderer $orderer;
     /**
      * @var Specification_Iterator<TSpec>[]|null
      */

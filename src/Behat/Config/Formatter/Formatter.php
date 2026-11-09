@@ -58,6 +58,38 @@ class Formatter implements Formatter_Config_Interface, Config_Converter_Interfac
         return $this;
     }
 
+    /**
+     * @deprecated use with_output_verbosity() instead
+     */
+    public function withOutputVerbosity(int $level): self
+    {
+        return $this->with_output_verbosity($level);
+    }
+
+    /**
+     * @deprecated use with_output_path() instead
+     */
+    public function withOutputPath(string $path): self
+    {
+        return $this->with_output_path($path);
+    }
+
+    /**
+     * @deprecated use with_output_decorated() instead
+     */
+    public function withOutputDecorated(bool $decorated = true): self
+    {
+        return $this->with_output_decorated($decorated);
+    }
+
+    /**
+     * @deprecated use with_output_styles() instead
+     */
+    public function withOutputStyles(array $styles): self
+    {
+        return $this->with_output_styles($styles);
+    }
+
     public function name(): string
     {
         return $this->name;

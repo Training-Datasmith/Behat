@@ -134,7 +134,7 @@ final readonly class Services_Resolver_Factory implements Suite_Scoped_Resolver_
      */
     private function create_container_from_class_spec($class_spec)
     {
-        $constructor = explode('::', $class_spec);
+        $constructor = explode('::', (string) $class_spec);
         if (2 === count($constructor)) {
             return call_user_func($constructor);
         }

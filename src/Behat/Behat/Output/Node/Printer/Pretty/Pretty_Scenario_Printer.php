@@ -14,6 +14,7 @@ namespace Behat\Behat\Output\Node\Printer\Pretty;
 use Behat\Behat\Output\Node\Printer\Scenario_Printer;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
+use Behat\Gherkin\Node\TaggedNodeInterface;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Printer\Output_Printer;
 use Behat\Testwork\Tester\Result\Test_Result;
@@ -44,7 +45,7 @@ final class Pretty_Scenario_Printer implements Scenario_Printer
 
     public function print_header(Formatter $formatter, FeatureNode $feature, Scenario $scenario): void
     {
-        if ($scenario instanceof Tagged_Node_Interface) {
+        if ($scenario instanceof TaggedNodeInterface) {
             $this->print_tags($formatter->get_output_printer(), $scenario->getTags());
         }
         $this->print_keyword($formatter->get_output_printer(), $scenario->getKeyword());

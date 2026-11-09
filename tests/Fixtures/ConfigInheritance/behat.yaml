@@ -5,7 +5,7 @@ default:
   suites:
     default:
       contexts:
-        - FeatureContext: [ { param2: val2 } ]
+        - Feature_Context: [ { param2: val2 } ]
   extensions:
     custom_extension.php:
       param1: val2
@@ -14,7 +14,7 @@ custom_profile:
   suites:
     default:
       contexts:
-        - FeatureContext: [ { param2: val2 } ]
+        - Feature_Context: [ { param2: val2 } ]
   extensions:
     custom_extension.php:
       param1: val2

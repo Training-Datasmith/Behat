@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\After_Step;
 
 final class After_Step_Context extends Base_Context

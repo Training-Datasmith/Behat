@@ -11,6 +11,7 @@ use PhpParser\Node\Expr\BinaryOp\BitwiseAnd;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\BitwiseNot;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt\Use_;
 use ReflectionClass;
 use ReflectionClassConstant;

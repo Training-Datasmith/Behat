@@ -60,7 +60,7 @@ Feature: Extensions
       string(16) "Non\Existent\Cls"
       array(2) {
         [0]=>
-        string(23) "Exception_Handler_Context"
+        string(25) "Exception_Handler_Context"
         [1]=>
         string(7) "getName"
       }

@@ -121,5 +121,5 @@ Feature: Error Reporting
             Exception: Exception is thrown in features/bootstrap/Feature_Context.php:XX
             Stack trace:
             #0 {BASE_PATH}src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php(XX): Feature_Context->anExceptionIsThrown()
-            #1 {BASE_PATH}src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php(XX): Behat\Testwork\Call\Handler\Runtime_Call_Handler->executeCall(
+            #1 {BASE_PATH}src/Behat/Testwork/Call/Handler/Runtime_Call_Handler.php(XX): Behat\Testwork\Call\Handler\Runtime_Call_Handler->execute_call(
     """

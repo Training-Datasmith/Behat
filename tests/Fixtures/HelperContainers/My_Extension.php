@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Helper_Container\Service_Container\Helper_Container_Extension;
 use Behat\Testwork\Service_Container\Extension;
 use Behat\Testwork\Service_Container\Extension_Manager;

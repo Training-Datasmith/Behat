@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 use Behat\Behat\Exception\Pending_Exception;
 use Behat\Step\Given;

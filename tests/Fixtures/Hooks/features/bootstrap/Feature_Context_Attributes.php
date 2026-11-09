@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 use Behat\Hook\After_Feature;
 use Behat\Hook\After_Scenario;
@@ -20,14 +18,14 @@ class Feature_Context_Attributes implements Context
     #[Before_Feature]
     public static function doSomethingBeforeFeature($event)
     {
-        $params = $event->get_suite()->getSetting('parameters');
+        $params = $event->get_suite()->get_setting('parameters');
         echo '= do something ' . $params['before_feature'];
     }
 
     #[After_Feature]
     public static function doSomethingAfterFeature($event)
     {
-        $params = $event->get_suite()->getSetting('parameters');
+        $params = $event->get_suite()->get_setting('parameters');
         echo '= do something ' . $params['after_feature'];
     }
 

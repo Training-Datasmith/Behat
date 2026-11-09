@@ -45,7 +45,7 @@ abstract class Runtime_Scenario_Hook extends Runtime_Filterable_Hook
      */
     protected function is_match(FeatureNode $feature, ScenarioLikeInterface $scenario, $filter_string)
     {
-        if (str_contains($filter_string, '@')) {
+        if (str_contains((string) $filter_string, '@')) {
             return $this->is_match_tag_filter($feature, $scenario, $filter_string);
         }
         if (!empty($filter_string)) {

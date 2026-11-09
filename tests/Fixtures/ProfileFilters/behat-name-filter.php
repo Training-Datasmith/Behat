@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Config\Config;
 use Behat\Config\Filter\Name_Filter;
 use Behat\Config\Gherkin_Options;

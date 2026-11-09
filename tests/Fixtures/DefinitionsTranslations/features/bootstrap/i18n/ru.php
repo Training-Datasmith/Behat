@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     '/^I have entered (\d+) into calculator$/' => '/^Я набрал число (\d+) на калькуляторе$/',
     '/^I have clicked "+"$/' => '/^Я нажал "([^"]*)"$/',

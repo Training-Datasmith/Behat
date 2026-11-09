@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 class Incompatible_Throwable_To_String_Mapper
 {
     public static function map($thing): string

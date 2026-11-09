@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\After_Step;
 use Behat\Hook\Before_Step;
 use Behat\Step\Given;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 
 abstract class Base_Context implements Context

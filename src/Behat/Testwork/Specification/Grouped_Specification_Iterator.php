@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Behat\Testwork\Specification;
 
 use Behat\Testwork\Suite\Suite;
-use Return_Type_Will_Change;
+use ReturnTypeWillChange;
 
 /**
  * Iterates over specification iterators grouped by their suite.
@@ -90,7 +90,7 @@ final class Grouped_Specification_Iterator implements Specification_Iterator
         return isset($this->iterators[$this->position]) && $this->iterators[$this->position]->valid();
     }
 
-    #[Return_Type_Will_Change]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->iterators[$this->position]->current();

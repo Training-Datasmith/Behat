@@ -60,6 +60,6 @@ abstract class Runtime_Suite_Hook extends Runtime_Filterable_Hook
             return 1 === preg_match($filter_string, $suite->get_name());
         }
 
-        return false !== mb_strpos($suite->get_name(), $filter_string, 0, 'utf8');
+        return false !== mb_strpos($suite->get_name(), (string) $filter_string, 0, 'utf8');
     }
 }

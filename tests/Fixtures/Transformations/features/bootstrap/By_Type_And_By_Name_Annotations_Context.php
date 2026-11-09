@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 
 class By_Type_And_By_Name_Annotations_Context implements Context

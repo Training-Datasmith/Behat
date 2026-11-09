@@ -19,7 +19,9 @@ return RectorConfig::configure()
         StringableForToStringRector::class,
         ReadOnlyClassRector::class,
         // DI setFactory does not support closures
-        FirstClassCallableRector::class => [__DIR__ . '/src/Behat/Testwork/Deprecation/ServiceContainer/DeprecationExtension.php'],
+        FirstClassCallableRector::class => [__DIR__ . '/src/Behat/Testwork/Deprecation/Service_Container/Deprecation_Extension.php'],
+        // Keep Symfony TranslatorInterface as FQCN for check-legacy-repo-names
+        __DIR__ . '/src/Behat/Behat/Definition/Translator/Translator_Interface.php',
     ])
     ->withImportNames(
         removeUnusedImports: true,

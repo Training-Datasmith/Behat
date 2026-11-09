@@ -125,15 +125,37 @@ final class Suite_With_Contexts_Setup implements Suite_Setup
     private function find_class_file($class): string
     {
         [$classpath, $classname] = $this->find_classpath_and_class($class);
-        $classpath .= str_replace('_', DIRECTORY_SEPARATOR, $classname) . '.php';
-        foreach ($this->autoloader->getPrefixes() as $prefix => $dirs) {
-            if (str_starts_with($class, $prefix)) {
-                return current($dirs) . DIRECTORY_SEPARATOR . $classpath;
+        if (null === $classpath) {
+            $relative_path = $classname . '.php';
+        } else {
+            $relative_path = $classpath . str_replace('_', DIRECTORY_SEPARATOR, $classname) . '.php';
+        }
+
+        if (null === $classpath) {
+            foreach ($this->autoloader->getFallbackDirsPsr4() as $dir) {
+                return $dir . DIRECTORY_SEPARATOR . $relative_path;
             }
         }
-        if ($dirs = $this->autoloader->getFallbackDirs()) {
-            return current($dirs) . DIRECTORY_SEPARATOR . $classpath;
+
+        foreach ($this->autoloader->getPrefixesPsr4() as $prefix => $dirs) {
+            if ($prefix !== '' && str_starts_with($class, $prefix)) {
+                $suffix = substr($class, strlen($prefix));
+                $path = str_replace('\\', DIRECTORY_SEPARATOR, $suffix) . '.php';
+
+                return current($dirs) . DIRECTORY_SEPARATOR . $path;
+            }
         }
+
+        foreach ($this->autoloader->getPrefixes() as $prefix => $dirs) {
+            if ($prefix !== '' && str_starts_with($class, $prefix)) {
+                return current($dirs) . DIRECTORY_SEPARATOR . $relative_path;
+            }
+        }
+
+        if ($dirs = $this->autoloader->getFallbackDirs()) {
+            return current($dirs) . DIRECTORY_SEPARATOR . $relative_path;
+        }
+
         throw new Context_Not_Found_Exception(sprintf('Could not find where to put "%s" class. Have you configured autoloader properly?', $class), $class);
     }
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\Context_Initializer;
 use Behat\Testwork\Service_Container\Extension;

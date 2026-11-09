@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\Before_Scenario;
 
 final class Before_Scenario_Context extends Base_Context

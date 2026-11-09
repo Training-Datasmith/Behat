@@ -6,6 +6,7 @@ namespace Behat\Config;
 
 use Behat\Config\Converter\Config_Converter_Tools;
 use Behat\Testwork\Service_Container\Extension_Manager;
+use PhpParser\Node\Expr\New_;
 
 final readonly class Extension implements Extension_Config_Interface
 {
@@ -23,7 +24,7 @@ final readonly class Extension implements Extension_Config_Interface
         return $this->settings;
     }
 
-    public function to_php_expr(): \PhpParser\Node\Expr\New_
+    public function to_php_expr(): New_
     {
         $extension_object = Config_Converter_Tools::create_object(self::class);
         $name = $this->name;

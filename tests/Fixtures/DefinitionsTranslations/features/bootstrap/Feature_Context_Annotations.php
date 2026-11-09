@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Translatable_Context;
 
 class Feature_Context_Annotations implements Translatable_Context

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Output\Printer\Console_Output_Factory;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Printer\Output_Printer;
@@ -58,25 +56,25 @@ class CustomFormatter implements Formatter
         return [];
     }
 
-    public function getName()
+    public function get_name()
     {
         return 'custom_formatter';
     }
 
-    public function getDescription()
+    public function get_description()
     {
     }
 
-    public function getOutputPrinter()
+    public function get_output_printer()
     {
         return $this->outputPrinter;
     }
 
-    public function setParameter($name, $value)
+    public function set_parameter($name, $value)
     {
     }
 
-    public function getParameter($name)
+    public function get_parameter($name)
     {
     }
 }

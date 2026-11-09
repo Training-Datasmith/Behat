@@ -161,7 +161,7 @@ final class Strict_Regex_Test extends TestCase
     {
         $this->assertSame(
             $expect,
-            Strict_Regex::replaceCallback(...$args),
+            Strict_Regex::replace_callback(...$args),
         );
     }
 
@@ -196,7 +196,7 @@ final class Strict_Regex_Test extends TestCase
     {
         $this->expectException($expectException);
         $this->expectExceptionMessage($expectMsg);
-        Strict_Regex::replaceCallback(...$args);
+        Strict_Regex::replace_callback(...$args);
     }
 
     protected function setUp(): void

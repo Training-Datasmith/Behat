@@ -84,7 +84,7 @@ final class Regex_Pattern_Policy implements Pattern_Policy
      */
     private function count_placeholders($step_text, string $step_regex): int
     {
-        preg_match('/^' . $step_regex . '$/', $step_text, $matches);
+        preg_match('/^' . $step_regex . '$/', (string) $step_text, $matches);
 
         return count($matches) ? count($matches) - 1 : 0;
     }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * Used by the `class_references.yaml` file to define the class names that will be converted to PHP class references.
  */

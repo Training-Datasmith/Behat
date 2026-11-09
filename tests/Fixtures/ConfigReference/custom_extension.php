@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Testwork\Service_Container\Extension;
 use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

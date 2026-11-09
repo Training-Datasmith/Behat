@@ -55,9 +55,9 @@ final class Simple_Class_Generator implements Class_Generator
     {
         $fqn = $context_class;
         $namespace = '';
-        if (false !== $pos = strrpos($fqn, '\\')) {
-            $namespace = 'namespace ' . substr($fqn, 0, $pos) . ";\n\n";
-            $context_class = substr($fqn, $pos + 1);
+        if (false !== $pos = strrpos((string) $fqn, '\\')) {
+            $namespace = 'namespace ' . substr((string) $fqn, 0, $pos) . ";\n\n";
+            $context_class = substr((string) $fqn, $pos + 1);
         }
 
         return strtr(self::$template, ['{namespace}' => $namespace, '{className}' => $context_class]);

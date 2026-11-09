@@ -53,6 +53,6 @@ abstract class Runtime_Step_Hook extends Runtime_Filterable_Hook
             return 1 === preg_match($filter_string, $step->getText());
         }
 
-        return false !== mb_strpos($step->getText(), $filter_string, 0, 'utf8');
+        return false !== mb_strpos($step->getText(), (string) $filter_string, 0, 'utf8');
     }
 }

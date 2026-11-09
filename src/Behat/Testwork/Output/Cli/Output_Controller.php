@@ -166,7 +166,7 @@ class Output_Controller implements Controller
      */
     private function load_json_settings($json_settings): void
     {
-        $settings = @json_decode($json_settings, true);
+        $settings = @json_decode((string) $json_settings, true);
         if (!is_array($settings)) {
             return;
         }

@@ -44,7 +44,7 @@ final class JSON_Scenario_Printer implements Scenario_Printer
     {
         $scenario = $this->current_scenario;
         assert($scenario instanceof NamedScenarioInterface);
-        $name = implode(' ', array_map(trim(...), explode("\n", $scenario->getTitle() ?? '')));
+        $name = implode(' ', array_map(trim(...), explode("\n", $scenario->getName() ?? '')));
         $scenario_attributes = ['name' => $name];
         if ($formatter->get_parameter('timer')) {
             $scenario_attributes['time'] = (float) $this->duration_listener->get_duration($scenario);

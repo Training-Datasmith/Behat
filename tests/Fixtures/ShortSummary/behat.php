@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Config\Config;
 use Behat\Config\Formatter\Pretty_Formatter;
 use Behat\Config\Formatter\Progress_Formatter;

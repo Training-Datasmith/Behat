@@ -4,4 +4,4 @@ default:
   suites:
     default:
       contexts:
-        - InexistentExtensionContext
+        - Inexistent_Extension_Context

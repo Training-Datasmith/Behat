@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Translatable_Context;
 use Behat\Step\Given;
 

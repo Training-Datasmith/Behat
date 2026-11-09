@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\Before_Step;
 
 final class Before_Step_Context extends Base_Context

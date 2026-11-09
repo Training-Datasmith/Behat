@@ -43,7 +43,7 @@ final class Hook_Annotation_Reader implements Annotation_Reader
      */
     public function read_callee($context_class, ReflectionMethod $method, $doc_line, $description): ?Runtime_Hook
     {
-        if (!preg_match(self::$regex, $doc_line, $match)) {
+        if (!preg_match(self::$regex, (string) $doc_line, $match)) {
             return null;
         }
         $type = strtolower($match[1]);

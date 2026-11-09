@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Step\Then;
 
 class Parent_Context_Attributes

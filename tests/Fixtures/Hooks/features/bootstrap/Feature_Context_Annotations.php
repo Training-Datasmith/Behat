@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Context\Context;
 
 class Feature_Context_Annotations implements Context
@@ -10,25 +8,25 @@ class Feature_Context_Annotations implements Context
     private $scenarioFilter;
 
     /**
-     * @Before_Feature
+     * @BeforeFeature
      */
     public static function doSomethingBeforeFeature($event)
     {
-        $params = $event->get_suite()->getSetting('parameters');
+        $params = $event->get_suite()->get_setting('parameters');
         echo '= do something ' . $params['before_feature'];
     }
 
     /**
-     * @After_Feature
+     * @AfterFeature
      */
     public static function doSomethingAfterFeature($event)
     {
-        $params = $event->get_suite()->getSetting('parameters');
+        $params = $event->get_suite()->get_setting('parameters');
         echo '= do something ' . $params['after_feature'];
     }
 
     /**
-     * @Before_Feature @someFeature
+     * @BeforeFeature @someFeature
      */
     public static function doSomethingBeforeSomeFeature($event)
     {
@@ -36,7 +34,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @After_Feature @someFeature
+     * @AfterFeature @someFeature
      */
     public static function doSomethingAfterSomeFeature($event)
     {
@@ -44,7 +42,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario
+     * @BeforeScenario
      */
     public function beforeScenario($event)
     {
@@ -52,7 +50,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario @thirty
+     * @BeforeScenario @thirty
      */
     public function beforeScenarioThirty($event)
     {
@@ -60,7 +58,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario @exception
+     * @BeforeScenario @exception
      */
     public function beforeScenarioException($event)
     {
@@ -68,7 +66,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario @filtered
+     * @BeforeScenario @filtered
      */
     public function beforeScenarioFiltered($event)
     {
@@ -76,7 +74,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario @~filtered
+     * @BeforeScenario @~filtered
      */
     public function beforeScenarioNotFiltered($event)
     {
@@ -84,7 +82,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Step I must have 100
+     * @BeforeStep I must have 100
      */
     public function beforeStep100($event)
     {
@@ -116,7 +114,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario
+     * @BeforeScenario
      */
     public function passingBeforeScenarioHook()
     {
@@ -124,7 +122,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @After_Scenario
+     * @AfterScenario
      */
     public function passingAfterScenarioHook()
     {
@@ -132,7 +130,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Scenario @failing-before-hook
+     * @BeforeScenario @failing-before-hook
      */
     public function failingBeforeScenarioHook()
     {
@@ -140,7 +138,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Step
+     * @BeforeStep
      */
     public function passingBeforeStep()
     {
@@ -148,7 +146,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @Before_Step passing step with failing hook
+     * @BeforeStep passing step with failing hook
      */
     public function failingBeforeStep()
     {
@@ -156,7 +154,7 @@ class Feature_Context_Annotations implements Context
     }
 
     /**
-     * @After_Step
+     * @AfterStep
      */
     public function passingAfterStep()
     {

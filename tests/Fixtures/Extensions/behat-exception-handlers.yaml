@@ -4,4 +4,4 @@ default:
   suites:
     default:
       contexts:
-        - ExceptionHandlerContext
+        - Exception_Handler_Context

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\After_Suite;
 
 final class After_Suite_Context extends Base_Context

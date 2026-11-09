@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;

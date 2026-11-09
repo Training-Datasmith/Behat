@@ -121,7 +121,7 @@ Feature: Syntax helpers
       """
       default | [Given|*] /^I have (\d+) apples?$/
               | at `Descriptions_Context::iHaveApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[14:17]`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[12:15]`
 
       default | [When|*] /^I ate (\d+) apples?$/
               | Eating apples.
@@ -129,15 +129,15 @@ Feature: Syntax helpers
               | - one
               | - two
               | at `Descriptions_Context::iAteApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[29:32]`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[27:30]`
 
       default | [When|*] /^I found (\d+) apples?$/
               | at `Descriptions_Context::iFoundApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[35:38]`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[33:36]`
 
       default | [Then|*] /^I should have (\d+) apples$/
               | at `Descriptions_Context::iShouldHaveApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[41:44]`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[39:42]`
       """
 
   Scenario: Search definition

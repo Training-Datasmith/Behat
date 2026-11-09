@@ -156,8 +156,8 @@ final class Configuration_Loader
         if (!is_file($config_path) || !is_readable($config_path)) {
             throw new Configuration_Loading_Exception(sprintf('Configuration file `%s` not found.', $config_path));
         }
-        $base_path = rtrim(dirname($config_path), DIRECTORY_SEPARATOR);
-        if (str_ends_with($config_path, '.php')) {
+        $base_path = rtrim(dirname((string) $config_path), DIRECTORY_SEPARATOR);
+        if (str_ends_with((string) $config_path, '.php')) {
             $php_config = $this->get_php_config_object_closure($config_path)();
             if (!$php_config instanceof Config_Interface) {
                 throw new Configuration_Loading_Exception(sprintf('Configuration file `%s` must return an instance of `%s`.', $config_path, Config_Interface::class));

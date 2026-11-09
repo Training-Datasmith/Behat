@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Testwork\Call\Handler\Exception\Class_Not_Found_Handler;
 use Behat\Testwork\Call\Handler\Exception\Method_Not_Found_Handler;
 use Behat\Testwork\Call\Service_Container\Call_Extension;
