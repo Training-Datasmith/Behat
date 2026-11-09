@@ -13,18 +13,32 @@
         }
     ],
 
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://raw.githubusercontent.com/Training-Datasmith/composer-index/remote-test-2026-11-09",
+            "canonical": false
+        }
+    ],
+
     "require": {
         "php": ">=8.2 <8.6",
         "ext-mbstring": "*",
         "composer-runtime-api": "^2.2",
         "behat/gherkin": "^4.15.0",
         "composer/xdebug-handler": "^1.4 || ^2.0 || ^3.0",
-        "nikic/php-parser": "^4.19.2 || ^5.2",
-        "psr/container": "^1.0 || ^2.0",
+        "nikic/php-parser": "dev-remote-test-2026-11-09 as 5.7.99",
+        "psr/container": "dev-remote-test-2026-10-07 as 2.0.2",
+        "psr/event-dispatcher": "dev-remote-test-2026-10-07 as 1.0.99",
+        "psr/log": "dev-remote-test-2026-10-07 as 3.0.2",
         "symfony/config": "^5.4 || ^6.4 || ^7.0",
         "symfony/console": "^5.4.9 || ^6.4 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
         "symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
+        "symfony/polyfill-ctype": "dev-remote-test-2026-10-07 as 1.33.99",
+        "symfony/polyfill-intl-grapheme": "dev-remote-test-2026-10-07 as 1.33.99",
+        "symfony/polyfill-intl-normalizer": "dev-remote-test-2026-10-07 as 1.33.99",
+        "symfony/polyfill-mbstring": "dev-remote-test-2026-10-07 as 1.33.99",
         "symfony/translation": "^5.4 || ^6.4 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
     },
@@ -37,7 +51,7 @@
         "rector/rector": "2.1.7",
         "sebastian/diff": "^4.0",
         "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
-        "symfony/polyfill-php84": "^1.31",
+        "symfony/polyfill-php84": "dev-remote-test-2026-10-07 as 1.33.99",
         "symfony/process": "^5.4 || ^6.4 || ^7.0"
     },
 
@@ -68,8 +82,10 @@
             "@behat-progress",
             "@phpunit",
             "@phpstan",
-            "@rector"
+            "@rector",
+            "@check-cluster-pins"
         ],
+        "check-cluster-pins": "php scripts/check-cluster-pins.php",
         "behat": "LANG=C bin/behat  --rerun",
         "behat-progress": "LANG=C bin/behat --format=progress",
         "phpstan": "phpstan",
