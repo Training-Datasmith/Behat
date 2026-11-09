@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * Used by the `class_references.yaml` file to define the class names that will be converted to PHP class references.
  */
@@ -48,7 +46,7 @@ class CreateClassNamesExtension implements Extension
 // Hence using an ugly extension file to run this code.
 class_alias(CreateClassNamesExtension::class, 'Some\Behat\Extension\ExplicitlyReferencedExtension');
 class_alias(CreateClassNamesExtension::class, 'Some\ShorthandExtension\ServiceContainer\ShorthandExtension');
-$context = new class () implements Context {
+$context = new class implements Context {
 };
 class_alias($context::class, 'MyContext');
 class_alias($context::class, 'test\MyApp\Contexts\MyFirstContext');

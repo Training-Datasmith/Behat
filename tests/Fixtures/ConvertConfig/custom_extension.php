@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Behat\Output\Printer\ConsoleOutputFactory;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Printer\OutputPrinter;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\AfterFeature;
 use Behat\Hook\BeforeFeature;
 use Behat\Step\Given;

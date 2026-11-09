@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Hook\AfterScenario;
 
 final class AfterScenarioContext extends BaseContext

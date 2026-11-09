@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -12,14 +10,13 @@ declare(strict_types=1);
 
 namespace Behat\Behat\Definition\Pattern\Policy;
 
-use function array_keys;
-
 use Behat\Behat\Definition\Exception\InvalidPatternException;
 use Behat\Behat\Definition\Pattern\Pattern;
 use Behat\Behat\Definition\Pattern\SimpleStepMethodNameSuggester;
 use Behat\Behat\Definition\Pattern\StepMethodNameSuggester;
-
 use Behat\Behat\Util\StrictRegex;
+
+use function array_keys;
 
 /**
  * Defines a way to handle regex patterns.

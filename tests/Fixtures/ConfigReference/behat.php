@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Config\Config;
 use Behat\Config\Extension;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
-        (new Profile('default'))
+    ->withProfile((new Profile('default'))
         ->withExtension(new Extension('custom_extension.php'))
     );

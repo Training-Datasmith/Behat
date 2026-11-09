@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Behat\Tests\Testwork\Subject;
 
 use Behat\Testwork\Specification\GroupedSpecificationIterator;

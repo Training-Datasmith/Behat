@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Behat\Tests\Definition\Pattern;
 
 use Behat\Behat\Definition\Pattern\SimpleStepMethodNameSuggester;

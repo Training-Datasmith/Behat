@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     'en' => [
         'snippet_context_choice' => '<snippet_undefined><snippet_keyword>%count%</snippet_keyword> suite has undefined steps. Please choose the context to generate snippets:</snippet_undefined>',

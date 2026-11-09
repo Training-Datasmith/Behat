@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Behat\Config;
 
 use Behat\Config\Converter\ConfigConverterTools;

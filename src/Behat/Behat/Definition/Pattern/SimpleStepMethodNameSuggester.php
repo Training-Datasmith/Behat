@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Behat\Behat\Definition\Pattern;
 
 use Behat\Behat\Util\StrictRegex;

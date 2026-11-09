@@ -6,6 +6,7 @@ namespace Behat\Config;
 
 use Behat\Config\Converter\ConfigConverterTools;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
+use PhpParser\Node\Expr;
 
 final readonly class Extension implements ExtensionConfigInterface
 {

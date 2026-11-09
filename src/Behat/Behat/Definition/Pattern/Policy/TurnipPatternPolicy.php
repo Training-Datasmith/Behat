@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -62,9 +60,7 @@ final class TurnipPatternPolicy implements PatternPolicy
         foreach (self::$placeholderPatterns as $replacePattern) {
             $pattern = StrictRegex::replaceCallback(
                 $replacePattern,
-                function () use (&$count): string {
-                    return ':arg' . ++$count;
-                },
+                function () use (&$count): string { return ':arg' . ++$count; },
                 $pattern
             );
         }

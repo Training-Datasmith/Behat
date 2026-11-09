@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 use Behat\Config\Config;
 use Behat\Config\Profile;
 
 return (new Config())
     ->withProfile(new Profile('default'))
-    ->withProfile(
-        (new Profile('editor_url'))
+    ->withProfile((new Profile('editor_url'))
         ->withPathOptions(editorUrl: 'phpstorm://open?file={relPath}&line={line}')
     );

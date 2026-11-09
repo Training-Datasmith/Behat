@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -15,10 +13,9 @@ namespace Behat\Testwork\ServiceContainer\Configuration;
 use Behat\Config\ConfigInterface;
 use Behat\Testwork\ServiceContainer\Exception\ConfigurationLoadingException;
 use Closure;
+use Symfony\Component\Yaml\Yaml;
 
 use function str_ends_with;
-
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Loads configuration from different sources.
@@ -210,7 +207,7 @@ final class ConfigurationLoader
      */
     private function getPHPConfigObjectClosure(string $configPath): Closure
     {
-        return Closure::bind(fn (): mixed => require $configPath, null, null);
+        return Closure::bind(fn(): mixed => require $configPath, null, null);
     }
 
     /**

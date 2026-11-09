@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Behat\Config\Converter;
 
 use PhpParser\Node\Expr\Array_;
