@@ -15,7 +15,7 @@ class Translated_Definitions_Context implements Translatable_Context
     {
     }
 
-    public static function getTranslationResources()
+    public static function get_translation_resources()
     {
         return [__DIR__ . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . 'ru.xliff'];
     }

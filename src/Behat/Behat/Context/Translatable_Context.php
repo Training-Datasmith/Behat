@@ -31,5 +31,5 @@ interface Translatable_Context extends Context
      *
      * @return string[]
      */
-    public static function getTranslationResources();
+    public static function get_translation_resources();
 }

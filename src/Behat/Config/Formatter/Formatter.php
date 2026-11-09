@@ -17,10 +17,10 @@ class Formatter implements Formatter_Config_Interface, Config_Converter_Interfac
     private const OUTPUT_STYLES_SETTING = 'output_styles';
     private const SHORT_SUMMARY_SETTING = 'short_summary';
     private const SHORT_SUMMARY_PARAMETER_NAME = 'shortSummary';
-    private const OUTPUT_VERBOSITY_FUNCTION = 'withOutputVerbosity';
-    private const OUTPUT_PATH_FUNCTION = 'withOutputPath';
-    private const OUTPUT_DECORATE_FUNCTION = 'withOutputDecorated';
-    private const OUTPUT_STYLES_FUNCTION = 'withOutputStyles';
+    private const OUTPUT_VERBOSITY_FUNCTION = 'with_output_verbosity';
+    private const OUTPUT_PATH_FUNCTION = 'with_output_path';
+    private const OUTPUT_DECORATE_FUNCTION = 'with_output_decorated';
+    private const OUTPUT_STYLES_FUNCTION = 'with_output_styles';
     private const FORMATTER_FUNCTION_NAMES_PER_SETTING = [self::OUTPUT_VERBOSITY_SETTING => self::OUTPUT_VERBOSITY_FUNCTION, self::OUTPUT_PATH_SETTING => self::OUTPUT_PATH_FUNCTION, self::OUTPUT_DECORATE_SETTING => self::OUTPUT_DECORATE_FUNCTION, self::OUTPUT_STYLES_SETTING => self::OUTPUT_STYLES_FUNCTION];
 
     public function __construct(private readonly string $name, private array $settings = [])
@@ -56,38 +56,6 @@ class Formatter implements Formatter_Config_Interface, Config_Converter_Interfac
         $this->settings[self::OUTPUT_STYLES_SETTING] = $styles;
 
         return $this;
-    }
-
-    /**
-     * @deprecated use with_output_verbosity() instead
-     */
-    public function withOutputVerbosity(int $level): self
-    {
-        return $this->with_output_verbosity($level);
-    }
-
-    /**
-     * @deprecated use with_output_path() instead
-     */
-    public function withOutputPath(string $path): self
-    {
-        return $this->with_output_path($path);
-    }
-
-    /**
-     * @deprecated use with_output_decorated() instead
-     */
-    public function withOutputDecorated(bool $decorated = true): self
-    {
-        return $this->with_output_decorated($decorated);
-    }
-
-    /**
-     * @deprecated use with_output_styles() instead
-     */
-    public function withOutputStyles(array $styles): self
-    {
-        return $this->with_output_styles($styles);
     }
 
     public function name(): string

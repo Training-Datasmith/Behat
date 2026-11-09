@@ -8,13 +8,13 @@ use Behat\Config\Profile;
 $defaultProfile = new Profile('default');
 
 $progressProfile = (new Profile('progress'))
-    ->disableFormatter(Pretty_Formatter::NAME)
-    ->withFormatter(new Progress_Formatter())
+    ->disable_formatter(Pretty_Formatter::NAME)
+    ->with_formatter(new Progress_Formatter())
 ;
 
 return (new Config())
-    ->withProfile($defaultProfile)
-    ->withProfile($progressProfile)
-    ->withPreferredProfile('progress')
+    ->with_profile($defaultProfile)
+    ->with_profile($progressProfile)
+    ->with_preferred_profile('progress')
     ->import('pretty.php')
 ;

@@ -73,8 +73,8 @@ final class Profile_Test extends TestCase
     {
         $profile = new Profile('default');
         $profile
-            ->withSuite(new Suite('admin_dashboard'))
-            ->withSuite(new Suite('managing_administrators'))
+            ->with_suite(new Suite('admin_dashboard'))
+            ->with_suite(new Suite('managing_administrators'))
         ;
 
         $this->assertEquals([
@@ -101,8 +101,8 @@ final class Profile_Test extends TestCase
     {
         $profile = new Profile('default');
         $profile
-            ->withFilter(new Tag_Filter('admin'))
-            ->withFilter(new Name_Filter('Managing administrators'))
+            ->with_filter(new Tag_Filter('admin'))
+            ->with_filter(new Name_Filter('Managing administrators'))
         ;
 
         $this->assertEquals([
@@ -132,9 +132,9 @@ final class Profile_Test extends TestCase
         $profile = new Profile('default');
 
         $profile
-            ->withFormatter((new Pretty_Formatter(expand: true, paths: false))->withOutputVerbosity(Output_Factory::VERBOSITY_VERBOSE))
-            ->withFormatter(new Progress_Formatter(timer: false))
-            ->withFormatter(new J_Unit_Formatter())
+            ->with_formatter((new Pretty_Formatter(expand: true, paths: false))->with_output_verbosity(Output_Factory::VERBOSITY_VERBOSE))
+            ->with_formatter(new Progress_Formatter(timer: false))
+            ->with_formatter(new J_Unit_Formatter())
         ;
 
         $this->assertEquals([

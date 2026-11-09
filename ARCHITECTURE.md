@@ -10,17 +10,17 @@ A PHP BDD (Behaviour-Driven Development) testing framework that links Gherkin
 ```
 src/Behat/
   Behat.php                   — application entry point / kernel factory
-  ApplicationFactory.php      — creates the Symfony Console Application
+  Application_Factory.php     — creates the Symfony Console Application
   Config/                     — YAML/PHP configuration loading and processing
   Context/                    — step definition contexts and their loaders
     Context.php               — marker interface
-    SnippetAcceptingContext.php — context that can accept generated snippets
+    Snippet_Accepting_Context.php — context that can accept generated snippets
     Annotation/               — annotation-based step definition reader
     Attribute/                — PHP 8 attribute-based step definition reader
     Initializer/              — context argument injection (Closure, DI, etc.)
   Definition/                 — step definition registry and matching
     Pattern/                  — pattern matching strategies (Regex, Turnip)
-  EventDispatcher/            — event classes and dispatcher wiring
+  Event_Dispatcher/           — event classes and dispatcher wiring
   Extension/                  — Behat extension system
     Extension.php             — extension interface
   Formatter/                  — output formatters (pretty, progress, JUnit, JSON)
@@ -36,12 +36,12 @@ src/Behat/
     Call/                     — step call + result objects
     Cli/                      — CLI controllers
     Environment/              — test environment management
-    EventDispatcher/          — Symfony EventDispatcher integration
+    Event_Dispatcher/         — Symfony EventDispatcher integration
     Exception/                — exception + error formatting
     Filesystem/               — file utilities
     Hook/                     — hook call dispatching
     Output/                   — output manager abstraction
-    Specification/             — test case specifications (Feature files)
+    Specification/            — test case specifications (Feature files)
     Suite/                    — test suite wiring
     Tester/                   — step / scenario / feature / suite testers
 bin/
@@ -67,20 +67,20 @@ features/                     — Behat's own integration tests (.feature files)
 
 ## Extension Points
 
-- Implement `ExtensionInterface` to add new CLI commands, formatters, or
+- Implement `Extension_Interface` to add new CLI commands, formatters, or
   context initializers.
-- Implement `ArgumentTransformation` to convert step arguments to domain objects.
-- Implement a custom `PatternTransformer` for bespoke step matching syntax.
-- Add custom hooks via `#[BeforeScenario]` / `#[AfterScenario]` attributes.
+- Implement `Argument_Transformation` to convert step arguments to domain objects.
+- Implement a custom `Pattern_Transformer` for bespoke step matching syntax.
+- Add custom hooks via `#[Before_Scenario]` / `#[After_Scenario]` attributes.
 
 ## Dependency Flow
 
 ```
 bin/behat
-  └── ApplicationFactory → Symfony Console Application
-        └── ServiceContainer (DI) ← Extensions
+  └── Application_Factory → Symfony Console Application
+        └── Service_Container (DI) ← Extensions
               ├── Gherkin parser → FeatureNode / ScenarioNode
-              ├── ContextFactory + step Definition registry
+              ├── Context_Factory + step Definition registry
               ├── Tester chain  (Suite → Feature → Scenario → Step)
               └── Formatters (Pretty, JUnit, JSON, Progress, …)
 ```

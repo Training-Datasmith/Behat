@@ -18,10 +18,10 @@ final class Suite implements Config_Converter_Interface
     private const CONTEXTS_SETTING = 'contexts';
     private const PATHS_SETTING = 'paths';
     private const FILTERS_SETTING = 'filters';
-    private const WITH_CONTEXTS_FUNCTION = 'withContexts';
-    private const ADD_CONTEXT_FUNCTION = 'addContext';
-    private const PATHS_FUNCTION = 'withPaths';
-    private const FILTER_FUNCTION = 'withFilter';
+    private const WITH_CONTEXTS_FUNCTION = 'with_contexts';
+    private const ADD_CONTEXT_FUNCTION = 'add_context';
+    private const PATHS_FUNCTION = 'with_paths';
+    private const FILTER_FUNCTION = 'with_filter';
 
     public function __construct(private readonly string $name, private array $settings = [])
     {
@@ -62,26 +62,6 @@ final class Suite implements Config_Converter_Interface
         return $this;
     }
 
-    public function withContexts(string ...$contexts): self
-    {
-        return $this->with_contexts(...$contexts);
-    }
-
-    public function addContext(string $context, array $constructorArgs = []): self
-    {
-        return $this->add_context($context, $constructorArgs);
-    }
-
-    public function withPaths(string ...$paths): self
-    {
-        return $this->with_paths(...$paths);
-    }
-
-    public function withFilter(Filter_Interface $filter): self
-    {
-        return $this->with_filter($filter);
-    }
-
     public function name(): string
     {
         return $this->name;
@@ -118,7 +98,7 @@ final class Suite implements Config_Converter_Interface
         // Contexts can be configured with or without constructor arguments.
         $has_any_with_arguments = (bool) array_filter($contexts, is_array(...));
         if (!$has_any_with_arguments) {
-            // All the contexts are just class names, we can add them as a single `->withContexts` call
+            // All the contexts are just class names, we can add them as a single `->with_contexts` call
             $expr = Config_Converter_Tools::add_method_call(self::class, self::WITH_CONTEXTS_FUNCTION, $contexts, $expr);
 
             return;

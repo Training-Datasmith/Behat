@@ -5,11 +5,11 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default', ['services' => 'My_Container']))
-            ->addContext('First_Context', ['@shared_service'])
-            ->addContext('Second_Context', ['@shared_service'])
+            ->add_context('First_Context', ['@shared_service'])
+            ->add_context('Second_Context', ['@shared_service'])
         )
     );

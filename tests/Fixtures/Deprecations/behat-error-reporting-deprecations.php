@@ -6,13 +6,13 @@ use Behat\Config\Suite;
 use Behat\Config\Tester_Options;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withTesterOptions(
-                (new Tester_Options())->withErrorReporting(E_USER_DEPRECATED)
+            ->with_tester_options(
+                (new Tester_Options())->with_error_reporting(E_USER_DEPRECATED)
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->withPaths('features/unsuppressed_deprecation.feature')
+                    ->with_paths('features/unsuppressed_deprecation.feature')
             )
     );

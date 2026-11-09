@@ -231,14 +231,14 @@ final class Config_Converter_Tools_Test extends TestCase
         $expr = Config_Converter_Tools::create_object(Tester_Options::class);
         $expr = Config_Converter_Tools::add_method_call(
             Tester_Options::class,
-            'withErrorReporting',
+            'with_error_reporting',
             [Config_Converter_Tools::error_reporting_to_constants($reporting)],
             $expr,
         );
 
         $printer = new Standard();
         $this->assertSame(
-            '(new \\' . Tester_Options::class . '())->withErrorReporting(' . $expect . ')',
+            '(new \\' . Tester_Options::class . '())->with_error_reporting(' . $expect . ')',
             $printer->prettyPrintExpr($expr),
         );
     }

@@ -5,36 +5,36 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Basic_Context')
+            ->with_contexts('Basic_Context')
     )
 ;
 
 $definitions = (new Profile('definitions'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Definitions_Context')
+            ->with_contexts('Definitions_Context')
     )
 ;
 
 $translatable = (new Profile('translatable'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Translatable_Definitions_Context')
+            ->with_contexts('Translatable_Definitions_Context')
     )
 ;
 
 $descriptions = (new Profile('descriptions'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Descriptions_Context')
+            ->with_contexts('Descriptions_Context')
     )
 ;
 
 return (new Config())
-    ->withProfile($profile)
-    ->withProfile($definitions)
-    ->withProfile($translatable)
-    ->withProfile($descriptions)
+    ->with_profile($profile)
+    ->with_profile($definitions)
+    ->with_profile($translatable)
+    ->with_profile($descriptions)
 ;

@@ -6,25 +6,25 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('small_kid'))
-            ->withPaths(
+            ->with_paths(
                 'features/multiple_suites_1.feature',
                 'features/multiple_suites_2.feature'
             )
-            ->withFilter(
+            ->with_filter(
                 new Role_Filter('small kid')
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('old_man'))
-            ->withPaths(
+            ->with_paths(
                 'features/multiple_suites_1.feature',
                 'features/multiple_suites_2.feature'
             )
-            ->withFilter(
+            ->with_filter(
                 new Role_Filter('old man')
             )
         )

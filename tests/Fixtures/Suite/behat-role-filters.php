@@ -6,18 +6,18 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-  ->withSuite(
+  ->with_suite(
       (new Suite('little_kid'))
-        ->withContexts(Little_Kid_Context::class)
-        ->withPaths('%paths.base%/features/little_kid.feature')
-        ->withFilter(new Role_Filter('little kid'))
+        ->with_contexts(Little_Kid_Context::class)
+        ->with_paths('%paths.base%/features/little_kid.feature')
+        ->with_filter(new Role_Filter('little kid'))
   )
-  ->withSuite(
+  ->with_suite(
       (new Suite('big_brother'))
-        ->withContexts(Big_Brother_Context::class)
-        ->withPaths('%paths.base%/features/big_brother.feature')
-        ->withFilter(new Role_Filter('big brother'))
+        ->with_contexts(Big_Brother_Context::class)
+        ->with_paths('%paths.base%/features/big_brother.feature')
+        ->with_filter(new Role_Filter('big brother'))
   )
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

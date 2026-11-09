@@ -7,14 +7,14 @@ use Behat\Config\Suite;
 use Behat\Config\Tester_Options;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withExtension(new Extension('deprecation_extension.php'))
-            ->withTesterOptions(
-                (new Tester_Options())->withFailOnBehatDeprecations()
+            ->with_extension(new Extension('deprecation_extension.php'))
+            ->with_tester_options(
+                (new Tester_Options())->with_fail_on_behat_deprecations()
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->withPaths('features/deprecations.feature')
+                    ->with_paths('features/deprecations.feature')
             )
     );

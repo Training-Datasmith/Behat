@@ -1,7 +1,7 @@
 Feature: E_NOTICE in scenario
   In order to test the BEHAT_ERROR_REPORTING constant
   As a contributor of behat
-  I need to have a FeatureContext that throws E_NOTICE within steps.
+  I need to have a Feature_Context that throws E_NOTICE within steps.
 
   Background:
     Given I have an empty array

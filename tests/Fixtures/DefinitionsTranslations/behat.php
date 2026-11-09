@@ -5,50 +5,50 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('annotations'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('xliff'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Feature_Context_Annotations')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Feature_Context_Annotations')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('yaml'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Yaml_Context_Annotations')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Yaml_Context_Annotations')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('php'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Php_Context_Annotations')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Php_Context_Annotations')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('arguments'))
-            ->withPaths('features/calc_ru_arguments.feature')
-            ->withContexts('Arguments_Context_Annotations')
+            ->with_paths('features/calc_ru_arguments.feature')
+            ->with_contexts('Arguments_Context_Annotations')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('attributes'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('xliff'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Feature_Context_Attributes')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Feature_Context_Attributes')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('yaml'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Yaml_Context_Attributes')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Yaml_Context_Attributes')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('php'))
-            ->withPaths('features/calc_ru.feature')
-            ->withContexts('Php_Context_Attributes')
+            ->with_paths('features/calc_ru.feature')
+            ->with_contexts('Php_Context_Attributes')
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('arguments'))
-            ->withPaths('features/calc_ru_arguments.feature')
-            ->withContexts('Arguments_Context_Attributes')
+            ->with_paths('features/calc_ru_arguments.feature')
+            ->with_contexts('Arguments_Context_Attributes')
         )
     )
 ;

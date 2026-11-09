@@ -33,7 +33,7 @@ class Translatable_Definitions_Context implements Context, Translatable_Context
         throw new Pending_Exception();
     }
 
-    public static function getTranslationResources(): array
+    public static function get_translation_resources(): array
     {
         return [__DIR__ . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . 'ru.xliff'];
     }

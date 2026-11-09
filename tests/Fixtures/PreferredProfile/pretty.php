@@ -6,8 +6,8 @@ use Behat\Config\Formatter\Progress_Formatter;
 use Behat\Config\Profile;
 
 $profile = (new Profile('pretty_without_paths'))
-    ->disableFormatter(Progress_Formatter::NAME)
-    ->withFormatter(new Pretty_Formatter(paths: false))
+    ->disable_formatter(Progress_Formatter::NAME)
+    ->with_formatter(new Pretty_Formatter(paths: false))
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

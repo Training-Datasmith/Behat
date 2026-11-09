@@ -4,8 +4,8 @@ use Behat\Config\Config;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(new Profile('default'))
-    ->withProfile(
+    ->with_profile(new Profile('default'))
+    ->with_profile(
         (new Profile('editor_url'))
-        ->withPathOptions(editorUrl: 'phpstorm://open?file={relPath}&line={line}')
+        ->with_path_options(editor_url: 'phpstorm://open?file={relPath}&line={line}')
     );

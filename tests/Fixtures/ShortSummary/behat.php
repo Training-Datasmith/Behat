@@ -6,17 +6,17 @@ use Behat\Config\Formatter\Progress_Formatter;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(new Profile('default'))
-    ->withProfile(
+    ->with_profile(new Profile('default'))
+    ->with_profile(
         (new Profile('pretty_with_long_summary'))
-        ->withFormatter(new Pretty_Formatter(
+        ->with_formatter(new Pretty_Formatter(
             shortSummary: false,
             timer: false
         ))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('progress_with_short_summary'))
-        ->withFormatter(new Progress_Formatter(
+        ->with_formatter(new Progress_Formatter(
             shortSummary: true,
             timer: false
         ))

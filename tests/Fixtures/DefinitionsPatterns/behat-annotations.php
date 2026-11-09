@@ -5,57 +5,57 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('token_start'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Token_Start_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('decimal_point'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Decimal_Point_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('string_with_point'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['String_With_Point_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('broken_regex'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Broken_Regex_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('custom_regex'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Custom_Regex_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('decimal_number'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Decimal_Number_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('empty_parameter'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Empty_Parameter_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('unix_path'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Unix_Path_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('negative_number'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Negative_Number_Annotations'],
         ]))
     );

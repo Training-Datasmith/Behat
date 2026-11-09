@@ -5,15 +5,15 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-  ->withSuite(
+  ->with_suite(
       (new Suite('first', ['contexts' => ['First_Context']]))
-        ->withPaths('%paths.base%/features/some.feature')
+        ->with_paths('%paths.base%/features/some.feature')
   )
-  ->withSuite(
+  ->with_suite(
       (new Suite('second'))
-        ->withContexts('Second_Context')
-        ->withPaths('%paths.base%/features/some.feature')
+        ->with_contexts('Second_Context')
+        ->with_paths('%paths.base%/features/some.feature')
   )
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

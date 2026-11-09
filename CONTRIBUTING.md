@@ -31,7 +31,7 @@ the changes. Check the [features/](features) folder for examples. This is import
 changes you introduced in a future version unintentionally
 3. Make sure your changes adhere to the [Backwards Compatibility](#backwards-compatibility) rules. This is important
 so that we adhere to [Semantic Versioning v2.0.0](http://semver.org/spec/v2.0.0.html)
-5. Do not mess with the [`BehatApplication::VERSION`](src/Behat/Behat/ApplicationFactory.php#L48) version
+5. Do not mess with the package version exposed via Composer's runtime API (see `Application_Factory`)
 6. Make sure you [ran the tests](#running-tests) and didn't break anything. That will save some time on
 [GitHub actions](https://github.com/Behat/Behat/actions)
 7. Commit your code and submit a Pull Request, providing a clear description of the change, including

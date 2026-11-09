@@ -5,12 +5,12 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $defaultProfile = (new Profile('default'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context')
+            ->with_contexts('Feature_Context')
     )
 ;
 
 return (new Config())
-    ->withProfile($defaultProfile)
+    ->with_profile($defaultProfile)
 ;

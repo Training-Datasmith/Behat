@@ -7,18 +7,18 @@ use Behat\Config\Profile;
 use Behat\Gherkin\GherkinCompatibilityMode;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withFormatter(new Pretty_Formatter(
+        ->with_formatter(new Pretty_Formatter(
             timer: false,
             paths: false,
         ))
-    )->withProfile(
+    )->with_profile(
         (new Profile('gherkin-32'))
-        ->withGherkinOptions(
+        ->with_gherkin_options(
             (new Gherkin_Options())
-            ->withCompatibilityMode(GherkinCompatibilityMode::GHERKIN_32)
-            ->withCacheDir('/tmp/gc')
+            ->with_compatibility_mode(GherkinCompatibilityMode::GHERKIN_32)
+            ->with_cache_dir('/tmp/gc')
         )
     )
 ;

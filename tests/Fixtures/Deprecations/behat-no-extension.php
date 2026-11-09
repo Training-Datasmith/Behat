@@ -6,13 +6,13 @@ use Behat\Config\Suite;
 use Behat\Config\Tester_Options;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withTesterOptions(
-                (new Tester_Options())->withPrintBehatDeprecations()
+            ->with_tester_options(
+                (new Tester_Options())->with_print_behat_deprecations()
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->withPaths('features/deprecations_in_steps.feature')
+                    ->with_paths('features/deprecations_in_steps.feature')
             )
     );

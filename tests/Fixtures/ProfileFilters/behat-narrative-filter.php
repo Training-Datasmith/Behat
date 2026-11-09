@@ -6,11 +6,11 @@ use Behat\Config\Gherkin_Options;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withGherkinOptions(
+            ->with_gherkin_options(
                 (new Gherkin_Options())
-                ->withFilter(new Narrative_Filter('/As a (?:second|third) user/'))
+                ->with_filter(new Narrative_Filter('/As a (?:second|third) user/'))
             )
     )
 ;

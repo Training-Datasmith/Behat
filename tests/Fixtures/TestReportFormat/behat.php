@@ -5,42 +5,42 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('single_feature'))
-            ->withPaths(
+            ->with_paths(
                 'features/single_feature.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('multiple_features'))
-            ->withPaths(
+            ->with_paths(
                 'features/multiple_features_1.feature',
                 'features/multiple_features_2.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('multiline_titles'))
-            ->withPaths(
+            ->with_paths(
                 'features/multiline_titles.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('skipped_test_cases'))
-            ->withPaths(
+            ->with_paths(
                 'features/skipped_test_cases.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('stop_on_failure'))
-            ->withPaths(
+            ->with_paths(
                 'features/stop_on_failure.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('abort_on_php_error'))
-            ->withPaths(
+            ->with_paths(
                 'features/abort_on_php_error.feature'
             )
         )

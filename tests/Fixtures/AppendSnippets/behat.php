@@ -5,17 +5,17 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(new Profile('default'))
-    ->withProfile(
+    ->with_profile(new Profile('default'))
+    ->with_profile(
         (new Profile('no_pending_exception'))
-        ->withSuite(new Suite('default', ['contexts' => ['Feature_Context_No_Pending_Exception']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Feature_Context_No_Pending_Exception']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('minimal_imports'))
-        ->withSuite(new Suite('default', ['contexts' => ['Feature_Context_Minimal_Imports']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Feature_Context_Minimal_Imports']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('multicontext'))
-        ->withSuite(new Suite('first', ['contexts' => ['First_Context']]))
-        ->withSuite(new Suite('second', ['contexts' => ['Second_Context']]))
+        ->with_suite(new Suite('first', ['contexts' => ['First_Context']]))
+        ->with_suite(new Suite('second', ['contexts' => ['Second_Context']]))
     );

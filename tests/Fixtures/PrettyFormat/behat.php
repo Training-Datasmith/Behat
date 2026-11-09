@@ -5,52 +5,52 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $defaultProfile = (new Profile('default'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context')
+            ->with_contexts('Feature_Context')
     )
 ;
 
 $multilineProfile = (new Profile('multiline'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context_Multiline')
+            ->with_contexts('Feature_Context_Multiline')
     )
 ;
 
 $emptyProfile = (new Profile('empty'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context_Empty')
+            ->with_contexts('Feature_Context_Empty')
     )
 ;
 
 $backgroundFailingProfile = (new Profile('background_failing'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context_Background_Failing')
+            ->with_contexts('Feature_Context_Background_Failing')
     )
 ;
 
 $multipleExamplesProfile = (new Profile('multiple_examples'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context_Multiple_Examples')
+            ->with_contexts('Feature_Context_Multiple_Examples')
     )
 ;
 
 $lsProfile = (new Profile('ls'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context_Ls')
+            ->with_contexts('Feature_Context_Ls')
     )
 ;
 
 return (new Config())
-    ->withProfile($defaultProfile)
-    ->withProfile($multilineProfile)
-    ->withProfile($emptyProfile)
-    ->withProfile($backgroundFailingProfile)
-    ->withProfile($multipleExamplesProfile)
-    ->withProfile($lsProfile)
+    ->with_profile($defaultProfile)
+    ->with_profile($multilineProfile)
+    ->with_profile($emptyProfile)
+    ->with_profile($backgroundFailingProfile)
+    ->with_profile($multipleExamplesProfile)
+    ->with_profile($lsProfile)
 ;

@@ -39,8 +39,8 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('default'))
-          ->withProfile(new Profile('another'));
+          ->with_profile(new Profile('default'))
+          ->with_profile(new Profile('another'));
       """
     And the "profiles.yaml" file should have been removed from the working directory
 
@@ -57,10 +57,10 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('default'))
-          ->withProfile((new Profile('another'))
-              ->disableFormatter('pretty'))
-          ->withPreferredProfile('another');
+          ->with_profile(new Profile('default'))
+          ->with_profile((new Profile('another'))
+              ->disable_formatter('pretty'))
+          ->with_preferred_profile('another');
       """
     And the "preferred_profile.yaml" file should have been removed from the working directory
 
@@ -78,7 +78,7 @@ Feature: Convert config
 
       return (new Config())
           ->import('imported.php')
-          ->withProfile(new Profile('default'));
+          ->with_profile(new Profile('default'));
     """
     And "imported.php" file should contain:
       """
@@ -88,7 +88,7 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('another'));
+          ->with_profile(new Profile('another'));
       """
     And the "imports.yaml" file should have been removed from the working directory
     And the "imported.yaml" file should have been removed from the working directory
@@ -117,7 +117,7 @@ Feature: Convert config
               'imported.php',
               'other_imported.php',
           ])
-          ->withProfile(new Profile('default'));
+          ->with_profile(new Profile('default'));
       """
     And "imported.php" file should contain:
       """
@@ -127,7 +127,7 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('another'));
+          ->with_profile(new Profile('another'));
       """
     And "other_imported.php" file should contain:
       """
@@ -137,7 +137,7 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('other'));
+          ->with_profile(new Profile('other'));
       """
     And the "multiple_imports.yaml" file should have been removed from the working directory
     And the "imported.yaml" file should have been removed from the working directory
@@ -157,9 +157,9 @@ Feature: Convert config
       use Behat\Config\Suite;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withSuite(new Suite('one_suite'))
-              ->withSuite(new Suite('another_suite')));
+          ->with_profile((new Profile('default'))
+              ->with_suite(new Suite('one_suite'))
+              ->with_suite(new Suite('another_suite')));
       """
     And the "suites.yaml" file should have been removed from the working directory
 
@@ -177,9 +177,9 @@ Feature: Convert config
       use Behat\Config\Suite;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withSuite((new Suite('my_suite'))
-                  ->withContexts(
+          ->with_profile((new Profile('default'))
+              ->with_suite((new Suite('my_suite'))
+                  ->with_contexts(
                       'MyContext',
                       'AnotherContext'
                   )));
@@ -200,24 +200,24 @@ Feature: Convert config
       use Behat\Config\Suite;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withSuite((new Suite('my_suite'))
-                  ->addContext('MyContext')
-                  ->addContext(
+          ->with_profile((new Profile('default'))
+              ->with_suite((new Suite('my_suite'))
+                  ->add_context('MyContext')
+                  ->add_context(
                       'AContextWithPositionalArgs',
                       [
                           'First Arg',
                           'Second Arg',
                       ]
                   )
-                  ->addContext(
+                  ->add_context(
                       'AContextWithNamedArgs',
                       [
                           'param1' => 'Something',
                           'param2' => 'Else',
                       ]
                   )
-                  ->addContext('AnotherContext')));
+                  ->add_context('AnotherContext')));
       """
     And the "suite_contexts_with_args.yaml" file should have been removed from the working directory
 
@@ -235,9 +235,9 @@ Feature: Convert config
       use Behat\Config\Suite;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withSuite((new Suite('my_suite'))
-                  ->withPaths(
+          ->with_profile((new Profile('default'))
+              ->with_suite((new Suite('my_suite'))
+                  ->with_paths(
                       'one.feature',
                       'other.feature'
                   )));
@@ -259,9 +259,9 @@ Feature: Convert config
       use Behat\Config\Suite;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withSuite((new Suite('my_suite'))
-                  ->withFilter(new Tag_Filter('@run'))));
+          ->with_profile((new Profile('default'))
+              ->with_suite((new Suite('my_suite'))
+                  ->with_filter(new Tag_Filter('@run'))));
       """
     And the "suite_filters.yaml" file should have been removed from the working directory
 
@@ -279,8 +279,8 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withExtension(new Extension('custom_extension.php', [
+          ->with_profile((new Profile('default'))
+              ->with_extension(new Extension('custom_extension.php', [
                   'property' => 'value',
                   'other_properties' => [
                       'my_tags' => [
@@ -312,26 +312,26 @@ Feature: Convert config
       use test\MyApp\Contexts\MySecondContext;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withExtension(new Extension('class_references_loader.php'))
-              ->withExtension(new Extension(ExplicitlyReferencedExtension::class))
-              ->withExtension(new Extension(ShorthandExtension::class))
-              ->withSuite((new Suite('named_contexts'))
-                  ->withContexts(
+          ->with_profile((new Profile('default'))
+              ->with_extension(new Extension('class_references_loader.php'))
+              ->with_extension(new Extension(ExplicitlyReferencedExtension::class))
+              ->with_extension(new Extension(ShorthandExtension::class))
+              ->with_suite((new Suite('named_contexts'))
+                  ->with_contexts(
                       'UnknownContext',
                       MyContext::class,
                       MyFirstContext::class,
                       MySecondContext::class
                   ))
-              ->withSuite((new Suite('contexts_with_args'))
-                  ->addContext('UnknownContext')
-                  ->addContext(
+              ->with_suite((new Suite('contexts_with_args'))
+                  ->add_context('UnknownContext')
+                  ->add_context(
                       MyFirstContext::class,
                       [
                           'param1',
                       ]
                   )
-                  ->addContext(MySecondContext::class)));
+                  ->add_context(MySecondContext::class)));
       """
     And the "class_references.yaml" file should have been removed from the working directory
 
@@ -351,10 +351,10 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withGherkinOptions((new Gherkin_Options())
-                  ->withFilter(new Name_Filter('john'))
-                  ->withFilter(new Role_Filter('admin'))));
+          ->with_profile((new Profile('default'))
+              ->with_gherkin_options((new Gherkin_Options())
+                  ->with_filter(new Name_Filter('john'))
+                  ->with_filter(new Role_Filter('admin'))));
       """
     And the "profile_filters.yaml" file should have been removed from the working directory
 
@@ -371,8 +371,8 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withPrintUnusedDefinitions());
+          ->with_profile((new Profile('default'))
+              ->with_print_unused_definitions());
       """
     And the "unused_definitions.yaml" file should have been removed from the working directory
 
@@ -397,25 +397,25 @@ Feature: Convert config
       use Behat\Testwork\Output\Printer\Factory\Output_Factory;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withFormatter((new Pretty_Formatter(paths: false, shortSummary: false))
-                  ->withOutputDecorated(false))
-              ->withFormatter(new Progress_Formatter())
-              ->disableFormatter('junit')
-              ->withFormatter((new Formatter('custom_formatter', [
+          ->with_profile((new Profile('default'))
+              ->with_formatter((new Pretty_Formatter(paths: false, shortSummary: false))
+                  ->with_output_decorated(false))
+              ->with_formatter(new Progress_Formatter())
+              ->disable_formatter('junit')
+              ->with_formatter((new Formatter('custom_formatter', [
                   'other_property' => 'value',
               ]))
-                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERBOSE))
-              ->withExtension(new Extension('custom_extension.php')))
-          ->withProfile((new Profile('with_options'))
-              ->withFormatter((new J_Unit_Formatter())
-                  ->withOutputPath('build/logs/junit'))
-              ->withFormatter((new JSON_Formatter())
-                  ->withOutputPath('build/logs/result.json'))
-              ->withFormatter((new Progress_Formatter(showOutput: Show_Output_Option::OnFail))
-                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERY_VERBOSE))
-              ->withFormatter((new Pretty_Formatter(expand: true, showOutput: Show_Output_Option::No))
-                  ->withOutputStyles([
+                  ->with_output_verbosity(Output_Factory::VERBOSITY_VERBOSE))
+              ->with_extension(new Extension('custom_extension.php')))
+          ->with_profile((new Profile('with_options'))
+              ->with_formatter((new J_Unit_Formatter())
+                  ->with_output_path('build/logs/junit'))
+              ->with_formatter((new JSON_Formatter())
+                  ->with_output_path('build/logs/result.json'))
+              ->with_formatter((new Progress_Formatter(showOutput: Show_Output_Option::OnFail))
+                  ->with_output_verbosity(Output_Factory::VERBOSITY_VERY_VERBOSE))
+              ->with_formatter((new Pretty_Formatter(expand: true, showOutput: Show_Output_Option::No))
+                  ->with_output_styles([
                       'failed' => [
                           'white',
                           'red',
@@ -438,12 +438,12 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile((new Profile('default'))
-              ->withPathOptions(printAbsolutePaths: true))
-          ->withProfile((new Profile('with_editor_url'))
-              ->withPathOptions(editorUrl: 'phpstorm://open?file={relPath}&line={line}'))
-          ->withProfile((new Profile('with_remove_prefix'))
-              ->withPathOptions(removePrefix: [
+          ->with_profile((new Profile('default'))
+              ->with_path_options(print_absolute_paths: true))
+          ->with_profile((new Profile('with_editor_url'))
+              ->with_path_options(editor_url: 'phpstorm://open?file={relPath}&line={line}'))
+          ->with_profile((new Profile('with_remove_prefix'))
+              ->with_path_options(remove_prefix: [
                   'features/bootstrap/',
                   'features/',
               ]));
@@ -464,27 +464,27 @@ Feature: Convert config
       use Behat\Config\Tester_Options;
 
       return (new Config())
-          ->withProfile(new Profile('default'))
-          ->withProfile((new Profile('ignore-errors'))
-              ->withTesterOptions((new Tester_Options())
-                  ->withErrorReporting(E_ALL & ~E_DEPRECATED)))
-          ->withProfile((new Profile('not-strict'))
-              ->withTesterOptions((new Tester_Options())
-                  ->withStrictResultInterpretation(false)))
-          ->withProfile((new Profile('print-deprecations'))
-              ->withTesterOptions((new Tester_Options())
-                  ->withPrintBehatDeprecations()))
-          ->withProfile((new Profile('fail-on-deprecations'))
-              ->withTesterOptions((new Tester_Options())
-                  ->withFailOnBehatDeprecations()))
-          ->withProfile((new Profile('complete'))
-              ->withTesterOptions((new Tester_Options())
-                  ->withStrictResultInterpretation()
-                  ->withStopOnFailure(false)
-                  ->withSkipAllTests()
-                  ->withErrorReporting(E_ALL & ~(E_WARNING | E_NOTICE | E_DEPRECATED))
-                  ->withPrintBehatDeprecations()
-                  ->withFailOnBehatDeprecations()));
+          ->with_profile(new Profile('default'))
+          ->with_profile((new Profile('ignore-errors'))
+              ->with_tester_options((new Tester_Options())
+                  ->with_error_reporting(E_ALL & ~E_DEPRECATED)))
+          ->with_profile((new Profile('not-strict'))
+              ->with_tester_options((new Tester_Options())
+                  ->with_strict_result_interpretation(false)))
+          ->with_profile((new Profile('print-deprecations'))
+              ->with_tester_options((new Tester_Options())
+                  ->with_print_behat_deprecations()))
+          ->with_profile((new Profile('fail-on-deprecations'))
+              ->with_tester_options((new Tester_Options())
+                  ->with_fail_on_behat_deprecations()))
+          ->with_profile((new Profile('complete'))
+              ->with_tester_options((new Tester_Options())
+                  ->with_strict_result_interpretation()
+                  ->with_stop_on_failure(false)
+                  ->with_skip_all_tests()
+                  ->with_error_reporting(E_ALL & ~(E_WARNING | E_NOTICE | E_DEPRECATED))
+                  ->with_print_behat_deprecations()
+                  ->with_fail_on_behat_deprecations()));
       """
     And the "tester_options.yaml" file should have been removed from the working directory
 
@@ -515,48 +515,48 @@ Feature: Convert config
 
       return (new Config())
           ->import('imported.php')
-          ->withProfile((new Profile('default'))
-              ->withFormatter((new Pretty_Formatter(paths: false, shortSummary: false))
-                  ->withOutputDecorated(false))
-              ->withFormatter(new Progress_Formatter())
-              ->disableFormatter('junit')
-              ->withFormatter((new Formatter('custom_formatter', [
+          ->with_profile((new Profile('default'))
+              ->with_formatter((new Pretty_Formatter(paths: false, shortSummary: false))
+                  ->with_output_decorated(false))
+              ->with_formatter(new Progress_Formatter())
+              ->disable_formatter('junit')
+              ->with_formatter((new Formatter('custom_formatter', [
                   'other_property' => 'value',
               ]))
-                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERBOSE))
-              ->withGherkinOptions((new Gherkin_Options())
-                  ->withCacheDir('/tmp/gherkin-cache')
-                  ->withCompatibilityMode(GherkinCompatibilityMode::GHERKIN_32)
-                  ->withFilter(new Name_Filter('john'))
-                  ->withFilter(new Role_Filter('admin')))
-              ->withPrintUnusedDefinitions()
-              ->withPathOptions(
-                  printAbsolutePaths: true,
-                  editorUrl: 'phpstorm://open?file={relPath}&line={line}',
-                  removePrefix: [
+                  ->with_output_verbosity(Output_Factory::VERBOSITY_VERBOSE))
+              ->with_gherkin_options((new Gherkin_Options())
+                  ->with_cache_dir('/tmp/gherkin-cache')
+                  ->with_compatibility_mode(GherkinCompatibilityMode::GHERKIN_32)
+                  ->with_filter(new Name_Filter('john'))
+                  ->with_filter(new Role_Filter('admin')))
+              ->with_print_unused_definitions()
+              ->with_path_options(
+                  print_absolute_paths: true,
+                  editor_url: 'phpstorm://open?file={relPath}&line={line}',
+                  remove_prefix: [
                       'features/bootstrap/',
                       'features/',
                   ]
               )
-              ->withTesterOptions((new Tester_Options())
-                  ->withStrictResultInterpretation()
-                  ->withPrintBehatDeprecations()
-                  ->withFailOnBehatDeprecations())
-              ->withExtension(new Extension('custom_extension.php'))
-              ->withSuite((new Suite('my_suite'))
-                  ->addContext(
+              ->with_tester_options((new Tester_Options())
+                  ->with_strict_result_interpretation()
+                  ->with_print_behat_deprecations()
+                  ->with_fail_on_behat_deprecations())
+              ->with_extension(new Extension('custom_extension.php'))
+              ->with_suite((new Suite('my_suite'))
+                  ->add_context(
                       'MyContext',
                       [
                           'password' => '%env(MY_SECRET_PASSWORD)%',
                       ]
                   )
-                  ->withPaths('one.feature')
-                  ->withFilter(new Tag_Filter('@run'))))
-          ->withProfile((new Profile('other'))
-              ->disableFormatter('pretty')
-              ->withTesterOptions((new Tester_Options())
-                  ->withErrorReporting(E_ERROR)))
-          ->withPreferredProfile('other');
+                  ->with_paths('one.feature')
+                  ->with_filter(new Tag_Filter('@run'))))
+          ->with_profile((new Profile('other'))
+              ->disable_formatter('pretty')
+              ->with_tester_options((new Tester_Options())
+                  ->with_error_reporting(E_ERROR)))
+          ->with_preferred_profile('other');
       """
     And "imported.php" file should contain:
       """
@@ -566,7 +566,7 @@ Feature: Convert config
       use Behat\Config\Profile;
 
       return (new Config())
-          ->withProfile(new Profile('another'));
+          ->with_profile(new Profile('another'));
       """
     And the "full_configuration.yaml" file should have been removed from the working directory
     And the "imported.yaml" file should have been removed from the working directory

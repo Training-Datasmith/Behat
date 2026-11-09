@@ -72,9 +72,4 @@ final class Generic_Suite implements Suite
 
         return $this->settings[$key];
     }
-
-    public function getSetting($key)
-    {
-        return $this->get_setting($key);
-    }
 }

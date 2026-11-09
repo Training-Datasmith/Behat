@@ -5,10 +5,10 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
-        (new Profile('default'))->withSuite(
+    ->with_profile(
+        (new Profile('default'))->with_suite(
             (new Suite('default'))
-                ->addContext('Feature_Context_Decimal')
+                ->add_context('Feature_Context_Decimal')
         )
     )
 ;

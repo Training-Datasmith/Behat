@@ -2,7 +2,7 @@ default:
   suites:
     first:
       paths: '%paths.base%/features/first'
-      contexts: [ FirstContext ]
+      contexts: [ First_Context ]
     second:
       paths: [ '%paths.base%/features/second' ]
-      contexts: [ SecondContext ]
+      contexts: [ Second_Context ]

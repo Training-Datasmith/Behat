@@ -5,7 +5,7 @@ use Behat\Config\Formatter\Progress_Formatter;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withFormatter(new Progress_Formatter())
+            ->with_formatter(new Progress_Formatter())
     );

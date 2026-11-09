@@ -47,9 +47,4 @@ interface Suite
      * @param string $key
      */
     public function get_setting($key);
-
-    /**
-     * @param string $key
-     */
-    public function getSetting($key);
 }

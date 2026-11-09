@@ -7,18 +7,18 @@ use Behat\Config\Gherkin_Options;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withGherkinOptions(
+            ->with_gherkin_options(
                 (new Gherkin_Options())
-                ->withFilter(new Tag_Filter('~@wip'))
+                ->with_filter(new Tag_Filter('~@wip'))
             )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('wip'))
-            ->withGherkinOptions(
+            ->with_gherkin_options(
                 (new Gherkin_Options())
-                ->withFilter(new Name_Filter('A simple feature'))
+                ->with_filter(new Name_Filter('A simple feature'))
             )
     )
 ;

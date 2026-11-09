@@ -327,7 +327,7 @@ return [
     ],
     'ro' => [
         'snippet_proposal_title' => '<snippet_undefined><snippet_keyword>%count%</snippet_keyword> are pași lipsa. Puteți implementa pașii cu ajutorul acestor fragmente de cod:</snippet_undefined>',
-        'snippet_missing_title' => '<snippet_undefined>Fragmentele de cod pentru urmatorii pași din suita <snippet_keyword>%count%</snippet_keyword> nu au fost generate (contextul tau implementeaza interfata SnippetAcceptingContext?):</snippet_undefined>',
+        'snippet_missing_title' => '<snippet_undefined>Fragmentele de cod pentru urmatorii pași din suita <snippet_keyword>%count%</snippet_keyword> nu au fost generate (contextul tau implementeaza interfata Snippet_Accepting_Context?):</snippet_undefined>',
         'snippet_proposal_use' => 'Nu uitați aceste %count% instrucțiuni de use:',
         'snippet_generation_failure_title' => 'Nu s‑a putut genera automat fragmente corespunzătoare următorilor pași:',
         'snippet_generation_failure_hint' => '(încercați să folosiți --snippets-type=regex sau definiți manual pasul)',

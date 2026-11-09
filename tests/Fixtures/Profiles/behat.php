@@ -5,13 +5,13 @@ use Behat\Config\Profile;
 
 return (new Config())
     ->import('pretty.php')
-    ->withProfile(new Profile('default', [
+    ->with_profile(new Profile('default', [
         'formatters' => [
             'pretty' => false,
             'progress' => null,
         ],
     ]))
-    ->withProfile(new Profile('pretty_without_paths', [
+    ->with_profile(new Profile('pretty_without_paths', [
         'formatters' => [
             'progress' => false,
             'pretty' => [

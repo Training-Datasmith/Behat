@@ -5,17 +5,17 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->withPaths('features/apples.feature', 'features/bananas.feature')
-                    ->withContexts('Feature_Context')
+                    ->with_paths('features/apples.feature', 'features/bananas.feature')
+                    ->with_contexts('Feature_Context')
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('suite2'))
-                    ->withPaths('features/bananas.feature')
-                    ->withContexts('Feature_Context')
+                    ->with_paths('features/bananas.feature')
+                    ->with_contexts('Feature_Context')
             )
     )
 ;

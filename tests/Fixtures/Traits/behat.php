@@ -5,7 +5,7 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-    ->withSuite(new Suite('default'))
+    ->with_suite(new Suite('default'))
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

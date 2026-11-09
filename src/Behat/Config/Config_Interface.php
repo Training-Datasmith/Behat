@@ -8,5 +8,3 @@ interface Config_Interface
 {
     public function to_array(): array;
 }
-
-class_alias(Config_Interface::class, __NAMESPACE__ . '\\ConfigInterface');

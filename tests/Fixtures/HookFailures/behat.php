@@ -5,81 +5,81 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('beforeSuite'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'Before_Suite_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('afterSuite'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'After_Suite_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('beforeFeature'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'Before_Feature_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('afterFeature'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'After_Feature_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('beforeScenario'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'Before_Scenario_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('afterScenario'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'After_Scenario_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('beforeStep'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'Before_Step_Context',
                 'Simple_Step_Context'
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('afterStep'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts(
+            ->with_contexts(
                 'After_Step_Context',
                 'Simple_Step_Context'
             )

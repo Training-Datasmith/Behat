@@ -5,11 +5,11 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('suite-with-hyphens'))
-            ->withPaths('features/little_kid.feature')
-            ->withContexts('Little_Kid_Context')
+            ->with_paths('features/little_kid.feature')
+            ->with_contexts('Little_Kid_Context')
     )
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

@@ -5,9 +5,9 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default', [
                 'services' => [
                     'typehinted_service' => [
@@ -15,6 +15,6 @@ return (new Config())
                     ],
                 ],
             ]))
-            ->addContext('First_Context_Mixed_Args', ['@typehinted_service', 'bar'])
+            ->add_context('First_Context_Mixed_Args', ['@typehinted_service', 'bar'])
         )
     );

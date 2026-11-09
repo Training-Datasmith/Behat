@@ -36,14 +36,14 @@ final class Suite_Test extends TestCase
     {
         $config = new Suite('first');
         $config->with_contexts('First_Context', 'Second_Context');
-        $config->add_context('ThirdContext', ['http://localhost:8080', '/var/tmp']);
+        $config->add_context('Third_Context', ['http://localhost:8080', '/var/tmp']);
 
         $this->assertEquals([
             'contexts' => [
                 'First_Context',
                 'Second_Context',
                 [
-                    'ThirdContext' => [
+                    'Third_Context' => [
                         'http://localhost:8080',
                         '/var/tmp',
                     ],

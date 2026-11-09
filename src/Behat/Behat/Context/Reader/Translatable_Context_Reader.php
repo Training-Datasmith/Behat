@@ -41,7 +41,7 @@ final readonly class Translatable_Context_Reader implements Context_Reader
             return [];
         }
         $assets_id = $environment->get_suite()->get_name();
-        foreach (call_user_func([$context_class, 'getTranslationResources']) as $path) {
+        foreach (call_user_func([$context_class, 'get_translation_resources']) as $path) {
             $this->add_translation_resource($path, $assets_id);
         }
 

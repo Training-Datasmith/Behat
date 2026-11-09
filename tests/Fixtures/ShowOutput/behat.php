@@ -7,21 +7,21 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $defaultProfile = (new Profile('default'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context')
+            ->with_contexts('Feature_Context')
     )
 ;
 
 $progressNoOutputProfile = (new Profile('progress_no_output'))
-    ->withSuite(
+    ->with_suite(
         (new Suite('default'))
-            ->withContexts('Feature_Context')
+            ->with_contexts('Feature_Context')
     )
-    ->withFormatter(new Progress_Formatter(showOutput: Show_Output_Option::No))
+    ->with_formatter(new Progress_Formatter(showOutput: Show_Output_Option::No))
 ;
 
 return (new Config())
-    ->withProfile($defaultProfile)
-    ->withProfile($progressNoOutputProfile)
+    ->with_profile($defaultProfile)
+    ->with_profile($progressNoOutputProfile)
 ;

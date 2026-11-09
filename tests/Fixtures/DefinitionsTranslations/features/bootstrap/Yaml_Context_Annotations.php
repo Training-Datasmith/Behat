@@ -45,7 +45,7 @@ class Yaml_Context_Annotations implements Translatable_Context
         PHPUnit\Framework\Assert::assertEquals($username, $user->name);
     }
 
-    public static function getTranslationResources()
+    public static function get_translation_resources()
     {
         return [__DIR__ . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . 'ru.yml'];
     }

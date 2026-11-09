@@ -5,9 +5,9 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Feature_Context'],
         ]))
     );

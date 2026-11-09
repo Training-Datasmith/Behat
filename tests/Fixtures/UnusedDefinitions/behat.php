@@ -5,35 +5,35 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('first_suite'))
-            ->withPaths(
+            ->with_paths(
                 'features/first_feature.feature'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('second_suite'))
-            ->withPaths(
+            ->with_paths(
                 'features/second_feature.feature',
             )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('translated_definitions'))
-            ->withSuite(
+            ->with_suite(
                 (new Suite('translated_definitions'))
-                    ->withPaths(
+                    ->with_paths(
                         'features/translated_definitions.feature'
                     )
-                    ->withContexts(
+                    ->with_contexts(
                         'Translated_Definitions_Context',
                     )
             )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('unused_definitions'))
-        ->withPrintUnusedDefinitions()
+        ->with_print_unused_definitions()
     )
 ;

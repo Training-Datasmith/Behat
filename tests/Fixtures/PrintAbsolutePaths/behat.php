@@ -4,8 +4,8 @@ use Behat\Config\Config;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(new Profile('default'))
-    ->withProfile(
+    ->with_profile(new Profile('default'))
+    ->with_profile(
         (new Profile('absolute_paths'))
-        ->withPathOptions(printAbsolutePaths: true)
+        ->with_path_options(print_absolute_paths: true)
     );

@@ -5,15 +5,15 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('inherit'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Feature_Context_Inherit_Annotations'],
         ]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('both_patterns'))
-        ->withSuite(new Suite('default', [
+        ->with_suite(new Suite('default', [
             'contexts' => ['Feature_Context_Both_Annotations'],
         ]))
     );

@@ -5,7 +5,7 @@ use Behat\Config\Extension;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-        ->withExtension(new Extension('custom_extension.php'))
+        ->with_extension(new Extension('custom_extension.php'))
     );

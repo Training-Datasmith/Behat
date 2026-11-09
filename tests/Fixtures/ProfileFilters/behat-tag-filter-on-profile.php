@@ -5,8 +5,8 @@ use Behat\Config\Filter\Tag_Filter;
 use Behat\Config\Profile;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withFilter(new Tag_Filter('tag2'))
+            ->with_filter(new Tag_Filter('tag2'))
     )
 ;

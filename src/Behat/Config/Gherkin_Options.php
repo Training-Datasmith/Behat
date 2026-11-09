@@ -19,9 +19,9 @@ final class Gherkin_Options implements Config_Converter_Interface
     private const CACHE_SETTING = 'cache';
     private const COMPATIBILITY_SETTING = 'compatibility';
     private const FILTERS_SETTING = 'filters';
-    private const CACHE_FUNCTION = 'withCacheDir';
-    private const COMPATIBILITY_FUNCTION = 'withCompatibilityMode';
-    private const FILTER_FUNCTION = 'withFilter';
+    private const CACHE_FUNCTION = 'with_cache_dir';
+    private const COMPATIBILITY_FUNCTION = 'with_compatibility_mode';
+    private const FILTER_FUNCTION = 'with_filter';
 
     public function __construct(private array $settings = [])
     {
@@ -65,21 +65,6 @@ final class Gherkin_Options implements Config_Converter_Interface
         $this->settings[self::FILTERS_SETTING][$filter->name()] = $filter->value();
 
         return $this;
-    }
-
-    public function withCacheDir(string $dir): self
-    {
-        return $this->with_cache_dir($dir);
-    }
-
-    public function withCompatibilityMode(GherkinCompatibilityMode $mode): self
-    {
-        return $this->with_compatibility_mode($mode);
-    }
-
-    public function withFilter(Filter_Interface $filter): self
-    {
-        return $this->with_filter($filter);
     }
 
     /**

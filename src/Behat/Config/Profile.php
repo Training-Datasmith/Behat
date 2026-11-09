@@ -28,17 +28,17 @@ final class Profile implements Config_Converter_Interface
     private const PRINT_ABSOLUTE_PATHS_SETTING = 'print_absolute_paths';
     private const EDITOR_URL_SETTING = 'editor_url';
     private const REMOVE_PREFIX_SETTING = 'remove_prefix';
-    private const DISABLE_FORMATTER_FUNCTION = 'disableFormatter';
-    private const FORMATTER_FUNCTION = 'withFormatter';
-    private const GHERKIN_FUNCTION = 'withGherkinOptions';
-    private const UNUSED_DEFINITIONS_FUNCTION = 'withPrintUnusedDefinitions';
-    private const EXTENSION_FUNCTION = 'withExtension';
-    private const SUITE_FUNCTION = 'withSuite';
-    private const PATH_OPTIONS_FUNCTION = 'withPathOptions';
-    private const TESTER_OPTIONS_FUNCTION = 'withTesterOptions';
-    private const PRINT_ABSOLUTE_PATHS_PARAMETER = 'printAbsolutePaths';
-    private const EDITOR_URL_PARAMETER = 'editorUrl';
-    private const REMOVE_PREFIX_PARAMETER = 'removePrefix';
+    private const DISABLE_FORMATTER_FUNCTION = 'disable_formatter';
+    private const FORMATTER_FUNCTION = 'with_formatter';
+    private const GHERKIN_FUNCTION = 'with_gherkin_options';
+    private const UNUSED_DEFINITIONS_FUNCTION = 'with_print_unused_definitions';
+    private const EXTENSION_FUNCTION = 'with_extension';
+    private const SUITE_FUNCTION = 'with_suite';
+    private const PATH_OPTIONS_FUNCTION = 'with_path_options';
+    private const TESTER_OPTIONS_FUNCTION = 'with_tester_options';
+    private const PRINT_ABSOLUTE_PATHS_PARAMETER = 'print_absolute_paths';
+    private const EDITOR_URL_PARAMETER = 'editor_url';
+    private const REMOVE_PREFIX_PARAMETER = 'remove_prefix';
 
     public function __construct(private readonly string $name, private array $settings = [])
     {
@@ -70,7 +70,7 @@ final class Profile implements Config_Converter_Interface
     }
 
     /**
-     * @deprecated use withGherkinOptions()->withFilter(). This method will be removed in 4.0
+     * @deprecated use with_gherkin_options()->with_filter(). This method will be removed in 4.0
      */
     public function with_filter(Filter_Interface $filter): self
     {
@@ -126,51 +126,6 @@ final class Profile implements Config_Converter_Interface
         }
 
         return $this;
-    }
-
-    public function withSuite(Suite $suite): self
-    {
-        return $this->with_suite($suite);
-    }
-
-    public function withExtension(Extension_Config_Interface $extension): self
-    {
-        return $this->with_extension($extension);
-    }
-
-    public function withFilter(Filter_Interface $filter): self
-    {
-        return $this->with_filter($filter);
-    }
-
-    public function withFormatter(Formatter_Config_Interface $formatter): self
-    {
-        return $this->with_formatter($formatter);
-    }
-
-    public function disableFormatter(string $name): self
-    {
-        return $this->disable_formatter($name);
-    }
-
-    public function withGherkinOptions(Gherkin_Options $gherkin): self
-    {
-        return $this->with_gherkin_options($gherkin);
-    }
-
-    public function withPrintUnusedDefinitions(bool $printUnusedDefinitions = true): self
-    {
-        return $this->with_print_unused_definitions($printUnusedDefinitions);
-    }
-
-    public function withPathOptions(bool $printAbsolutePaths = false, ?string $editorUrl = null, array $removePrefix = []): self
-    {
-        return $this->with_path_options($printAbsolutePaths, $editorUrl, $removePrefix);
-    }
-
-    public function withTesterOptions(Tester_Options $options): self
-    {
-        return $this->with_tester_options($options);
     }
 
     public function to_array(): array

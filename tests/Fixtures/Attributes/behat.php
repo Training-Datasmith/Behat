@@ -5,23 +5,23 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('step_attributes'))
-        ->withSuite(new Suite('default', ['contexts' => ['Step_Attributes_Context']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Step_Attributes_Context']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('feature_hooks'))
-        ->withSuite(new Suite('default', ['contexts' => ['Feature_Hook_Attributes_Context']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Feature_Hook_Attributes_Context']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('scenario_hooks'))
-        ->withSuite(new Suite('default', ['contexts' => ['Scenario_Hook_Attributes_Context']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Scenario_Hook_Attributes_Context']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('suite_hooks'))
-        ->withSuite(new Suite('apples', ['contexts' => ['Suite_Hook_Attributes_Context']]))
+        ->with_suite(new Suite('apples', ['contexts' => ['Suite_Hook_Attributes_Context']]))
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('step_hooks'))
-        ->withSuite(new Suite('default', ['contexts' => ['Step_Hook_Attributes_Context']]))
+        ->with_suite(new Suite('default', ['contexts' => ['Step_Hook_Attributes_Context']]))
     );

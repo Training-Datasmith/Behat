@@ -18,7 +18,7 @@ final class Tester_Options implements Config_Converter_Interface
     private const ERROR_REPORTING_SETTING = 'error_reporting';
     private const PRINT_BEHAT_DEPRECATIONS_SETTING = 'print_behat_deprecations';
     private const FAIL_ON_BEHAT_DEPRECATIONS_SETTING = 'fail_on_behat_deprecations';
-    private const FUNCTION_NAMES_PER_SETTING = [self::CALLS_SETTINGS_GROUP => [self::ERROR_REPORTING_SETTING => 'withErrorReporting'], self::TESTERS_SETTINGS_GROUP => [self::STOP_ON_FAILURE_SETTING => 'withStopOnFailure', self::SKIP_SETTING => 'withSkipAllTests', self::STRICT_SETTING => 'withStrictResultInterpretation'], self::DEPRECATIONS_SETTINGS_GROUP => [self::PRINT_BEHAT_DEPRECATIONS_SETTING => 'withPrintBehatDeprecations', self::FAIL_ON_BEHAT_DEPRECATIONS_SETTING => 'withFailOnBehatDeprecations']];
+    private const FUNCTION_NAMES_PER_SETTING = [self::CALLS_SETTINGS_GROUP => [self::ERROR_REPORTING_SETTING => 'with_error_reporting'], self::TESTERS_SETTINGS_GROUP => [self::STOP_ON_FAILURE_SETTING => 'with_stop_on_failure', self::SKIP_SETTING => 'with_skip_all_tests', self::STRICT_SETTING => 'with_strict_result_interpretation'], self::DEPRECATIONS_SETTINGS_GROUP => [self::PRINT_BEHAT_DEPRECATIONS_SETTING => 'with_print_behat_deprecations', self::FAIL_ON_BEHAT_DEPRECATIONS_SETTING => 'with_fail_on_behat_deprecations']];
 
     /**
      * Used when converting config to PHP, to move relevant Profile settings into this object.
@@ -39,7 +39,7 @@ final class Tester_Options implements Config_Converter_Interface
             }
         }
         if ($settings === []) {
-            // There are no relevant settings, so the config does not need to call ->withTesterOptions on the Profile
+            // There are no relevant settings, so the config does not need to call ->with_tester_options on the Profile
             return null;
         }
 
@@ -113,36 +113,6 @@ final class Tester_Options implements Config_Converter_Interface
         $this->settings[self::DEPRECATIONS_SETTINGS_GROUP][self::FAIL_ON_BEHAT_DEPRECATIONS_SETTING] = $fail_on_deprecations;
 
         return $this;
-    }
-
-    public function withErrorReporting(int $errorReporting): self
-    {
-        return $this->with_error_reporting($errorReporting);
-    }
-
-    public function withStrictResultInterpretation(bool $strict = true): self
-    {
-        return $this->with_strict_result_interpretation($strict);
-    }
-
-    public function withSkipAllTests(bool $skip = true): self
-    {
-        return $this->with_skip_all_tests($skip);
-    }
-
-    public function withStopOnFailure(bool $stopOnFailure = true): self
-    {
-        return $this->with_stop_on_failure($stopOnFailure);
-    }
-
-    public function withPrintBehatDeprecations(bool $printDeprecations = true): self
-    {
-        return $this->with_print_behat_deprecations($printDeprecations);
-    }
-
-    public function withFailOnBehatDeprecations(bool $failOnDeprecations = true): self
-    {
-        return $this->with_fail_on_behat_deprecations($failOnDeprecations);
     }
 
     public function to_php_expr(): Expr

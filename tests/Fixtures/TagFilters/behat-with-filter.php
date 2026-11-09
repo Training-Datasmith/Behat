@@ -6,8 +6,8 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 $profile = (new Profile('default'))
-    ->withSuite(new Suite('default'))
-    ->withFilter(new Tag_Filter('~@slow'))
+    ->with_suite(new Suite('default'))
+    ->with_filter(new Tag_Filter('~@slow'))
 ;
 
-return (new Config())->withProfile($profile);
+return (new Config())->with_profile($profile);

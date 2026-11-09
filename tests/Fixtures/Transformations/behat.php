@@ -5,171 +5,171 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('attributes'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('simple_step_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/simple_step_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Simple_Transformation_Attributes_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('step_argument_transformation_without_parameters'))
-            ->withPaths(
+            ->with_paths(
                 'features/step_argument_transformation_without_parameters.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Without_Parameters_Attributes_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('multiple_transformations_in_one_function'))
-            ->withPaths(
+            ->with_paths(
                 'features/multiple_transformations_in_one_function.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Multiple_Transformations_In_One_Function_Attributes_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('table_column_argument_transformation'))
-                ->withPaths(
+                ->with_paths(
                     'features/table_column_argument_transformation.feature'
                 )
-                ->withContexts(
+                ->with_contexts(
                     'Column_Transformation_Context',
                     'User_Context'
                 )
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('annotations'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('simple_step_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/simple_step_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('table_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/table_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('row_table_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/row_table_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('table_row_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/table_row_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('whole_table_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/whole_table_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Whole_Table_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('named_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/named_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('transform_different_types'))
-            ->withPaths(
+            ->with_paths(
                 'features/transform_different_types.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Multiple_Types_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('by_type_object_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/by_type_object_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'By_Type_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('by_type_and_by_name_object_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/by_type_and_by_name_object_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'By_Type_And_By_Name_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('unicode_named_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/unicode_named_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Transformation_Annotations_Context',
                 'User_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('ordinal_argument_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/ordinal_argument_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Ordinal_Transformation_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('by_type_union_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/by_type_union_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'By_Type_Union_Annotations_Context'
             )
         )
-        ->withSuite(
+        ->with_suite(
             (new Suite('scalar_type_transformation'))
-            ->withPaths(
+            ->with_paths(
                 'features/scalar_type_transformation.feature'
             )
-            ->withContexts(
+            ->with_contexts(
                 'Scalar_Type_Annotations_Context'
             )
         )

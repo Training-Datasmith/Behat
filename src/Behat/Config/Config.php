@@ -15,8 +15,8 @@ final class Config implements Config_Interface, Config_Converter_Interface
     public const IMPORTS_SETTING = 'imports';
     private const PREFERRED_PROFILE_NAME_SETTING = 'preferredProfileName';
     private const IMPORT_FUNCTION = 'import';
-    private const PROFILE_FUNCTION = 'withProfile';
-    private const PREFERRED_PROFILE_FUNCTION = 'withPreferredProfile';
+    private const PROFILE_FUNCTION = 'with_profile';
+    private const PREFERRED_PROFILE_FUNCTION = 'with_preferred_profile';
 
     public function __construct(private array $settings = [])
     {
@@ -48,16 +48,6 @@ final class Config implements Config_Interface, Config_Converter_Interface
         $this->settings[self::PREFERRED_PROFILE_NAME_SETTING] = $profile_name;
 
         return $this;
-    }
-
-    public function withProfile(Profile $profile): self
-    {
-        return $this->with_profile($profile);
-    }
-
-    public function withPreferredProfile(string $profileName): self
-    {
-        return $this->with_preferred_profile($profileName);
     }
 
     public function to_array(): array

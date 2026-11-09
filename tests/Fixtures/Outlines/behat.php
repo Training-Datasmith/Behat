@@ -5,17 +5,17 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->addContext('Feature_Context')
+                    ->add_context('Feature_Context')
             )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('isolation'))
-            ->withSuite(
+            ->with_suite(
                 (new Suite('default'))
-                    ->addContext('Feature_Context_Isolation')
+                    ->add_context('Feature_Context_Isolation')
             )
     );

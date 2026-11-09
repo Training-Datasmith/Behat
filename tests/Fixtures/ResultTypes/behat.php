@@ -5,54 +5,54 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile(new Profile('default'))
-    ->withProfile(
+    ->with_profile(new Profile('default'))
+    ->with_profile(
         (new Profile('undefined'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Undefined_Context')
+            ->with_contexts('Undefined_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('pending'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Pending_Context')
+            ->with_contexts('Pending_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('failed'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Failed_Context')
+            ->with_contexts('Failed_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('skipped'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Skipped_Context')
+            ->with_contexts('Skipped_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('ambiguous'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Ambiguous_Context')
+            ->with_contexts('Ambiguous_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('redundant'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Redundant_Context')
+            ->with_contexts('Redundant_Context')
         )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('warning'))
-        ->withSuite(
+        ->with_suite(
             (new Suite('default'))
-            ->withContexts('Warning_Context')
+            ->with_contexts('Warning_Context')
         )
     )
 ;

@@ -7,32 +7,32 @@ use Behat\Config\Suite;
 use Behat\Config\Tester_Options;
 
 return (new Config())
-    ->withProfile(
+    ->with_profile(
         (new Profile('default'))
-            ->withExtension(new Extension('deprecation_extension.php'))
-            ->withSuite(
+            ->with_extension(new Extension('deprecation_extension.php'))
+            ->with_suite(
                 (new Suite('default'))
-                    ->withPaths('features/deprecations.feature')
+                    ->with_paths('features/deprecations.feature')
             )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('print_behat_deprecations'))
-            ->withExtension(new Extension('deprecation_extension.php'))
-            ->withTesterOptions(
-                (new Tester_Options())->withPrintBehatDeprecations()
+            ->with_extension(new Extension('deprecation_extension.php'))
+            ->with_tester_options(
+                (new Tester_Options())->with_print_behat_deprecations()
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('print_behat_deprecations'))
-                    ->withPaths('features/deprecations.feature')
+                    ->with_paths('features/deprecations.feature')
             )
     )
-    ->withProfile(
+    ->with_profile(
         (new Profile('deprecations_in_steps'))
-            ->withTesterOptions(
-                (new Tester_Options())->withPrintBehatDeprecations()
+            ->with_tester_options(
+                (new Tester_Options())->with_print_behat_deprecations()
             )
-            ->withSuite(
+            ->with_suite(
                 (new Suite('deprecations_in_steps'))
-                    ->withPaths('features/deprecations_in_steps.feature')
+                    ->with_paths('features/deprecations_in_steps.feature')
             )
     );
