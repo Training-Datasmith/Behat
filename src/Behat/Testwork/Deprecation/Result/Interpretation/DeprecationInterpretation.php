@@ -17,10 +17,10 @@ use Behat\Testwork\Tester\Result\TestResult;
 /**
  * Interprets test results as failures if any Behat deprecations were triggered.
  */
-final readonly class DeprecationInterpretation implements ResultInterpretation
+final class DeprecationInterpretation implements ResultInterpretation
 {
     public function __construct(
-        private DeprecationCollector $collector,
+        private readonly DeprecationCollector $collector,
     ) {
     }
 

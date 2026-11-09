@@ -22,14 +22,14 @@ use Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ExecutedStepResult implements StepResult, DefinedStepResult, ExceptionResult
+final class ExecutedStepResult implements StepResult, DefinedStepResult, ExceptionResult
 {
     /**
      * Initialize test result.
      */
     public function __construct(
-        private SearchResult $searchResult,
-        private CallResult $callResult,
+        private readonly SearchResult $searchResult,
+        private readonly CallResult $callResult,
     ) {
     }
 

@@ -22,13 +22,13 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ServicesResolver implements ArgumentResolver
+final class ServicesResolver implements ArgumentResolver
 {
     /**
      * Initialises resolver.
      */
     public function __construct(
-        private ContainerInterface $container,
+        private readonly ContainerInterface $container,
     ) {
     }
 

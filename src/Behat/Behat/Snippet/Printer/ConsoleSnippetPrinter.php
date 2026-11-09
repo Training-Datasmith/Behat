@@ -46,7 +46,7 @@ class ConsoleSnippetPrinter implements SnippetPrinter
      * @param string             $targetName
      * @param AggregateSnippet[] $snippets
      */
-    public function printSnippets($targetName, array $snippets): void
+    public function printSnippets($targetName, array $snippets)
     {
         $message = $this->translator->trans('snippet_proposal_title', ['%count%' => $targetName], 'output');
 
@@ -70,7 +70,7 @@ class ConsoleSnippetPrinter implements SnippetPrinter
      * @param string     $suiteName
      * @param StepNode[] $steps
      */
-    public function printUndefinedSteps($suiteName, array $steps): void
+    public function printUndefinedSteps($suiteName, array $steps)
     {
         $message = $this->translator->trans('snippet_missing_title', ['%count%' => $suiteName], 'output');
 

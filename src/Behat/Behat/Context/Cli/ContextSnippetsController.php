@@ -29,14 +29,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ContextSnippetsController implements Controller
+final class ContextSnippetsController implements Controller
 {
     /**
      * Initialises controller.
      */
     public function __construct(
-        private ContextSnippetGenerator $generator,
-        private TranslatorInterface $translator,
+        private readonly ContextSnippetGenerator $generator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -57,7 +57,7 @@ final readonly class ContextSnippetsController implements Controller
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->generator->setContextIdentifier(
             new AggregateContextIdentifier([

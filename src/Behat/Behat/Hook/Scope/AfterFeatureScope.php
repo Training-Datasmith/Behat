@@ -21,15 +21,15 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AfterFeatureScope implements FeatureScope, AfterTestScope
+final class AfterFeatureScope implements FeatureScope, AfterTestScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private Environment $environment,
-        private FeatureNode $feature,
-        private TestResult $result,
+        private readonly Environment $environment,
+        private readonly FeatureNode $feature,
+        private readonly TestResult $result,
     ) {
     }
 

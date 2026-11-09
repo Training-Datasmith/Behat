@@ -36,8 +36,10 @@ final class BeforeBackgroundTested extends BackgroundTested implements BeforeTes
 
     /**
      * Returns feature.
+     *
+     * @return FeatureNode
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function getFeature()
     {
         return $this->feature;
     }
@@ -49,15 +51,17 @@ final class BeforeBackgroundTested extends BackgroundTested implements BeforeTes
      *
      * @return ScenarioLikeInterface
      */
-    public function getScenario(): \Behat\Gherkin\Node\BackgroundNode
+    public function getScenario()
     {
         return $this->background;
     }
 
     /**
      * Returns background node.
+     *
+     * @return BackgroundNode
      */
-    public function getBackground(): \Behat\Gherkin\Node\BackgroundNode
+    public function getBackground()
     {
         return $this->background;
     }

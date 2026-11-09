@@ -29,11 +29,14 @@ use ReflectionMethod;
  */
 final class HookAnnotationReader implements AnnotationReader
 {
-    private static string $regex = '/^\@(beforesuite|aftersuite|beforefeature|afterfeature|beforescenario|afterscenario|beforestep|afterstep)(?:\s+(.+))?$/i';
+    /**
+     * @var string
+     */
+    private static $regex = '/^\@(beforesuite|aftersuite|beforefeature|afterfeature|beforescenario|afterscenario|beforestep|afterstep)(?:\s+(.+))?$/i';
     /**
      * @var string[]
      */
-    private static array $classes = [
+    private static $classes = [
         'beforesuite' => BeforeSuite::class,
         'aftersuite' => AfterSuite::class,
         'beforefeature' => BeforeFeature::class,

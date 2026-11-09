@@ -25,7 +25,7 @@ class FilesystemOutputFactory extends OutputFactory
 {
     private $fileName;
 
-    public function setFileName($fileName): void
+    public function setFileName($fileName)
     {
         $this->fileName = $fileName;
     }
@@ -39,7 +39,7 @@ class FilesystemOutputFactory extends OutputFactory
         $output->setVerbosity($verbosity);
     }
 
-    public function createOutput($stream = null): \Symfony\Component\Console\Output\StreamOutput
+    public function createOutput($stream = null)
     {
         if ($this->getOutputPath() === null) {
             throw new MissingOutputPathException(
@@ -51,8 +51,7 @@ class FilesystemOutputFactory extends OutputFactory
                 'Directory expected for the `output_path` option, but a filename was given.',
                 $this->getOutputPath()
             );
-        }
-        if (!is_dir($this->getOutputPath())) {
+        } elseif (!is_dir($this->getOutputPath())) {
             mkdir($this->getOutputPath(), 0777, true);
         }
 

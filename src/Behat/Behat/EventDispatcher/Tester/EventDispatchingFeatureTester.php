@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @implements SpecificationTester<FeatureNode>
  */
-final readonly class EventDispatchingFeatureTester implements SpecificationTester
+final class EventDispatchingFeatureTester implements SpecificationTester
 {
     /**
      * Initializes tester.
@@ -35,8 +35,8 @@ final readonly class EventDispatchingFeatureTester implements SpecificationTeste
      * @param SpecificationTester<FeatureNode> $baseTester
      */
     public function __construct(
-        private SpecificationTester $baseTester,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly SpecificationTester $baseTester,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

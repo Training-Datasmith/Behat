@@ -33,11 +33,15 @@ use Behat\Testwork\Tester\SpecificationTester;
  *
  * @implements SpecificationTester<FeatureNode>
  */
-final readonly class RuntimeFeatureTester implements SpecificationTester
+final class RuntimeFeatureTester implements SpecificationTester
 {
+    /**
+     * @param EnvironmentManager $envManager deprecated , will be removed in the next major version
+     */
     public function __construct(
-        private ScenarioTester $scenarioTester,
-        private OutlineTester $outlineTester,
+        private readonly ScenarioTester $scenarioTester,
+        private readonly OutlineTester $outlineTester,
+        EnvironmentManager $envManager,
     ) {
     }
 

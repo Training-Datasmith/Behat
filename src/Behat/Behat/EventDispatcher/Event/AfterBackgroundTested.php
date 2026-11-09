@@ -53,7 +53,7 @@ final class AfterBackgroundTested extends BackgroundTested implements AfterTeste
      *
      * @return ScenarioLikeInterface
      */
-    public function getScenario(): \Behat\Gherkin\Node\BackgroundNode
+    public function getScenario()
     {
         return $this->background;
     }

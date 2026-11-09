@@ -25,13 +25,13 @@ use Behat\Testwork\Suite\Suite;
  *
  * @implements SpecificationLocator<FeatureNode>
  */
-final readonly class FilesystemScenariosListLocator implements SpecificationLocator
+final class FilesystemScenariosListLocator implements SpecificationLocator
 {
     /**
      * Initializes locator.
      */
     public function __construct(
-        private Gherkin $gherkin,
+        private readonly Gherkin $gherkin,
     ) {
     }
 

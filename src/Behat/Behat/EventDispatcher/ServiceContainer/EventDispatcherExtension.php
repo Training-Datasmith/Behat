@@ -33,7 +33,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class EventDispatcherExtension extends BaseExtension
 {
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(ContainerBuilder $container, array $config)
     {
         parent::load($container, $config);
 

@@ -33,7 +33,7 @@ class FireOnlyIfFormatterParameterListener implements EventListener
     ) {
     }
 
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function listenEvent(Formatter $formatter, Event $event, $eventName)
     {
         if ($this->value !== $formatter->getParameter($this->name)) {
             return;

@@ -31,13 +31,13 @@ use Symfony\Component\DependencyInjection\TaggedContainerInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ServicesResolverFactory implements SuiteScopedResolverFactory, ArgumentResolverFactory
+final class ServicesResolverFactory implements SuiteScopedResolverFactory, ArgumentResolverFactory
 {
     /**
      * Initialises factory.
      */
     public function __construct(
-        private TaggedContainerInterface $container,
+        private readonly TaggedContainerInterface $container,
     ) {
     }
 
@@ -105,10 +105,11 @@ final readonly class ServicesResolverFactory implements SuiteScopedResolverFacto
     /**
      * Creates custom container using class/constructor given.
      *
+     * @param string $settings
      *
      * @throws WrongServicesConfigurationException
      */
-    private function createContainerFromString(string $settings)
+    private function createContainerFromString($settings)
     {
         if (0 === mb_strpos($settings, '@')) {
             return $this->loadContainerFromContainer(mb_substr($settings, 1));
@@ -128,10 +129,11 @@ final readonly class ServicesResolverFactory implements SuiteScopedResolverFacto
     /**
      * Loads container from string.
      *
+     * @param string $name
      *
      * @throws WrongServicesConfigurationException
      */
-    private function loadContainerFromContainer(string $name): object
+    private function loadContainerFromContainer($name): object
     {
         $services = $this->container->findTaggedServiceIds(HelperContainerExtension::HELPER_CONTAINER_TAG);
 
@@ -163,11 +165,13 @@ final readonly class ServicesResolverFactory implements SuiteScopedResolverFacto
     /**
      * Checks if container implements the correct interface and creates resolver using it.
      *
+     * @param bool  $autowire
      *
      * @return list<ArgumentResolver>
+     *
      * @throws WrongContainerClassException
      */
-    private function createResolvers($container, bool $autowire): array
+    private function createResolvers($container, $autowire): array
     {
         if (!$container instanceof ContainerInterface) {
             throw new WrongContainerClassException(

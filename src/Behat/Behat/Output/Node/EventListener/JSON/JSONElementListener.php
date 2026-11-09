@@ -122,7 +122,7 @@ final class JSONElementListener implements EventListener
         }
     }
 
-    private function onStepStart(Formatter $formatter, \Behat\Testwork\Event\Event $event): void
+    private function onStepStart(Formatter $formatter, $event): void
     {
         if ($event instanceof AfterStepSetup) {
             $this->setupPrinter->printSetup($formatter, $event->getSetup());

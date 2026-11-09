@@ -17,10 +17,10 @@ use Behat\Behat\Context\Environment\ContextEnvironment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class FixedContextIdentifier implements TargetContextIdentifier
+final class FixedContextIdentifier implements TargetContextIdentifier
 {
     public function __construct(
-        private ?string $contextClass = null,
+        private readonly ?string $contextClass = null,
     ) {
     }
 

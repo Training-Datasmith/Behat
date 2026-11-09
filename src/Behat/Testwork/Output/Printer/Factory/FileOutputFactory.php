@@ -47,10 +47,12 @@ final class FileOutputFactory extends OutputFactory
             );
         }
 
-        return new StreamOutput(
+        $stream = new StreamOutput(
             $file,
             StreamOutput::VERBOSITY_NORMAL,
             false // a file is never decorated
         );
+
+        return $stream;
     }
 }

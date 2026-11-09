@@ -48,7 +48,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class GherkinExtension implements Extension
+final class GherkinExtension implements Extension
 {
     /*
      * Available services
@@ -62,7 +62,7 @@ final readonly class GherkinExtension implements Extension
      */
     public const LOADER_TAG = 'gherkin.loader';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes extension.
@@ -323,7 +323,7 @@ final readonly class GherkinExtension implements Extension
      *
      * @throws ExtensionException If filter type is not recognised
      */
-    private function createFilterDefinition(int|string $type, $filterString): Definition
+    private function createFilterDefinition($type, $filterString): Definition
     {
         if ('role' === $type) {
             return new Definition(RoleFilter::class, [$filterString]);

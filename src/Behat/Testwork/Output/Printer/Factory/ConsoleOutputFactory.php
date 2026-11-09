@@ -26,8 +26,10 @@ class ConsoleOutputFactory extends OutputFactory
 {
     /**
      * Creates output formatter that is used to create a stream.
+     *
+     * @return OutputFormatter
      */
-    protected function createOutputFormatter(): \Symfony\Component\Console\Formatter\OutputFormatter
+    protected function createOutputFormatter()
     {
         return new OutputFormatter();
     }
@@ -70,7 +72,7 @@ class ConsoleOutputFactory extends OutputFactory
         return $stream;
     }
 
-    public function createOutput($stream = null): \Symfony\Component\Console\Output\StreamOutput
+    public function createOutput($stream = null)
     {
         $stream = $stream ?: $this->createOutputStream();
         $format = $this->createOutputFormatter();

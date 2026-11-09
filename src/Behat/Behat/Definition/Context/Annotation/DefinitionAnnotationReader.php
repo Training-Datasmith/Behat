@@ -24,11 +24,14 @@ use ReflectionMethod;
  */
 final class DefinitionAnnotationReader implements AnnotationReader
 {
-    private static string $regex = '/^\@(given|when|then)\s+(.+)$/i';
+    /**
+     * @var string
+     */
+    private static $regex = '/^\@(given|when|then)\s+(.+)$/i';
     /**
      * @var string[]
      */
-    private static array $classes = [
+    private static $classes = [
         'given' => Given::class,
         'when' => When::class,
         'then' => Then::class,

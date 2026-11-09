@@ -24,7 +24,10 @@ use ReturnTypeWillChange;
  */
 final class GroupedSpecificationIterator implements SpecificationIterator
 {
-    private int $position = 0;
+    /**
+     * @var int
+     */
+    private $position = 0;
 
     /**
      * Initializes iterator.
@@ -54,7 +57,7 @@ final class GroupedSpecificationIterator implements SpecificationIterator
         }
 
         return array_map(
-            fn (array $iterator): GroupedSpecificationIterator => new GroupedSpecificationIterator($iterator[0]->getSuite(), $iterator),
+            fn ($iterator): GroupedSpecificationIterator => new GroupedSpecificationIterator($iterator[0]->getSuite(), $iterator),
             $groupedSpecifications
         );
     }

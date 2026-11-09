@@ -22,9 +22,9 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AutowiringResolver implements ArgumentResolver
+final class AutowiringResolver implements ArgumentResolver
 {
-    private ArgumentAutowirer $autowirer;
+    private readonly ArgumentAutowirer $autowirer;
 
     /**
      * Initialises resolver.

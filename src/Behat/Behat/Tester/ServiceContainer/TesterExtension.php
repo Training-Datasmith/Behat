@@ -69,7 +69,7 @@ class TesterExtension extends BaseExtension
         parent::__construct($this->processor);
     }
 
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(ArrayNodeDefinition $builder)
     {
         parent::configure($builder);
 
@@ -85,7 +85,7 @@ class TesterExtension extends BaseExtension
         ;
     }
 
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(ContainerBuilder $container, array $config)
     {
         parent::load($container, $config);
 
@@ -93,7 +93,7 @@ class TesterExtension extends BaseExtension
         $this->loadPendingExceptionStringer($container);
     }
 
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $container)
     {
         parent::process($container);
 

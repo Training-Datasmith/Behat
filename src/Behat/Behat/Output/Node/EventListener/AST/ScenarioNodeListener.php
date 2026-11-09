@@ -24,13 +24,13 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ScenarioNodeListener implements EventListener
+final class ScenarioNodeListener implements EventListener
 {
     public function __construct(
-        private string $beforeEventName,
-        private string $afterEventName,
-        private ScenarioPrinter $scenarioPrinter,
-        private ?SetupPrinter $setupPrinter = null,
+        private readonly string $beforeEventName,
+        private readonly string $afterEventName,
+        private readonly ScenarioPrinter $scenarioPrinter,
+        private readonly ?SetupPrinter $setupPrinter = null,
     ) {
     }
 

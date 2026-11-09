@@ -30,7 +30,7 @@ final class DefinitionAttributeReader implements AttributeReader
     /**
      * @var array<class-string<Attribute\Definition>, class-string<Call\RuntimeDefinition>>
      */
-    private static array $attributeToCallMap = [
+    private static $attributeToCallMap = [
         Attribute\Given::class => Given::class,
         Attribute\When::class => When::class,
         Attribute\Then::class => Then::class,

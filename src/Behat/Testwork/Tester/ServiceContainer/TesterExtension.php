@@ -73,7 +73,7 @@ abstract class TesterExtension implements Extension
     {
     }
 
-    public function configure(ArrayNodeDefinition $builder): void
+    public function configure(ArrayNodeDefinition $builder)
     {
         $childrenBuilder = $builder
             ->addDefaultsIfNotSet()
@@ -95,7 +95,7 @@ abstract class TesterExtension implements Extension
         ;
     }
 
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(ContainerBuilder $container, array $config)
     {
         $this->loadExerciseController($container, $config['skip']);
         $this->loadStopOnFailureHandler($container, $config['stop_on_failure']);
@@ -106,7 +106,7 @@ abstract class TesterExtension implements Extension
         $this->loadSpecificationTester($container);
     }
 
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $container)
     {
         $this->processExerciseWrappers($container);
         $this->processSuiteTesterWrappers($container);
@@ -135,7 +135,7 @@ abstract class TesterExtension implements Extension
     /**
      * Loads stop on failure handler.
      */
-    private function loadStopOnFailureHandler(ContainerBuilder $container, ?bool $stopOnFailure): void
+    private function loadStopOnFailureHandler(ContainerBuilder $container, ?bool $stopOnFailure)
     {
         $definition = new Definition(StopOnFailureHandler::class, [
             new Reference(EventDispatcherExtension::DISPATCHER_ID),

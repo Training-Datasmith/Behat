@@ -38,8 +38,10 @@ final class BeforeBackgroundTeardown extends BackgroundTested implements BeforeT
 
     /**
      * Returns feature.
+     *
+     * @return FeatureNode
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function getFeature()
     {
         return $this->feature;
     }
@@ -51,23 +53,27 @@ final class BeforeBackgroundTeardown extends BackgroundTested implements BeforeT
      *
      * @return ScenarioLikeInterface
      */
-    public function getScenario(): \Behat\Gherkin\Node\BackgroundNode
+    public function getScenario()
     {
         return $this->background;
     }
 
     /**
      * Returns background node.
+     *
+     * @return BackgroundNode
      */
-    public function getBackground(): \Behat\Gherkin\Node\BackgroundNode
+    public function getBackground()
     {
         return $this->background;
     }
 
     /**
      * Returns current test result.
+     *
+     * @return TestResult
      */
-    public function getTestResult(): \Behat\Testwork\Tester\Result\TestResult
+    public function getTestResult()
     {
         return $this->result;
     }

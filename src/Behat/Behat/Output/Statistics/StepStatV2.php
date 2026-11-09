@@ -95,8 +95,10 @@ final class StepStatV2 extends StepStat implements Stringable
 
     /**
      * Returns string representation for a stat.
+     *
+     * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->getPath();
     }

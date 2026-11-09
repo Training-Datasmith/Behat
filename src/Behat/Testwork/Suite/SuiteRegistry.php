@@ -22,16 +22,22 @@ use Behat\Testwork\Suite\Generator\SuiteGenerator;
  */
 final class SuiteRegistry implements SuiteRepository
 {
-    private bool $suitesGenerated = false;
+    /**
+     * @var bool
+     */
+    private $suitesGenerated = false;
     /**
      * @var SuiteGenerator[]
      */
-    private array $generators = [];
-    private array $suiteConfigurations = [];
+    private $generators = [];
+    /**
+     * @var array
+     */
+    private $suiteConfigurations = [];
     /**
      * @var Suite[]
      */
-    private array $suites = [];
+    private $suites = [];
 
     /**
      * Registers suite generator.

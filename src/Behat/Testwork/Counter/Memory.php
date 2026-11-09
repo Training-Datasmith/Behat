@@ -22,7 +22,7 @@ final class Memory implements Stringable
     /**
      * @var string[]
      */
-    private array $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb'];
+    private $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb'];
 
     /**
      * Returns current memory usage.
@@ -34,16 +34,20 @@ final class Memory implements Stringable
 
     /**
      * Presents memory usage in human-readable form.
+     *
+     * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->humanize($this->getMemoryUsage());
     }
 
     /**
      * Humanizes usage information.
+     *
+     * @param int $bytes
      */
-    private function humanize(int $bytes): string
+    private function humanize($bytes): string
     {
         $e = intval(floor(log($bytes) / log(1024)));
 

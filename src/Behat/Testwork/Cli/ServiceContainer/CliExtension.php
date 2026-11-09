@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class CliExtension implements Extension
+final class CliExtension implements Extension
 {
     /*
      * Available services
@@ -37,7 +37,7 @@ final readonly class CliExtension implements Extension
      */
     public const CONTROLLER_TAG = 'cli.controller';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes extension.

@@ -39,29 +39,38 @@ final class AfterScenarioTested extends ScenarioTested implements AfterTested
 
     /**
      * Returns feature.
+     *
+     * @return FeatureNode
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function getFeature()
     {
         return $this->feature;
     }
 
-    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
+    /**
+     * @return Scenario
+     */
+    public function getScenario()
     {
         return $this->scenario;
     }
 
     /**
      * Returns current test result.
+     *
+     * @return TestResult
      */
-    public function getTestResult(): \Behat\Testwork\Tester\Result\TestResult
+    public function getTestResult()
     {
         return $this->result;
     }
 
     /**
      * Returns current test teardown.
+     *
+     * @return Teardown
      */
-    public function getTeardown(): \Behat\Testwork\Tester\Setup\Teardown
+    public function getTeardown()
     {
         return $this->teardown;
     }

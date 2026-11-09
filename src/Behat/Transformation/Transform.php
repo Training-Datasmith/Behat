@@ -16,10 +16,10 @@ use Attribute;
  * Represents an Attribute for a Transform transformation.
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final readonly class Transform
+final class Transform
 {
     public function __construct(
-        public string $pattern = '',
+        public readonly string $pattern = '',
     ) {
     }
 }

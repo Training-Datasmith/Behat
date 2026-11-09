@@ -49,7 +49,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ContextExtension implements Extension
+final class ContextExtension implements Extension
 {
     /**
      * Available services.
@@ -76,7 +76,7 @@ final readonly class ContextExtension implements Extension
     public const SUITE_SCOPED_RESOLVER_FACTORY_TAG = 'context.argument.suite_resolver_factory';
     public const DOC_BLOCK_HELPER_ID = 'context.docblock_helper';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes compiler pass.
@@ -314,8 +314,10 @@ final readonly class ContextExtension implements Extension
 
     /**
      * Processes all argument resolver factories.
+     *
+     * @param ContainerBuilder $container
      */
-    private function processArgumentResolverFactories(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
+    private function processArgumentResolverFactories($container): void
     {
         $references = $this->processor->findAndSortTaggedServices($container, self::SUITE_SCOPED_RESOLVER_FACTORY_TAG);
         $definition = $container->getDefinition(self::AGGREGATE_RESOLVER_FACTORY_ID);

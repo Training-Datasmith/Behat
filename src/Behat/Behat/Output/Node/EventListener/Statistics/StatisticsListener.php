@@ -22,14 +22,14 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class StatisticsListener implements EventListener
+final class StatisticsListener implements EventListener
 {
     /**
      * Initializes listener.
      */
     public function __construct(
-        private Statistics $statistics,
-        private StatisticsPrinter $printer,
+        private readonly Statistics $statistics,
+        private readonly StatisticsPrinter $printer,
     ) {
     }
 

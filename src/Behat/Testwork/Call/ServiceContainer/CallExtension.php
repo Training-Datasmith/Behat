@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class CallExtension implements Extension
+final class CallExtension implements Extension
 {
     /*
      * Available services
@@ -39,7 +39,7 @@ final readonly class CallExtension implements Extension
     public const RESULT_FILTER_TAG = 'call.result_filter';
     public const EXCEPTION_HANDLER_TAG = 'call.exception_handler';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes extension.

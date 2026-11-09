@@ -88,7 +88,7 @@ class PrettyFormatterFactory implements FormatterFactory
         $this->processor = $processor ?: new ServiceProcessor();
     }
 
-    public function buildFormatter(ContainerBuilder $container): void
+    public function buildFormatter(ContainerBuilder $container)
     {
         $this->loadRootNodeListener($container);
 
@@ -102,7 +102,7 @@ class PrettyFormatterFactory implements FormatterFactory
         $this->loadFormatter($container);
     }
 
-    public function processFormatter(ContainerBuilder $container): void
+    public function processFormatter(ContainerBuilder $container)
     {
         $this->processListenerWrappers($container);
     }

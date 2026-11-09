@@ -29,11 +29,14 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  */
 class FirstBackgroundFiresFirstListener implements EventListener
 {
-    private bool $firstBackgroundEnded = false;
+    /**
+     * @var bool
+     */
+    private $firstBackgroundEnded = false;
     /**
      * @var array<array{0: Event, 1: string}>
      */
-    private array $delayedUntilBackgroundEnd = [];
+    private $delayedUntilBackgroundEnd = [];
 
     /**
      * Initializes listener.
@@ -43,7 +46,7 @@ class FirstBackgroundFiresFirstListener implements EventListener
     ) {
     }
 
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function listenEvent(Formatter $formatter, Event $event, $eventName)
     {
         $this->flushStatesIfBeginningOfTheFeature($eventName);
         $this->markFirstBackgroundPrintedAfterBackground($eventName);

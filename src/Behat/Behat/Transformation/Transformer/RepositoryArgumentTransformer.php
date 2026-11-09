@@ -26,16 +26,16 @@ use Behat\Testwork\Call\CallCenter;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class RepositoryArgumentTransformer implements ArgumentTransformer, RegexGenerator
+final class RepositoryArgumentTransformer implements ArgumentTransformer, RegexGenerator
 {
     /**
      * Initializes transformer.
      */
     public function __construct(
-        private TransformationRepository $repository,
-        private CallCenter $callCenter,
-        private PatternTransformer $patternTransformer,
-        private TranslatorInterface $translator,
+        private readonly TransformationRepository $repository,
+        private readonly CallCenter $callCenter,
+        private readonly PatternTransformer $patternTransformer,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -52,8 +52,9 @@ final readonly class RepositoryArgumentTransformer implements ArgumentTransforme
         );
 
         $newValue = $this->applySimpleTransformations($simpleTransformations, $definitionCall, $argumentIndex, $argumentValue);
+        $newValue = $this->applyNormalTransformations($normalTransformations, $definitionCall, $argumentIndex, $newValue);
 
-        return $this->applyNormalTransformations($normalTransformations, $definitionCall, $argumentIndex, $newValue);
+        return $newValue;
     }
 
     public function generateRegex($suiteName, $pattern, $language)

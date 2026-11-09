@@ -22,13 +22,13 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class SuiteListener implements EventListener
+final class SuiteListener implements EventListener
 {
     /**
      * Initializes listener.
      */
     public function __construct(
-        private SetupPrinter $setupPrinter,
+        private readonly SetupPrinter $setupPrinter,
     ) {
     }
 

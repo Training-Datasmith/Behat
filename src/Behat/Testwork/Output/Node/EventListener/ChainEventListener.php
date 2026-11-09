@@ -35,7 +35,7 @@ class ChainEventListener implements EventListener, Countable, IteratorAggregate
     ) {
     }
 
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function listenEvent(Formatter $formatter, Event $event, $eventName)
     {
         foreach ($this->listeners as $listener) {
             $listener->listenEvent($formatter, $event, $eventName);

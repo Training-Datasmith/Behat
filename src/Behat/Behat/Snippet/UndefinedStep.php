@@ -18,14 +18,14 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class UndefinedStep
+final class UndefinedStep
 {
     /**
      * Initializes undefined step.
      */
     public function __construct(
-        private Environment $environment,
-        private StepNode $step,
+        private readonly Environment $environment,
+        private readonly StepNode $step,
     ) {
     }
 

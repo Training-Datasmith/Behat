@@ -37,12 +37,12 @@ final class JUnitFeatureElementListener implements EventListener
     /**
      * @var AfterStepTested[]
      */
-    private array $afterStepTestedEvents = [];
+    private $afterStepTestedEvents = [];
 
     /**
      * @var AfterStepSetup[]
      */
-    private array $afterStepSetupEvents = [];
+    private $afterStepSetupEvents = [];
 
     private ?AfterSuiteSetup $afterSuiteSetup = null;
 
@@ -63,7 +63,7 @@ final class JUnitFeatureElementListener implements EventListener
 
     public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        $this->captureSuiteSetupEvent($event);
+        $this->captureSuiteSetupEvent($formatter, $event);
         $this->printFeatureOnBeforeEvent($formatter, $event);
         $this->captureStepEvent($event);
         $this->printScenarioEvent($formatter, $event);
@@ -75,7 +75,7 @@ final class JUnitFeatureElementListener implements EventListener
      * Captures any failures in suite setup.
      * They will be printed later when the first scenario is printed.
      */
-    private function captureSuiteSetupEvent(Event $event): void
+    private function captureSuiteSetupEvent(Formatter $formatter, Event $event): void
     {
         if ($event instanceof AfterSuiteSetup) {
             $this->afterSuiteSetup = $event;

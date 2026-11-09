@@ -18,15 +18,15 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class TestWithSetupResult implements TestResult
+final class TestWithSetupResult implements TestResult
 {
     /**
      * Initializes test result.
      */
     public function __construct(
-        private Setup $setup,
-        private TestResult $result,
-        private Teardown $teardown,
+        private readonly Setup $setup,
+        private readonly TestResult $result,
+        private readonly Teardown $teardown,
     ) {
     }
 

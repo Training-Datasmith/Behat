@@ -30,14 +30,14 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HelperContainerExtension implements Extension
+final class HelperContainerExtension implements Extension
 {
     /*
      * Available extension points
      */
     public const HELPER_CONTAINER_TAG = 'helper_container.container';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes compiler pass.

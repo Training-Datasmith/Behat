@@ -29,7 +29,7 @@ class PathOptionsController implements Controller
     ) {
     }
 
-    public function configure(Command $command): void
+    public function configure(Command $command)
     {
         $command
             ->addOption(
@@ -47,7 +47,7 @@ class PathOptionsController implements Controller
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $printAbsolutePaths = $input->getOption('print-absolute-paths');
         $editorUrl = $input->getOption('editor-url');

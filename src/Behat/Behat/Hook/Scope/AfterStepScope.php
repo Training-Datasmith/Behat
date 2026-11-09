@@ -23,16 +23,16 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AfterStepScope implements StepScope, AfterTestScope
+final class AfterStepScope implements StepScope, AfterTestScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private Environment $environment,
-        private FeatureNode $feature,
-        private StepNode $step,
-        private StepResult $result,
+        private readonly Environment $environment,
+        private readonly FeatureNode $feature,
+        private readonly StepNode $step,
+        private readonly StepResult $result,
     ) {
     }
 

@@ -23,14 +23,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class InitializationController implements Controller
+final class InitializationController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private SuiteRepository $repository,
-        private SuiteBootstrapper $bootstrapper,
+        private readonly SuiteRepository $repository,
+        private readonly SuiteBootstrapper $bootstrapper,
     ) {
     }
 

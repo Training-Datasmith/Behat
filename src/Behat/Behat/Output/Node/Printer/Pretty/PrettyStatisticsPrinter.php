@@ -23,14 +23,14 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class PrettyStatisticsPrinter implements StatisticsPrinter
+final class PrettyStatisticsPrinter implements StatisticsPrinter
 {
     /**
      * Initializes printer.
      */
     public function __construct(
-        private CounterPrinter $counterPrinter,
-        private ListPrinter $listPrinter,
+        private readonly CounterPrinter $counterPrinter,
+        private readonly ListPrinter $listPrinter,
     ) {
     }
 

@@ -25,19 +25,19 @@ use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class PrettyPathPrinter
+final class PrettyPathPrinter
 {
-    private ConfigurablePathPrinter $configurablePathPrinter;
+    private readonly ConfigurablePathPrinter $configurablePathPrinter;
 
     /**
      * Initializes printer.
      */
     public function __construct(
-        private WidthCalculator $widthCalculator,
+        private readonly WidthCalculator $widthCalculator,
         string $basePath,
         ?ConfigurablePathPrinter $configurablePathPrinter = null,
     ) {
-        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath, printAbsolutePaths: false);
+        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath, printAbsolutePaths: false, editorUrl: null);
     }
 
     /**
@@ -93,8 +93,9 @@ final readonly class PrettyPathPrinter
      * Prints defined step path.
      *
      * @param int $scenarioWidth
+     * @param int $stepWidth
      */
-    private function printDefinedStepPath(OutputPrinter $printer, DefinedStepResult $result, $scenarioWidth, int $stepWidth): void
+    private function printDefinedStepPath(OutputPrinter $printer, DefinedStepResult $result, $scenarioWidth, $stepWidth): void
     {
         $path = $result->getStepDefinition()->getPath();
         $spacing = str_repeat(' ', max(0, $scenarioWidth - $stepWidth));

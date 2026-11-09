@@ -30,11 +30,11 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Ciaran McNulty <mail@ciaranmcnulty.com>
  */
-final readonly class OrderingExtension implements Extension
+final class OrderingExtension implements Extension
 {
     public const ORDERER_TAG = 'tester.orderer';
 
-    private ServiceProcessor $processor;
+    private readonly ServiceProcessor $processor;
 
     /**
      * Initializes extension.

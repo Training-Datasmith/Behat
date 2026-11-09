@@ -25,7 +25,7 @@ use Behat\Testwork\Hook\Call\RuntimeHook;
 use ReflectionAttribute;
 use ReflectionMethod;
 
-final readonly class HookAttributeReader implements AttributeReader
+final class HookAttributeReader implements AttributeReader
 {
     /**
      * @var array<class-string<Hook>, class-string<RuntimeHook>>
@@ -45,7 +45,7 @@ final readonly class HookAttributeReader implements AttributeReader
      * Initializes reader.
      */
     public function __construct(
-        private DocBlockHelper $docBlockHelper,
+        private readonly DocBlockHelper $docBlockHelper,
     ) {
     }
 

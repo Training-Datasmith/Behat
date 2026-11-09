@@ -36,7 +36,7 @@ class JUnitStepPrinter implements StepPrinter
     /**
      * Prints step using provided printer.
      */
-    public function printStep(Formatter $formatter, Scenario $scenario, StepNode $step, StepResult $result): void
+    public function printStep(Formatter $formatter, Scenario $scenario, StepNode $step, StepResult $result)
     {
         /** @var JUnitOutputPrinter $outputPrinter */
         $outputPrinter = $formatter->getOutputPrinter();

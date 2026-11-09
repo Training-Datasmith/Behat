@@ -27,7 +27,7 @@ final class AttributeContextReader implements ContextReader
     /**
      * @var AttributeReader[]
      */
-    private array $readers = [];
+    private $readers = [];
 
     /**
      * Registers attribute reader.

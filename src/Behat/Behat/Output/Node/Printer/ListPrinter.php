@@ -36,21 +36,21 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ListPrinter
+final class ListPrinter
 {
-    private ConfigurablePathPrinter $configurablePathPrinter;
+    private readonly ConfigurablePathPrinter $configurablePathPrinter;
 
     /**
      * @param ExceptionPresenter $exceptionPresenter deprecated , will be removed in the next major version
      */
     public function __construct(
-        private ResultToStringConverter $resultConverter,
+        private readonly ResultToStringConverter $resultConverter,
         ExceptionPresenter $exceptionPresenter,
-        private TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
         string $basePath,
         ?ConfigurablePathPrinter $configurablePathPrinter = null,
     ) {
-        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath, printAbsolutePaths: false);
+        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath, printAbsolutePaths: false, editorUrl: null);
     }
 
     /**
@@ -291,7 +291,7 @@ final readonly class ListPrinter
             return $path;
         }
 
-        $stepLine = $this->extractLineNumber($foundStepStat->getStepPath());
+        $stepLine = $this->extractLineNumber((string) $foundStepStat->getStepPath());
 
         if ($stepLine !== null) {
             $lineNumber = $this->translator->trans('on_line_number', ['%line%' => $stepLine], 'output');

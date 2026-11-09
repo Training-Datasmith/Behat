@@ -51,7 +51,7 @@ final class AfterBackgroundSetup extends BackgroundTested implements AfterSetup
      *
      * @return ScenarioLikeInterface
      */
-    public function getScenario(): \Behat\Gherkin\Node\BackgroundNode
+    public function getScenario()
     {
         return $this->background;
     }

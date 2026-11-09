@@ -52,15 +52,17 @@ class RuntimeCallee implements Callee
      *
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription()
     {
         return $this->description;
     }
 
     /**
      * Returns callee definition path.
+     *
+     * @return string
      */
-    public function getPath(): string
+    public function getPath()
     {
         return $this->path;
     }
@@ -80,23 +82,27 @@ class RuntimeCallee implements Callee
      *
      * @return ReflectionFunctionAbstract
      */
-    public function getReflection(): \ReflectionMethod|\ReflectionFunction
+    public function getReflection()
     {
         return $this->reflection;
     }
 
     /**
      * Returns true if callee is a method, false otherwise.
+     *
+     * @return bool
      */
-    public function isAMethod(): bool
+    public function isAMethod()
     {
         return $this->reflection instanceof ReflectionMethod;
     }
 
     /**
      * Returns true if callee is an instance (non-static) method, false otherwise.
+     *
+     * @return bool
      */
-    public function isAnInstanceMethod(): bool
+    public function isAnInstanceMethod()
     {
         return $this->reflection instanceof ReflectionMethod
             && !$this->reflection->isStatic();

@@ -28,7 +28,7 @@ final class Command extends BaseCommand
      * @param Controller[] $controllers
      */
     public function __construct(
-        ?string $commandName,
+        $commandName,
         private readonly array $controllers,
     ) {
         parent::__construct($commandName);

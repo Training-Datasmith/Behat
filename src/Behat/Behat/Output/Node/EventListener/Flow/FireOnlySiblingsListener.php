@@ -24,7 +24,10 @@ use Behat\Testwork\Output\Node\EventListener\EventListener;
  */
 class FireOnlySiblingsListener implements EventListener
 {
-    private bool $inContext = false;
+    /**
+     * @var bool
+     */
+    private $inContext = false;
 
     /**
      * Initializes listener.
@@ -39,7 +42,7 @@ class FireOnlySiblingsListener implements EventListener
     ) {
     }
 
-    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
+    public function listenEvent(Formatter $formatter, Event $event, $eventName)
     {
         if ($this->beforeEventName === $eventName) {
             $this->inContext = true;

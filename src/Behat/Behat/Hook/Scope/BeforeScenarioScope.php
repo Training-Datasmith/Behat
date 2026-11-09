@@ -20,15 +20,15 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class BeforeScenarioScope implements ScenarioScope
+final class BeforeScenarioScope implements ScenarioScope
 {
     /**
      * Initializes scope.
      */
     public function __construct(
-        private Environment $environment,
-        private FeatureNode $feature,
-        private ScenarioInterface $scenario,
+        private readonly Environment $environment,
+        private readonly FeatureNode $feature,
+        private readonly ScenarioInterface $scenario,
     ) {
     }
 

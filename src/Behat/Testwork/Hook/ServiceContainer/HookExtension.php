@@ -36,7 +36,7 @@ class HookExtension implements Extension
     public const DISPATCHER_ID = 'hook.dispatcher';
     public const REPOSITORY_ID = 'hook.repository';
 
-    public function getConfigKey(): string
+    public function getConfigKey()
     {
         return 'hooks';
     }
@@ -49,7 +49,7 @@ class HookExtension implements Extension
     {
     }
 
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(ContainerBuilder $container, array $config)
     {
         $this->loadDispatcher($container);
         $this->loadRepository($container);

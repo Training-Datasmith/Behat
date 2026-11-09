@@ -28,31 +28,31 @@ final class TotalStatistics implements Statistics
     /**
      * @var array<TestResult::*, int>
      */
-    private array $scenarioCounters = [];
+    private $scenarioCounters = [];
     /**
      * @var array<StepResult::*, int>
      */
-    private array $stepCounters = [];
+    private $stepCounters = [];
     /**
      * @var ScenarioStat[]
      */
-    private array $failedScenarioStats = [];
+    private $failedScenarioStats = [];
     /**
      * @var ScenarioStat[]
      */
-    private array $skippedScenarioStats = [];
+    private $skippedScenarioStats = [];
     /**
      * @var StepStat[]
      */
-    private array $failedStepStats = [];
+    private $failedStepStats = [];
     /**
      * @var StepStat[]
      */
-    private array $pendingStepStats = [];
+    private $pendingStepStats = [];
     /**
      * @var HookStat[]
      */
-    private array $failedHookStats = [];
+    private $failedHookStats = [];
 
     /**
      * Initializes statistics.

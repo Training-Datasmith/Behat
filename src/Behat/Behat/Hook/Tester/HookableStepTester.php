@@ -26,14 +26,14 @@ use Behat\Testwork\Hook\Tester\Setup\HookedTeardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookableStepTester implements StepTester
+final class HookableStepTester implements StepTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private StepTester $baseTester,
-        private HookDispatcher $hookDispatcher,
+        private readonly StepTester $baseTester,
+        private readonly HookDispatcher $hookDispatcher,
     ) {
     }
 

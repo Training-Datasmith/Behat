@@ -36,7 +36,7 @@ final class StaticEnvironmentHandler implements EnvironmentHandler
         return $environment instanceof StaticEnvironment;
     }
 
-    public function isolateEnvironment(Environment $environment, $testSubject = null): Environment
+    public function isolateEnvironment(Environment $environment, $testSubject = null)
     {
         return $environment;
     }

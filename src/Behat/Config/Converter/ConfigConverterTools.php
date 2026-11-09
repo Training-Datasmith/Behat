@@ -93,7 +93,7 @@ class ConfigConverterTools
         return $builderFactory->new(new FullyQualified($className));
     }
 
-    public static function addArgumentsToConstructor(array $arguments, New_ $expr): void
+    public static function addArgumentsToConstructor(array $arguments, New_ $expr)
     {
         $builderFactory = self::getBuilderFactory();
         $expr->args = $builderFactory->args(self::replaceClassReferences($arguments));

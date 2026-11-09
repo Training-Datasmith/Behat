@@ -23,7 +23,7 @@ final class OutputManager
     /**
      * @var Formatter[]
      */
-    private array $formatters = [];
+    private $formatters = [];
 
     /**
      * Initializes manager.

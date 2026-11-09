@@ -31,7 +31,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 final class SnippetsController implements Controller
 {
-    private ?\Symfony\Component\Console\Output\OutputInterface $output = null;
+    /**
+     * @var OutputInterface
+     */
+    private $output;
 
     /**
      * Initializes controller.
@@ -64,7 +67,7 @@ final class SnippetsController implements Controller
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->eventDispatcher->addListener(StepTested::AFTER, $this->registerUndefinedStep(...), -999);
         $this->output = $output;

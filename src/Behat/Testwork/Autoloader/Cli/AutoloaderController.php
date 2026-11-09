@@ -21,13 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class AutoloaderController implements Controller
+final class AutoloaderController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private ClassLoader $loader,
+        private readonly ClassLoader $loader,
     ) {
     }
 
@@ -35,7 +35,7 @@ final readonly class AutoloaderController implements Controller
     {
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->loader->register();
 

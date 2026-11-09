@@ -24,7 +24,7 @@ final class CompositeArgumentResolverFactory implements ArgumentResolverFactory
     /**
      * @var ArgumentResolverFactory[]
      */
-    private array $factories = [];
+    private $factories = [];
 
     /**
      * Registers factory.

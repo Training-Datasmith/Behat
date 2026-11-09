@@ -25,16 +25,19 @@ final class SnippetRegistry implements SnippetRepository
     /**
      * @var SnippetGenerator[]
      */
-    private array $generators = [];
+    private $generators = [];
     /**
      * @var UndefinedStep[]
      */
-    private array $undefinedSteps = [];
+    private $undefinedSteps = [];
     /**
      * @var AggregateSnippet[]
      */
-    private array $snippets = [];
-    private bool $snippetsGenerated = false;
+    private $snippets = [];
+    /**
+     * @var bool
+     */
+    private $snippetsGenerated = false;
 
     /**
      * @var list<CannotGenerateStepPatternException>

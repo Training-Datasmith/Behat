@@ -63,9 +63,11 @@ final class SuiteWithPathsSetup implements SuiteSetup
     /**
      * Locates path from a relative one.
      *
+     * @param string $path
      *
+     * @return string
      */
-    private function locatePath(string $path): string
+    private function locatePath($path)
     {
         if ($this->isAbsolutePath($path)) {
             return $path;
@@ -79,7 +81,7 @@ final class SuiteWithPathsSetup implements SuiteSetup
      *
      * @param string $file A file path
      */
-    private function isAbsolutePath(string $file): bool
+    private function isAbsolutePath($file): bool
     {
         return $file[0] == '/' || $file[0] == '\\'
             || (

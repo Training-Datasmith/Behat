@@ -17,7 +17,7 @@ namespace Behat\Testwork\Ordering\Orderer;
  */
 final class NoopOrderer implements Orderer
 {
-    public function order(array $scenarioIterators): array
+    public function order(array $scenarioIterators)
     {
         return $scenarioIterators;
     }

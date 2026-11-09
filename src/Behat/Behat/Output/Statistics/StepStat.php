@@ -36,16 +36,20 @@ class StepStat implements Stringable
 
     /**
      * Returns step text.
+     *
+     * @return string
      */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
 
     /**
      * Returns step path.
+     *
+     * @return string
      */
-    public function getPath(): string
+    public function getPath()
     {
         return $this->path;
     }
@@ -55,31 +59,37 @@ class StepStat implements Stringable
      *
      * @return StepResult::*
      */
-    public function getResultCode(): int
+    public function getResultCode()
     {
         return $this->resultCode;
     }
 
     /**
      * Returns step error (if has one).
+     *
+     * @return string|null
      */
-    public function getError(): ?string
+    public function getError()
     {
         return $this->error;
     }
 
     /**
      * Returns step output (if has one).
+     *
+     * @return string|null
      */
-    public function getStdOut(): ?string
+    public function getStdOut()
     {
         return $this->stdOut;
     }
 
     /**
      * Returns string representation for a stat.
+     *
+     * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->getPath();
     }

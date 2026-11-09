@@ -14,7 +14,7 @@ namespace Behat\Behat\Context\Snippet\Generator;
  * Uses multiple child identifiers - the first one that returns non-null result would
  * be the winner.
  */
-final readonly class AggregatePatternIdentifier implements PatternIdentifier
+final class AggregatePatternIdentifier implements PatternIdentifier
 {
     /**
      * Initialises identifier.
@@ -22,7 +22,7 @@ final readonly class AggregatePatternIdentifier implements PatternIdentifier
      * @param PatternIdentifier[] $identifiers
      */
     public function __construct(
-        private array $identifiers,
+        private readonly array $identifiers,
     ) {
     }
 

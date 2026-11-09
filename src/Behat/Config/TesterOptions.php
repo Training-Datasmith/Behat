@@ -45,7 +45,7 @@ final class TesterOptions implements ConfigConverterInterface
      *
      * @internal
      */
-    public static function consumeSettingsFromProfile(array &$profileSettings): ?self
+    public static function consumeSettingsFromProfile(&$profileSettings): ?self
     {
         // These settings live under multiple array keys. We don't want to expose/couple these details to the Profile,
         // but we need the Profile to be able to detect whether there *are* any TesterOptions to convert.

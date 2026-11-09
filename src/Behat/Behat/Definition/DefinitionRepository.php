@@ -19,13 +19,13 @@ use Behat\Testwork\Environment\EnvironmentManager;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class DefinitionRepository
+final class DefinitionRepository
 {
     /**
      * Initializes repository.
      */
     public function __construct(
-        private EnvironmentManager $environmentManager,
+        private readonly EnvironmentManager $environmentManager,
     ) {
     }
 

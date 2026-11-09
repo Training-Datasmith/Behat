@@ -26,23 +26,23 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-final readonly class JUnitScenarioPrinter
+final class JUnitScenarioPrinter
 {
     public function __construct(
-        private ResultToStringConverter $resultConverter,
+        private readonly ResultToStringConverter $resultConverter,
         /*
          * @deprecated the outlineStoreListener is no longer used but kept for BC. It will be removed in the next major
          */
         JUnitOutlineStoreListener $outlineStoreListener,
-        private ?JUnitDurationListener $durationListener = null,
-        private ?ConfigurablePathPrinter $configurablePathPrinter = null,
+        private readonly ?JUnitDurationListener $durationListener = null,
+        private readonly ?ConfigurablePathPrinter $configurablePathPrinter = null,
     ) {
     }
 
     public function printOpenTag(Formatter $formatter, FeatureNode $feature, ScenarioLikeInterface $scenario, TestResult $result, ?string $file = null): void
     {
         assert($scenario instanceof NamedScenarioInterface);
-        $name = implode(' ', array_map(trim(...), explode("\n", $scenario->getName() ?? '')));
+        $name = implode(' ', array_map(fn ($l): string => trim((string) $l), explode("\n", $scenario->getName() ?? '')));
 
         /** @var JUnitOutputPrinter $outputPrinter */
         $outputPrinter = $formatter->getOutputPrinter();

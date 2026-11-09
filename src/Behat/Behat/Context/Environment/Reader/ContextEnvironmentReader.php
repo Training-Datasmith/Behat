@@ -27,7 +27,7 @@ final class ContextEnvironmentReader implements EnvironmentReader
     /**
      * @var ContextReader[]
      */
-    private array $contextReaders = [];
+    private $contextReaders = [];
 
     /**
      * Registers context loader.

@@ -28,14 +28,14 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class IsolatingScenarioTester implements ScenarioTester
+final class IsolatingScenarioTester implements ScenarioTester
 {
     /**
      * Initialises tester.
      */
     public function __construct(
-        private ScenarioTester $decoratedTester,
-        private EnvironmentManager $envManager,
+        private readonly ScenarioTester $decoratedTester,
+        private readonly EnvironmentManager $envManager,
     ) {
     }
 

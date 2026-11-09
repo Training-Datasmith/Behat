@@ -29,13 +29,13 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class RuntimeOutlineTester implements OutlineTester
+final class RuntimeOutlineTester implements OutlineTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private ScenarioTester $scenarioTester,
+        private readonly ScenarioTester $scenarioTester,
     ) {
     }
 

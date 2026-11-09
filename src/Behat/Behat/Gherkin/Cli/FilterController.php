@@ -26,13 +26,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class FilterController implements Controller
+final class FilterController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private Gherkin $gherkin,
+        private readonly Gherkin $gherkin,
     ) {
     }
 
@@ -73,7 +73,7 @@ final readonly class FilterController implements Controller
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $filters = [];
 

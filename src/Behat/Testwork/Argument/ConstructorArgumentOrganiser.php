@@ -20,13 +20,13 @@ use ReflectionMethod;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ConstructorArgumentOrganiser implements ArgumentOrganiser
+final class ConstructorArgumentOrganiser implements ArgumentOrganiser
 {
     /**
      * Initializes organiser.
      */
     public function __construct(
-        private ArgumentOrganiser $baseOrganiser,
+        private readonly ArgumentOrganiser $baseOrganiser,
     ) {
     }
 

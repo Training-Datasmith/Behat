@@ -18,13 +18,13 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class GenericSuiteGenerator implements SuiteGenerator
+final class GenericSuiteGenerator implements SuiteGenerator
 {
     /**
      * Initializes suite generator.
      */
     public function __construct(
-        private array $defaultSettings = [],
+        private readonly array $defaultSettings = [],
     ) {
     }
 

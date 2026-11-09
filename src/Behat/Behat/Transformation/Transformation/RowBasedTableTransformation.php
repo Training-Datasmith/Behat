@@ -39,11 +39,12 @@ final class RowBasedTableTransformation extends RuntimeCallee implements Stringa
      *
      * @param string      $pattern
      * @param callable    $callable
+     * @param string|null $description
      */
     public function __construct(
         private $pattern,
-        callable|array $callable,
-        ?string $description = null,
+        $callable,
+        $description = null,
     ) {
         parent::__construct($callable, $description);
     }
@@ -101,7 +102,7 @@ final class RowBasedTableTransformation extends RuntimeCallee implements Stringa
         return $this->pattern;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return 'RowTableTransform ' . $this->pattern;
     }

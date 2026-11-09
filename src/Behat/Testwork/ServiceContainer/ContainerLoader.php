@@ -21,16 +21,16 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ContainerLoader
+final class ContainerLoader
 {
-    private ConfigurationTree $configuration;
-    private Processor $processor;
+    private readonly ConfigurationTree $configuration;
+    private readonly Processor $processor;
 
     /**
      * Initialize extension.
      */
     public function __construct(
-        private ExtensionManager $extensionManager,
+        private readonly ExtensionManager $extensionManager,
         ?ConfigurationTree $configuration = null,
         ?Processor $processor = null,
     ) {
@@ -61,8 +61,10 @@ final readonly class ContainerLoader
 
     /**
      * Initializes extensions using provided config.
+     *
+     * @return array
      */
-    private function initializeExtensions(ContainerBuilder $container, array $configs): array
+    private function initializeExtensions(ContainerBuilder $container, array $configs)
     {
         $extensions = [];
         foreach ($configs as $i => $config) {

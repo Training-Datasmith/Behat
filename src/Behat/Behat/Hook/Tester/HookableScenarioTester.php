@@ -26,14 +26,14 @@ use Behat\Testwork\Tester\Result\TestResult;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookableScenarioTester implements ScenarioTester
+final class HookableScenarioTester implements ScenarioTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private ScenarioTester $baseTester,
-        private HookDispatcher $hookDispatcher,
+        private readonly ScenarioTester $baseTester,
+        private readonly HookDispatcher $hookDispatcher,
     ) {
     }
 

@@ -18,14 +18,14 @@ use Behat\Testwork\Tester\Setup\Setup;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookedSetup implements Setup
+final class HookedSetup implements Setup
 {
     /**
      * Initializes setup.
      */
     public function __construct(
-        private Setup $setup,
-        private CallResults $hookCallResults,
+        private readonly Setup $setup,
+        private readonly CallResults $hookCallResults,
     ) {
     }
 
@@ -40,10 +40,7 @@ final readonly class HookedSetup implements Setup
 
     public function hasOutput(): bool
     {
-        if ($this->hookCallResults->hasStdOuts()) {
-            return true;
-        }
-        return $this->hookCallResults->hasExceptions();
+        return $this->hookCallResults->hasStdOuts() || $this->hookCallResults->hasExceptions();
     }
 
     /**

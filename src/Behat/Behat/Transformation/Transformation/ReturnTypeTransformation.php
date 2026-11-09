@@ -47,8 +47,9 @@ final class ReturnTypeTransformation extends RuntimeCallee implements Stringable
      *
      * @param string      $pattern
      * @param callable    $callable
+     * @param string|null $description
      */
-    public function __construct($pattern, callable|array $callable, ?string $description = null)
+    public function __construct($pattern, $callable, $description = null)
     {
         parent::__construct($callable, $description);
     }
@@ -94,7 +95,7 @@ final class ReturnTypeTransformation extends RuntimeCallee implements Stringable
         return '';
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return 'ReturnTypeTransform';
     }
@@ -143,7 +144,7 @@ final class ReturnTypeTransformation extends RuntimeCallee implements Stringable
      *
      * @return ReflectionParameter[]
      */
-    private function getCallParameters(DefinitionCall $definitionCall): array
+    private function getCallParameters(DefinitionCall $definitionCall)
     {
         return $definitionCall->getCallee()->getReflection()->getParameters();
     }
@@ -163,10 +164,11 @@ final class ReturnTypeTransformation extends RuntimeCallee implements Stringable
     /**
      * Returns closure to filter parameter by name.
      *
+     * @param string $index
      *
      * @return Closure
      */
-    private function hasName(string $index)
+    private function hasName($index)
     {
         return fn (ReflectionParameter $parameter): bool => $index === $parameter->getName();
     }

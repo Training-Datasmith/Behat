@@ -22,7 +22,7 @@ final class ContextReaderCachedPerContext implements ContextReader
     /**
      * @var array[]
      */
-    private array $cachedCallees = [];
+    private $cachedCallees = [];
 
     /**
      * Initializes reader.

@@ -23,13 +23,13 @@ use ReflectionParameter;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class ArgumentAutowirer
+final class ArgumentAutowirer
 {
     /**
      * Initialises wirer.
      */
     public function __construct(
-        private PsrContainerInterface $container,
+        private readonly PsrContainerInterface $container,
     ) {
     }
 
@@ -80,11 +80,10 @@ final readonly class ArgumentAutowirer
 
         try {
             $typeString = $type->getName();
+
             if ($typeString == 'self') {
                 return $parameter->getDeclaringClass()->getName();
-            }
-
-            if ($typeString == 'parent') {
+            } elseif ($typeString == 'parent') {
                 return $parameter->getDeclaringClass()->getParentClass()->getName();
             }
 

@@ -37,11 +37,12 @@ final class TokenNameTransformation extends RuntimeCallee implements Stringable,
      *
      * @param string      $pattern
      * @param callable    $callable
+     * @param string|null $description
      */
     public function __construct(
         private $pattern,
-        callable|array $callable,
-        ?string $description = null,
+        $callable,
+        $description = null,
     ) {
         parent::__construct($callable, $description);
     }
@@ -79,7 +80,7 @@ final class TokenNameTransformation extends RuntimeCallee implements Stringable,
         return $this->pattern;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return 'TokenNameTransform ' . $this->pattern;
     }

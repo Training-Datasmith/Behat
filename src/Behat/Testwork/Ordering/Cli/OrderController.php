@@ -27,7 +27,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 final class OrderController implements Controller
 {
-    private array $orderers = [];
+    /**
+     * @var array
+     */
+    private $orderers = [];
 
     /**
      * @param EventDispatcherInterface $eventDispatcher deprecated, will be removed in the next major version
@@ -56,7 +59,7 @@ final class OrderController implements Controller
      *
      * @return int|null
      */
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $orderer = $input->getOption('order');
 

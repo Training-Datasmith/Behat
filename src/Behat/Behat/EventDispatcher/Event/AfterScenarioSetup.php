@@ -37,21 +37,28 @@ final class AfterScenarioSetup extends ScenarioTested implements AfterSetup
 
     /**
      * Returns feature.
+     *
+     * @return FeatureNode
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function getFeature()
     {
         return $this->feature;
     }
 
-    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
+    /**
+     * @return Scenario
+     */
+    public function getScenario()
     {
         return $this->scenario;
     }
 
     /**
      * Returns current test setup.
+     *
+     * @return Setup
      */
-    public function getSetup(): \Behat\Testwork\Tester\Setup\Setup
+    public function getSetup()
     {
         return $this->setup;
     }

@@ -28,7 +28,7 @@ final class SuiteWithContextsSetup implements SuiteSetup
     /**
      * @var ClassGenerator[]
      */
-    private array $classGenerators = [];
+    private $classGenerators = [];
 
     /**
      * Initializes setup.
@@ -75,7 +75,7 @@ final class SuiteWithContextsSetup implements SuiteSetup
     private function getNormalizedContextClasses(Suite $suite): array
     {
         return array_map(
-            fn (array|string $context): mixed => is_array($context) ? current(array_keys($context)) : $context,
+            fn ($context): mixed => is_array($context) ? current(array_keys($context)) : $context,
             $this->getSuiteContexts($suite)
         );
     }
@@ -107,8 +107,10 @@ final class SuiteWithContextsSetup implements SuiteSetup
 
     /**
      * Creates context directory in the filesystem.
+     *
+     * @param string $path
      */
-    private function createContextDirectory(string $path): void
+    private function createContextDirectory($path): void
     {
         mkdir($path, 0777, true);
 
@@ -120,9 +122,10 @@ final class SuiteWithContextsSetup implements SuiteSetup
     /**
      * Creates context class file in the filesystem.
      *
+     * @param string $path
      * @param string $content
      */
-    private function createContextFile(string $path, $content): void
+    private function createContextFile($path, $content): void
     {
         file_put_contents($path, $content);
 
@@ -180,8 +183,10 @@ final class SuiteWithContextsSetup implements SuiteSetup
 
     /**
      * Ensures that directory for a classpath exists.
+     *
+     * @param string $classpath
      */
-    private function ensureContextDirectory(string $classpath): void
+    private function ensureContextDirectory($classpath): void
     {
         if (!is_dir(dirname($classpath))) {
             $this->createContextDirectory(dirname($classpath));

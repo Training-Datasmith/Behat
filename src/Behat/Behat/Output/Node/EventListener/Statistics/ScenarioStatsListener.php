@@ -54,8 +54,10 @@ final class ScenarioStatsListener implements EventListener
 
     /**
      * Removes current feature file path from the ivar on feature AFTER event.
+     *
+     * @param Event $event
      */
-    private function forgetCurrentFeaturePathOnAfterFeatureEvent(\Behat\Testwork\Event\Event $event): void
+    private function forgetCurrentFeaturePathOnAfterFeatureEvent($event): void
     {
         if (!$event instanceof AfterFeatureTested) {
             return;

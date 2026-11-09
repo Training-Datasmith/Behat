@@ -38,11 +38,12 @@ final class ColumnBasedTableTransformation extends RuntimeCallee implements Stri
      *
      * @param string      $pattern
      * @param callable    $callable
+     * @param string|null $description
      */
     public function __construct(
         private $pattern,
-        callable|array $callable,
-        ?string $description = null,
+        $callable,
+        $description = null,
     ) {
         parent::__construct($callable, $description);
     }
@@ -85,7 +86,7 @@ final class ColumnBasedTableTransformation extends RuntimeCallee implements Stri
         return $this->pattern;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return 'ColumnTableTransform ' . $this->pattern;
     }

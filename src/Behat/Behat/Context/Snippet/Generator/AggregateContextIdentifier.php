@@ -21,7 +21,7 @@ use Behat\Behat\Context\Environment\ContextEnvironment;
  * call `--snippets-for` on `--append-snippets` when contexts do not implement any
  * snippet accepting interfaces).
  */
-final readonly class AggregateContextIdentifier implements TargetContextIdentifier
+final class AggregateContextIdentifier implements TargetContextIdentifier
 {
     /**
      * Initialises identifier.
@@ -29,7 +29,7 @@ final readonly class AggregateContextIdentifier implements TargetContextIdentifi
      * @param TargetContextIdentifier[] $identifiers
      */
     public function __construct(
-        private array $identifiers,
+        private readonly array $identifiers,
     ) {
     }
 

@@ -46,7 +46,7 @@ class UsedClassesCollector extends NodeVisitorAbstract
     /**
      * @return array <string, class-string>
      */
-    public function getUsedClasses(): array
+    public function getUsedClasses()
     {
         return $this->usedClasses;
     }

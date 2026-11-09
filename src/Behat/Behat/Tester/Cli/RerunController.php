@@ -30,11 +30,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class RerunController implements Controller
 {
     private readonly ?string $cachePath;
-    private ?string $key = null;
+    /**
+     * @var string
+     */
+    private $key;
     /**
      * @var array<string, string[]>
      */
-    private array $lines = [];
+    private $lines = [];
 
     /**
      * Initializes controller.

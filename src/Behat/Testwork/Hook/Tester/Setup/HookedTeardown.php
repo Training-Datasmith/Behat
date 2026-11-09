@@ -18,14 +18,14 @@ use Behat\Testwork\Tester\Setup\Teardown;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookedTeardown implements Teardown
+final class HookedTeardown implements Teardown
 {
     /**
      * Initializes setup.
      */
     public function __construct(
-        private Teardown $teardown,
-        private CallResults $hookCallResults,
+        private readonly Teardown $teardown,
+        private readonly CallResults $hookCallResults,
     ) {
     }
 
@@ -40,10 +40,7 @@ final readonly class HookedTeardown implements Teardown
 
     public function hasOutput(): bool
     {
-        if ($this->hookCallResults->hasStdOuts()) {
-            return true;
-        }
-        return $this->hookCallResults->hasExceptions();
+        return $this->hookCallResults->hasStdOuts() || $this->hookCallResults->hasExceptions();
     }
 
     /**

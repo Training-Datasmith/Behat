@@ -35,13 +35,18 @@ final class BeforeScenarioTested extends ScenarioTested implements BeforeTested
 
     /**
      * Returns feature.
+     *
+     * @return FeatureNode
      */
-    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
+    public function getFeature()
     {
         return $this->feature;
     }
 
-    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
+    /**
+     * @return Scenario
+     */
+    public function getScenario()
     {
         return $this->scenario;
     }

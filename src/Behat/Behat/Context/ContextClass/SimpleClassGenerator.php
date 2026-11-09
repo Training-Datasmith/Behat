@@ -19,7 +19,10 @@ use Behat\Testwork\Suite\Suite;
  */
 final class SimpleClassGenerator implements ClassGenerator
 {
-    private static string $template = <<<'PHP'
+    /**
+     * @var string
+     */
+    private static $template = <<<'PHP'
 <?php
 
 {namespace}use Behat\Behat\Context\Context;

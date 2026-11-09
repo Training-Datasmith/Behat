@@ -21,10 +21,10 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-final readonly class JUnitSuitePrinter implements SuitePrinter
+final class JUnitSuitePrinter implements SuitePrinter
 {
     public function __construct(
-        private ?PhaseStatistics $statistics = null,
+        private readonly ?PhaseStatistics $statistics = null,
     ) {
     }
 

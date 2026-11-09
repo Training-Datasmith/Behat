@@ -26,11 +26,12 @@ abstract class RuntimeHook extends RuntimeCallee implements Stringable, Hook
      *
      * @param string      $scopeName
      * @param callable    $callable
+     * @param string|null $description
      */
     public function __construct(
         private $scopeName,
-        callable|array $callable,
-        ?string $description = null,
+        $callable,
+        $description = null,
     ) {
         parent::__construct($callable, $description);
     }
@@ -40,7 +41,7 @@ abstract class RuntimeHook extends RuntimeCallee implements Stringable, Hook
         return $this->scopeName;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return $this->getName();
     }

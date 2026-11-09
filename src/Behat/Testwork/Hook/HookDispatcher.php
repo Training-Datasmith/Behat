@@ -21,14 +21,14 @@ use Behat\Testwork\Hook\Scope\HookScope;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class HookDispatcher
+final class HookDispatcher
 {
     /**
      * Initializes hook dispatcher.
      */
     public function __construct(
-        private HookRepository $repository,
-        private CallCenter $callCenter,
+        private readonly HookRepository $repository,
+        private readonly CallCenter $callCenter,
     ) {
     }
 

@@ -54,7 +54,7 @@ class SnippetExtension implements Extension
         $this->processor = $processor ?: new ServiceProcessor();
     }
 
-    public function getConfigKey(): string
+    public function getConfigKey()
     {
         return 'snippets';
     }
@@ -67,14 +67,14 @@ class SnippetExtension implements Extension
     {
     }
 
-    public function load(ContainerBuilder $container, array $config): void
+    public function load(ContainerBuilder $container, array $config)
     {
         $this->loadController($container);
         $this->loadRegistry($container);
         $this->loadWriter($container);
     }
 
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $container)
     {
         $this->processGenerators($container);
         $this->processAppenders($container);

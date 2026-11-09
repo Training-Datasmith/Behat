@@ -39,8 +39,9 @@ final class TokenNameAndReturnTypeTransformation extends RuntimeCallee implement
      *
      * @param string      $pattern
      * @param callable    $callable
+     * @param string|null $description
      */
-    public function __construct($pattern, callable|array $callable, ?string $description = null)
+    public function __construct($pattern, $callable, $description = null)
     {
         $this->tokenTransformation = new TokenNameTransformation($pattern, $callable, $description);
         $this->returnTransformation = new ReturnTypeTransformation('', $callable, $description);
@@ -82,7 +83,7 @@ final class TokenNameAndReturnTypeTransformation extends RuntimeCallee implement
         return $this->tokenTransformation->getPattern();
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return 'NamedReturnTypeTransform ' . $this->getPattern();
     }

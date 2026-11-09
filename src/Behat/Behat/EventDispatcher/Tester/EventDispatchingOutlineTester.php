@@ -26,14 +26,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class EventDispatchingOutlineTester implements OutlineTester
+final class EventDispatchingOutlineTester implements OutlineTester
 {
     /**
      * Initializes tester.
      */
     public function __construct(
-        private OutlineTester $baseTester,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly OutlineTester $baseTester,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

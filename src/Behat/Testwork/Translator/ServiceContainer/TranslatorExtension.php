@@ -137,7 +137,9 @@ final class TranslatorExtension implements Extension
     {
         $defaultLanguage = null;
         if (($locale = getenv('LANG')) && preg_match('/^([a-z]{2})/', $locale, $matches)) {
-            return $matches[1];
+            $defaultLanguage = $matches[1];
+
+            return $defaultLanguage;
         }
 
         return $defaultLanguage;

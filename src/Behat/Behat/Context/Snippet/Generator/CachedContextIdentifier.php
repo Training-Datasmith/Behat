@@ -19,7 +19,10 @@ use Behat\Behat\Context\Environment\ContextEnvironment;
  */
 final class CachedContextIdentifier implements TargetContextIdentifier
 {
-    private array $contextClasses = [];
+    /**
+     * @var array
+     */
+    private $contextClasses = [];
 
     /**
      * Initialise the identifier.

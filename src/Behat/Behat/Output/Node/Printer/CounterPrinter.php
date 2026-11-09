@@ -19,14 +19,14 @@ use Behat\Testwork\Output\Printer\OutputPrinter;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class CounterPrinter
+final class CounterPrinter
 {
     /**
      * Initializes printer.
      */
     public function __construct(
-        private ResultToStringConverter $resultConverter,
-        private TranslatorInterface $translator,
+        private readonly ResultToStringConverter $resultConverter,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

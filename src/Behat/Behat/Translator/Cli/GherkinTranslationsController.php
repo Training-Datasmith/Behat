@@ -21,13 +21,13 @@ use Symfony\Component\Translation\Translator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class GherkinTranslationsController implements Controller
+final class GherkinTranslationsController implements Controller
 {
     /**
      * Initializes controller.
      */
     public function __construct(
-        private Translator $translator,
+        private readonly Translator $translator,
     ) {
     }
 
@@ -35,7 +35,7 @@ final readonly class GherkinTranslationsController implements Controller
     {
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): null
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $i18nPath = dirname(__DIR__, 5) . DIRECTORY_SEPARATOR . 'i18n.php';
 

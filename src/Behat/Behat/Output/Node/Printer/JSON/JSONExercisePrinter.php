@@ -17,11 +17,11 @@ use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Printer\JSONOutputPrinter;
 use Behat\Testwork\Tester\Result\TestResult;
 
-final readonly class JSONExercisePrinter implements ExercisePrinter
+final class JSONExercisePrinter implements ExercisePrinter
 {
     public function __construct(
-        private PhaseStatistics $statistics,
-        private JSONDurationListener $durationListener,
+        private readonly PhaseStatistics $statistics,
+        private readonly JSONDurationListener $durationListener,
     ) {
     }
 
@@ -38,7 +38,7 @@ final readonly class JSONExercisePrinter implements ExercisePrinter
     {
         $stats = $this->statistics->getScenarioStatCounts();
 
-        $totalCount = 0 === count($stats) ? 0 : array_sum($stats);
+        $totalCount = 0 === count($stats) ? 0 : (int) array_sum($stats);
 
         $outputPrinter = $formatter->getOutputPrinter();
         assert($outputPrinter instanceof JSONOutputPrinter);
