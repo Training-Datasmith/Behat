@@ -26,7 +26,7 @@ class Config_Converter_Tools
         $arguments = self::remove_default_arguments((new ReflectionClass($class))->getMethod($method_name), $arguments);
         $args = $builder_factory->args(self::replace_class_references($arguments));
 
-        return $builder_factory->method_call($expr, $method_name, $args);
+        return $builder_factory->methodCall($expr, $method_name, $args);
     }
 
     private static function remove_default_arguments(ReflectionMethod $method, array $arguments): array
@@ -69,7 +69,7 @@ class Config_Converter_Tools
     {
         $builder_factory = self::get_builder_factory();
 
-        return $builder_factory->new(new Fully_Qualified($class_name));
+        return $builder_factory->new(new FullyQualified($class_name));
     }
 
     public static function add_arguments_to_constructor(array $arguments, New_ $expr): void
@@ -82,7 +82,7 @@ class Config_Converter_Tools
     {
         $builder_factory = self::get_builder_factory();
 
-        return $builder_factory->use($class_name)->get_node();
+        return $builder_factory->use($class_name)->getNode();
     }
 
     private static function get_builder_factory(): BuilderFactory
@@ -103,7 +103,7 @@ class Config_Converter_Tools
     {
         $builder_factory = self::get_builder_factory();
 
-        return $builder_factory->class_const_fetch($class_name, $constant_name);
+        return $builder_factory->classConstFetch($class_name, $constant_name);
     }
 
     public static function find_reference_to_class_constant(string $class_name, mixed $setting_value): mixed
@@ -134,7 +134,7 @@ class Config_Converter_Tools
         $value &= ~2048;
         if ($value === (E_ALL & ~2048)) {
             // The value is equivalent to E_ALL (with or without the E_STRICT bit set, it doesn't matter).
-            return $builder_factory->const_fetch('E_ALL');
+            return $builder_factory->constFetch('E_ALL');
         }
         if ($value === 0) {
             // error_reporting is disabled
@@ -146,9 +146,9 @@ class Config_Converter_Tools
         foreach (self::list_error_level_constants() as $const_name => $const_value) {
             $remaining_value &= ~$const_value;
             if (($value & $const_value) !== 0) {
-                $flags_on[] = $builder_factory->const_fetch($const_name);
+                $flags_on[] = $builder_factory->constFetch($const_name);
             } else {
-                $flags_off[] = $builder_factory->const_fetch($const_name);
+                $flags_off[] = $builder_factory->constFetch($const_name);
             }
         }
         if ($remaining_value !== 0) {
@@ -158,7 +158,7 @@ class Config_Converter_Tools
         }
         if (count($flags_off) < count($flags_on)) {
             // Most flags are on, it will be more readable and future-proof to start from E_ALL and negate
-            return new BitwiseAnd($builder_factory->const_fetch('E_ALL'), new BitwiseNot(self::build_bitwise_flag_expression(...$flags_off)));
+            return new BitwiseAnd($builder_factory->constFetch('E_ALL'), new BitwiseNot(self::build_bitwise_flag_expression(...$flags_off)));
         }
 
         // Most flags are off, so just specify the ones that are on

@@ -16,9 +16,9 @@ Feature: Config inheritance
       Feature:
 
         Scenario:                                           # features/configs.feature:2
-          When this scenario executes                       # FeatureContext::thisScenarioExecutes()
-          Then the context parameters should be overwritten # FeatureContext::theContextParametersOverwrite()
-          And the extension config should be merged         # FeatureContext::theExtensionConfigMerge()
+          When this scenario executes                       # Feature_Context::thisScenarioExecutes()
+          Then the context parameters should be overwritten # Feature_Context::theContextParametersOverwrite()
+          And the extension config should be merged         # Feature_Context::theExtensionConfigMerge()
 
       1 scenario (1 passed)
       3 steps (3 passed)
@@ -31,9 +31,9 @@ Feature: Config inheritance
       Feature:
 
         Scenario:                                           # features/configs.feature:2
-          When this scenario executes                       # FeatureContext::thisScenarioExecutes()
-          Then the context parameters should be overwritten # FeatureContext::theContextParametersOverwrite()
-          And the extension config should be merged         # FeatureContext::theExtensionConfigMerge()
+          When this scenario executes                       # Feature_Context::thisScenarioExecutes()
+          Then the context parameters should be overwritten # Feature_Context::theContextParametersOverwrite()
+          And the extension config should be merged         # Feature_Context::theExtensionConfigMerge()
 
       1 scenario (1 passed)
       3 steps (3 passed)

@@ -16,7 +16,7 @@ class CustomInitializer2 implements Context_Initializer
         return true;
     }
 
-    public function initializeContext(Context $context): void
+    public function initialize_context(Context $context): void
     {
         $context->addExtension('custom extension 2');
     }
@@ -24,7 +24,7 @@ class CustomInitializer2 implements Context_Initializer
 
 class CustomExtension2 implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'custom_extension2';
     }

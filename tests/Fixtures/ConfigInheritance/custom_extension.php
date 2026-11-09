@@ -23,7 +23,7 @@ class CustomInitializer implements Context_Initializer
         return true;
     }
 
-    public function initializeContext(Context $context): void
+    public function initialize_context(Context $context): void
     {
         $context->setExtensionParameters($this->parameters);
     }
@@ -31,7 +31,7 @@ class CustomInitializer implements Context_Initializer
 
 class CustomExtension implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'custom';
     }

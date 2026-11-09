@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Deprecation_Extension implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'deprecation_extension';
     }

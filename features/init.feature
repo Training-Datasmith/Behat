@@ -10,9 +10,9 @@ Feature: Init
       """
       +d features - place your *.feature files here
       +d features/bootstrap - place your context classes here
-      +f features/bootstrap/FeatureContext.php - place your definitions, transformations and hooks here
+      +f features/bootstrap/Feature_Context.php - place your definitions, transformations and hooks here
       """
-    And file "features/bootstrap/FeatureContext.php" should exist
+    And file "features/bootstrap/Feature_Context.php" should exist
 
   Scenario: Custom paths
     Given I am in the "init_test2" path
@@ -23,16 +23,16 @@ Feature: Init
         suites:
           default:
             paths:    [ '%paths.base%/scenarios' ]
-            contexts: [ CustomContext ]
+            contexts: [ Custom_Context ]
       """
     When I run "behat --no-colors --init"
     Then it should pass with:
       """
       +d scenarios - place your *.feature files here
       +d supp - place your context classes here
-      +f supp/CustomContext.php - place your definitions, transformations and hooks here
+      +f supp/Custom_Context.php - place your definitions, transformations and hooks here
       """
-    And file "supp/CustomContext.php" should exist
+    And file "supp/Custom_Context.php" should exist
 
   Scenario: Multiple suites
     Given I am in the "init_test3" path
@@ -70,13 +70,13 @@ Feature: Init
           default:
             paths:    [ '%paths.base%/scenarios' ]
             contexts:
-              - CustomContext: [ 'a', 'b' ]
+              - Custom_Context: [ 'a', 'b' ]
       """
     When I run "behat --no-colors --init"
     Then it should pass with:
       """
       +d scenarios - place your *.feature files here
       +d supp - place your context classes here
-      +f supp/CustomContext.php - place your definitions, transformations and hooks here
+      +f supp/Custom_Context.php - place your definitions, transformations and hooks here
       """
-    And file "supp/CustomContext.php" should exist
+    And file "supp/Custom_Context.php" should exist

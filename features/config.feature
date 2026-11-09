@@ -7,13 +7,13 @@ Feature: Config
     Given a file named "behat.yml" with:
       """
       """
-    And a file named "features/bootstrap/FeatureContext.php" with:
+    And a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """
@@ -40,13 +40,13 @@ Feature: Config
     Given a file named "alternative-behat.yml" with:
       """
       """
-    And a file named "features/bootstrap/FeatureContext.php" with:
+    And a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """
@@ -70,13 +70,13 @@ Feature: Config
       """
 
   Scenario: Alternative configuration file could not be found
-    Given a file named "features/bootstrap/FeatureContext.php" with:
+    Given a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """
@@ -102,13 +102,13 @@ Feature: Config
       return new Config(['default' => ['formatters' => ['progress' => true]]]);
 
       """
-    And a file named "features/bootstrap/FeatureContext.php" with:
+    And a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """
@@ -141,13 +141,13 @@ Feature: Config
       return new Config(['default' => ['formatters' => ['progress' => true]]]);
 
       """
-    And a file named "features/bootstrap/FeatureContext.php" with:
+    And a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """
@@ -175,11 +175,11 @@ Feature: Config
       """
       <?php
 
-      use Behat\Config\ConfigInterface;
+      use Behat\Config\Config_Interface;
 
-      final class CustomConfig implements ConfigInterface
+      final class CustomConfig implements Config_Interface
       {
-        public function toArray(): array
+        public function to_array(): array
         {
           return [
             'default' => [
@@ -192,13 +192,13 @@ Feature: Config
       return new CustomConfig();
 
       """
-    And a file named "features/bootstrap/FeatureContext.php" with:
+    And a file named "features/bootstrap/Feature_Context.php" with:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
       }
       """

@@ -17,8 +17,8 @@ Feature: Extensions
       Feature:
       
         Scenario:                             # features/extensions.feature:2
-          When this scenario executes         # FeatureContext::thisScenarioExecutes()
-          Then the extension should be loaded # FeatureContext::theExtensionLoaded()
+          When this scenario executes         # Feature_Context::thisScenarioExecutes()
+          Then the extension should be loaded # Feature_Context::theExtensionLoaded()
       
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -43,12 +43,12 @@ Feature: Extensions
       Feature:
       
         Scenario:                  # features/exception_handlers.feature:2
-          Given non-existent class # ExceptionHandlerContext::nonexistentClass()
-            Fatal error: Class "Non\Existent\Cls" not found (Behat\Testwork\Call\Exception\FatalThrowableError)
+          Given non-existent class # Exception_Handler_Context::nonexistentClass()
+            Fatal error: Class "Non\Existent\Cls" not found (Behat\Testwork\Call\Exception\Fatal_Throwable_Error)
       
         Scenario:                   # features/exception_handlers.feature:4
-          Given non-existent method # ExceptionHandlerContext::nonexistentMethod()
-            Fatal error: Call to undefined method ExceptionHandlerContext::getName() (Behat\Testwork\Call\Exception\FatalThrowableError)
+          Given non-existent method # Exception_Handler_Context::nonexistentMethod()
+            Fatal error: Call to undefined method Exception_Handler_Context::getName() (Behat\Testwork\Call\Exception\Fatal_Throwable_Error)
       
       --- Failed scenarios:
       
@@ -60,7 +60,7 @@ Feature: Extensions
       string(16) "Non\Existent\Cls"
       array(2) {
         [0]=>
-        string(23) "ExceptionHandlerContext"
+        string(23) "Exception_Handler_Context"
         [1]=>
         string(7) "getName"
       }

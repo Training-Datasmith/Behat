@@ -99,20 +99,20 @@ Feature: Syntax helpers
     Then the output should contain:
       """
       default | [Given|*] /^I have (\d+) apples?$/
-              | at `DescriptionsContext::iHaveApples()`
+              | at `Descriptions_Context::iHaveApples()`
 
       default | [When|*] /^I ate (\d+) apples?$/
               | Eating apples.
               | More details on eating apples, and a list:
               | - one
               | - two
-              | at `DescriptionsContext::iAteApples()`
+              | at `Descriptions_Context::iAteApples()`
 
       default | [When|*] /^I found (\d+) apples?$/
-              | at `DescriptionsContext::iFoundApples()`
+              | at `Descriptions_Context::iFoundApples()`
 
       default | [Then|*] /^I should have (\d+) apples$/
-              | at `DescriptionsContext::iShouldHaveApples()`
+              | at `Descriptions_Context::iShouldHaveApples()`
       """
 
   Scenario: Print extended definitions info with file name and line numbers
@@ -120,24 +120,24 @@ Feature: Syntax helpers
     Then the output should contain:
       """
       default | [Given|*] /^I have (\d+) apples?$/
-              | at `DescriptionsContext::iHaveApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%DescriptionsContext.php[14:17]`
+              | at `Descriptions_Context::iHaveApples()`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[14:17]`
 
       default | [When|*] /^I ate (\d+) apples?$/
               | Eating apples.
               | More details on eating apples, and a list:
               | - one
               | - two
-              | at `DescriptionsContext::iAteApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%DescriptionsContext.php[29:32]`
+              | at `Descriptions_Context::iAteApples()`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[29:32]`
 
       default | [When|*] /^I found (\d+) apples?$/
-              | at `DescriptionsContext::iFoundApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%DescriptionsContext.php[35:38]`
+              | at `Descriptions_Context::iFoundApples()`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[35:38]`
 
       default | [Then|*] /^I should have (\d+) apples$/
-              | at `DescriptionsContext::iShouldHaveApples()`
-              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%DescriptionsContext.php[41:44]`
+              | at `Descriptions_Context::iShouldHaveApples()`
+              | on `%%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Descriptions_Context.php[41:44]`
       """
 
   Scenario: Search definition
@@ -145,5 +145,5 @@ Feature: Syntax helpers
     Then the output should contain:
       """
       default | [Когда|Если|*] /^Я нашел (\d+) яблоко?$/
-              | at `TranslatableDefinitionsContext::iFoundApples()`
+              | at `Translatable_Definitions_Context::iFoundApples()`
       """

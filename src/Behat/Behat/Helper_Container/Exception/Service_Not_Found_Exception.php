@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace Behat\Behat\Helper_Container\Exception;
 
 use InvalidArgumentException;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Represents an exception thrown when service ID is not found inside the container.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Service_Not_Found_Exception extends InvalidArgumentException implements Helper_Container_Exception, Not_Found_Exception_Interface
+final class Service_Not_Found_Exception extends InvalidArgumentException implements Helper_Container_Exception, NotFoundExceptionInterface
 {
     /**
      * Initializes exception.

@@ -17,14 +17,14 @@ class Used_Classes_Collector extends NodeVisitorAbstract
      */
     private array $used_classes = [];
 
-    public function enter_node(Node $node): ?Node
+    public function enterNode(Node $node): ?Node
     {
         if ($node instanceof FullyQualified) {
             return $this->import_class($node);
         }
         if ($node instanceof ClassConstFetch && $node->class instanceof Name) {
             // E.g. a `MyClass::class` argument
-            return new ClassConstFetch($this->import_class($node->class), $node->name, $node->get_attributes());
+            return new ClassConstFetch($this->import_class($node->class), $node->name, $node->getAttributes());
         }
 
         return null;
@@ -32,8 +32,8 @@ class Used_Classes_Collector extends NodeVisitorAbstract
 
     private function import_class(Name $node): Name
     {
-        $class_name = $node->to_string();
-        $short_name = $node->get_last();
+        $class_name = $node->toString();
+        $short_name = $node->getLast();
         $this->used_classes[$short_name] = $class_name;
 
         return new Name($short_name);

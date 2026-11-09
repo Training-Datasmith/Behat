@@ -32,7 +32,8 @@ foreach ($extra as $old => $new) {
 
 uksort($map, static fn (string $a, string $b): int => strlen($b) <=> strlen($a));
 
-$dirs = ['src', 'tests', 'features'];
+$dirs = ['tests', 'features'];
+$allowedExtensions = ['php', 'feature', 'yml', 'yaml'];
 $changed = 0;
 
 foreach ($dirs as $dir) {
@@ -44,7 +45,7 @@ foreach ($dirs as $dir) {
         new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
     );
     foreach ($iterator as $file) {
-        if (!$file instanceof SplFileInfo || $file->getExtension() !== 'php') {
+        if (!$file instanceof SplFileInfo || !in_array($file->getExtension(), $allowedExtensions, true)) {
             continue;
         }
         $content = file_get_contents($file->getPathname());

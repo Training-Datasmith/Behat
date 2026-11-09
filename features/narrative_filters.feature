@@ -19,9 +19,9 @@ Feature: Narrative filters
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/little_kid.feature:6
-          Given I have 3 apples       # FeatureContext::iHaveApples()
-          When I ate 1 apple          # FeatureContext::iAteApples()
-          Then I should have 2 apples # FeatureContext::iShouldHaveApples()
+          Given I have 3 apples       # Feature_Context::iHaveApples()
+          When I ate 1 apple          # Feature_Context::iAteApples()
+          Then I should have 2 apples # Feature_Context::iShouldHaveApples()
 
       1 scenario (1 passed)
       3 steps (3 passed)

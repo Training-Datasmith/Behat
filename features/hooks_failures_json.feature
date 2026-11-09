@@ -76,7 +76,7 @@ Feature: Display hook failures location in json printer
                   ],
                   "failures": [
                       {
-                          "message": "BeforeSuite: Error in beforeSuite hook (Exception)",
+                          "message": "Before_Suite: Error in beforeSuite hook (Exception)",
                           "type": "setup"
                       }
                   ]
@@ -152,7 +152,7 @@ Feature: Display hook failures location in json printer
                   ],
                   "failures": [
                       {
-                          "message": "AfterSuite: Error in afterSuite hook (Exception)",
+                          "message": "After_Suite: Error in afterSuite hook (Exception)",
                           "type": "teardown"
                       }
                   ]
@@ -209,7 +209,7 @@ Feature: Display hook failures location in json printer
                           ],
                           "failures": [
                               {
-                                  "message": "BeforeFeature: Error in beforeFeature hook (Exception)",
+                                  "message": "Before_Feature: Error in beforeFeature hook (Exception)",
                                   "type": "setup"
                               }
                           ]
@@ -285,7 +285,7 @@ Feature: Display hook failures location in json printer
                           ],
                           "failures": [
                               {
-                                  "message": "AfterFeature: Error in afterFeature hook (Exception)",
+                                  "message": "After_Feature: Error in afterFeature hook (Exception)",
                                   "type": "teardown"
                               }
                           ]
@@ -352,7 +352,7 @@ Feature: Display hook failures location in json printer
                                   "file": "features-DIRECTORY-SEPARATOR-one.feature",
                                   "failures": [
                                       {
-                                          "message": "BeforeScenario: Error in beforeScenario hook (Exception)",
+                                          "message": "Before_Scenario: Error in beforeScenario hook (Exception)",
                                           "type": "setup"
                                       }
                                   ],
@@ -429,7 +429,7 @@ Feature: Display hook failures location in json printer
                                   "line": 5,
                                   "failures": [
                                       {
-                                          "message": "AfterScenario: Error in afterScenario hook (Exception)",
+                                          "message": "After_Scenario: Error in afterScenario hook (Exception)",
                                           "type": "teardown"
                                       }
                                   ]
@@ -504,7 +504,7 @@ Feature: Display hook failures location in json printer
                                   "file": "features-DIRECTORY-SEPARATOR-one.feature",
                                   "failures": [
                                       {
-                                          "message": "BeforeStep: When I have a simple step: Error in beforeStep hook (Exception)",
+                                          "message": "Before_Step: When I have a simple step: Error in beforeStep hook (Exception)",
                                           "type": "setup"
                                       }
                                   ],
@@ -581,7 +581,7 @@ Feature: Display hook failures location in json printer
                                   "line": 5,
                                   "failures": [
                                       {
-                                          "message": "AfterStep: When I have a simple step: Error in afterStep hook (Exception)",
+                                          "message": "After_Step: When I have a simple step: Error in afterStep hook (Exception)",
                                           "type": "teardown"
                                       }
                                   ]

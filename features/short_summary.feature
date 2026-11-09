@@ -8,7 +8,7 @@ Feature: show short or long summaries
     And I provide the following options for all behat invocations:
       | option          | value            |
       | --no-colors     |                  |
-      | --snippets-for  | FeatureContext   |
+      | --snippets-for  | Feature_Context   |
 
   Scenario: Print long summary in pretty printer
     When I run behat with the following additional options:
@@ -18,7 +18,7 @@ Feature: show short or long summaries
       """
       --- Failed hooks:
 
-          AfterSuite "default" # FeatureContext::tearDown()
+          After_Suite "default" # Feature_Context::tearDown()
 
       --- Failed steps:
 
@@ -29,18 +29,18 @@ Feature: show short or long summaries
       --- Pending steps:
 
       001 Scenario:                     # features/test.feature:3
-            Given I have a pending step # FeatureContext::iHaveAPendingStep()
+            Given I have a pending step # Feature_Context::iHaveAPendingStep()
               TODO: write pending definition
 
       2 scenarios (1 failed, 1 undefined)
       4 steps (1 passed, 1 failed, 1 undefined, 1 pending)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Given('I have an undefined step')]
           public function iHaveAnUndefinedStep(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
 
@@ -52,7 +52,7 @@ Feature: show short or long summaries
       """
       --- Failed hooks:
 
-          AfterSuite "default" # FeatureContext::tearDown()
+          After_Suite "default" # Feature_Context::tearDown()
             This suite has a failed teardown (Exception)
 
       --- Failed scenarios:
@@ -62,12 +62,12 @@ Feature: show short or long summaries
       2 scenarios (1 failed, 1 undefined)
       4 steps (1 passed, 1 failed, 1 undefined, 1 pending)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Given('I have an undefined step')]
           public function iHaveAnUndefinedStep(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
 

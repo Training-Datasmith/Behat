@@ -20,11 +20,11 @@ Feature: Unused definitions
       --- 2 unused definitions:
 
       [Then|*] I call a step used in the second feature
-      `FeatureContext::stepUsedInSecondFeature()`
+      `Feature_Context::stepUsedInSecondFeature()`
 
       [Then|*] I call a step not used in any feature
       This is a step that is never used and should be removed.
-      `FeatureContext::stepNotUsedInAnyFeature()`
+      `Feature_Context::stepNotUsedInAnyFeature()`
       """
 
   Scenario: Print unused definitions for two suites
@@ -37,7 +37,7 @@ Feature: Unused definitions
 
       [Then|*] I call a step not used in any feature
       This is a step that is never used and should be removed.
-      `FeatureContext::stepNotUsedInAnyFeature()`
+      `Feature_Context::stepNotUsedInAnyFeature()`
       """
 
   Scenario: Print unused definitions from yaml config
@@ -50,7 +50,7 @@ Feature: Unused definitions
 
       [Then|*] I call a step not used in any feature
       This is a step that is never used and should be removed.
-      `FeatureContext::stepNotUsedInAnyFeature()`
+      `Feature_Context::stepNotUsedInAnyFeature()`
       """
 
   Scenario: Print unused definitions from PHP config
@@ -63,7 +63,7 @@ Feature: Unused definitions
 
       [Then|*] I call a step not used in any feature
       This is a step that is never used and should be removed.
-      `FeatureContext::stepNotUsedInAnyFeature()`
+      `Feature_Context::stepNotUsedInAnyFeature()`
       """
 
   Scenario: Print unused definitions when using translated definitions
@@ -77,5 +77,5 @@ Feature: Unused definitions
       --- 1 unused definition:
 
       [Given|*] /^I have clicked "+"$/
-      `TranslatedDefinitionsContext::iHaveClickedPlus()`
+      `Translated_Definitions_Context::iHaveClickedPlus()`
       """

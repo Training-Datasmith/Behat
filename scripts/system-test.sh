@@ -19,4 +19,10 @@ docker_cmd run --rm \
     -v "${REPO_ROOT}:/app" \
     -w /app \
     "${IMAGE_TAG}" \
+    php scripts/check-legacy-repo-names.php
+
+docker_cmd run --rm \
+    -v "${REPO_ROOT}:/app" \
+    -w /app \
+    "${IMAGE_TAG}" \
     bash /app/scripts/system-test-inner.sh

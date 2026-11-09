@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CustomExtension implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'custom_extension';
     }

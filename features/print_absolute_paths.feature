@@ -16,9 +16,9 @@ Feature: Print absolute paths
     Then the output should contain:
       """
         Scenario:                                    # %%WORKING_DIR%%features%%DS%%test.feature:3
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in %%WORKING_DIR%%features%%DS%%bootstrap%%DS%%FeatureContext.php line XX
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in %%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Feature_Context.php line XX
 
       --- Failed scenarios:
 
@@ -32,9 +32,9 @@ Feature: Print absolute paths
     Then the output should contain:
       """
         Scenario:                                    # %%WORKING_DIR%%features%%DS%%test.feature:3
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in %%WORKING_DIR%%features%%DS%%bootstrap%%DS%%FeatureContext.php line XX
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in %%WORKING_DIR%%features%%DS%%bootstrap%%DS%%Feature_Context.php line XX
 
       --- Failed scenarios:
 
@@ -80,7 +80,7 @@ Feature: Print absolute paths
                                   "line": 5,
                                   "failures": [
                                       {
-                                          "message": "And I have a step that throws an exception: Warning: Undefined variable $b in %%WORKING_DIR%%features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-FeatureContext.php line XX",
+                                          "message": "And I have a step that throws an exception: Warning: Undefined variable $b in %%WORKING_DIR%%features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-Feature_Context.php line XX",
                                           "type": "failed"
                                       }
                                   ]
@@ -105,7 +105,7 @@ Feature: Print absolute paths
       <testsuites name="default">
         <testsuite name="" file="%%WORKING_DIR%%features-DIRECTORY-SEPARATOR-test.feature" tests="1" skipped="0" failures="1" errors="0">
           <testcase name="" classname="" status="failed" file="%%WORKING_DIR%%features-DIRECTORY-SEPARATOR-test.feature" line="5">
-            <failure message="And I have a step that throws an exception: Warning: Undefined variable $b in %%WORKING_DIR%%features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-FeatureContext.php line XX"></failure>
+            <failure message="And I have a step that throws an exception: Warning: Undefined variable $b in %%WORKING_DIR%%features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-Feature_Context.php line XX"></failure>
           </testcase>
         </testsuite>
       </testsuites>

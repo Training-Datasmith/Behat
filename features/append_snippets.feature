@@ -7,20 +7,20 @@ Feature: Append snippets option
     Given I initialise the working directory from the "AppendSnippets" fixtures folder
 
   Scenario: Append snippets to main context
-    When I run "behat -f progress --append-snippets --snippets-for=FeatureContext --snippets-type=regex"
-    Then "features/bootstrap/FeatureContext.php" file should contain:
+    When I run "behat -f progress --append-snippets --snippets-for=Feature_Context --snippets-type=regex"
+    Then "features/bootstrap/Feature_Context.php" file should contain:
       """
       <?php
 
       use Behat\Behat\Context\Context;
-      use Behat\Behat\Tester\Exception\PendingException;
+      use Behat\Behat\Tester\Exception\Pending_Exception;
       use Behat\Gherkin\Node\PyStringNode;
       use Behat\Gherkin\Node\TableNode;
       use Behat\Step\Given;
       use Behat\Step\Then;
       use Behat\Step\When;
 
-      class FeatureContext implements Context
+      class Feature_Context implements Context
       {
           private $apples = 0;
           private $parameters;
@@ -77,48 +77,48 @@ Feature: Append snippets option
            */
           private function useClasses(PyStringNode $node, TableNode $table)
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \$$/')]
           public function doSomethingUndefinedWith2(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \\\\(\d+)$/')]
           public function doSomethingUndefinedWith3($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring (\d+):$/')]
           public function pystring2($arg1, PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       }
       """
 
-  Scenario: Append snippets to main context with auto use PendingException
-    When I run "behat -f progress --append-snippets --snippets-for=FeatureContextNoPendingException --snippets-type=regex --profile=no_pending_exception"
-    Then "features/bootstrap/FeatureContextNoPendingException.php" file should contain:
+  Scenario: Append snippets to main context with auto use Pending_Exception
+    When I run "behat -f progress --append-snippets --snippets-for=Feature_Context_No_Pending_Exception --snippets-type=regex --profile=no_pending_exception"
+    Then "features/bootstrap/Feature_Context_No_Pending_Exception.php" file should contain:
       """
       <?php
 
-      use Behat\Behat\Tester\Exception\PendingException;
+      use Behat\Behat\Tester\Exception\Pending_Exception;
       use Behat\Behat\Context\Context;
       use Behat\Gherkin\Node\PyStringNode;
       use Behat\Gherkin\Node\TableNode;
@@ -126,7 +126,7 @@ Feature: Append snippets option
       use Behat\Step\Then;
       use Behat\Step\When;
 
-      class FeatureContextNoPendingException implements Context
+      class Feature_Context_No_Pending_Exception implements Context
       {
           private $apples = 0;
           private $parameters;
@@ -188,50 +188,50 @@ Feature: Append snippets option
           #[Then('/^do something undefined with \$$/')]
           public function doSomethingUndefinedWith2(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \\\\(\d+)$/')]
           public function doSomethingUndefinedWith3($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring (\d+):$/')]
           public function pystring2($arg1, PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       }
       """
 
-  Scenario: Append snippets to main context with auto use PendingException
-    When I run "behat -f progress --append-snippets --snippets-for=FeatureContextMinimalImports --snippets-type=regex --profile=minimal_imports"
-    Then "features/bootstrap/FeatureContextMinimalImports.php" file should contain:
+  Scenario: Append snippets to main context with auto use Pending_Exception
+    When I run "behat -f progress --append-snippets --snippets-for=Feature_Context_Minimal_Imports --snippets-type=regex --profile=minimal_imports"
+    Then "features/bootstrap/Feature_Context_Minimal_Imports.php" file should contain:
       """
       <?php
 
       use Behat\Gherkin\Node\TableNode;
       use Behat\Gherkin\Node\PyStringNode;
-      use Behat\Behat\Tester\Exception\PendingException;
+      use Behat\Behat\Tester\Exception\Pending_Exception;
       use Behat\Behat\Context\Context;
       use Behat\Step\Given;
       use Behat\Step\Then;
       use Behat\Step\When;
 
-      class FeatureContextMinimalImports implements Context
+      class Feature_Context_Minimal_Imports implements Context
       {
           private $apples = 0;
           private $parameters;
@@ -285,37 +285,37 @@ Feature: Append snippets option
           #[Then('/^do something undefined with \$$/')]
           public function doSomethingUndefinedWith2(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \\\\(\d+)$/')]
           public function doSomethingUndefinedWith3($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring (\d+):$/')]
           public function pystring2($arg1, PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       }
       """
 
   Scenario: Append snippets to accepting context only
-    When I run "behat -f progress --append-snippets --snippets-for=FirstContext --snippets-type=regex --no-colors --profile=multicontext"
+    When I run "behat -f progress --append-snippets --snippets-for=First_Context --snippets-type=regex --no-colors --profile=multicontext"
     Then it should pass with:
       """
       UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
@@ -345,18 +345,18 @@ Feature: Append snippets option
           And table:
 
 
-      u features/bootstrap/FirstContext.php - `I have 3 apples` definition added
-      u features/bootstrap/FirstContext.php - `I ate 1 apple` definition added
-      u features/bootstrap/FirstContext.php - `I should have 3 apples` definition added
-      u features/bootstrap/FirstContext.php - `I found 5 apples` definition added
-      u features/bootstrap/FirstContext.php - `do something undefined with $` definition added
-      u features/bootstrap/FirstContext.php - `I ate 3 apples` definition added
-      u features/bootstrap/FirstContext.php - `do something undefined with \1` definition added
-      u features/bootstrap/FirstContext.php - `pystring:` definition added
-      u features/bootstrap/FirstContext.php - `pystring 5:` definition added
-      u features/bootstrap/FirstContext.php - `table:` definition added
+      u features/bootstrap/First_Context.php - `I have 3 apples` definition added
+      u features/bootstrap/First_Context.php - `I ate 1 apple` definition added
+      u features/bootstrap/First_Context.php - `I should have 3 apples` definition added
+      u features/bootstrap/First_Context.php - `I found 5 apples` definition added
+      u features/bootstrap/First_Context.php - `do something undefined with $` definition added
+      u features/bootstrap/First_Context.php - `I ate 3 apples` definition added
+      u features/bootstrap/First_Context.php - `do something undefined with \1` definition added
+      u features/bootstrap/First_Context.php - `pystring:` definition added
+      u features/bootstrap/First_Context.php - `pystring 5:` definition added
+      u features/bootstrap/First_Context.php - `table:` definition added
       """
-    And "features/bootstrap/FirstContext.php" file should contain:
+    And "features/bootstrap/First_Context.php" file should contain:
       """
       <?php
 
@@ -365,80 +365,80 @@ Feature: Append snippets option
       use Behat\Step\Then;
       use Behat\Step\When;
       use Behat\Step\Given;
-      use Behat\Behat\Tester\Exception\PendingException;
+      use Behat\Behat\Tester\Exception\Pending_Exception;
       use Behat\Behat\Context\Context;
 
-      class FirstContext implements Context
+      class First_Context implements Context
       {
 
           #[Given('/^I have (\d+) apples$/')]
           public function iHaveApples($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[When('/^I ate (\d+) apple$/')]
           public function iAteApple($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^I should have (\d+) apples$/')]
           public function iShouldHaveApples($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[When('/^I found (\d+) apples$/')]
           public function iFoundApples($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \$$/')]
           public function doSomethingUndefinedWith(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[When('/^I ate (\d+) apples$/')]
           public function iAteApples($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^do something undefined with \\\\(\d+)$/')]
           public function doSomethingUndefinedWith2($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring (\d+):$/')]
           public function pystring2($arg1, PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       }
       """
-    And "features/bootstrap/SecondContext.php" file should contain:
+    And "features/bootstrap/Second_Context.php" file should contain:
       """
       <?php
 
       use Behat\Behat\Context\Context;
 
-      class SecondContext implements Context
+      class Second_Context implements Context
       {
       }
       """

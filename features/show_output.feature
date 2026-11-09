@@ -119,10 +119,10 @@ Feature: Show output
     Then it should fail with:
       """
       ..
-      FeatureContext::passingWithOutput():
+      Feature_Context::passingWithOutput():
         | This step has some output
       F
-      FeatureContext::failingWithOutput():
+      Feature_Context::failingWithOutput():
         | This step also has output
 
       --- Failed steps:
@@ -141,7 +141,7 @@ Feature: Show output
     Then it should fail with:
       """
       ..F
-      FeatureContext::failingWithOutput():
+      Feature_Context::failingWithOutput():
         | This step also has output
 
       --- Failed steps:

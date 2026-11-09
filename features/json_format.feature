@@ -15,17 +15,17 @@ Feature: JSON Formatter
   Scenario: Run a single feature
     When I run behat with the following additional options:
       | option         | value               |
-      | --snippets-for | FeatureContext      |
+      | --snippets-for | Feature_Context      |
       | --suite        | single_feature      |
       | --out          | single_feature.json |
     Then it should fail with:
       """
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^Something new$/')]
           public function somethingNew(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
     And the "single_feature.json" file json should be like:
@@ -416,7 +416,7 @@ Feature: JSON Formatter
                                   "file": "features-DIRECTORY-SEPARATOR-skipped_test_cases.feature",
                                   "failures": [
                                       {
-                                          "message": "BeforeScenario: This scenario has a failed setup (Exception)",
+                                          "message": "Before_Scenario: This scenario has a failed setup (Exception)",
                                           "type": "setup"
                                       }
                                   ],
@@ -429,7 +429,7 @@ Feature: JSON Formatter
                                   "file": "features-DIRECTORY-SEPARATOR-skipped_test_cases.feature",
                                   "failures": [
                                       {
-                                          "message": "BeforeScenario: This scenario has a failed setup (Exception)",
+                                          "message": "Before_Scenario: This scenario has a failed setup (Exception)",
                                           "type": "setup"
                                       }
                                   ],

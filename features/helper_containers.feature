@@ -39,14 +39,14 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:                                                 # features/container.feature:2
-          Given service has no state                              # FirstContext::noState()
-          When service gets a state of 1 in first context         # FirstContext::setState()
-          Then service should have a state of 1 in second context # SecondContext::checkState()
+          Given service has no state                              # First_Context::noState()
+          When service gets a state of 1 in first context         # First_Context::setState()
+          Then service should have a state of 1 in second context # Second_Context::checkState()
 
         Scenario:                                                  # features/container.feature:7
-          Given service has no state                               # FirstContext::noState()
-          When service gets a state of 33 in first context         # FirstContext::setState()
-          Then service should have a state of 33 in second context # SecondContext::checkState()
+          Given service has no state                               # First_Context::noState()
+          When service gets a state of 33 in first context         # First_Context::setState()
+          Then service should have a state of 33 in second context # Second_Context::checkState()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -62,14 +62,14 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:                                                 # features/container.feature:2
-          Given service has no state                              # FirstContext::noState()
-          When service gets a state of 1 in first context         # FirstContext::setState()
-          Then service should have a state of 1 in second context # SecondContext::checkState()
+          Given service has no state                              # First_Context::noState()
+          When service gets a state of 1 in first context         # First_Context::setState()
+          Then service should have a state of 1 in second context # Second_Context::checkState()
 
         Scenario:                                                  # features/container.feature:7
-          Given service has no state                               # FirstContext::noState()
-          When service gets a state of 33 in first context         # FirstContext::setState()
-          Then service should have a state of 33 in second context # SecondContext::checkState()
+          Given service has no state                               # First_Context::noState()
+          When service gets a state of 33 in first context         # First_Context::setState()
+          Then service should have a state of 33 in second context # Second_Context::checkState()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -85,14 +85,14 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:                                                 # features/container.feature:2
-          Given service has no state                              # FirstContext::noState()
-          When service gets a state of 1 in first context         # FirstContext::setState()
-          Then service should have a state of 1 in second context # SecondContext::checkState()
+          Given service has no state                              # First_Context::noState()
+          When service gets a state of 1 in first context         # First_Context::setState()
+          Then service should have a state of 1 in second context # Second_Context::checkState()
 
         Scenario:                                                  # features/container.feature:7
-          Given service has no state                               # FirstContext::noState()
-          When service gets a state of 33 in first context         # FirstContext::setState()
-          Then service should have a state of 33 in second context # SecondContext::checkState()
+          Given service has no state                               # First_Context::noState()
+          When service gets a state of 33 in first context         # First_Context::setState()
+          Then service should have a state of 33 in second context # Second_Context::checkState()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -108,14 +108,14 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:                                                 # features/container.feature:2
-          Given service has no state                              # FirstContext::noState()
-          When service gets a state of 1 in first context         # FirstContext::setState()
-          Then service should have a state of 1 in second context # SecondContext::checkState()
+          Given service has no state                              # First_Context::noState()
+          When service gets a state of 1 in first context         # First_Context::setState()
+          Then service should have a state of 1 in second context # Second_Context::checkState()
 
         Scenario:                                                  # features/container.feature:7
-          Given service has no state                               # FirstContext::noState()
-          When service gets a state of 33 in first context         # FirstContext::setState()
-          Then service should have a state of 33 in second context # SecondContext::checkState()
+          Given service has no state                               # First_Context::noState()
+          When service gets a state of 33 in first context         # First_Context::setState()
+          Then service should have a state of 33 in second context # Second_Context::checkState()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -131,14 +131,14 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:                                                 # features/container.feature:2
-          Given service has no state                              # FirstContext::noState()
-          When service gets a state of 1 in first context         # FirstContext::setState()
-          Then service should have a state of 1 in second context # SecondContext::checkState()
+          Given service has no state                              # First_Context::noState()
+          When service gets a state of 1 in first context         # First_Context::setState()
+          Then service should have a state of 1 in second context # Second_Context::checkState()
 
         Scenario:                                                  # features/container.feature:7
-          Given service has no state                               # FirstContext::noState()
-          When service gets a state of 33 in first context         # FirstContext::setState()
-          Then service should have a state of 33 in second context # SecondContext::checkState()
+          Given service has no state                               # First_Context::noState()
+          When service gets a state of 33 in first context         # First_Context::setState()
+          Then service should have a state of 33 in second context # Second_Context::checkState()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -154,7 +154,7 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:   # features/container_args.feature:2
-          Given foo # FirstContextMixedArgs::foo()
+          Given foo # First_Context_Mixed_Args::foo()
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -170,7 +170,7 @@ Feature: Per-suite helper containers
       Feature:
 
         Scenario:   # features/container_args.feature:2
-          Given foo # FirstContextTypehinted::foo()
+          Given foo # First_Context_Typehinted::foo()
 
       1 scenario (1 passed)
       1 step (1 passed)

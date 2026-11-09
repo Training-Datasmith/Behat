@@ -17,7 +17,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      BeforeSuite "default" # BeforeSuiteContext::beforeSuiteHook()
+      Before_Suite "default" # Before_Suite_Context::beforeSuiteHook()
       """
 
   Scenario: Handling of a error in afterSuite hook
@@ -27,7 +27,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      AfterSuite "default" # AfterSuiteContext::afterSuiteHook()
+      After_Suite "default" # After_Suite_Context::afterSuiteHook()
       """
 
   Scenario: Handling of a error in beforeFeature hook
@@ -37,7 +37,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      BeforeFeature "features/one.feature" # BeforeFeatureContext::beforeFeatureHook()
+      Before_Feature "features/one.feature" # Before_Feature_Context::beforeFeatureHook()
       """
 
   Scenario: Handling of a error in afterFeature hook
@@ -47,7 +47,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      AfterFeature "features/one.feature" # AfterFeatureContext::afterFeatureHook()
+      After_Feature "features/one.feature" # After_Feature_Context::afterFeatureHook()
       """
 
   Scenario: Handling of a error in beforeScenario hook
@@ -57,7 +57,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      BeforeScenario "features/one.feature:3" # BeforeScenarioContext::beforeScenarioHook()
+      Before_Scenario "features/one.feature:3" # Before_Scenario_Context::beforeScenarioHook()
       """
 
   Scenario: Handling of a error in afterScenario hook
@@ -67,7 +67,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      AfterScenario "features/one.feature:3" # AfterScenarioContext::afterScenarioHook()
+      After_Scenario "features/one.feature:3" # After_Scenario_Context::afterScenarioHook()
       """
 
   Scenario: Handling of a error in beforeStep hook
@@ -77,7 +77,7 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      BeforeStep "features/one.feature:4" # BeforeStepContext::beforeStepHook()
+      Before_Step "features/one.feature:4" # Before_Step_Context::beforeStepHook()
       """
 
   Scenario: Handling of a error in afterStep hook
@@ -87,5 +87,5 @@ Feature: Display hook failures location in progress printer using attributes
     Then it should fail
     And the output should contain:
       """
-      AfterStep "features/one.feature:4" # AfterStepContext::afterStepHook()
+      After_Step "features/one.feature:4" # After_Step_Context::afterStepHook()
       """

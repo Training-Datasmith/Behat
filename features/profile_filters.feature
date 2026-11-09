@@ -20,14 +20,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature2.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature2.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature2.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       @tag2
       Feature: A bit less simple feature
@@ -36,14 +36,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature3.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature3.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature3.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       4 scenarios (4 passed)
       10 steps (10 passed)
@@ -51,7 +51,7 @@ Feature: Filters
 
     Examples:
       | config_file                     | comment                                   |
-      | behat-tag-filter.php            | Using new method on GherkinOptions object |
+      | behat-tag-filter.php            | Using new method on Gherkin_Options object |
       | behat-tag-filter-on-profile.php | Using deprecated method on Profile object |
 
   Scenario: Role filters
@@ -65,14 +65,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature2.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature2.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature2.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       2 scenarios (2 passed)
       5 steps (5 passed)
@@ -89,14 +89,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature2.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature2.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature2.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       @tag2
       Feature: A bit less simple feature
@@ -105,14 +105,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature3.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature3.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature3.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       4 scenarios (4 passed)
       10 steps (10 passed)
@@ -129,14 +129,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature1.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature1.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature1.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       @tag2
       Feature: A bit less simple feature
@@ -145,14 +145,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/feature3.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/feature3.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/feature3.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       @tag1 @wip
       Feature: A simple feature
@@ -161,14 +161,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/wip/wip.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/wip/wip.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/wip/wip.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       6 scenarios (6 passed)
       15 steps (15 passed)
@@ -185,14 +185,14 @@ Feature: Filters
         I need to ...
 
         Background:                # features/wip/wip.feature:7
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario:                  # features/wip/wip.feature:10
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario:                  # features/wip/wip.feature:14
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       2 scenarios (2 passed)
       5 steps (5 passed)

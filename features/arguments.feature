@@ -64,7 +64,7 @@ Feature: Step Arguments
       | features/unexpected-table-exception.feature |       |
     Then it should fail with:
       """
-        You have passed a TableNode or PystringNode, but it was not used by FeatureContext::aStepWithNoArgument.
+        You have passed a TableNode or PystringNode, but it was not used by Feature_Context::aStepWithNoArgument.
         This is probably an error in your step implementation or in %%WORKING_DIR%%features%%DS%%unexpected-table-exception.feature:3
       """
 
@@ -86,7 +86,7 @@ Feature: Step Arguments
       | features/unexpected-pystring-exception.feature |       |
     Then it should fail with:
       """
-        You have passed a TableNode or PystringNode, but it was not used by FeatureContext::aStepWithNoArgument.
+        You have passed a TableNode or PystringNode, but it was not used by Feature_Context::aStepWithNoArgument.
         This is probably an error in your step implementation or in %%WORKING_DIR%%features%%DS%%unexpected-pystring-exception.feature:3
       """
 

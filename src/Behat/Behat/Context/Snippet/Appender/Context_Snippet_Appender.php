@@ -86,7 +86,7 @@ final readonly class Context_Snippet_Appender implements Snippet_Appender
         if (!$this->logger instanceof Filesystem_Logger) {
             return;
         }
-        $steps = $snippet->getSteps();
+        $steps = $snippet->get_steps();
         $reason = sprintf('`<comment>%s</comment>` definition added', $steps[0]->getText());
         $this->logger->file_updated($path, $reason);
     }

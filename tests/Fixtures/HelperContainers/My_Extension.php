@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Behat\Behat\HelperContainer\Service_Container\Helper_Container_Extension;
+use Behat\Behat\Helper_Container\Service_Container\Helper_Container_Extension;
 use Behat\Testwork\Service_Container\Extension;
 use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 final class My_Extension implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'container_provider';
     }

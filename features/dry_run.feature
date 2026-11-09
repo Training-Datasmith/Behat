@@ -22,7 +22,7 @@ Feature: Dry run
           Given I have 3 apples
             │ STEP: I have 3 apples
 
-        ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+        ┌─ @Before_Scenario # Feature_Context::beforeScenario()
         │
         │  HOOK: before scenario
         │
@@ -32,7 +32,7 @@ Feature: Dry run
           Then I should have 3 apples
             │ STEP: I should have 3 apples
 
-        ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+        ┌─ @Before_Scenario # Feature_Context::beforeScenario()
         │
         │  HOOK: before scenario
         │
@@ -44,7 +44,7 @@ Feature: Dry run
           Then I should have 8 apples
             │ STEP: I should have 8 apples
 
-        ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+        ┌─ @Before_Scenario # Feature_Context::beforeScenario()
         │
         │  HOOK: before scenario
         │
@@ -63,7 +63,7 @@ Feature: Dry run
 
           Examples:
             | ate | found | result |
-            ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+            ┌─ @Before_Scenario # Feature_Context::beforeScenario()
             │
             │  HOOK: before scenario
             │
@@ -72,7 +72,7 @@ Feature: Dry run
               │ STEP: I ate 3 apples
               │ STEP: I found 1 apples
               │ STEP: I should have 1 apples
-            ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+            ┌─ @Before_Scenario # Feature_Context::beforeScenario()
             │
             │  HOOK: before scenario
             │
@@ -81,7 +81,7 @@ Feature: Dry run
               │ STEP: I ate 0 apples
               │ STEP: I found 4 apples
               │ STEP: I should have 8 apples
-            ┌─ @BeforeScenario # FeatureContext::beforeScenario()
+            ┌─ @Before_Scenario # Feature_Context::beforeScenario()
             │
             │  HOOK: before scenario
             │
@@ -105,24 +105,24 @@ Feature: Dry run
         I need to have an apple in my pocket
 
         Background:             # features/apples.feature:6
-          Given I have 3 apples # FeatureContext::iHaveApples()
+          Given I have 3 apples # Feature_Context::iHaveApples()
 
         Scenario: I'm little hungry   # features/apples.feature:9
-          When I ate 1 apple          # FeatureContext::iAteApples()
-          Then I should have 3 apples # FeatureContext::iShouldHaveApples()
+          When I ate 1 apple          # Feature_Context::iAteApples()
+          Then I should have 3 apples # Feature_Context::iShouldHaveApples()
 
         Scenario: Found more apples   # features/apples.feature:13
-          When I found 5 apples       # FeatureContext::iFoundApples()
-          Then I should have 8 apples # FeatureContext::iShouldHaveApples()
+          When I found 5 apples       # Feature_Context::iFoundApples()
+          Then I should have 8 apples # Feature_Context::iShouldHaveApples()
 
         Scenario: Found more apples   # features/apples.feature:17
-          When I found 2 apples       # FeatureContext::iFoundApples()
-          Then I should have 5 apples # FeatureContext::iShouldHaveApples()
+          When I found 2 apples       # Feature_Context::iFoundApples()
+          Then I should have 5 apples # Feature_Context::iShouldHaveApples()
 
         Scenario Outline: Other situations   # features/apples.feature:21
-          When I ate <ate> apples            # FeatureContext::iAteApples()
-          And I found <found> apples         # FeatureContext::iFoundApples()
-          Then I should have <result> apples # FeatureContext::iShouldHaveApples()
+          When I ate <ate> apples            # Feature_Context::iAteApples()
+          And I found <found> apples         # Feature_Context::iFoundApples()
+          Then I should have <result> apples # Feature_Context::iShouldHaveApples()
 
           Examples:
             | ate | found | result |

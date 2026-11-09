@@ -50,8 +50,8 @@ Feature: Stringifying PHPUnit exceptions
               Failed asserting that two arrays are equal.
               !! There was an error trying to render more details of this PHPUnit\Framework\ExpectationFailedException.
                  You are probably using a PHPUnit version that Behat cannot automatically display failures for.
-                 See Behat\Testwork\Exception\Stringer\PHPUnitExceptionStringer for details of PHPUnit support.
-                 [RuntimeException] Some internal problem at features/bootstrap/IncompatibleThrowableToStringMapper.php:XX
+                 See Behat\Testwork\Exception\Stringer\PHP_Unit_Exception_Stringer for details of PHPUnit support.
+                 [RuntimeException] Some internal problem at features/bootstrap/Incompatible_Throwable_To_String_Mapper.php:XX
 
       002 Scenario: Compare mismatched ints  # features/with_phpunit_10_broken.feature:13
             Then an integer 1 should equal 2 # features/with_phpunit_10_broken.feature:14
@@ -59,8 +59,8 @@ Feature: Stringifying PHPUnit exceptions
               Failed asserting that 1 is identical to 2.
               !! There was an error trying to render more details of this PHPUnit\Framework\ExpectationFailedException.
                  You are probably using a PHPUnit version that Behat cannot automatically display failures for.
-                 See Behat\Testwork\Exception\Stringer\PHPUnitExceptionStringer for details of PHPUnit support.
-                 [RuntimeException] Some internal problem at features/bootstrap/IncompatibleThrowableToStringMapper.php:XX
+                 See Behat\Testwork\Exception\Stringer\PHP_Unit_Exception_Stringer for details of PHPUnit support.
+                 [RuntimeException] Some internal problem at features/bootstrap/Incompatible_Throwable_To_String_Mapper.php:XX
 
       4 scenarios (2 passed, 2 failed)
       4 steps (2 passed, 2 failed)
@@ -78,7 +78,7 @@ Feature: Stringifying PHPUnit exceptions
               Failed asserting that two arrays are equal.
               !! Could not render more details of this PHPUnit\Framework\ExpectationFailedException.
                  Behat does not support automatically formatting assertion failures for your PHPUnit version.
-                 See Behat\Testwork\Exception\Stringer\PHPUnitExceptionStringer for details.
+                 See Behat\Testwork\Exception\Stringer\PHP_Unit_Exception_Stringer for details.
 
       002 Scenario: Compare mismatched ints  # features/with_unknown_phpunit_version.feature:13
             Then an integer 1 should equal 2 # features/with_unknown_phpunit_version.feature:14
@@ -86,7 +86,7 @@ Feature: Stringifying PHPUnit exceptions
               Failed asserting that 1 is identical to 2.
               !! Could not render more details of this PHPUnit\Framework\ExpectationFailedException.
                  Behat does not support automatically formatting assertion failures for your PHPUnit version.
-                 See Behat\Testwork\Exception\Stringer\PHPUnitExceptionStringer for details.
+                 See Behat\Testwork\Exception\Stringer\PHP_Unit_Exception_Stringer for details.
 
       4 scenarios (2 passed, 2 failed)
       4 steps (2 passed, 2 failed)

@@ -108,6 +108,8 @@ PY
 
 docker run --rm -v "$ROOT:/app" -w /app behat-system-test:remote-test-2026-11-09 php scripts/apply-legacy-rename-map.php
 
+bash scripts/apply-boundary-fixes.sh
+
 if [ -d src/Behat/Behat/Output/Node/Event_Listener/JUnit ]; then
   git mv src/Behat/Behat/Output/Node/Event_Listener/JUnit src/Behat/Behat/Output/Node/Event_Listener/J_Unit
 fi

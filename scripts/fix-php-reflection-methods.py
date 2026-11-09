@@ -28,6 +28,7 @@ PHP_REFLECTION_CALLS = {
     "get_types": "getTypes",
     "get_default_value": "getDefaultValue",
     "is_default_value_available": "isDefaultValueAvailable",
+    "get_name": "getName",
     "get_class": "getClass",
     "get_constants": "getConstants",
     "get_method": "getMethod",

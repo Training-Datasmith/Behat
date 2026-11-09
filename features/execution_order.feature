@@ -16,14 +16,14 @@ Feature: Setting order of execution
       Feature: Feature 1
 
         Scenario:               # features/order1.feature:3
-          Given I have 1 orange # FeatureContext::iHaveOranges()
-          Then I have 1 orange  # FeatureContext::iHaveOranges()
+          Given I have 1 orange # Feature_Context::iHaveOranges()
+          Then I have 1 orange  # Feature_Context::iHaveOranges()
 
       Feature: Feature 2
 
         Scenario:                # features/order2.feature:3
-          Given I have 2 oranges # FeatureContext::iHaveOranges()
-          Then I have 2 oranges  # FeatureContext::iHaveOranges()
+          Given I have 2 oranges # Feature_Context::iHaveOranges()
+          Then I have 2 oranges  # Feature_Context::iHaveOranges()
 
       2 scenarios (2 passed)
       4 steps (4 passed)
@@ -43,14 +43,14 @@ Feature: Setting order of execution
       Feature: Feature 2
 
         Scenario:                # features/order2.feature:3
-          Given I have 2 oranges # FeatureContext::iHaveOranges()
-          Then I have 2 oranges  # FeatureContext::iHaveOranges()
+          Given I have 2 oranges # Feature_Context::iHaveOranges()
+          Then I have 2 oranges  # Feature_Context::iHaveOranges()
 
       Feature: Feature 1
 
         Scenario:               # features/order1.feature:3
-          Given I have 1 orange # FeatureContext::iHaveOranges()
-          Then I have 1 orange  # FeatureContext::iHaveOranges()
+          Given I have 1 orange # Feature_Context::iHaveOranges()
+          Then I have 1 orange  # Feature_Context::iHaveOranges()
 
       2 scenarios (2 passed)
       4 steps (4 passed)

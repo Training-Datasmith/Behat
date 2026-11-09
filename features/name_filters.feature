@@ -16,23 +16,23 @@ Scenario: First Name
       Feature: First Feature
 
         Background:                # features/feature1.feature:3
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario: First Scenario   # features/feature1.feature:6
-          Given Some slow step N12 # FeatureContext::someSlowStepN()
-          And Some normal step N13 # FeatureContext::someNormalStepN()
+          Given Some slow step N12 # Feature_Context::someSlowStepN()
+          And Some normal step N13 # Feature_Context::someNormalStepN()
 
         Scenario: Second Scenario  # features/feature1.feature:10
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       Feature: Second Feature
 
         Background:                  # features/feature2.feature:3
-          Given Some normal step N21 # FeatureContext::someNormalStepN()
+          Given Some normal step N21 # Feature_Context::someNormalStepN()
 
         Scenario: First Scenario   # features/feature2.feature:6
-          Given Some slow step N22 # FeatureContext::someSlowStepN()
-          And Some fast step N23   # FeatureContext::someFastStepN()
+          Given Some slow step N22 # Feature_Context::someSlowStepN()
+          And Some fast step N23   # Feature_Context::someFastStepN()
 
       3 scenarios (3 passed)
       8 steps (8 passed)
@@ -45,10 +45,10 @@ Scenario: First Name
       Feature: First Feature
 
         Background:                # features/feature1.feature:3
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario: Second Scenario  # features/feature1.feature:10
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -61,10 +61,10 @@ Scenario: First Name
       Feature: First Feature
 
         Background:                # features/feature1.feature:3
-          Given Some slow step N11 # FeatureContext::someSlowStepN()
+          Given Some slow step N11 # Feature_Context::someSlowStepN()
 
         Scenario: Second Scenario  # features/feature1.feature:10
-          Given Some fast step N14 # FeatureContext::someFastStepN()
+          Given Some fast step N14 # Feature_Context::someFastStepN()
 
       1 scenario (1 passed)
       2 steps (2 passed)

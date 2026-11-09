@@ -16,179 +16,179 @@ Feature: Hooks Annotations
       | features/test.feature |       |
     Then it should pass with:
       """
-      ┌─ @BeforeFeature # FeatureContextAnnotations::doSomethingBeforeFeature()
+      ┌─ @Before_Feature # Feature_Context_Annotations::doSomethingBeforeFeature()
       │
       │  = do something BEFORE EVERY FEATURE
       │
       Feature:
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:             # features/test.feature:2
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have 50 # FeatureContextAnnotations::iMustHave()
+          Then I must have 50 # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:                 # features/test.feature:4
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Given I have entered 12 # FeatureContextAnnotations::iHaveEntered()
+          Given I have entered 12 # Feature_Context_Annotations::iHaveEntered()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have 12     # FeatureContextAnnotations::iMustHave()
+          Then I must have 12     # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         @thirty
         Scenario:                # features/test.feature:9
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Given I must have 30   # FeatureContextAnnotations::iMustHave()
+          Given I must have 30   # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          When I have entered 23 # FeatureContextAnnotations::iHaveEntered()
+          When I have entered 23 # Feature_Context_Annotations::iHaveEntered()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have 23    # FeatureContextAnnotations::iMustHave()
+          Then I must have 23    # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         @100 @thirty
         Scenario:               # features/test.feature:14
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Given I must have 30  # FeatureContextAnnotations::iMustHave()
+          Given I must have 30  # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          When I have entered 1 # FeatureContextAnnotations::iHaveEntered()
+          When I have entered 1 # Feature_Context_Annotations::iHaveEntered()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have 100  # FeatureContextAnnotations::iMustHave()
+          Then I must have 100  # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         @filtered
         Scenario:                                                # features/test.feature:20
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have a scenario filter value of "filtered" # FeatureContextAnnotations::iMustHaveScenarioFilter()
+          Then I must have a scenario filter value of "filtered" # Feature_Context_Annotations::iMustHaveScenarioFilter()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         @~filtered
         Scenario:                                                 # features/test.feature:24
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have a scenario filter value of "~filtered" # FeatureContextAnnotations::iMustHaveScenarioFilter()
+          Then I must have a scenario filter value of "~filtered" # Feature_Context_Annotations::iMustHaveScenarioFilter()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
       │
       │  = do something AFTER EVERY FEATURE
       │
-      └─ @AfterFeature # FeatureContextAnnotations::doSomethingAfterFeature()
+      └─ @After_Feature # Feature_Context_Annotations::doSomethingAfterFeature()
       
       6 scenarios (6 passed)
       11 steps (11 passed)
@@ -200,45 +200,45 @@ Feature: Hooks Annotations
       | features/some.feature |       |
     Then it should pass with:
       """
-      ┌─ @BeforeFeature # FeatureContextAnnotations::doSomethingBeforeFeature()
+      ┌─ @Before_Feature # Feature_Context_Annotations::doSomethingBeforeFeature()
       │
       │  = do something BEFORE EVERY FEATURE
       │
-      ┌─ @BeforeFeature @someFeature # FeatureContextAnnotations::doSomethingBeforeSomeFeature()
+      ┌─ @Before_Feature @someFeature # Feature_Context_Annotations::doSomethingBeforeSomeFeature()
       │
       │  = do something before SOME feature
       │
       @someFeature
       Feature:
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:             # features/some.feature:3
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Then I must have 50 # FeatureContextAnnotations::iMustHave()
+          Then I must have 50 # Feature_Context_Annotations::iMustHave()
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
       │
       │  = do something AFTER EVERY FEATURE
       │
-      └─ @AfterFeature # FeatureContextAnnotations::doSomethingAfterFeature()
+      └─ @After_Feature # Feature_Context_Annotations::doSomethingAfterFeature()
       
       │
       │  = do something after SOME feature
       │
-      └─ @AfterFeature @someFeature # FeatureContextAnnotations::doSomethingAfterSomeFeature()
+      └─ @After_Feature @someFeature # Feature_Context_Annotations::doSomethingAfterSomeFeature()
       
       1 scenario (1 passed)
       1 step (1 passed)
@@ -250,92 +250,92 @@ Feature: Hooks Annotations
       | features/hooks-output.feature |       |
     Then it should fail with:
       """
-      ┌─ @BeforeFeature # FeatureContextAnnotations::doSomethingBeforeFeature()
+      ┌─ @Before_Feature # Feature_Context_Annotations::doSomethingBeforeFeature()
       │
       │  = do something BEFORE EVERY FEATURE
       │
       Feature:
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:            # features/hooks-output.feature:2
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Given passing step # FeatureContextAnnotations::passingStep()
+          Given passing step # Feature_Context_Annotations::passingStep()
             │ Is passing
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:            # features/hooks-output.feature:5
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          Given failing step # FeatureContextAnnotations::failingStep()
+          Given failing step # Feature_Context_Annotations::failingStep()
             Failing (RuntimeException)
           │
           │  Is passing
           │
-          └─ @AfterStep # FeatureContextAnnotations::passingAfterStep()
+          └─ @After_Step # Feature_Context_Annotations::passingAfterStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
         Scenario:                              # features/hooks-output.feature:8
-          ┌─ @BeforeStep # FeatureContextAnnotations::passingBeforeStep()
+          ┌─ @Before_Step # Feature_Context_Annotations::passingBeforeStep()
           │
           │  Is passing
           │
-          ┌─ @BeforeStep passing step with failing hook # FeatureContextAnnotations::failingBeforeStep()
+          ┌─ @Before_Step passing step with failing hook # Feature_Context_Annotations::failingBeforeStep()
           │
           ╳  Is failing (RuntimeException)
           │
-          Given passing step with failing hook # FeatureContextAnnotations::passingStep()
+          Given passing step with failing hook # Feature_Context_Annotations::passingStep()
         │
         │  Is passing
         │
-        └─ @AfterScenario # FeatureContextAnnotations::passingAfterScenarioHook()
+        └─ @After_Scenario # Feature_Context_Annotations::passingAfterScenarioHook()
       
-        ┌─ @BeforeScenario # FeatureContextAnnotations::passingBeforeScenarioHook()
+        ┌─ @Before_Scenario # Feature_Context_Annotations::passingBeforeScenarioHook()
         │
         │  Is passing
         │
-        ┌─ @BeforeScenario @failing-before-hook # FeatureContextAnnotations::failingBeforeScenarioHook()
+        ┌─ @Before_Scenario @failing-before-hook # Feature_Context_Annotations::failingBeforeScenarioHook()
         │
         ╳  Is failing (RuntimeException)
         │
         @failing-before-hook
         Scenario:            # features/hooks-output.feature:12
-          Given passing step # FeatureContextAnnotations::passingStep()
+          Given passing step # Feature_Context_Annotations::passingStep()
       
       │
       │  = do something AFTER EVERY FEATURE
       │
-      └─ @AfterFeature # FeatureContextAnnotations::doSomethingAfterFeature()
+      └─ @After_Feature # Feature_Context_Annotations::doSomethingAfterFeature()
       
       --- Failed hooks:
       
-          BeforeStep passing step with failing hook "features/hooks-output.feature:9" # FeatureContextAnnotations::failingBeforeStep()
-          BeforeScenario @failing-before-hook "features/hooks-output.feature:12" # FeatureContextAnnotations::failingBeforeScenarioHook()
+          Before_Step passing step with failing hook "features/hooks-output.feature:9" # Feature_Context_Annotations::failingBeforeStep()
+          Before_Scenario @failing-before-hook "features/hooks-output.feature:12" # Feature_Context_Annotations::failingBeforeScenarioHook()
       
       --- Skipped scenarios:
       

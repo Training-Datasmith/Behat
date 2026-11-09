@@ -22,9 +22,9 @@ Feature: Importing suites
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/some.feature:6
-          Given I have 3 apples       # FirstContext::iHaveApples()
-          When I ate 1 apple          # FirstContext::iAteApples()
-          Then I should have 2 apples # FirstContext::iShouldHaveApples()
+          Given I have 3 apples       # First_Context::iHaveApples()
+          When I ate 1 apple          # First_Context::iAteApples()
+          Then I should have 2 apples # First_Context::iShouldHaveApples()
 
       1 scenario (1 passed)
       3 steps (3 passed)
@@ -43,9 +43,9 @@ Feature: Importing suites
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/some.feature:6
-          Given I have 3 apples       # FirstContext::iHaveApples()
-          When I ate 1 apple          # FirstContext::iAteApples()
-          Then I should have 2 apples # FirstContext::iShouldHaveApples()
+          Given I have 3 apples       # First_Context::iHaveApples()
+          When I ate 1 apple          # First_Context::iAteApples()
+          Then I should have 2 apples # First_Context::iShouldHaveApples()
 
       1 scenario (1 passed)
       3 steps (3 passed)
@@ -63,9 +63,9 @@ Feature: Importing suites
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/some.feature:6
-          Given I have 3 apples       # FirstContext::iHaveApples()
-          When I ate 1 apple          # FirstContext::iAteApples()
-          Then I should have 2 apples # FirstContext::iShouldHaveApples()
+          Given I have 3 apples       # First_Context::iHaveApples()
+          When I ate 1 apple          # First_Context::iAteApples()
+          Then I should have 2 apples # First_Context::iShouldHaveApples()
 
       Feature: Apples story
         In order to eat apple
@@ -73,9 +73,9 @@ Feature: Importing suites
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/some.feature:6
-          Given I have 3 apples       # SecondContext::iHaveApples()
-          When I ate 1 apple          # SecondContext::iAteApples()
-          Then I should have 2 apples # SecondContext::iShouldHaveApples()
+          Given I have 3 apples       # Second_Context::iHaveApples()
+          When I ate 1 apple          # Second_Context::iAteApples()
+          Then I should have 2 apples # Second_Context::iShouldHaveApples()
 
       2 scenarios (2 passed)
       6 steps (6 passed)

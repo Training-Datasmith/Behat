@@ -11,7 +11,7 @@ Feature: Different result types
       | --format    | progress |
 
   Scenario: Undefined steps
-    When I run "behat --profile=undefined features/undefined.feature --snippets-for=UndefinedContext --snippets-type=regex"
+    When I run "behat --profile=undefined features/undefined.feature --snippets-for=Undefined_Context --snippets-type=regex"
     Then it should pass with:
       """
       UUUUUU
@@ -19,34 +19,34 @@ Feature: Different result types
       2 scenarios (2 undefined)
       6 steps (6 undefined)
 
-      --- UndefinedContext has missing steps. Define them with these snippets:
+      --- Undefined_Context has missing steps. Define them with these snippets:
 
           #[Given('/^I have magically created (\d+)\$$/')]
           public function iHaveMagicallyCreated($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[When('/^I have chose "([^"]*)" in coffee machine$/')]
           public function iHaveChoseInCoffeeMachine($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^I should have "([^"]*)"$/')]
           public function iShouldHave($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
       --- Don't forget these 4 use statements:
 
-          use Behat\Behat\Tester\Exception\PendingException;
+          use Behat\Behat\Tester\Exception\Pending_Exception;
           use Behat\Step\Given;
           use Behat\Step\When;
           use Behat\Step\Then;
       """
-    When I run "behat --strict --profile=undefined features/undefined.feature --snippets-for=UndefinedContext --snippets-type=regex"
+    When I run "behat --strict --profile=undefined features/undefined.feature --snippets-for=Undefined_Context --snippets-type=regex"
     Then it should fail with:
       """
       UUUUUU
@@ -54,36 +54,36 @@ Feature: Different result types
       2 scenarios (2 undefined)
       6 steps (6 undefined)
 
-      --- UndefinedContext has missing steps. Define them with these snippets:
+      --- Undefined_Context has missing steps. Define them with these snippets:
 
           #[Given('/^I have magically created (\d+)\$$/')]
           public function iHaveMagicallyCreated($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[When('/^I have chose "([^"]*)" in coffee machine$/')]
           public function iHaveChoseInCoffeeMachine($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^I should have "([^"]*)"$/')]
           public function iShouldHave($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
       --- Don't forget these 4 use statements:
 
-          use Behat\Behat\Tester\Exception\PendingException;
+          use Behat\Behat\Tester\Exception\Pending_Exception;
           use Behat\Step\Given;
           use Behat\Step\When;
           use Behat\Step\Then;
       """
 
   Scenario: Pending steps
-    When I run "behat --profile=pending features/pending.feature --snippets-for=PendingContext --snippets-type=regex"
+    When I run "behat --profile=pending features/pending.feature --snippets-for=Pending_Context --snippets-type=regex"
     Then it should pass with:
       """
       P-U
@@ -91,26 +91,26 @@ Feature: Different result types
       --- Pending steps:
 
       001 Scenario: When the coffee ready                        # features/pending.feature:9
-            Given human have ordered very very very hot "coffee" # PendingContext::humanOrdered()
+            Given human have ordered very very very hot "coffee" # Pending_Context::humanOrdered()
               TODO: write pending definition
 
       1 scenario (1 undefined)
       3 steps (1 undefined, 1 pending, 1 skipped)
 
-      --- PendingContext has missing steps. Define them with these snippets:
+      --- Pending_Context has missing steps. Define them with these snippets:
 
           #[Then('/^I should say "([^"]*)"$/')]
           public function iShouldSay($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
       --- Don't forget these 2 use statements:
 
-          use Behat\Behat\Tester\Exception\PendingException;
+          use Behat\Behat\Tester\Exception\Pending_Exception;
           use Behat\Step\Then;
       """
-    When I run "behat --strict --profile=pending features/pending.feature --snippets-for=PendingContext --snippets-type=regex"
+    When I run "behat --strict --profile=pending features/pending.feature --snippets-for=Pending_Context --snippets-type=regex"
     Then it should fail with:
       """
       P-U
@@ -118,18 +118,18 @@ Feature: Different result types
       --- Pending steps:
 
       001 Scenario: When the coffee ready                        # features/pending.feature:9
-            Given human have ordered very very very hot "coffee" # PendingContext::humanOrdered()
+            Given human have ordered very very very hot "coffee" # Pending_Context::humanOrdered()
               TODO: write pending definition
 
       1 scenario (1 undefined)
       3 steps (1 undefined, 1 pending, 1 skipped)
 
-      --- PendingContext has missing steps. Define them with these snippets:
+      --- Pending_Context has missing steps. Define them with these snippets:
 
           #[Then('/^I should say "([^"]*)"$/')]
           public function iShouldSay($arg1): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
 
@@ -184,8 +184,8 @@ Feature: Different result types
       001 Scenario: Ambiguous coffee type   # features/ambiguous.feature:6
             Given human have chosen "Latte" # features/ambiguous.feature:7
               Ambiguous match of "human have chosen "Latte"":
-              to `/^human have chosen "([^"]*)"$/` from AmbiguousContext::chosen()
-              to `/^human have chosen "Latte"$/` from AmbiguousContext::chosenLatte()
+              to `/^human have chosen "([^"]*)"$/` from Ambiguous_Context::chosen()
+              to `/^human have chosen "Latte"$/` from Ambiguous_Context::chosenLatte()
 
       1 scenario (1 failed)
       2 steps (1 failed, 1 skipped)
@@ -196,7 +196,7 @@ Feature: Different result types
     Then it should fail
     And the output should contain:
       """
-      Step "/^customer bought coffee$/" is already defined in RedundantContext::chosen()
+      Step "/^customer bought coffee$/" is already defined in Redundant_Context::chosen()
       """
 
   Scenario: Warning-containing steps
@@ -210,7 +210,7 @@ Feature: Different result types
 
       001 Scenario: Redundant menu       # features/warning.feature:6
             Given customer bought coffee # features/warning.feature:7
-              User Warning: some warning in features/bootstrap/WarningContext.php line XX
+              User Warning: some warning in features/bootstrap/Warning_Context.php line XX
 
       1 scenario (1 failed)
       2 steps (1 failed, 1 skipped)

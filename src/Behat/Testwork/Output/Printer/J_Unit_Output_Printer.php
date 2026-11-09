@@ -111,7 +111,7 @@ final class J_Unit_Output_Printer extends Stream_Output_Printer
     private function add_attributes_to_node(DOMElement $node, array $attributes): void
     {
         foreach ($attributes as $name => $value) {
-            $node->setAttribute($name, $value ?? '');
+            $node->setAttribute($name, $value === null ? '' : (string) $value);
         }
     }
 

@@ -50,7 +50,7 @@ abstract class Console_Definition_Printer implements Definition_Printer
     final protected function get_definition_type(Definition $definition, $only_one = false)
     {
         $this->keywords->setLanguage($this->translator->get_locale());
-        $method = 'get' . ucfirst($definition->getType()) . 'Keywords';
+        $method = 'get' . ucfirst($definition->get_type()) . 'Keywords';
         $keywords = explode('|', (string) $this->keywords->{$method}());
         if ($only_one) {
             return current($keywords);
@@ -81,6 +81,6 @@ abstract class Console_Definition_Printer implements Definition_Printer
      */
     final protected function is_verbose()
     {
-        return $this->output->is_verbose();
+        return $this->output->isVerbose();
     }
 }

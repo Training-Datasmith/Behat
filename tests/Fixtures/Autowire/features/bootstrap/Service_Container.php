@@ -37,7 +37,7 @@ class Service_Container implements ContainerInterface
     public function get(string $class)
     {
         if (!$this->has($class)) {
-            throw new Behat\Behat\HelperContainer\Exception\Service_Not_Found_Exception("Service $class not found", $class);
+            throw new Behat\Behat\Helper_Container\Exception\Service_Not_Found_Exception("Service $class not found", $class);
         }
 
         return isset($this->services[$class])

@@ -19,8 +19,8 @@ Feature: Profile extension overrides
       Feature:
 
         Scenario:                                                  # features/extensions-default.feature:2
-          When this scenario executes                              # FeatureContext::thisScenarioExecutes()
-          Then the extension "custom extension 1" should be loaded # FeatureContext::theExtensionLoaded()
+          When this scenario executes                              # Feature_Context::thisScenarioExecutes()
+          Then the extension "custom extension 1" should be loaded # Feature_Context::theExtensionLoaded()
 
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -38,8 +38,8 @@ Feature: Profile extension overrides
       Feature:
 
         Scenario:                                                      # features/extensions-disabled.feature:2
-          When this scenario executes                                  # FeatureContext::thisScenarioExecutes()
-          Then the extension "custom extension 1" should not be loaded # FeatureContext::theExtensionNotLoaded()
+          When this scenario executes                                  # Feature_Context::thisScenarioExecutes()
+          Then the extension "custom extension 1" should not be loaded # Feature_Context::theExtensionNotLoaded()
 
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -57,9 +57,9 @@ Feature: Profile extension overrides
       Feature:
 
         Scenario:                                                  # features/extensions-additional.feature:2
-          When this scenario executes                              # FeatureContext::thisScenarioExecutes()
-          Then the extension "custom extension 1" should be loaded # FeatureContext::theExtensionLoaded()
-          And the extension "custom extension 2" should be loaded  # FeatureContext::theExtensionLoaded()
+          When this scenario executes                              # Feature_Context::thisScenarioExecutes()
+          Then the extension "custom extension 1" should be loaded # Feature_Context::theExtensionLoaded()
+          And the extension "custom extension 2" should be loaded  # Feature_Context::theExtensionLoaded()
 
       1 scenario (1 passed)
       3 steps (3 passed)

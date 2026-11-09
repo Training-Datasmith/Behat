@@ -16,16 +16,16 @@ Feature: JUnit Formatter
   Scenario: Run a single feature
     When I run behat with the following additional options:
       | option         | value          |
-      | --snippets-for | FeatureContext |
+      | --snippets-for | Feature_Context |
       | --suite        | single_feature |
     Then it should fail with:
       """
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^Something new$/')]
           public function somethingNew(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
     And the "logs/single_feature.xml" file xml should be like:
@@ -132,10 +132,10 @@ Feature: JUnit Formatter
       <testsuites name="skipped_test_cases">
         <testsuite name="Skipped test cases" file="features-DIRECTORY-SEPARATOR-skipped_test_cases.feature" tests="2" skipped="2" failures="0" errors="0" time="-IGNORE-VALUE-">
           <testcase name="Skipped" classname="Skipped test cases" status="skipped" time="-IGNORE-VALUE-" file="features-DIRECTORY-SEPARATOR-skipped_test_cases.feature" line="11">
-            <failure message="BeforeScenario: This scenario has a failed setup (Exception)" type="setup"></failure>
+            <failure message="Before_Scenario: This scenario has a failed setup (Exception)" type="setup"></failure>
           </testcase>
           <testcase name="Another skipped" classname="Skipped test cases" status="skipped" time="-IGNORE-VALUE-" file="features-DIRECTORY-SEPARATOR-skipped_test_cases.feature" line="15">
-            <failure message="BeforeScenario: This scenario has a failed setup (Exception)" type="setup"></failure>
+            <failure message="Before_Scenario: This scenario has a failed setup (Exception)" type="setup"></failure>
           </testcase>
         </testsuite>
       </testsuites>

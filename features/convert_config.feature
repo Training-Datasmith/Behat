@@ -254,14 +254,14 @@ Feature: Convert config
       <?php
 
       use Behat\Config\Config;
-      use Behat\Config\Filter\TagFilter;
+      use Behat\Config\Filter\Tag_Filter;
       use Behat\Config\Profile;
       use Behat\Config\Suite;
 
       return (new Config())
           ->withProfile((new Profile('default'))
               ->withSuite((new Suite('my_suite'))
-                  ->withFilter(new TagFilter('@run'))));
+                  ->withFilter(new Tag_Filter('@run'))));
       """
     And the "suite_filters.yaml" file should have been removed from the working directory
 
@@ -307,7 +307,7 @@ Feature: Convert config
       use Behat\Config\Suite;
       use MyContext;
       use Some\Behat\Extension\ExplicitlyReferencedExtension;
-      use Some\ShorthandExtension\ServiceContainer\ShorthandExtension;
+      use Some\ShorthandExtension\Service_Container\ShorthandExtension;
       use test\MyApp\Contexts\MyFirstContext;
       use test\MyApp\Contexts\MySecondContext;
 
@@ -345,16 +345,16 @@ Feature: Convert config
       <?php
 
       use Behat\Config\Config;
-      use Behat\Config\Filter\NameFilter;
-      use Behat\Config\Filter\RoleFilter;
-      use Behat\Config\GherkinOptions;
+      use Behat\Config\Filter\Name_Filter;
+      use Behat\Config\Filter\Role_Filter;
+      use Behat\Config\Gherkin_Options;
       use Behat\Config\Profile;
 
       return (new Config())
           ->withProfile((new Profile('default'))
-              ->withGherkinOptions((new GherkinOptions())
-                  ->withFilter(new NameFilter('john'))
-                  ->withFilter(new RoleFilter('admin'))));
+              ->withGherkinOptions((new Gherkin_Options())
+                  ->withFilter(new Name_Filter('john'))
+                  ->withFilter(new Role_Filter('admin'))));
       """
     And the "profile_filters.yaml" file should have been removed from the working directory
 
@@ -388,33 +388,33 @@ Feature: Convert config
       use Behat\Config\Config;
       use Behat\Config\Extension;
       use Behat\Config\Formatter\Formatter;
-      use Behat\Config\Formatter\JSONFormatter;
-      use Behat\Config\Formatter\JUnitFormatter;
-      use Behat\Config\Formatter\PrettyFormatter;
-      use Behat\Config\Formatter\ProgressFormatter;
-      use Behat\Config\Formatter\ShowOutputOption;
+      use Behat\Config\Formatter\JSON_Formatter;
+      use Behat\Config\Formatter\J_Unit_Formatter;
+      use Behat\Config\Formatter\Pretty_Formatter;
+      use Behat\Config\Formatter\Progress_Formatter;
+      use Behat\Config\Formatter\Show_Output_Option;
       use Behat\Config\Profile;
-      use Behat\Testwork\Output\Printer\Factory\OutputFactory;
+      use Behat\Testwork\Output\Printer\Factory\Output_Factory;
 
       return (new Config())
           ->withProfile((new Profile('default'))
-              ->withFormatter((new PrettyFormatter(paths: false, shortSummary: false))
+              ->withFormatter((new Pretty_Formatter(paths: false, shortSummary: false))
                   ->withOutputDecorated(false))
-              ->withFormatter(new ProgressFormatter())
+              ->withFormatter(new Progress_Formatter())
               ->disableFormatter('junit')
               ->withFormatter((new Formatter('custom_formatter', [
                   'other_property' => 'value',
               ]))
-                  ->withOutputVerbosity(OutputFactory::VERBOSITY_VERBOSE))
+                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERBOSE))
               ->withExtension(new Extension('custom_extension.php')))
           ->withProfile((new Profile('with_options'))
-              ->withFormatter((new JUnitFormatter())
+              ->withFormatter((new J_Unit_Formatter())
                   ->withOutputPath('build/logs/junit'))
-              ->withFormatter((new JSONFormatter())
+              ->withFormatter((new JSON_Formatter())
                   ->withOutputPath('build/logs/result.json'))
-              ->withFormatter((new ProgressFormatter(showOutput: ShowOutputOption::OnFail))
-                  ->withOutputVerbosity(OutputFactory::VERBOSITY_VERY_VERBOSE))
-              ->withFormatter((new PrettyFormatter(expand: true, showOutput: ShowOutputOption::No))
+              ->withFormatter((new Progress_Formatter(showOutput: Show_Output_Option::OnFail))
+                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERY_VERBOSE))
+              ->withFormatter((new Pretty_Formatter(expand: true, showOutput: Show_Output_Option::No))
                   ->withOutputStyles([
                       'failed' => [
                           'white',
@@ -461,24 +461,24 @@ Feature: Convert config
 
       use Behat\Config\Config;
       use Behat\Config\Profile;
-      use Behat\Config\TesterOptions;
+      use Behat\Config\Tester_Options;
 
       return (new Config())
           ->withProfile(new Profile('default'))
           ->withProfile((new Profile('ignore-errors'))
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withErrorReporting(E_ALL & ~E_DEPRECATED)))
           ->withProfile((new Profile('not-strict'))
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withStrictResultInterpretation(false)))
           ->withProfile((new Profile('print-deprecations'))
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withPrintBehatDeprecations()))
           ->withProfile((new Profile('fail-on-deprecations'))
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withFailOnBehatDeprecations()))
           ->withProfile((new Profile('complete'))
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withStrictResultInterpretation()
                   ->withStopOnFailure(false)
                   ->withSkipAllTests()
@@ -500,35 +500,35 @@ Feature: Convert config
 
       use Behat\Config\Config;
       use Behat\Config\Extension;
-      use Behat\Config\Filter\NameFilter;
-      use Behat\Config\Filter\RoleFilter;
-      use Behat\Config\Filter\TagFilter;
+      use Behat\Config\Filter\Name_Filter;
+      use Behat\Config\Filter\Role_Filter;
+      use Behat\Config\Filter\Tag_Filter;
       use Behat\Config\Formatter\Formatter;
-      use Behat\Config\Formatter\PrettyFormatter;
-      use Behat\Config\Formatter\ProgressFormatter;
-      use Behat\Config\GherkinOptions;
+      use Behat\Config\Formatter\Pretty_Formatter;
+      use Behat\Config\Formatter\Progress_Formatter;
+      use Behat\Config\Gherkin_Options;
       use Behat\Config\Profile;
       use Behat\Config\Suite;
-      use Behat\Config\TesterOptions;
+      use Behat\Config\Tester_Options;
       use Behat\Gherkin\GherkinCompatibilityMode;
-      use Behat\Testwork\Output\Printer\Factory\OutputFactory;
+      use Behat\Testwork\Output\Printer\Factory\Output_Factory;
 
       return (new Config())
           ->import('imported.php')
           ->withProfile((new Profile('default'))
-              ->withFormatter((new PrettyFormatter(paths: false, shortSummary: false))
+              ->withFormatter((new Pretty_Formatter(paths: false, shortSummary: false))
                   ->withOutputDecorated(false))
-              ->withFormatter(new ProgressFormatter())
+              ->withFormatter(new Progress_Formatter())
               ->disableFormatter('junit')
               ->withFormatter((new Formatter('custom_formatter', [
                   'other_property' => 'value',
               ]))
-                  ->withOutputVerbosity(OutputFactory::VERBOSITY_VERBOSE))
-              ->withGherkinOptions((new GherkinOptions())
+                  ->withOutputVerbosity(Output_Factory::VERBOSITY_VERBOSE))
+              ->withGherkinOptions((new Gherkin_Options())
                   ->withCacheDir('/tmp/gherkin-cache')
                   ->withCompatibilityMode(GherkinCompatibilityMode::GHERKIN_32)
-                  ->withFilter(new NameFilter('john'))
-                  ->withFilter(new RoleFilter('admin')))
+                  ->withFilter(new Name_Filter('john'))
+                  ->withFilter(new Role_Filter('admin')))
               ->withPrintUnusedDefinitions()
               ->withPathOptions(
                   printAbsolutePaths: true,
@@ -538,7 +538,7 @@ Feature: Convert config
                       'features/',
                   ]
               )
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withStrictResultInterpretation()
                   ->withPrintBehatDeprecations()
                   ->withFailOnBehatDeprecations())
@@ -551,10 +551,10 @@ Feature: Convert config
                       ]
                   )
                   ->withPaths('one.feature')
-                  ->withFilter(new TagFilter('@run'))))
+                  ->withFilter(new Tag_Filter('@run'))))
           ->withProfile((new Profile('other'))
               ->disableFormatter('pretty')
-              ->withTesterOptions((new TesterOptions())
+              ->withTesterOptions((new Tester_Options())
                   ->withErrorReporting(E_ERROR)))
           ->withPreferredProfile('other');
       """

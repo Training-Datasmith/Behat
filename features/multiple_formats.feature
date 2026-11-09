@@ -8,7 +8,7 @@ Feature: Multiple formats
     And I provide the following options for all behat invocations:
       | option          | value          |
       | --no-colors     |                |
-      | --snippets-for  | FeatureContext |
+      | --snippets-for  | Feature_Context |
       | --snippets-type | regex          |
 
   Scenario: 2 formats, default output
@@ -21,26 +21,26 @@ Feature: Multiple formats
         I need to have an apple in my pocket
 
         Background:             # features/apples.feature:6
-          Given I have 3 apples # FeatureContext::iHaveApples()
+          Given I have 3 apples # Feature_Context::iHaveApples()
       .
         Scenario: I'm little hungry   # features/apples.feature:9
-          When I ate 1 apple          # FeatureContext::iAteApples()
-      .    Then I should have 3 apples # FeatureContext::iShouldHaveApples()
+          When I ate 1 apple          # Feature_Context::iAteApples()
+      .    Then I should have 3 apples # Feature_Context::iShouldHaveApples()
             Failed asserting that 2 matches expected 3.
       F
         Scenario: Found more apples   # features/apples.feature:13
-      .    When I found 5 apples       # FeatureContext::iFoundApples()
-      .    Then I should have 8 apples # FeatureContext::iShouldHaveApples()
+      .    When I found 5 apples       # Feature_Context::iFoundApples()
+      .    Then I should have 8 apples # Feature_Context::iShouldHaveApples()
       .
         Scenario: Found more apples   # features/apples.feature:17
-      .    When I found 2 apples       # FeatureContext::iFoundApples()
-      .    Then I should have 5 apples # FeatureContext::iShouldHaveApples()
+      .    When I found 2 apples       # Feature_Context::iFoundApples()
+      .    Then I should have 5 apples # Feature_Context::iShouldHaveApples()
       .    And do something undefined
       U
       ....  Scenario Outline: Other situations   # features/apples.feature:22
-          When I ate <ate> apples            # FeatureContext::iAteApples()
-          And I found <found> apples         # FeatureContext::iFoundApples()
-          Then I should have <result> apples # FeatureContext::iShouldHaveApples()
+          When I ate <ate> apples            # Feature_Context::iAteApples()
+          And I found <found> apples         # Feature_Context::iFoundApples()
+          Then I should have <result> apples # Feature_Context::iShouldHaveApples()
 
           Examples:
             | ate | found | result |
@@ -78,24 +78,24 @@ Feature: Multiple formats
       7 scenarios (3 passed, 2 failed, 2 undefined)
       25 steps (20 passed, 2 failed, 3 undefined)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^do something undefined$/')]
           public function doSomethingUndefined(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
 
@@ -109,26 +109,26 @@ Feature: Multiple formats
         I need to have an apple in my pocket
 
         Background:             # features/apples.feature:6
-          Given I have 3 apples # FeatureContext::iHaveApples()
+          Given I have 3 apples # Feature_Context::iHaveApples()
       .
         Scenario: I'm little hungry   # features/apples.feature:9
-          When I ate 1 apple          # FeatureContext::iAteApples()
-      .    Then I should have 3 apples # FeatureContext::iShouldHaveApples()
+          When I ate 1 apple          # Feature_Context::iAteApples()
+      .    Then I should have 3 apples # Feature_Context::iShouldHaveApples()
             Failed asserting that 2 matches expected 3.
       F
         Scenario: Found more apples   # features/apples.feature:13
-      .    When I found 5 apples       # FeatureContext::iFoundApples()
-      .    Then I should have 8 apples # FeatureContext::iShouldHaveApples()
+      .    When I found 5 apples       # Feature_Context::iFoundApples()
+      .    Then I should have 8 apples # Feature_Context::iShouldHaveApples()
       .
         Scenario: Found more apples   # features/apples.feature:17
-      .    When I found 2 apples       # FeatureContext::iFoundApples()
-      .    Then I should have 5 apples # FeatureContext::iShouldHaveApples()
+      .    When I found 2 apples       # Feature_Context::iFoundApples()
+      .    Then I should have 5 apples # Feature_Context::iShouldHaveApples()
       .    And do something undefined
       U
       ....  Scenario Outline: Other situations   # features/apples.feature:22
-          When I ate <ate> apples            # FeatureContext::iAteApples()
-          And I found <found> apples         # FeatureContext::iFoundApples()
-          Then I should have <result> apples # FeatureContext::iShouldHaveApples()
+          When I ate <ate> apples            # Feature_Context::iAteApples()
+          And I found <found> apples         # Feature_Context::iFoundApples()
+          Then I should have <result> apples # Feature_Context::iShouldHaveApples()
 
           Examples:
             | ate | found | result |
@@ -166,24 +166,24 @@ Feature: Multiple formats
       7 scenarios (3 passed, 2 failed, 2 undefined)
       25 steps (20 passed, 2 failed, 3 undefined)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^do something undefined$/')]
           public function doSomethingUndefined(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
 
@@ -206,24 +206,24 @@ Feature: Multiple formats
       7 scenarios (3 passed, 2 failed, 2 undefined)
       25 steps (20 passed, 2 failed, 3 undefined)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^do something undefined$/')]
           public function doSomethingUndefined(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
     And "apples.pretty" file should contain:
@@ -331,24 +331,24 @@ Feature: Multiple formats
       7 scenarios (3 passed, 2 failed, 2 undefined)
       25 steps (20 passed, 2 failed, 3 undefined)
 
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^do something undefined$/')]
           public function doSomethingUndefined(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
     And "apples.progress" file should contain:
@@ -373,24 +373,24 @@ Feature: Multiple formats
     When I run "behat -f pretty -o app.pretty -f progress -o app.progress --format-settings='{\"multiline\": false, \"paths\": false}'"
     Then it should fail with:
       """
-      --- FeatureContext has missing steps. Define them with these snippets:
+      --- Feature_Context has missing steps. Define them with these snippets:
 
           #[Then('/^do something undefined$/')]
           public function doSomethingUndefined(): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^pystring:$/')]
           public function pystring(PyStringNode $string): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Given('/^table:$/')]
           public function table(TableNode $table): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
       """
     And "app.pretty" file should contain:

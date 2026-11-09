@@ -68,7 +68,7 @@ Feature: Context Consistency
       """
 
   Scenario: Existing custom context class
-    When I run "behat --profile custom_context -f progress --snippets-type=regex --snippets-for=CustomContext features/params.feature"
+    When I run "behat --profile custom_context -f progress --snippets-type=regex --snippets-for=Custom_Context features/params.feature"
     Then it should pass with:
       """
       UU
@@ -76,23 +76,23 @@ Feature: Context Consistency
       1 scenario (1 undefined)
       2 steps (2 undefined)
 
-      --- CustomContext has missing steps. Define them with these snippets:
+      --- Custom_Context has missing steps. Define them with these snippets:
 
           #[Then('/^context parameter "([^"]*)" should be equal to "([^"]*)"$/')]
           public function contextParameterShouldBeEqualTo($arg1, $arg2): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
           #[Then('/^context parameter "([^"]*)" should be array with (\d+) elements$/')]
           public function contextParameterShouldBeArrayWithElements($arg1, $arg2): void
           {
-              throw new PendingException();
+              throw new Pending_Exception();
           }
 
       --- Don't forget these 2 use statements:
 
-          use Behat\Behat\Tester\Exception\PendingException;
+          use Behat\Behat\Tester\Exception\Pending_Exception;
           use Behat\Step\Then;
       """
 
@@ -114,10 +114,10 @@ Feature: Context Consistency
     When I run "behat --profile unexisting_param -f progress features/params.feature"
     Then it should fail with:
       """
-      `CoreContext::__construct()` does not expect argument `$unexistingParam`.
+      `Core_Context::__construct()` does not expect argument `$unexistingParam`.
       """
 
-  Scenario: Suite without contexts and FeatureContext available
+  Scenario: Suite without contexts and Feature_Context available
     When I run "behat --profile empty_contexts -fpretty --format-settings='{\"paths\": true}' features/some.feature"
     Then it should pass with:
       """
@@ -127,9 +127,9 @@ Feature: Context Consistency
         I need to have an apple in my pocket
 
         Scenario: I'm little hungry   # features/some.feature:6
-          Given I have 3 apples       # FeatureContext::iHaveApples()
-          When I ate 1 apple          # FeatureContext::iAteApples()
-          Then I should have 2 apples # FeatureContext::iShouldHaveApples()
+          Given I have 3 apples       # Feature_Context::iHaveApples()
+          When I ate 1 apple          # Feature_Context::iAteApples()
+          Then I should have 2 apples # Feature_Context::iShouldHaveApples()
 
       Feature: Apples story
         In order to eat apple
@@ -151,7 +151,7 @@ Feature: Context Consistency
           Then I should have 2 apples
       """
 
-  Scenario: Suite with custom context and FeatureContext available
+  Scenario: Suite with custom context and Feature_Context available
     When I run "behat --profile custom_context_with_hook -fpretty --format-settings='{\"paths\": true}' features/hook.feature"
     Then it should pass with:
       """
@@ -165,19 +165,19 @@ Feature: Context Consistency
 
       Feature:
 
-        ┌─ @BeforeScenario # CustomContextWithHook::beforeScenario()
+        ┌─ @Before_Scenario # Custom_Context_With_Hook::beforeScenario()
         │
         │  Setting up
         │
         Scenario:    # features/hook.feature:2
-          Given step # CustomContextWithHook::step()
+          Given step # Custom_Context_With_Hook::step()
 
-        ┌─ @BeforeScenario # CustomContextWithHook::beforeScenario()
+        ┌─ @Before_Scenario # Custom_Context_With_Hook::beforeScenario()
         │
         │  Setting up
         │
         Scenario:    # features/hook.feature:4
-          Given step # CustomContextWithHook::step()
+          Given step # Custom_Context_With_Hook::step()
 
       4 scenarios (2 passed, 2 undefined)
       4 steps (2 passed, 2 undefined)

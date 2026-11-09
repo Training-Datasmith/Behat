@@ -9,7 +9,7 @@ Feature: I18n Attributes
       | option          | value                |
       | --no-colors     |                      |
       | --config        | behat-attributes.php |
-      | --snippets-for  | FeatureContext       |
+      | --snippets-for  | Feature_Context       |
       | --snippets-type | regex                |
 
   Scenario: Pretty
@@ -25,28 +25,28 @@ Feature: I18n Attributes
         Я хочу чтобы Мир сбрасывался между сценариями
 
         Предыстория:     # features/World.feature:7
-          Если Я ввел 10 # FeatureContextAttributes::iHaveEntered()
+          Если Я ввел 10 # Feature_Context_Attributes::iHaveEntered()
 
         Сценарий: Неопределен           # features/World.feature:10
-          То Я должен иметь 10          # FeatureContextAttributes::iShouldHave()
+          То Я должен иметь 10          # Feature_Context_Attributes::iShouldHave()
           И Добавить "нормальное" число
-          То Я должен иметь 10          # FeatureContextAttributes::iShouldHave()
+          То Я должен иметь 10          # Feature_Context_Attributes::iShouldHave()
 
         Сценарий: В ожидании      # features/World.feature:15
-          То Я должен иметь 10    # FeatureContextAttributes::iShouldHave()
-          И Что-то еще не сделано # FeatureContextAttributes::somethingNotDone()
+          То Я должен иметь 10    # Feature_Context_Attributes::iShouldHave()
+          И Что-то еще не сделано # Feature_Context_Attributes::somethingNotDone()
             TODO: write pending definition
-          То Я должен иметь 10    # FeatureContextAttributes::iShouldHave()
+          То Я должен иметь 10    # Feature_Context_Attributes::iShouldHave()
 
         Сценарий: Провален     # features/World.feature:20
-          Если Я добавлю 4     # FeatureContextAttributes::iAdd()
-          То Я должен иметь 13 # FeatureContextAttributes::iShouldHave()
+          Если Я добавлю 4     # Feature_Context_Attributes::iAdd()
+          То Я должен иметь 13 # Feature_Context_Attributes::iShouldHave()
             Failed asserting that 14 matches expected 13. (Exception)
 
         Структура сценария: Пройдено и Провалено # features/World.feature:24
-          Допустим Я должен иметь 10             # FeatureContextAttributes::iShouldHave()
-          Если Я добавлю <значение>              # FeatureContextAttributes::iAdd()
-          То Я должен иметь <результат>          # FeatureContextAttributes::iShouldHave()
+          Допустим Я должен иметь 10             # Feature_Context_Attributes::iShouldHave()
+          Если Я добавлю <значение>              # Feature_Context_Attributes::iAdd()
+          То Я должен иметь <результат>          # Feature_Context_Attributes::iShouldHave()
 
           Примеры:
             | значение | результат |
@@ -98,7 +98,7 @@ Feature: I18n Attributes
       --- Шаги в ожидании:
 
       001 Сценарий: В ожидании      # features/World.feature:15
-            И Что-то еще не сделано # FeatureContextAttributes::somethingNotDone()
+            И Что-то еще не сделано # Feature_Context_Attributes::somethingNotDone()
               TODO: write pending definition
 
       6 сценариев (1 пройден, 3 провалено, 1 не определен, 1 в ожидании)
@@ -135,7 +135,7 @@ Feature: I18n Attributes
       --- Pending steps:
 
       001 Сценарий: В ожидании      # features/World.feature:15
-            И Что-то еще не сделано # FeatureContextAttributes::somethingNotDone()
+            И Что-то еще не сделано # Feature_Context_Attributes::somethingNotDone()
               TODO: write pending definition
 
       6 scenarios (1 passed, 3 failed, 1 undefined, 1 pending)

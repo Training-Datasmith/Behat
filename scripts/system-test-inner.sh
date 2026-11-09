@@ -123,12 +123,14 @@ if [[ ${behat_status} -ne 0 ]]; then
 fi
 behat_stripped="$(mktemp)"
 strip_ansi "${behat_out}" "${behat_stripped}"
-if ! grep -E '^[0-9]+ scenarios? \([0-9]+ passed\)$' "${behat_stripped}" >/dev/null; then
+BASELINE_BEHAT_SCENARIOS="${BASELINE_BEHAT_SCENARIOS:-379}"
+BASELINE_BEHAT_STEPS="${BASELINE_BEHAT_STEPS:-1770}"
+if ! grep -E "^${BASELINE_BEHAT_SCENARIOS} scenarios? \\([0-9]+ passed\\)\$" "${behat_stripped}" >/dev/null; then
     echo 'behat: missing strict scenarios passed summary line' >&2
     rm -f "${behat_stripped}"
     exit 1
 fi
-if ! grep -E '^[0-9]+ steps? \([0-9]+ passed\)$' "${behat_stripped}" >/dev/null; then
+if ! grep -E "^${BASELINE_BEHAT_STEPS} steps? \\([0-9]+ passed\\)\$" "${behat_stripped}" >/dev/null; then
     echo 'behat: missing strict steps passed summary line' >&2
     rm -f "${behat_stripped}"
     exit 1
@@ -159,7 +161,9 @@ if [[ ${phpunit_status} -ne 0 ]]; then
 fi
 phpunit_stripped="$(mktemp)"
 strip_ansi "${phpunit_out}" "${phpunit_stripped}"
-if ! grep -E '^OK \([0-9]+ tests?, [0-9]+ assertions\)$' "${phpunit_stripped}" >/dev/null; then
+BASELINE_PHPUNIT_TESTS="${BASELINE_PHPUNIT_TESTS:-101}"
+BASELINE_PHPUNIT_ASSERTIONS="${BASELINE_PHPUNIT_ASSERTIONS:-124}"
+if ! grep -E "^OK \\(${BASELINE_PHPUNIT_TESTS} tests?, ${BASELINE_PHPUNIT_ASSERTIONS} assertions\\)\$" "${phpunit_stripped}" >/dev/null; then
     echo 'phpunit: missing strict OK success line' >&2
     rm -f "${phpunit_stripped}"
     exit 1

@@ -35,9 +35,9 @@ Feature: Step Definition Pattern Annotations
       Feature: Step Pattern
 
         Scenario:                         # features/decimal_point.feature:2
-          Then 5 should have value of £10 # DecimalPointAnnotations::shouldHaveValueOf()
+          Then 5 should have value of £10 # Decimal_Point_Annotations::shouldHaveValueOf()
             │ 10
-          And 7 should have value of £7.2 # DecimalPointAnnotations::shouldHaveValueOf()
+          And 7 should have value of £7.2 # Decimal_Point_Annotations::shouldHaveValueOf()
             │ 7.2
 
       1 scenario (1 passed)
@@ -55,11 +55,11 @@ Feature: Step Definition Pattern Annotations
       Feature: Step Pattern
 
         Scenario:                               # features/string_with_point.feature:2
-          Then 5 should have value of two.three # StringWithPointAnnotations::shouldHaveValueOf()
+          Then 5 should have value of two.three # String_With_Point_Annotations::shouldHaveValueOf()
             │ two + three
-          And 7 should have value of three.4    # StringWithPointAnnotations::shouldHaveValueOf()
+          And 7 should have value of three.4    # String_With_Point_Annotations::shouldHaveValueOf()
             │ three + 4
-          And 7 should have value of 3.four     # StringWithPointAnnotations::shouldHaveValueOf()
+          And 7 should have value of 3.four     # String_With_Point_Annotations::shouldHaveValueOf()
             │ 3 + four
 
       1 scenario (1 passed)
@@ -74,7 +74,7 @@ Feature: Step Definition Pattern Annotations
       | features/broken_regex.feature  |              |
     Then it should fail with:
       """
-      In RegexPatternPolicy.php line XX:
+      In Regex_Pattern_Policy.php line XX:
       
         The regex `/I am (foo/` is invalid: preg_match(): Compilation failed: missing closing parenthesis at offset 9
       """

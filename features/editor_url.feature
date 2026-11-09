@@ -16,9 +16,9 @@ Feature: Editor URL
     Then the output should contain:
       """
         Scenario:                                    # <href=phpstorm://open?file=features/test.feature&line=3>features/test.feature:3</>
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/FeatureContext.php&line=XX>features/bootstrap/FeatureContext.php line XX</>
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/Feature_Context.php&line=XX>features/bootstrap/Feature_Context.php line XX</>
 
       --- Failed scenarios:
 
@@ -32,9 +32,9 @@ Feature: Editor URL
     Then the output should contain:
       """
         Scenario:                                    # <href=phpstorm://open?file=features/test.feature&line=3>features/test.feature:3</>
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/FeatureContext.php&line=XX>features/bootstrap/FeatureContext.php line XX</>
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/Feature_Context.php&line=XX>features/bootstrap/Feature_Context.php line XX</>
 
       --- Failed scenarios:
 
@@ -48,9 +48,9 @@ Feature: Editor URL
     Then the output should contain:
       """
         Scenario:                                    # <href=phpstorm://open?file=%%WORKING_DIR%%features/test.feature&line=3>features/test.feature:3</>
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in <href=phpstorm://open?file=%%WORKING_DIR%%features/bootstrap/FeatureContext.php&line=XX>features/bootstrap/FeatureContext.php line XX</>
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in <href=phpstorm://open?file=%%WORKING_DIR%%features/bootstrap/Feature_Context.php&line=XX>features/bootstrap/Feature_Context.php line XX</>
 
       --- Failed scenarios:
 
@@ -65,9 +65,9 @@ Feature: Editor URL
     Then the output should contain:
       """
         Scenario:                                    # <href=phpstorm://open?file=features/test.feature&line=3>%%WORKING_DIR%%features/test.feature:3</>
-          Given I have a passing step                # FeatureContext::iHaveAPassingStep()
-          And I have a step that throws an exception # FeatureContext::iHaveAFailingStep()
-            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/FeatureContext.php&line=XX>%%WORKING_DIR%%features/bootstrap/FeatureContext.php line XX</>
+          Given I have a passing step                # Feature_Context::iHaveAPassingStep()
+          And I have a step that throws an exception # Feature_Context::iHaveAFailingStep()
+            Warning: Undefined variable $b in <href=phpstorm://open?file=features/bootstrap/Feature_Context.php&line=XX>%%WORKING_DIR%%features/bootstrap/Feature_Context.php line XX</>
 
       --- Failed scenarios:
 
@@ -113,7 +113,7 @@ Feature: Editor URL
                                   "line": 5,
                                   "failures": [
                                       {
-                                          "message": "And I have a step that throws an exception: Warning: Undefined variable $b in features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-FeatureContext.php line XX",
+                                          "message": "And I have a step that throws an exception: Warning: Undefined variable $b in features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-Feature_Context.php line XX",
                                           "type": "failed"
                                       }
                                   ]
@@ -138,7 +138,7 @@ Feature: Editor URL
       <testsuites name="default">
         <testsuite name="" file="features-DIRECTORY-SEPARATOR-test.feature" tests="1" skipped="0" failures="1" errors="0">
           <testcase name="" classname="" status="failed" file="features-DIRECTORY-SEPARATOR-test.feature" line="5">
-            <failure message="And I have a step that throws an exception: Warning: Undefined variable $b in features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-FeatureContext.php line XX"></failure>
+            <failure message="And I have a step that throws an exception: Warning: Undefined variable $b in features-DIRECTORY-SEPARATOR-bootstrap-DIRECTORY-SEPARATOR-Feature_Context.php line XX"></failure>
           </testcase>
         </testsuite>
       </testsuites>

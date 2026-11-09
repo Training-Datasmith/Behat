@@ -22,14 +22,14 @@ Feature: attributes
         I need to have fruit in my pocket
 
         Scenario: I'm little hungry for apples # features/some.feature:6
-          Given I have 3 apples                # StepAttributesContext::iHaveFruit()
-          When I eat 1 apple                   # StepAttributesContext::iEatFruit()
-          Then I should have 2 apples          # StepAttributesContext::iShouldHaveFruit()
+          Given I have 3 apples                # Step_Attributes_Context::iHaveFruit()
+          When I eat 1 apple                   # Step_Attributes_Context::iEatFruit()
+          Then I should have 2 apples          # Step_Attributes_Context::iShouldHaveFruit()
 
         Scenario: I'm little hungry for bananas # features/some.feature:11
-          Given I have 3 bananas                # StepAttributesContext::iHaveFruit()
-          When I eat 1 banana                   # StepAttributesContext::iEatFruit()
-          Then I should have 2 bananas          # StepAttributesContext::iShouldHaveFruit()
+          Given I have 3 bananas                # Step_Attributes_Context::iHaveFruit()
+          When I eat 1 banana                   # Step_Attributes_Context::iEatFruit()
+          Then I should have 2 bananas          # Step_Attributes_Context::iShouldHaveFruit()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -42,11 +42,11 @@ Feature: attributes
       | features/some.feature |               |
     Then it should pass with:
       """
-      ┌─ @BeforeFeature # FeatureHookAttributesContext::beforeFeature()
+      ┌─ @Before_Feature # Feature_Hook_Attributes_Context::beforeFeature()
       │
       │  = BEFORE FEATURE =
       │
-      ┌─ @BeforeFeature Fruit story # FeatureHookAttributesContext::beforeFruitStory()
+      ┌─ @Before_Feature Fruit story # Feature_Hook_Attributes_Context::beforeFruitStory()
       │
       │  = BEFORE FRUIT STORY =
       │
@@ -56,24 +56,24 @@ Feature: attributes
         I need to have fruit in my pocket
 
         Scenario: I'm little hungry for apples # features/some.feature:6
-          Given I have 3 apples                # FeatureHookAttributesContext::iHaveFruit()
-          When I eat 1 apple                   # FeatureHookAttributesContext::iEatFruit()
-          Then I should have 2 apples          # FeatureHookAttributesContext::iShouldHaveFruit()
+          Given I have 3 apples                # Feature_Hook_Attributes_Context::iHaveFruit()
+          When I eat 1 apple                   # Feature_Hook_Attributes_Context::iEatFruit()
+          Then I should have 2 apples          # Feature_Hook_Attributes_Context::iShouldHaveFruit()
 
         Scenario: I'm little hungry for bananas # features/some.feature:11
-          Given I have 3 bananas                # FeatureHookAttributesContext::iHaveFruit()
-          When I eat 1 banana                   # FeatureHookAttributesContext::iEatFruit()
-          Then I should have 2 bananas          # FeatureHookAttributesContext::iShouldHaveFruit()
+          Given I have 3 bananas                # Feature_Hook_Attributes_Context::iHaveFruit()
+          When I eat 1 banana                   # Feature_Hook_Attributes_Context::iEatFruit()
+          Then I should have 2 bananas          # Feature_Hook_Attributes_Context::iShouldHaveFruit()
 
       │
       │  = AFTER FEATURE =
       │
-      └─ @AfterFeature # FeatureHookAttributesContext::afterFeature()
+      └─ @After_Feature # Feature_Hook_Attributes_Context::afterFeature()
 
       │
       │  = AFTER FRUIT STORY =
       │
-      └─ @AfterFeature Fruit story # FeatureHookAttributesContext::afterFruitStory()
+      └─ @After_Feature Fruit story # Feature_Hook_Attributes_Context::afterFruitStory()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -91,40 +91,40 @@ Feature: attributes
         As a little kid
         I need to have fruit in my pocket
 
-        ┌─ @BeforeScenario # ScenarioHookAttributesContext::beforeScenario()
+        ┌─ @Before_Scenario # Scenario_Hook_Attributes_Context::beforeScenario()
         │
         │  = BEFORE SCENARIO =
         │
         Scenario: I'm little hungry for apples # features/some-with-tags.feature:6
-          Given I have 3 apples                # ScenarioHookAttributesContext::iHaveFruit()
-          When I eat 1 apple                   # ScenarioHookAttributesContext::iEatFruit()
-          Then I should have 2 apples          # ScenarioHookAttributesContext::iShouldHaveFruit()
+          Given I have 3 apples                # Scenario_Hook_Attributes_Context::iHaveFruit()
+          When I eat 1 apple                   # Scenario_Hook_Attributes_Context::iEatFruit()
+          Then I should have 2 apples          # Scenario_Hook_Attributes_Context::iShouldHaveFruit()
         │
         │  = AFTER SCENARIO =
         │
-        └─ @AfterScenario # ScenarioHookAttributesContext::afterScenario()
+        └─ @After_Scenario # Scenario_Hook_Attributes_Context::afterScenario()
 
-        ┌─ @BeforeScenario # ScenarioHookAttributesContext::beforeScenario()
+        ┌─ @Before_Scenario # Scenario_Hook_Attributes_Context::beforeScenario()
         │
         │  = BEFORE SCENARIO =
         │
-        ┌─ @BeforeScenario @bananas # ScenarioHookAttributesContext::beforeBananas()
+        ┌─ @Before_Scenario @bananas # Scenario_Hook_Attributes_Context::beforeBananas()
         │
         │  = BEFORE BANANAS =
         │
         @bananas
         Scenario: I'm little hungry for bananas # features/some-with-tags.feature:12
-          Given I have 3 bananas                # ScenarioHookAttributesContext::iHaveFruit()
-          When I eat 1 banana                   # ScenarioHookAttributesContext::iEatFruit()
-          Then I should have 2 bananas          # ScenarioHookAttributesContext::iShouldHaveFruit()
+          Given I have 3 bananas                # Scenario_Hook_Attributes_Context::iHaveFruit()
+          When I eat 1 banana                   # Scenario_Hook_Attributes_Context::iEatFruit()
+          Then I should have 2 bananas          # Scenario_Hook_Attributes_Context::iShouldHaveFruit()
         │
         │  = AFTER SCENARIO =
         │
-        └─ @AfterScenario # ScenarioHookAttributesContext::afterScenario()
+        └─ @After_Scenario # Scenario_Hook_Attributes_Context::afterScenario()
         │
         │  = AFTER BANANAS =
         │
-        └─ @AfterScenario @bananas # ScenarioHookAttributesContext::afterBananas()
+        └─ @After_Scenario @bananas # Scenario_Hook_Attributes_Context::afterBananas()
 
       2 scenarios (2 passed)
       6 steps (6 passed)
@@ -137,12 +137,12 @@ Feature: attributes
       | features/apples.feature |             |
     Then it should pass with:
       """
-      ┌─ @BeforeSuite # SuiteHookAttributesContext::beforeSuite()
+      ┌─ @Before_Suite # Suite_Hook_Attributes_Context::beforeSuite()
       │
       │  = BEFORE SUITE =
       │
 
-      ┌─ @BeforeSuite apples # SuiteHookAttributesContext::beforeSuiteApples()
+      ┌─ @Before_Suite apples # Suite_Hook_Attributes_Context::beforeSuiteApples()
       │
       │  = BEFORE APPLES =
       │
@@ -153,19 +153,19 @@ Feature: attributes
         I need to have fruit in my pocket
 
         Scenario: I'm little hungry for apples # features/apples.feature:6
-          Given I have 3 apples                # SuiteHookAttributesContext::iHaveFruit()
-          When I eat 1 apple                   # SuiteHookAttributesContext::iEatFruit()
-          Then I should have 2 apples          # SuiteHookAttributesContext::iShouldHaveFruit()
+          Given I have 3 apples                # Suite_Hook_Attributes_Context::iHaveFruit()
+          When I eat 1 apple                   # Suite_Hook_Attributes_Context::iEatFruit()
+          Then I should have 2 apples          # Suite_Hook_Attributes_Context::iShouldHaveFruit()
 
       │
       │  = AFTER SUITE =
       │
-      └─ @AfterSuite # SuiteHookAttributesContext::afterSuite()
+      └─ @After_Suite # Suite_Hook_Attributes_Context::afterSuite()
 
       │
       │  = AFTER APPLES =
       │
-      └─ @AfterSuite apples # SuiteHookAttributesContext::afterSuiteApples()
+      └─ @After_Suite apples # Suite_Hook_Attributes_Context::afterSuiteApples()
 
       1 scenario (1 passed)
       3 steps (3 passed)
@@ -184,70 +184,70 @@ Feature: attributes
         I need to have fruit in my pocket
 
         Scenario: I'm little hungry for apples # features/some.feature:6
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          ┌─ @BeforeStep I have 3 apples # StepHookAttributesContext::beforeApples()
+          ┌─ @Before_Step I have 3 apples # Step_Hook_Attributes_Context::beforeApples()
           │
           │  = BEFORE APPLES =
           │
-          Given I have 3 apples                # StepHookAttributesContext::iHaveFruit()
+          Given I have 3 apples                # Step_Hook_Attributes_Context::iHaveFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
           │
           │  = AFTER APPLES =
           │
-          └─ @AfterStep I have 3 apples # StepHookAttributesContext::afterApples()
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          └─ @After_Step I have 3 apples # Step_Hook_Attributes_Context::afterApples()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          When I eat 1 apple                   # StepHookAttributesContext::iEatFruit()
+          When I eat 1 apple                   # Step_Hook_Attributes_Context::iEatFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          Then I should have 2 apples          # StepHookAttributesContext::iShouldHaveFruit()
+          Then I should have 2 apples          # Step_Hook_Attributes_Context::iShouldHaveFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
 
         Scenario: I'm little hungry for bananas # features/some.feature:11
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          Given I have 3 bananas                # StepHookAttributesContext::iHaveFruit()
+          Given I have 3 bananas                # Step_Hook_Attributes_Context::iHaveFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          When I eat 1 banana                   # StepHookAttributesContext::iEatFruit()
+          When I eat 1 banana                   # Step_Hook_Attributes_Context::iEatFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
-          ┌─ @BeforeStep # StepHookAttributesContext::beforeStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
+          ┌─ @Before_Step # Step_Hook_Attributes_Context::beforeStep()
           │
           │  = BEFORE STEP =
           │
-          Then I should have 2 bananas          # StepHookAttributesContext::iShouldHaveFruit()
+          Then I should have 2 bananas          # Step_Hook_Attributes_Context::iShouldHaveFruit()
           │
           │  = AFTER STEP =
           │
-          └─ @AfterStep # StepHookAttributesContext::afterStep()
+          └─ @After_Step # Step_Hook_Attributes_Context::afterStep()
 
       2 scenarios (2 passed)
       6 steps (6 passed)

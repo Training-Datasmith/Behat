@@ -10,7 +10,7 @@ Feature: Handle failures when generating snippets
       | --no-colors       |                    |
       | --format-settings | '{"paths": false}' |
       | --format          | progress           |
-      | --snippets-for    | FeatureContext     |
+      | --snippets-for    | Feature_Context     |
 
   Scenario: See warnings when printing snippets
     When I run behat with the following additional options:
@@ -23,17 +23,17 @@ Feature: Handle failures when generating snippets
     1 scenario (1 undefined)
     2 steps (2 undefined)
 
-    --- FeatureContext has missing steps. Define them with these snippets:
+    --- Feature_Context has missing steps. Define them with these snippets:
 
         #[Given('a step with :arg1 inside a quoted parameter')]
         public function aStepWithInsideAQuotedParameter($arg1): void
         {
-            throw new PendingException();
+            throw new Pending_Exception();
         }
 
     --- Don't forget these 2 use statements:
 
-        use Behat\Behat\Tester\Exception\PendingException;
+        use Behat\Behat\Tester\Exception\Pending_Exception;
         use Behat\Step\Given;
 
     --- Could not automatically generate snippets matching the following steps:
@@ -54,28 +54,28 @@ Feature: Handle failures when generating snippets
     1 scenario (1 undefined)
     2 steps (2 undefined)
 
-    u features/bootstrap/FeatureContext.php - `a step with "(parentheses)" inside a quoted parameter` definition added
+    u features/bootstrap/Feature_Context.php - `a step with "(parentheses)" inside a quoted parameter` definition added
 
     --- Could not automatically generate snippets matching the following steps:
         (try using --snippets-type=regex, or manually define the step)
 
         - a step with (Parentheses) in the actual step text
     """
-    And  "features/bootstrap/FeatureContext.php" file should contain:
+    And  "features/bootstrap/Feature_Context.php" file should contain:
     """
     <?php
 
     use Behat\Step\Given;
-    use Behat\Behat\Tester\Exception\PendingException;
+    use Behat\Behat\Tester\Exception\Pending_Exception;
     use Behat\Behat\Context\Context;
 
-    class FeatureContext implements Context
+    class Feature_Context implements Context
     {
 
         #[Given('a step with :arg1 inside a quoted parameter')]
         public function aStepWithInsideAQuotedParameter($arg1): void
         {
-            throw new PendingException();
+            throw new Pending_Exception();
         }
     }
     """

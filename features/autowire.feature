@@ -29,7 +29,7 @@ Feature: Helper services autowire
       Feature:
 
         Scenario:      # features/autowire.feature:2
-          Given a step # ConstructorArgsContext::aStep()
+          Given a step # Constructor_Args_Context::aStep()
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -45,7 +45,7 @@ Feature: Helper services autowire
       Feature:
 
         Scenario:      # features/autowire.feature:2
-          Given a step # MixedConstructorArgsContext::aStep()
+          Given a step # Mixed_Constructor_Args_Context::aStep()
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -61,7 +61,7 @@ Feature: Helper services autowire
       Feature:
 
         Scenario:      # features/autowire.feature:2
-          Given a step # NullArgsContext::aStep()
+          Given a step # Null_Args_Context::aStep()
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -87,8 +87,8 @@ Feature: Helper services autowire
       Feature:
 
         Scenario:                                        # features/step-definitions.feature:2
-          When I set the state to "isSet"                # StepDefinitionArgsContext::setState()
-          Then that state should be persisted as "isSet" # StepDefinitionArgsContext::checkState()
+          When I set the state to "isSet"                # Step_Definition_Args_Context::setState()
+          Then that state should be persisted as "isSet" # Step_Definition_Args_Context::checkState()
 
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -114,8 +114,8 @@ Feature: Helper services autowire
       Feature:
 
         Scenario:                                               # features/transformations.feature:2
-          When I set the "myFlag" flag to "isSet"               # TransformationArgsContext::setState()
-          Then the "myFlag" flag should be persisted as "isSet" # TransformationArgsContext::checkState()
+          When I set the "myFlag" flag to "isSet"               # Transformation_Args_Context::setState()
+          Then the "myFlag" flag should be persisted as "isSet" # Transformation_Args_Context::checkState()
 
       1 scenario (1 passed)
       2 steps (2 passed)
@@ -128,5 +128,5 @@ Feature: Helper services autowire
       | features/autowire.feature |                        |
     Then it should fail with:
       """
-      Can not find a matching value for an argument `$s` of the method `UnionConstructorArgsContext::__construct()`
+      Can not find a matching value for an argument `$s` of the method `Union_Constructor_Args_Context::__construct()`
       """

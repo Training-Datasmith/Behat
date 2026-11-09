@@ -17,7 +17,7 @@ class CreateClassNamesExtension implements Extension
     {
     }
 
-    public function getConfigKey()
+    public function get_config_key()
     {
         return 'anything';
     }

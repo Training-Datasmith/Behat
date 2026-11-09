@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CustomExtension implements Extension
 {
-    public function getConfigKey()
+    public function get_config_key()
     {
         return 'custom_extension';
     }

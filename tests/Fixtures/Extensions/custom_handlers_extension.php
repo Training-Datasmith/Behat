@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class NonExistentClassPrinter extends Class_Not_Found_Handler
 {
-    public function handleNonExistentClass($class): void
+    public function handle_non_existent_class($class): void
     {
         var_dump($class);
     }
@@ -21,7 +21,7 @@ class NonExistentClassPrinter extends Class_Not_Found_Handler
 
 class NonExistentMethodPrinter extends Method_Not_Found_Handler
 {
-    public function handleNonExistentMethod($callable): void
+    public function handle_non_existent_method($callable): void
     {
         var_dump($callable);
     }
@@ -29,7 +29,7 @@ class NonExistentMethodPrinter extends Method_Not_Found_Handler
 
 class CustomHandlers implements Extension
 {
-    public function getConfigKey(): string
+    public function get_config_key(): string
     {
         return 'custom_handlers';
     }

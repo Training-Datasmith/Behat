@@ -116,5 +116,5 @@ Feature: Print deprecations
 
       001 Scenario: A scenario with an unsuppressed deprecation          # features/unsuppressed_deprecation.feature:3
             Given I run a step that triggers an unsuppressed deprecation # features/unsuppressed_deprecation.feature:4
-              User Deprecated: Deprecation triggered in step definition in features/bootstrap/FeatureContext.php line XX
+              User Deprecated: Deprecation triggered in step definition in features/bootstrap/Feature_Context.php line XX
       """

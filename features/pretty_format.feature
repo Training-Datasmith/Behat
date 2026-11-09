@@ -19,28 +19,28 @@ Feature: Pretty Formatter
         I want, that "World" flushes between scenarios
 
         Background:               # features/World.feature:6
-          Given I have entered 10 # FeatureContext::iHaveEntered()
+          Given I have entered 10 # Feature_Context::iHaveEntered()
 
         Scenario: Undefined   # features/World.feature:9
-          Then I must have 10 # FeatureContext::iMustHave()
+          Then I must have 10 # Feature_Context::iMustHave()
           And Something new
-          Then I must have 10 # FeatureContext::iMustHave()
+          Then I must have 10 # Feature_Context::iMustHave()
 
         Scenario: Pending            # features/World.feature:14
-          Then I must have 10        # FeatureContext::iMustHave()
-          And Something not done yet # FeatureContext::somethingNotDoneYet()
+          Then I must have 10        # Feature_Context::iMustHave()
+          And Something not done yet # Feature_Context::somethingNotDoneYet()
             TODO: write pending definition
-          Then I must have 10        # FeatureContext::iMustHave()
+          Then I must have 10        # Feature_Context::iMustHave()
 
         Scenario: Failed      # features/World.feature:19
-          When I add 4        # FeatureContext::iAdd()
-          Then I must have 13 # FeatureContext::iMustHave()
+          When I add 4        # Feature_Context::iAdd()
+          Then I must have 13 # Feature_Context::iMustHave()
             Failed asserting that 14 matches expected '13'.
 
         Scenario Outline: Passed & Failed # features/World.feature:23
-          Given I must have 10            # FeatureContext::iMustHave()
-          When I add <value>              # FeatureContext::iAdd()
-          Then I must have <result>       # FeatureContext::iMustHave()
+          Given I must have 10            # Feature_Context::iMustHave()
+          When I add <value>              # Feature_Context::iAdd()
+          Then I must have <result>       # Feature_Context::iMustHave()
 
           Examples:
             | value | result |
@@ -76,20 +76,20 @@ Feature: Pretty Formatter
         I want, that "World" flushes between scenarios
 
         Background:               # features/WorldMultiline.feature:6
-          Given I have entered 10 # FeatureContextMultiline::iHaveEntered()
+          Given I have entered 10 # Feature_Context_Multiline::iHaveEntered()
 
         Scenario: Adding some interesting # features/WorldMultiline.feature:9
                   value
-          Then I must have 10             # FeatureContextMultiline::iMustHave()
-          And I add the value 6           # FeatureContextMultiline::iAddOrSubtract()
-          Then I must have 16             # FeatureContextMultiline::iMustHave()
+          Then I must have 10             # Feature_Context_Multiline::iMustHave()
+          And I add the value 6           # Feature_Context_Multiline::iAddOrSubtract()
+          Then I must have 16             # Feature_Context_Multiline::iMustHave()
 
         Scenario: Subtracting        # features/WorldMultiline.feature:15
                   some
                   value
-          Then I must have 10        # FeatureContextMultiline::iMustHave()
-          And I subtract the value 6 # FeatureContextMultiline::iAddOrSubtract()
-          Then I must have 4         # FeatureContextMultiline::iMustHave()
+          Then I must have 10        # Feature_Context_Multiline::iMustHave()
+          And I subtract the value 6 # Feature_Context_Multiline::iAddOrSubtract()
+          Then I must have 4         # Feature_Context_Multiline::iMustHave()
 
       2 scenarios (2 passed)
       8 steps (8 passed)
@@ -183,22 +183,22 @@ Feature: Pretty Formatter
         I need to see the totals of my basket
 
         Background:                                             # features/test.feature:6
-          Given there are the following products in the catalog # FeatureContextBackgroundFailing::anything()
+          Given there are the following products in the catalog # Feature_Context_Background_Failing::anything()
             | name     | price |
             | trousers | 12    |
             TODO: write pending definition
 
         Scenario: £12 delivery £3                        # features/test.feature:11
-          Given I have an empty basket                   # FeatureContextBackgroundFailing::anything()
-          When I add the product "trousers" to my basket # FeatureContextBackgroundFailing::anything()
+          Given I have an empty basket                   # Feature_Context_Background_Failing::anything()
+          When I add the product "trousers" to my basket # Feature_Context_Background_Failing::anything()
 
         Scenario: £12 delivery £3                        # features/test.feature:15
-          Given there are the following products in the catalog # FeatureContextBackgroundFailing::anything()
+          Given there are the following products in the catalog # Feature_Context_Background_Failing::anything()
             | name     | price |
             | trousers | 12    |
             TODO: write pending definition
-          Given I have an empty basket                   # FeatureContextBackgroundFailing::anything()
-          When I add the product "trousers" to my basket # FeatureContextBackgroundFailing::anything()
+          Given I have an empty basket                   # Feature_Context_Background_Failing::anything()
+          When I add the product "trousers" to my basket # Feature_Context_Background_Failing::anything()
 
       2 scenarios (2 pending)
       6 steps (2 pending, 4 skipped)
@@ -216,8 +216,8 @@ Feature: Pretty Formatter
         I need to group examples into separate tables
 
         Scenario Outline: Grouped examples # features/testMultipleExamples.feature:6
-          When I input <name>              # FeatureContextMultipleExamples::input()
-          Then I should see "<result>"     # FeatureContextMultipleExamples::assertSee()
+          When I input <name>              # Feature_Context_Multiple_Examples::input()
+          Then I should see "<result>"     # Feature_Context_Multiple_Examples::assertSee()
 
           Examples:
             | name  | result   |
