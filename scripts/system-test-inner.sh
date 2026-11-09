@@ -6,12 +6,18 @@ export LANG=C
 
 git config --global --add safe.directory /app 2>/dev/null || true
 
+strip_ansi() {
+    local infile="$1"
+    local outfile="$2"
+    sed -E 's/\x1b\[[0-9;]*[[:alpha:]]//g' "${infile}" >"${outfile}"
+}
+
 fail_deprecation_output() {
     local label="$1"
     local file="$2"
     local stripped
     stripped="$(mktemp)"
-    sed -E 's/\x1b\[[0-9;]*[[:alpha:]]//g' "${file}" >"${stripped}"
+    strip_ansi "${file}" "${stripped}"
     if grep -E '(^|[[:space:]])(PHP[[:space:]]+)?(Warning|Deprecated|Notice):' "${stripped}" >/dev/null; then
         echo "${label}: output contains Warning, Deprecated, or Notice lines" >&2
         grep -E '(^|[[:space:]])(PHP[[:space:]]+)?(Warning|Deprecated|Notice):' "${stripped}" >&2 || true
@@ -55,7 +61,18 @@ if [[ ${composer_status} -ne 0 ]]; then
 fi
 rm -f "${composer_out}"
 
-php scripts/check-cluster-pins.php
+pins_out="$(mktemp)"
+set +e
+php scripts/check-cluster-pins.php >"${pins_out}" 2>&1
+pins_status=$?
+set -e
+cat "${pins_out}"
+fail_deprecation_output "check-cluster-pins" "${pins_out}"
+if [[ ${pins_status} -ne 0 ]]; then
+    rm -f "${pins_out}"
+    exit "${pins_status}"
+fi
+rm -f "${pins_out}"
 
 audit_out="$(mktemp)"
 set +e
@@ -83,7 +100,14 @@ fail_deprecation_output "composer cs" "${cs_out}"
 if [[ ${cs_status} -ne 0 ]]; then
     exit "${cs_status}"
 fi
-rm -f "${cs_out}"
+cs_stripped="$(mktemp)"
+strip_ansi "${cs_out}" "${cs_stripped}"
+if ! grep -E '^Found 0 of [0-9]+ files that can be fixed' "${cs_stripped}" >/dev/null; then
+    echo 'php-cs-fixer: missing Found 0 of N files that can be fixed success line' >&2
+    rm -f "${cs_stripped}"
+    exit 1
+fi
+rm -f "${cs_stripped}" "${cs_out}"
 
 behat_out="$(mktemp)"
 set +e
@@ -95,11 +119,31 @@ fail_deprecation_output "behat" "${behat_out}"
 if [[ ${behat_status} -ne 0 ]]; then
     exit "${behat_status}"
 fi
-if grep -E '^[0-9]+ scenarios? \([^)]*failed' "${behat_out}" >/dev/null; then
-    echo 'behat: found failed scenarios in summary' >&2
+behat_stripped="$(mktemp)"
+strip_ansi "${behat_out}" "${behat_stripped}"
+if ! grep -E '^[0-9]+ scenarios? \([0-9]+ passed\)$' "${behat_stripped}" >/dev/null; then
+    echo 'behat: missing strict scenarios passed summary line' >&2
+    rm -f "${behat_stripped}"
     exit 1
 fi
-rm -f "${behat_out}"
+if ! grep -E '^[0-9]+ steps? \([0-9]+ passed\)$' "${behat_stripped}" >/dev/null; then
+    echo 'behat: missing strict steps passed summary line' >&2
+    rm -f "${behat_stripped}"
+    exit 1
+fi
+if grep -E '^[0-9]+ scenarios? \(' "${behat_stripped}" | grep -Ev '^[0-9]+ scenarios? \([0-9]+ passed\)$' >/dev/null; then
+    echo 'behat: scenario summary line is not exactly N passed' >&2
+    grep -E '^[0-9]+ scenarios? \(' "${behat_stripped}" | grep -Ev '^[0-9]+ scenarios? \([0-9]+ passed\)$' >&2 || true
+    rm -f "${behat_stripped}"
+    exit 1
+fi
+if grep -E '^[0-9]+ steps? \(' "${behat_stripped}" | grep -Ev '^[0-9]+ steps? \([0-9]+ passed\)$' >/dev/null; then
+    echo 'behat: step summary line is not exactly N passed' >&2
+    grep -E '^[0-9]+ steps? \(' "${behat_stripped}" | grep -Ev '^[0-9]+ steps? \([0-9]+ passed\)$' >&2 || true
+    rm -f "${behat_stripped}"
+    exit 1
+fi
+rm -f "${behat_stripped}" "${behat_out}"
 
 phpunit_out="$(mktemp)"
 set +e
@@ -111,11 +155,14 @@ fail_deprecation_output "phpunit" "${phpunit_out}"
 if [[ ${phpunit_status} -ne 0 ]]; then
     exit "${phpunit_status}"
 fi
-if ! grep -E '^OK \([0-9]+ tests?, [0-9]+ assertions\)$' "${phpunit_out}" >/dev/null; then
+phpunit_stripped="$(mktemp)"
+strip_ansi "${phpunit_out}" "${phpunit_stripped}"
+if ! grep -E '^OK \([0-9]+ tests?, [0-9]+ assertions\)$' "${phpunit_stripped}" >/dev/null; then
     echo 'phpunit: missing strict OK success line' >&2
+    rm -f "${phpunit_stripped}"
     exit 1
 fi
-rm -f "${phpunit_out}"
+rm -f "${phpunit_stripped}" "${phpunit_out}"
 
 phpstan_out="$(mktemp)"
 set +e
@@ -127,11 +174,14 @@ fail_deprecation_output "phpstan" "${phpstan_out}"
 if [[ ${phpstan_status} -ne 0 ]]; then
     exit "${phpstan_status}"
 fi
-if ! grep -F '[OK] No errors' "${phpstan_out}" >/dev/null; then
-    echo 'phpstan: missing [OK] No errors' >&2
+phpstan_stripped="$(mktemp)"
+strip_ansi "${phpstan_out}" "${phpstan_stripped}"
+if ! grep -E '^[[:space:]]*\[OK\] No errors[[:space:]]*$' "${phpstan_stripped}" >/dev/null; then
+    echo 'phpstan: missing full-line [OK] No errors success marker' >&2
+    rm -f "${phpstan_stripped}"
     exit 1
 fi
-rm -f "${phpstan_out}"
+rm -f "${phpstan_stripped}" "${phpstan_out}"
 
 rector_out="$(mktemp)"
 set +e
@@ -143,10 +193,13 @@ fail_deprecation_output "rector" "${rector_out}"
 if [[ ${rector_status} -ne 0 ]]; then
     exit "${rector_status}"
 fi
-if ! grep -Fq ' [OK] Rector is done!' "${rector_out}" && ! grep -Fq '[OK] Rector is done!' "${rector_out}"; then
-  echo 'rector: missing Rector success marker' >&2
-  exit 1
+rector_stripped="$(mktemp)"
+strip_ansi "${rector_out}" "${rector_stripped}"
+if ! grep -E '^[[:space:]]*\[OK\] Rector is done![[:space:]]*$' "${rector_stripped}" >/dev/null; then
+    echo 'rector: missing full-line [OK] Rector is done! success marker' >&2
+    rm -f "${rector_stripped}"
+    exit 1
 fi
-rm -f "${rector_out}"
+rm -f "${rector_stripped}" "${rector_out}"
 
 echo 'system-test: all steps passed.'
