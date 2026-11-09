@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,48 +9,57 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Translator\Service_Container;
 
-use Behat\Behat\Translator\Cli\Gherkin_Translations_Controller;
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Behat\Testwork\Translator\Service_Container\Translator_Extension;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
-use Symfony\Component\Dependency_Injection\Reference;
+namespace Behat\Behat\Translator\ServiceContainer;
+
+use Behat\Behat\Translator\Cli\GherkinTranslationsController;
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\Translator\ServiceContainer\TranslatorExtension;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
 /**
  * Extends translator service with knowledge about gherkin translations.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Gherkin_Translations_Extension implements Extension
+final class GherkinTranslationsExtension implements Extension
 {
-    public function get_config_key(): string
+    public function getConfigKey(): string
     {
         return 'gherkin_translations';
     }
-    public function initialize(Extension_Manager $extension_manager): void
+
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
-        $this->load_controller($container);
+        $this->loadController($container);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
     }
+
     /**
      * Loads translator controller.
      */
-    private function load_controller(Container_Builder $container): void
+    private function loadController(ContainerBuilder $container): void
     {
-        $definition = new Definition(Gherkin_Translations_Controller::class, [new Reference(Translator_Extension::TRANSLATOR_ID)]);
-        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 9999]);
-        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.gherkin_translations', $definition);
+        $definition = new Definition(GherkinTranslationsController::class, [
+            new Reference(TranslatorExtension::TRANSLATOR_ID),
+        ]);
+        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 9999]);
+        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.gherkin_translations', $definition);
     }
 }

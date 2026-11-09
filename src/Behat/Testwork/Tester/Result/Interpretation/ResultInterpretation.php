@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Result\Interpretation;
 
-use Behat\Testwork\Tester\Result\Result_Interpreter;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\ResultInterpreter;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Interprets particular test result by saying if it's failure or not.
  *
@@ -19,12 +22,12 @@ use Behat\Testwork\Tester\Result\Test_Result;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Result_Interpretation
+interface ResultInterpretation
 {
     /**
      * Checks if provided test result should be considered as a failure.
      *
      * @return bool
      */
-    public function is_failure(Test_Result $result);
+    public function isFailure(TestResult $result);
 }

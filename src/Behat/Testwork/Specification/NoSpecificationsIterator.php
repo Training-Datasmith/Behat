@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Specification;
 
 use Behat\Testwork\Suite\Suite;
-use Empty_Iterator;
+use EmptyIterator;
+
 /**
  * Represents empty specification iterator.
  *
@@ -21,18 +24,20 @@ use Empty_Iterator;
  *
  * @implements SpecificationIterator<never>
  */
-final class No_Specifications_Iterator extends Empty_Iterator implements Specification_Iterator
+final class NoSpecificationsIterator extends EmptyIterator implements SpecificationIterator
 {
     /**
      * Initializes iterator.
      */
-    public function __construct(private readonly Suite $suite)
-    {
+    public function __construct(
+        private readonly Suite $suite,
+    ) {
     }
+
     /**
      * Returns suite that was used to load subjects.
      */
-    public function get_suite(): Suite
+    public function getSuite(): Suite
     {
         return $this->suite;
     }

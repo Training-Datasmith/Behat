@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,80 +9,97 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Statistics;
 
-use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Behat\Tester\Result\StepResult;
 use Stringable;
+
 /**
  * Second iteration of Behat step stat, with a scenario information.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Step_Stat_V2 extends Step_Stat implements Stringable
+final class StepStatV2 extends StepStat implements Stringable
 {
     /**
      * @param StepResult::* $resultCode
      */
-    public function __construct(private readonly string $scenario_title, private readonly string $scenario_path, private readonly string $step_text, private readonly string $step_path, private readonly int $result_code, private readonly ?string $error = null, private readonly ?string $std_out = null)
-    {
-        parent::__construct($step_text, $step_path, $result_code, $error, $std_out);
+    public function __construct(
+        private readonly string $scenarioTitle,
+        private readonly string $scenarioPath,
+        private readonly string $stepText,
+        private readonly string $stepPath,
+        private readonly int $resultCode,
+        private readonly ?string $error = null,
+        private readonly ?string $stdOut = null,
+    ) {
+        parent::__construct($stepText, $stepPath, $resultCode, $error, $stdOut);
     }
+
     /**
      * Returns associated scenario text.
      */
-    public function get_scenario_text(): string
+    public function getScenarioText(): string
     {
-        return $this->scenario_title;
+        return $this->scenarioTitle;
     }
+
     /**
      * Returns associated scenario path.
      */
-    public function get_scenario_path(): string
+    public function getScenarioPath(): string
     {
-        return $this->scenario_path;
+        return $this->scenarioPath;
     }
+
     /**
      * Returns step text.
      */
-    public function get_step_text(): string
+    public function getStepText(): string
     {
-        return $this->step_text;
+        return $this->stepText;
     }
+
     /**
      * Returns step path.
      */
-    public function get_step_path(): string
+    public function getStepPath(): string
     {
-        return $this->step_path;
+        return $this->stepPath;
     }
+
     /**
      * Returns step result code.
      *
      * @return StepResult::*
      */
-    public function get_result_code(): int
+    public function getResultCode(): int
     {
-        return $this->result_code;
+        return $this->resultCode;
     }
+
     /**
      * Returns step error (if has one).
      */
-    public function get_error(): ?string
+    public function getError(): ?string
     {
         return $this->error;
     }
+
     /**
      * Returns step output (if has one).
      */
-    public function get_std_out(): ?string
+    public function getStdOut(): ?string
     {
-        return $this->std_out;
+        return $this->stdOut;
     }
+
     /**
      * Returns string representation for a stat.
      */
     public function __toString(): string
     {
-        return $this->get_path();
+        return $this->getPath();
     }
 }

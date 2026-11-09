@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Specification;
 
 use ArrayIterator;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Iterates over specifications array.
  *
@@ -25,18 +28,21 @@ use Behat\Testwork\Suite\Suite;
  *
  * @extends ArrayIterator<int, T>
  */
-final class Specification_Array_Iterator extends ArrayIterator implements Specification_Iterator
+final class SpecificationArrayIterator extends ArrayIterator implements SpecificationIterator
 {
     /**
      * Initializes iterator.
      *
      * @param array<int, T> $specifications
      */
-    public function __construct(private readonly Suite $suite, $specifications = [])
-    {
+    public function __construct(
+        private readonly Suite $suite,
+        $specifications = [],
+    ) {
         parent::__construct($specifications);
     }
-    public function get_suite(): Suite
+
+    public function getSuite(): Suite
     {
         return $this->suite;
     }

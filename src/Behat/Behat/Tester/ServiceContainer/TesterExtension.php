@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,35 +9,37 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Tester\Service_Container;
 
-use Behat\Behat\Definition\Service_Container\Definition_Extension;
-use Behat\Behat\Tester\Cli\Rerun_Controller;
-use Behat\Behat\Tester\Exception\Stringer\Pending_Exception_Stringer;
-use Behat\Behat\Tester\Runtime\Isolating_Scenario_Tester;
-use Behat\Behat\Tester\Runtime\Runtime_Background_Tester;
-use Behat\Behat\Tester\Runtime\Runtime_Feature_Tester;
-use Behat\Behat\Tester\Runtime\Runtime_Outline_Tester;
-use Behat\Behat\Tester\Runtime\Runtime_Scenario_Tester;
-use Behat\Behat\Tester\Runtime\Runtime_Step_Tester;
-use Behat\Behat\Tester\Step_Container_Tester;
-use Behat\Testwork\Call\Service_Container\Call_Extension;
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Environment\Service_Container\Environment_Extension;
-use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
-use Behat\Testwork\Exception\Service_Container\Exception_Extension;
-use Behat\Testwork\Service_Container\Service_Processor;
-use Behat\Testwork\Tester\Service_Container\Tester_Extension as BaseExtension;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
-use Symfony\Component\Dependency_Injection\Reference;
+namespace Behat\Behat\Tester\ServiceContainer;
+
+use Behat\Behat\Definition\ServiceContainer\DefinitionExtension;
+use Behat\Behat\Tester\Cli\RerunController;
+use Behat\Behat\Tester\Exception\Stringer\PendingExceptionStringer;
+use Behat\Behat\Tester\Runtime\IsolatingScenarioTester;
+use Behat\Behat\Tester\Runtime\RuntimeBackgroundTester;
+use Behat\Behat\Tester\Runtime\RuntimeFeatureTester;
+use Behat\Behat\Tester\Runtime\RuntimeOutlineTester;
+use Behat\Behat\Tester\Runtime\RuntimeScenarioTester;
+use Behat\Behat\Tester\Runtime\RuntimeStepTester;
+use Behat\Behat\Tester\StepContainerTester;
+use Behat\Testwork\Call\ServiceContainer\CallExtension;
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\Environment\ServiceContainer\EnvironmentExtension;
+use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
+use Behat\Testwork\Exception\ServiceContainer\ExceptionExtension;
+use Behat\Testwork\ServiceContainer\ServiceProcessor;
+use Behat\Testwork\Tester\ServiceContainer\TesterExtension as BaseExtension;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
 /**
  * Provides gherkin testers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class Tester_Extension extends Base_Extension
+class TesterExtension extends BaseExtension
 {
     /*
      * Available services
@@ -46,6 +49,7 @@ class Tester_Extension extends Base_Extension
     public const EXAMPLE_TESTER_ID = 'tester.example';
     public const BACKGROUND_TESTER_ID = 'tester.background';
     public const STEP_TESTER_ID = 'tester.step';
+
     /**
      * Available extension points.
      */
@@ -54,155 +58,233 @@ class Tester_Extension extends Base_Extension
     public const EXAMPLE_TESTER_WRAPPER_TAG = 'tester.example.wrapper';
     public const BACKGROUND_TESTER_WRAPPER_TAG = 'tester.background.wrapper';
     public const STEP_TESTER_WRAPPER_TAG = 'tester.step.wrapper';
-    private readonly Service_Processor $processor;
+
+    private readonly ServiceProcessor $processor;
+
     /**
      * Initializes extension.
      */
-    public function __construct(?Service_Processor $processor = null)
+    public function __construct(?ServiceProcessor $processor = null)
     {
-        $this->processor = $processor ?: new Service_Processor();
+        $this->processor = $processor ?: new ServiceProcessor();
+
         parent::__construct($this->processor);
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
         parent::configure($builder);
-        $builder->children()->scalar_node('rerun_cache')->info('Sets the rerun cache path')->default_value(is_writable(sys_get_temp_dir()) ? sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat_rerun_cache' : null);
+
+        $builder
+            ->children()
+                ->scalarNode('rerun_cache')
+                    ->info('Sets the rerun cache path')
+                    ->defaultValue(
+                        is_writable(sys_get_temp_dir())
+                            ? sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat_rerun_cache'
+                            : null
+                    )
+        ;
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
         parent::load($container, $config);
-        $this->load_rerun_controller($container, $config['rerun_cache']);
-        $this->load_pending_exception_stringer($container);
+
+        $this->loadRerunController($container, $config['rerun_cache']);
+        $this->loadPendingExceptionStringer($container);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
         parent::process($container);
-        $this->process_scenario_tester_wrappers($container);
-        $this->process_outline_tester_wrappers($container);
-        $this->process_example_tester_wrappers($container);
-        $this->process_background_tester_wrappers($container);
-        $this->process_step_tester_wrappers($container);
+
+        $this->processScenarioTesterWrappers($container);
+        $this->processOutlineTesterWrappers($container);
+        $this->processExampleTesterWrappers($container);
+        $this->processBackgroundTesterWrappers($container);
+        $this->processStepTesterWrappers($container);
     }
+
     /**
      * Loads specification tester.
      */
-    protected function load_specification_tester(Container_Builder $container)
+    protected function loadSpecificationTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Runtime_Feature_Tester::class, [new Reference(self::SCENARIO_TESTER_ID), new Reference(self::OUTLINE_TESTER_ID), new Reference(Environment_Extension::MANAGER_ID)]);
-        $container->set_definition(self::SPECIFICATION_TESTER_ID, $definition);
-        $this->load_scenario_tester($container);
-        $this->load_outline_tester($container);
-        $this->load_background_tester($container);
-        $this->load_step_tester($container);
+        $definition = new Definition(RuntimeFeatureTester::class, [
+            new Reference(self::SCENARIO_TESTER_ID),
+            new Reference(self::OUTLINE_TESTER_ID),
+            new Reference(EnvironmentExtension::MANAGER_ID),
+        ]);
+        $container->setDefinition(self::SPECIFICATION_TESTER_ID, $definition);
+
+        $this->loadScenarioTester($container);
+        $this->loadOutlineTester($container);
+        $this->loadBackgroundTester($container);
+        $this->loadStepTester($container);
     }
+
     /**
      * Loads scenario tester.
      */
-    protected function load_scenario_tester(Container_Builder $container)
+    protected function loadScenarioTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Step_Container_Tester::class, [new Reference(self::STEP_TESTER_ID)]);
-        $container->set_definition('tester.step_container', $definition);
-        $definition = new Definition(Runtime_Scenario_Tester::class, [new Reference('tester.step_container'), new Reference(self::BACKGROUND_TESTER_ID)]);
-        $container->set_definition(self::SCENARIO_TESTER_ID, $definition);
+        $definition = new Definition(StepContainerTester::class, [
+            new Reference(self::STEP_TESTER_ID),
+        ]);
+        $container->setDefinition('tester.step_container', $definition);
+
+        $definition = new Definition(RuntimeScenarioTester::class, [
+            new Reference('tester.step_container'),
+            new Reference(self::BACKGROUND_TESTER_ID),
+        ]);
+        $container->setDefinition(self::SCENARIO_TESTER_ID, $definition);
+
         // Proper isolation for scenarios
-        $definition = new Definition(Isolating_Scenario_Tester::class, [new Reference(self::SCENARIO_TESTER_ID), new Reference(Environment_Extension::MANAGER_ID)]);
-        $definition->add_tag(self::SCENARIO_TESTER_WRAPPER_TAG, ['priority' => -999999]);
-        $container->set_definition(self::SCENARIO_TESTER_WRAPPER_TAG . '.isolating', $definition);
+        $definition = new Definition(
+            IsolatingScenarioTester::class,
+            [
+                new Reference(self::SCENARIO_TESTER_ID),
+                new Reference(EnvironmentExtension::MANAGER_ID),
+            ]
+        );
+        $definition->addTag(self::SCENARIO_TESTER_WRAPPER_TAG, ['priority' => -999999]);
+        $container->setDefinition(self::SCENARIO_TESTER_WRAPPER_TAG . '.isolating', $definition);
     }
+
     /**
      * Loads outline tester.
      */
-    protected function load_outline_tester(Container_Builder $container)
+    protected function loadOutlineTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Runtime_Outline_Tester::class, [new Reference(self::EXAMPLE_TESTER_ID)]);
-        $container->set_definition(self::OUTLINE_TESTER_ID, $definition);
-        $this->load_example_tester($container);
+        $definition = new Definition(RuntimeOutlineTester::class, [
+            new Reference(self::EXAMPLE_TESTER_ID),
+        ]);
+        $container->setDefinition(self::OUTLINE_TESTER_ID, $definition);
+
+        $this->loadExampleTester($container);
     }
+
     /**
      * Loads example tester.
      */
-    protected function load_example_tester(Container_Builder $container)
+    protected function loadExampleTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Step_Container_Tester::class, [new Reference(self::STEP_TESTER_ID)]);
-        $container->set_definition('tester.step_container', $definition);
-        $definition = new Definition(Runtime_Scenario_Tester::class, [new Reference('tester.step_container'), new Reference(self::BACKGROUND_TESTER_ID)]);
-        $container->set_definition(self::EXAMPLE_TESTER_ID, $definition);
+        $definition = new Definition(StepContainerTester::class, [
+            new Reference(self::STEP_TESTER_ID),
+        ]);
+        $container->setDefinition('tester.step_container', $definition);
+
+        $definition = new Definition(RuntimeScenarioTester::class, [
+            new Reference('tester.step_container'),
+            new Reference(self::BACKGROUND_TESTER_ID),
+        ]);
+        $container->setDefinition(self::EXAMPLE_TESTER_ID, $definition);
+
         // Proper isolation for examples
-        $definition = new Definition(Isolating_Scenario_Tester::class, [new Reference(self::EXAMPLE_TESTER_ID), new Reference(Environment_Extension::MANAGER_ID)]);
-        $definition->add_tag(self::EXAMPLE_TESTER_WRAPPER_TAG, ['priority' => -999999]);
-        $container->set_definition(self::EXAMPLE_TESTER_WRAPPER_TAG . '.isolating', $definition);
+        $definition = new Definition(
+            IsolatingScenarioTester::class,
+            [
+                new Reference(self::EXAMPLE_TESTER_ID),
+                new Reference(EnvironmentExtension::MANAGER_ID),
+            ]
+        );
+        $definition->addTag(self::EXAMPLE_TESTER_WRAPPER_TAG, ['priority' => -999999]);
+        $container->setDefinition(self::EXAMPLE_TESTER_WRAPPER_TAG . '.isolating', $definition);
     }
+
     /**
      * Loads background tester.
      */
-    protected function load_background_tester(Container_Builder $container)
+    protected function loadBackgroundTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Step_Container_Tester::class, [new Reference(self::STEP_TESTER_ID)]);
-        $container->set_definition('tester.step_container', $definition);
-        $definition = new Definition(Runtime_Background_Tester::class, [new Reference('tester.step_container')]);
-        $container->set_definition(self::BACKGROUND_TESTER_ID, $definition);
+        $definition = new Definition(StepContainerTester::class, [
+            new Reference(self::STEP_TESTER_ID),
+        ]);
+        $container->setDefinition('tester.step_container', $definition);
+
+        $definition = new Definition(RuntimeBackgroundTester::class, [
+            new Reference('tester.step_container'),
+        ]);
+        $container->setDefinition(self::BACKGROUND_TESTER_ID, $definition);
     }
+
     /**
      * Loads step tester.
      */
-    protected function load_step_tester(Container_Builder $container)
+    protected function loadStepTester(ContainerBuilder $container)
     {
-        $definition = new Definition(Runtime_Step_Tester::class, [new Reference(Definition_Extension::FINDER_ID), new Reference(Call_Extension::CALL_CENTER_ID)]);
-        $container->set_definition(self::STEP_TESTER_ID, $definition);
+        $definition = new Definition(RuntimeStepTester::class, [
+            new Reference(DefinitionExtension::FINDER_ID),
+            new Reference(CallExtension::CALL_CENTER_ID),
+        ]);
+        $container->setDefinition(self::STEP_TESTER_ID, $definition);
     }
+
     /**
      * Loads rerun controller.
      *
      * @param string|null $cachePath
      */
-    protected function load_rerun_controller(Container_Builder $container, $cache_path)
+    protected function loadRerunController(ContainerBuilder $container, $cachePath)
     {
-        $definition = new Definition(Rerun_Controller::class, [new Reference(Event_Dispatcher_Extension::DISPATCHER_ID), new Reference(Tester_Extension::RESULT_INTERPRETER_ID), $container->get_parameter('paths.base'), $cache_path]);
-        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 200]);
-        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.rerun', $definition);
+        $definition = new Definition(RerunController::class, [
+            new Reference(EventDispatcherExtension::DISPATCHER_ID),
+            new Reference(TesterExtension::RESULT_INTERPRETER_ID),
+            $container->getParameter('paths.base'),
+            $cachePath,
+        ]);
+        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 200]);
+        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.rerun', $definition);
     }
+
     /**
      * Loads pending exception stringer.
      */
-    protected function load_pending_exception_stringer(Container_Builder $container)
+    protected function loadPendingExceptionStringer(ContainerBuilder $container)
     {
-        $definition = new Definition(Pending_Exception_Stringer::class);
-        $definition->add_tag(Exception_Extension::STRINGER_TAG);
-        $container->set_definition(Exception_Extension::STRINGER_TAG . '.pending', $definition);
+        $definition = new Definition(PendingExceptionStringer::class);
+        $definition->addTag(ExceptionExtension::STRINGER_TAG);
+        $container->setDefinition(ExceptionExtension::STRINGER_TAG . '.pending', $definition);
     }
+
     /**
      * Processes all registered scenario tester wrappers.
      */
-    protected function process_scenario_tester_wrappers(Container_Builder $container)
+    protected function processScenarioTesterWrappers(ContainerBuilder $container)
     {
-        $this->processor->process_wrapper_services($container, self::SCENARIO_TESTER_ID, self::SCENARIO_TESTER_WRAPPER_TAG);
+        $this->processor->processWrapperServices($container, self::SCENARIO_TESTER_ID, self::SCENARIO_TESTER_WRAPPER_TAG);
     }
+
     /**
      * Processes all registered outline tester wrappers.
      */
-    protected function process_outline_tester_wrappers(Container_Builder $container)
+    protected function processOutlineTesterWrappers(ContainerBuilder $container)
     {
-        $this->processor->process_wrapper_services($container, self::OUTLINE_TESTER_ID, self::OUTLINE_TESTER_WRAPPER_TAG);
+        $this->processor->processWrapperServices($container, self::OUTLINE_TESTER_ID, self::OUTLINE_TESTER_WRAPPER_TAG);
     }
+
     /**
      * Processes all registered example tester wrappers.
      */
-    protected function process_example_tester_wrappers(Container_Builder $container)
+    protected function processExampleTesterWrappers(ContainerBuilder $container)
     {
-        $this->processor->process_wrapper_services($container, self::EXAMPLE_TESTER_ID, self::EXAMPLE_TESTER_WRAPPER_TAG);
+        $this->processor->processWrapperServices($container, self::EXAMPLE_TESTER_ID, self::EXAMPLE_TESTER_WRAPPER_TAG);
     }
+
     /**
      * Processes all registered background tester wrappers.
      */
-    protected function process_background_tester_wrappers(Container_Builder $container)
+    protected function processBackgroundTesterWrappers(ContainerBuilder $container)
     {
-        $this->processor->process_wrapper_services($container, self::BACKGROUND_TESTER_ID, self::BACKGROUND_TESTER_WRAPPER_TAG);
+        $this->processor->processWrapperServices($container, self::BACKGROUND_TESTER_ID, self::BACKGROUND_TESTER_WRAPPER_TAG);
     }
+
     /**
      * Processes all registered step tester wrappers.
      */
-    protected function process_step_tester_wrappers(Container_Builder $container)
+    protected function processStepTesterWrappers(ContainerBuilder $container)
     {
-        $this->processor->process_wrapper_services($container, self::STEP_TESTER_ID, self::STEP_TESTER_WRAPPER_TAG);
+        $this->processor->processWrapperServices($container, self::STEP_TESTER_ID, self::STEP_TESTER_WRAPPER_TAG);
     }
 }

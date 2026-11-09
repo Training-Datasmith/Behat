@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,12 +9,14 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork;
 
 use Behat\Testwork\Cli\Application;
-use Behat\Testwork\Service_Container\Configuration\Configuration_Loader;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
+use Behat\Testwork\ServiceContainer\Configuration\ConfigurationLoader;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+
 /**
  * Defines the way application is created.
  *
@@ -21,65 +24,73 @@ use Behat\Testwork\Service_Container\Extension_Manager;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Application_Factory
+abstract class ApplicationFactory
 {
     /**
      * Returns application name.
      *
      * @return string
      */
-    abstract protected function get_name();
+    abstract protected function getName();
+
     /**
      * Returns current application version.
      *
      * @return string
      */
-    abstract protected function get_version();
+    abstract protected function getVersion();
+
     /**
      * Returns list of extensions enabled by default.
      *
      * @return Extension[]
      */
-    abstract protected function get_default_extensions();
+    abstract protected function getDefaultExtensions();
+
     /**
      * Returns the name of configuration environment variable.
      *
      * @return string
      */
-    abstract protected function get_environment_variable_name();
+    abstract protected function getEnvironmentVariableName();
+
     /**
      * Returns user config path.
      *
      * @return string|null
      */
-    abstract protected function get_config_path();
+    abstract protected function getConfigPath();
+
     /**
      * Creates application instance.
      *
      * @return Application
      */
-    public function create_application()
+    public function createApplication()
     {
-        $configuration_loader = $this->create_configuration_loader();
-        $extension_manager = $this->create_extension_manager();
-        return new Application($this->get_name(), $this->get_version(), $configuration_loader, $extension_manager);
+        $configurationLoader = $this->createConfigurationLoader();
+        $extensionManager = $this->createExtensionManager();
+
+        return new Application($this->getName(), $this->getVersion(), $configurationLoader, $extensionManager);
     }
+
     /**
      * Creates configuration loader.
      *
      * @return ConfigurationLoader
      */
-    protected function create_configuration_loader()
+    protected function createConfigurationLoader()
     {
-        return new Configuration_Loader($this->get_environment_variable_name(), $this->get_config_path());
+        return new ConfigurationLoader($this->getEnvironmentVariableName(), $this->getConfigPath());
     }
+
     /**
      * Creates extension manager.
      *
      * @return ExtensionManager
      */
-    protected function create_extension_manager()
+    protected function createExtensionManager()
     {
-        return new Extension_Manager($this->get_default_extensions());
+        return new ExtensionManager($this->getDefaultExtensions());
     }
 }

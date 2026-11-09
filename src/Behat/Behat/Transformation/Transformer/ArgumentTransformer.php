@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,15 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation\Transformer;
 
-use Behat\Behat\Definition\Call\Definition_Call;
+use Behat\Behat\Definition\Call\DefinitionCall;
+
 /**
  * Transforms a single argument value.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Argument_Transformer
+interface ArgumentTransformer
 {
     /**
      * Checks if transformer supports argument.
@@ -25,11 +28,12 @@ interface Argument_Transformer
      *
      * @return bool
      */
-    public function supports_definition_and_argument(Definition_Call $definition_call, $argument_index, $argument_value);
+    public function supportsDefinitionAndArgument(DefinitionCall $definitionCall, $argumentIndex, $argumentValue);
+
     /**
      * Transforms argument value using transformation and returns a new one.
      *
      * @param int|string $argumentIndex
      */
-    public function transform_argument(Definition_Call $definition_call, $argument_index, $argument_value);
+    public function transformArgument(DefinitionCall $definitionCall, $argumentIndex, $argumentValue);
 }

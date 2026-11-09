@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,100 +9,113 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Output\Printer\Factory;
 
-use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * @author Wouter J <wouter@wouterj.nl>
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Output_Factory
+abstract class OutputFactory
 {
     public const VERBOSITY_NORMAL = 1;
     public const VERBOSITY_VERBOSE = 2;
     public const VERBOSITY_VERY_VERBOSE = 3;
     public const VERBOSITY_DEBUG = 4;
+
     /**
      * @var string|null
      */
-    private $output_path;
-    private array $output_styles = [];
-    private ?bool $output_decorated = null;
-    private int $verbosity_level = 0;
+    private $outputPath;
+    private array $outputStyles = [];
+
+    private ?bool $outputDecorated = null;
+    private int $verbosityLevel = 0;
+
     /**
      * Sets output path.
      *
      * @param string $path
      */
-    public function set_output_path($path): void
+    public function setOutputPath($path): void
     {
-        $this->output_path = $path;
+        $this->outputPath = $path;
     }
+
     /**
      * Returns output path.
      *
      * @return string|null
      */
-    public function get_output_path()
+    public function getOutputPath()
     {
-        return $this->output_path;
+        return $this->outputPath;
     }
+
     /**
      * Sets output styles.
      */
-    public function set_output_styles(array $styles): void
+    public function setOutputStyles(array $styles): void
     {
-        $this->output_styles = $styles;
+        $this->outputStyles = $styles;
     }
+
     /**
      * Returns output styles.
      *
      * @return array
      */
-    public function get_output_styles()
+    public function getOutputStyles()
     {
-        return $this->output_styles;
+        return $this->outputStyles;
     }
+
     /**
      * Forces output to be decorated.
      *
      * @param bool $decorated
      */
-    public function set_output_decorated(?bool $decorated): void
+    public function setOutputDecorated(?bool $decorated): void
     {
-        $this->output_decorated = $decorated;
+        $this->outputDecorated = $decorated;
     }
+
     /**
      * Returns output decoration status.
      *
      * @return bool|null
      */
-    public function is_output_decorated()
+    public function isOutputDecorated()
     {
-        return $this->output_decorated;
+        return $this->outputDecorated;
     }
+
     /**
      * Sets output verbosity level.
      *
      * @param int $level
      */
-    public function set_output_verbosity($level): void
+    public function setOutputVerbosity($level): void
     {
-        $this->verbosity_level = intval($level);
+        $this->verbosityLevel = intval($level);
     }
+
     /**
      * Returns output verbosity level.
      *
      * @return int
      */
-    public function get_output_verbosity()
+    public function getOutputVerbosity()
     {
-        return $this->verbosity_level;
+        return $this->verbosityLevel;
     }
+
     /**
      * Returns a new output stream.
      *
      * @return OutputInterface
      */
-    abstract public function create_output();
+    abstract public function createOutput();
 }

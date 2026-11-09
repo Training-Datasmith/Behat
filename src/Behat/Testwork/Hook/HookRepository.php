@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,46 +9,58 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook;
 
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\Environment_Manager;
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Testwork\Environment\EnvironmentManager;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Finds hooks using provided environments or scopes.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Hook_Repository
+final readonly class HookRepository
 {
     /**
      * Initializes repository.
      */
-    public function __construct(private Environment_Manager $environment_manager)
-    {
+    public function __construct(
+        private EnvironmentManager $environmentManager,
+    ) {
     }
+
     /**
      * Returns all available hooks for a specific environment.
      *
      * @return Hook[]
      */
-    public function get_environment_hooks(Environment $environment): array
+    public function getEnvironmentHooks(Environment $environment): array
     {
-        return array_filter($this->environment_manager->read_environment_callees($environment), fn(Callee $callee): bool => $callee instanceof Hook);
+        return array_filter(
+            $this->environmentManager->readEnvironmentCallees($environment),
+            fn (Callee $callee): bool => $callee instanceof Hook
+        );
     }
+
     /**
      * Returns hooks for a specific event.
      *
      * @return Hook[]
      */
-    public function get_scope_hooks(Hook_Scope $scope): array
+    public function getScopeHooks(HookScope $scope): array
     {
-        return array_filter($this->get_environment_hooks($scope->get_environment()), function (Hook $hook) use ($scope): bool {
-            if ($scope->get_name() !== $hook->get_scope_name()) {
-                return false;
+        return array_filter(
+            $this->getEnvironmentHooks($scope->getEnvironment()),
+            function (Hook $hook) use ($scope): bool {
+                if ($scope->getName() !== $hook->getScopeName()) {
+                    return false;
+                }
+
+                return !($hook instanceof FilterableHook && !$hook->filterMatches($scope));
             }
-            return !($hook instanceof Filterable_Hook && !$hook->filter_matches($scope));
-        });
+        );
     }
 }

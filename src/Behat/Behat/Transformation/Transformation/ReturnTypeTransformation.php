@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,36 +9,41 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation\Transformation;
 
-use Behat\Behat\Definition\Call\Definition_Call;
-use Behat\Behat\Transformation\Call\Transformation_Call;
-use Behat\Behat\Transformation\Simple_Argument_Transformation;
-use Behat\Testwork\Call\Call_Center;
-use Behat\Testwork\Call\Runtime_Callee;
+use Behat\Behat\Definition\Call\DefinitionCall;
+use Behat\Behat\Transformation\Call\TransformationCall;
+use Behat\Behat\Transformation\SimpleArgumentTransformation;
+use Behat\Testwork\Call\CallCenter;
+use Behat\Testwork\Call\RuntimeCallee;
 use Closure;
 use ReflectionClass;
-use Reflection_Exception;
-use Reflection_Function_Abstract;
+use ReflectionException;
+use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use Stringable;
+
 /**
  * By-type object transformation.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Return_Type_Transformation extends Runtime_Callee implements Stringable, Simple_Argument_Transformation
+final class ReturnTypeTransformation extends RuntimeCallee implements Stringable, SimpleArgumentTransformation
 {
-    public static function supports_pattern_and_method($pattern, ReflectionMethod $method)
+    public static function supportsPatternAndMethod($pattern, ReflectionMethod $method)
     {
-        $return_class = self::get_return_class($method);
-        if (null === $return_class) {
+        $returnClass = self::getReturnClass($method);
+
+        if (null === $returnClass) {
             return false;
         }
+
         return '' === $pattern;
     }
+
     /**
      * Initializes transformation.
      *
@@ -48,48 +54,68 @@ final class Return_Type_Transformation extends Runtime_Callee implements Stringa
     {
         parent::__construct($callable, $description);
     }
-    public function supports_definition_and_argument(Definition_Call $definition_call, $argument_index, $argument_argument_value)
+
+    public function supportsDefinitionAndArgument(DefinitionCall $definitionCall, $argumentIndex, $argumentArgumentValue)
     {
-        $return_class = self::get_return_class($this->get_reflection());
-        if (null === $return_class) {
+        $returnClass = self::getReturnClass($this->getReflection());
+
+        if (null === $returnClass) {
             return false;
         }
-        $parameter_class = $this->get_parameter_class_name_by_index($definition_call, $argument_index);
-        return $parameter_class === $return_class;
+
+        $parameterClass = $this->getParameterClassNameByIndex($definitionCall, $argumentIndex);
+
+        return $parameterClass === $returnClass;
     }
-    public function transform_argument(Call_Center $call_center, Definition_Call $definition_call, $argument_index, $argument_value)
+
+    public function transformArgument(CallCenter $callCenter, DefinitionCall $definitionCall, $argumentIndex, $argumentValue)
     {
-        $call = new Transformation_Call($definition_call->get_environment(), $definition_call->get_callee(), $this, [$argument_value]);
-        $result = $call_center->make_call($call);
-        if ($result->has_exception()) {
-            throw $result->get_exception();
+        $call = new TransformationCall(
+            $definitionCall->getEnvironment(),
+            $definitionCall->getCallee(),
+            $this,
+            [$argumentValue]
+        );
+
+        $result = $callCenter->makeCall($call);
+
+        if ($result->hasException()) {
+            throw $result->getException();
         }
-        return $result->get_return();
+
+        return $result->getReturn();
     }
-    public function get_priority(): int
+
+    public function getPriority(): int
     {
         return 80;
     }
-    public function get_pattern(): string
+
+    public function getPattern(): string
     {
         return '';
     }
+
     public function __toString(): string
     {
         return 'ReturnTypeTransform';
     }
+
     /**
      * Extracts parameters from provided definition call.
      */
-    private static function get_return_class(Reflection_Function_Abstract $reflection): ?string
+    private static function getReturnClass(ReflectionFunctionAbstract $reflection): ?string
     {
-        $type = $reflection->get_return_type();
+        $type = $reflection->getReturnType();
+
         // Skip ReflectionUnionType as they can't be relied on for a transform
-        if (null === $type || !$type instanceof ReflectionNamedType || $type->is_builtin()) {
+        if (null === $type || !($type instanceof ReflectionNamedType) || $type->isBuiltin()) {
             return null;
         }
-        return $type->get_name();
+
+        return $type->getName();
     }
+
     /**
      * Attempts to get definition parameter using its index (parameter position or name).
      *
@@ -97,23 +123,33 @@ final class Return_Type_Transformation extends Runtime_Callee implements Stringa
      *
      * @return string|null
      */
-    private function get_parameter_class_name_by_index(Definition_Call $definition_call, $argument_index)
+    private function getParameterClassNameByIndex(DefinitionCall $definitionCall, $argumentIndex)
     {
-        $parameters = array_filter(array_filter($this->get_call_parameters($definition_call), $this->has_index($argument_index)), $this->get_class_reflection());
+        $parameters = array_filter(
+            array_filter(
+                $this->getCallParameters($definitionCall),
+                $this->hasIndex($argumentIndex)
+            ),
+            $this->getClassReflection()
+        );
+
         if (count($parameters) == 0) {
             return null;
         }
-        return $this->get_class_reflection()(current($parameters))->get_name();
+
+        return ($this->getClassReflection())(current($parameters))->getName();
     }
+
     /**
      * Extracts parameters from provided definition call.
      *
      * @return ReflectionParameter[]
      */
-    private function get_call_parameters(Definition_Call $definition_call): array
+    private function getCallParameters(DefinitionCall $definitionCall): array
     {
-        return $definition_call->get_callee()->get_reflection()->get_parameters();
+        return $definitionCall->getCallee()->getReflection()->getParameters();
     }
+
     /**
      * Returns appropriate closure for filtering parameter by index.
      *
@@ -121,20 +157,22 @@ final class Return_Type_Transformation extends Runtime_Callee implements Stringa
      *
      * @return Closure
      */
-    private function has_index($index)
+    private function hasIndex($index)
     {
-        return is_string($index) ? $this->has_name($index) : $this->has_position($index);
+        return is_string($index) ? $this->hasName($index) : $this->hasPosition($index);
     }
+
     /**
      * Returns closure to filter parameter by name.
      *
      *
      * @return Closure
      */
-    private function has_name(string $index)
+    private function hasName(string $index)
     {
-        return fn(ReflectionParameter $parameter): bool => $index === $parameter->get_name();
+        return fn (ReflectionParameter $parameter): bool => $index === $parameter->getName();
     }
+
     /**
      * Returns closure to filter parameter by position.
      *
@@ -142,24 +180,27 @@ final class Return_Type_Transformation extends Runtime_Callee implements Stringa
      *
      * @return Closure
      */
-    private function has_position($index)
+    private function hasPosition($index)
     {
-        return fn(ReflectionParameter $parameter): bool => $index === $parameter->get_position();
+        return fn (ReflectionParameter $parameter): bool => $index === $parameter->getPosition();
     }
+
     /**
      * Returns closure to filter parameter by typehinted class.
      */
-    private function get_class_reflection(): Closure
+    private function getClassReflection(): Closure
     {
         return function (ReflectionParameter $parameter): ?ReflectionClass {
-            $t = $parameter->get_type();
+            $t = $parameter->getType();
+
             if ($t instanceof ReflectionNamedType) {
                 try {
-                    return new ReflectionClass($t->get_name());
-                } catch (Reflection_Exception) {
+                    return new ReflectionClass($t->getName());
+                } catch (ReflectionException) {
                     return null;
                 }
             }
+
             return null;
         };
     }

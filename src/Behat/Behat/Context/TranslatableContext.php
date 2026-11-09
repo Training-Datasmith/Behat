@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context;
 
-use Behat\Behat\Context\Reader\Translatable_Context_Reader;
+use Behat\Behat\Context\Reader\TranslatableContextReader;
+
 /**
  * Context that implements this interface is also treated as a translation provider for all it's callees.
  *
@@ -18,7 +21,7 @@ use Behat\Behat\Context\Reader\Translatable_Context_Reader;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Translatable_Context extends Context
+interface TranslatableContext extends Context
 {
     /**
      * Returns array of Translator-supported resource paths.
@@ -31,5 +34,5 @@ interface Translatable_Context extends Context
      *
      * @return string[]
      */
-    public static function get_translation_resources();
+    public static function getTranslationResources();
 }

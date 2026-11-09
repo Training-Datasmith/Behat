@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,81 +9,107 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Path_Options\Printer;
 
-use Behat\Behat\Util\Strict_Regex;
-use Symfony\Component\Console\Formatter\Output_Formatter;
-final class Configurable_Path_Printer
+namespace Behat\Testwork\PathOptions\Printer;
+
+use Behat\Behat\Util\StrictRegex;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+
+final class ConfigurablePathPrinter
 {
-    private readonly string $base_path;
+    private readonly string $basePath;
+
     /**
      * @param string[] $removePrefix
      */
-    public function __construct(string $base_path, private bool $print_absolute_paths, private ?string $editor_url = null, private array $remove_prefix = [])
-    {
-        $real_base_path = realpath($base_path);
-        if ($real_base_path) {
-            $base_path = $real_base_path;
+    public function __construct(
+        string $basePath,
+        private bool $printAbsolutePaths,
+        private ?string $editorUrl = null,
+        private array $removePrefix = [],
+    ) {
+        $realBasePath = realpath($basePath);
+
+        if ($realBasePath) {
+            $basePath = $realBasePath;
         }
-        $this->base_path = $base_path;
-        $this->remove_prefix = $remove_prefix;
+
+        $this->basePath = $basePath;
+        $this->removePrefix = $removePrefix;
     }
-    public function set_print_absolute_paths(bool $print_absolute_paths): void
+
+    public function setPrintAbsolutePaths(bool $printAbsolutePaths): void
     {
-        $this->print_absolute_paths = $print_absolute_paths;
+        $this->printAbsolutePaths = $printAbsolutePaths;
     }
-    public function set_editor_url(?string $editor_url): void
+
+    public function setEditorUrl(?string $editorUrl): void
     {
-        $this->editor_url = $editor_url;
+        $this->editorUrl = $editorUrl;
     }
+
     /**
      * @param string[] $removePrefix
      */
-    public function set_remove_prefix(array $remove_prefix): void
+    public function setRemovePrefix(array $removePrefix): void
     {
-        $this->remove_prefix = $remove_prefix;
+        $this->removePrefix = $removePrefix;
     }
+
     /**
      * Conditionally transforms paths to relative and adds editor links if configured.
      */
-    public function process_paths_in_text(string $text, bool $apply_editor_url = true): string
+    public function processPathsInText(string $text, bool $applyEditorUrl = true): string
     {
         // If no editor URL is set or the caller opts out, use the original behavior
-        if ($this->editor_url === null || $apply_editor_url === false) {
-            $processed_text = $this->print_absolute_paths ? $text : str_replace($this->base_path . DIRECTORY_SEPARATOR, '', $text);
+        if ($this->editorUrl === null || $applyEditorUrl === false) {
+            $processedText = $this->printAbsolutePaths ? $text : str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $text);
             // Apply removePrefix if configured
-            foreach ($this->remove_prefix as $prefix) {
-                $processed_text = str_replace($prefix, '', $processed_text);
+            foreach ($this->removePrefix as $prefix) {
+                $processedText = str_replace($prefix, '', $processedText);
             }
-            return $processed_text;
+
+            return $processedText;
         }
+
         // Search for paths in the text
-        $base_path_pattern = preg_quote($this->base_path . DIRECTORY_SEPARATOR, '/');
-        $pattern = '/(' . $base_path_pattern . '[^:\s]+)((:|\s+line\s+)(\d+))?/';
-        return Strict_Regex::replace_callback($pattern, function (array $matches): string {
-            $file_path = $matches[1];
+        $basePathPattern = preg_quote($this->basePath . DIRECTORY_SEPARATOR, '/');
+        $pattern = '/(' . $basePathPattern . '[^:\s]+)((:|\s+line\s+)(\d+))?/';
+
+        return StrictRegex::replaceCallback($pattern, function (array $matches): string {
+            $filePath = $matches[1];
             $line = $matches[4] ?? null;
+
             // Calculate absolute and relative paths
-            $abs_path = $file_path;
-            $rel_path = str_replace($this->base_path . DIRECTORY_SEPARATOR, '', $file_path);
+            $absPath = $filePath;
+            $relPath = str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $filePath);
+
             // Format the path according to printAbsolutePaths setting
-            $display_path = $this->print_absolute_paths ? $abs_path : $rel_path;
+            $displayPath = $this->printAbsolutePaths ? $absPath : $relPath;
+
             // Remove prefixes if configured
-            foreach ($this->remove_prefix as $prefix) {
-                if (str_starts_with($display_path, $prefix)) {
-                    $display_path = substr($display_path, strlen($prefix));
+            foreach ($this->removePrefix as $prefix) {
+                if (str_starts_with($displayPath, $prefix)) {
+                    $displayPath = substr($displayPath, strlen($prefix));
                     break;
                 }
             }
+
             // If no line number is present, use empty string
             if ($line === null) {
                 $line = '';
             }
+
             // Replace placeholders in the editor URL
-            $editor_url = str_replace(['{absPath}', '{relPath}', '{line}'], [$abs_path, $rel_path, $line], $this->editor_url);
+            $editorUrl = str_replace(
+                ['{absPath}', '{relPath}', '{line}'],
+                [$absPath, $relPath, $line],
+                $this->editorUrl
+            );
+
             // Create a link with the path
             // $matches[2] represents the line number with its prefix (`:LINE` or ` line LINE`)
-            return '<href=' . Output_Formatter::escape($editor_url) . '>' . $display_path . ($matches[2] ?? '') . '</>';
+            return '<href=' . OutputFormatter::escape($editorUrl) . '>' . $displayPath . ($matches[2] ?? '') . '</>';
         }, $text);
     }
 }

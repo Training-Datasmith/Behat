@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,31 +9,38 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation;
 
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\Environment_Manager;
+use Behat\Testwork\Environment\EnvironmentManager;
+
 /**
  * Provides transformations using environment manager.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Transformation_Repository
+final readonly class TransformationRepository
 {
     /**
      * Initializes repository.
      */
-    public function __construct(private Environment_Manager $environment_manager)
-    {
+    public function __construct(
+        private EnvironmentManager $environmentManager,
+    ) {
     }
+
     /**
      * Returns all available definitions for a specific environment.
      *
      * @return Transformation[]
      */
-    public function get_environment_transformations(Environment $environment): array
+    public function getEnvironmentTransformations(Environment $environment): array
     {
-        return array_filter($this->environment_manager->read_environment_callees($environment), fn(Callee $callee): bool => $callee instanceof Transformation);
+        return array_filter(
+            $this->environmentManager->readEnvironmentCallees($environment),
+            fn (Callee $callee): bool => $callee instanceof Transformation
+        );
     }
 }

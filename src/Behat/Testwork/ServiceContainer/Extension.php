@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,11 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Service_Container;
 
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
-use Symfony\Component\Dependency_Injection\Container_Builder;
+namespace Behat\Testwork\ServiceContainer;
+
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
  * Represents Testwork extension mechanism.
  *
@@ -21,14 +24,15 @@ use Symfony\Component\Dependency_Injection\Container_Builder;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Extension extends Compiler_Pass_Interface
+interface Extension extends CompilerPassInterface
 {
     /**
      * Returns the extension config key.
      *
      * @return string
      */
-    public function get_config_key();
+    public function getConfigKey();
+
     /**
      * Initializes other extensions.
      *
@@ -37,14 +41,16 @@ interface Extension extends Compiler_Pass_Interface
      * to hook into the configuration of other extensions providing such an
      * extension point.
      */
-    public function initialize(Extension_Manager $extension_manager);
+    public function initialize(ExtensionManager $extensionManager);
+
     /**
      * Setups configuration for the extension.
      *
      * NOTE: If your extension uses the ArrayNodeDefinition passed to this method, your composer.json should declare
      * a direct dependency on the version(s) of symfony/config that you support.
      */
-    public function configure(Array_Node_Definition $builder);
+    public function configure(ArrayNodeDefinition $builder);
+
     /**
      * Loads extension services into temporary container.
      *
@@ -53,7 +59,8 @@ interface Extension extends Compiler_Pass_Interface
      *
      * @param array<string, mixed> $config
      */
-    public function load(Container_Builder $container, array $config);
+    public function load(ContainerBuilder $container, array $config);
+
     /**
      * You can modify the container here before it is dumped to PHP code.
      *
@@ -62,5 +69,5 @@ interface Extension extends Compiler_Pass_Interface
      *
      * @return void
      */
-    public function process(Container_Builder $container);
+    public function process(ContainerBuilder $container);
 }

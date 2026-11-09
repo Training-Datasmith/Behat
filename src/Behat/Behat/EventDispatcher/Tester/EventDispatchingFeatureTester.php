@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,17 +9,19 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Event_Dispatcher\Tester;
 
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Before_Feature_Teardown;
-use Behat\Behat\Event_Dispatcher\Event\Before_Feature_Tested;
-use Behat\Gherkin\Node\Feature_Node;
+namespace Behat\Behat\EventDispatcher\Tester;
+
+use Behat\Behat\EventDispatcher\Event\AfterFeatureSetup;
+use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
+use Behat\Behat\EventDispatcher\Event\BeforeFeatureTeardown;
+use Behat\Behat\EventDispatcher\Event\BeforeFeatureTested;
+use Behat\Gherkin\Node\FeatureNode;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Specification_Tester;
-use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\SpecificationTester;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * Feature tester dispatching BEFORE/AFTER events during tests.
  *
@@ -26,36 +29,51 @@ use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
  *
  * @implements SpecificationTester<FeatureNode>
  */
-final readonly class Event_Dispatching_Feature_Tester implements Specification_Tester
+final readonly class EventDispatchingFeatureTester implements SpecificationTester
 {
     /**
      * Initializes tester.
      *
      * @param SpecificationTester<FeatureNode> $baseTester
      */
-    public function __construct(private Specification_Tester $base_tester, private Event_Dispatcher_Interface $event_dispatcher)
-    {
+    public function __construct(
+        private SpecificationTester $baseTester,
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
-    public function set_up(Environment $env, $spec, $skip)
+
+    public function setUp(Environment $env, $spec, $skip)
     {
-        $event = new Before_Feature_Tested($env, $spec);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE);
-        $setup = $this->base_tester->set_up($env, $spec, $skip);
-        $event = new After_Feature_Setup($env, $spec, $setup);
-        $this->event_dispatcher->dispatch($event, $event::AFTER_SETUP);
+        $event = new BeforeFeatureTested($env, $spec);
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE);
+
+        $setup = $this->baseTester->setUp($env, $spec, $skip);
+
+        $event = new AfterFeatureSetup($env, $spec, $setup);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER_SETUP);
+
         return $setup;
     }
+
     public function test(Environment $env, $spec, $skip)
     {
-        return $this->base_tester->test($env, $spec, $skip);
+        return $this->baseTester->test($env, $spec, $skip);
     }
-    public function tear_down(Environment $env, $spec, $skip, Test_Result $result)
+
+    public function tearDown(Environment $env, $spec, $skip, TestResult $result)
     {
-        $event = new Before_Feature_Teardown($env, $spec, $result);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
-        $teardown = $this->base_tester->tear_down($env, $spec, $skip, $result);
-        $event = new After_Feature_Tested($env, $spec, $result, $teardown);
-        $this->event_dispatcher->dispatch($event, $event::AFTER);
+        $event = new BeforeFeatureTeardown($env, $spec, $result);
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
+
+        $teardown = $this->baseTester->tearDown($env, $spec, $skip, $result);
+
+        $event = new AfterFeatureTested($env, $spec, $result, $teardown);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER);
+
         return $teardown;
     }
 }

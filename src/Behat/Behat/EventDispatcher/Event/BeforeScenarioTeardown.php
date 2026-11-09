@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,42 +9,51 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Event_Dispatcher\Event;
 
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
+namespace Behat\Behat\EventDispatcher\Event;
+
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Teardown;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\EventDispatcher\Event\BeforeTeardown;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Represents an event before scenario teardown.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Before_Scenario_Teardown extends Scenario_Tested implements Before_Teardown
+final class BeforeScenarioTeardown extends ScenarioTested implements BeforeTeardown
 {
     /**
      * Initializes event.
      */
-    public function __construct(Environment $env, private readonly Feature_Node $feature, private readonly Scenario $scenario, private readonly Test_Result $result)
-    {
+    public function __construct(
+        Environment $env,
+        private readonly FeatureNode $feature,
+        private readonly Scenario $scenario,
+        private readonly TestResult $result,
+    ) {
         parent::__construct($env);
     }
+
     /**
      * Returns feature.
      */
-    public function get_feature(): \Behat\Gherkin\Node\Feature_Node
+    public function getFeature(): \Behat\Gherkin\Node\FeatureNode
     {
         return $this->feature;
     }
-    public function get_scenario(): \Behat\Gherkin\Node\Scenario_Like_Interface
+
+    public function getScenario(): \Behat\Gherkin\Node\ScenarioLikeInterface
     {
         return $this->scenario;
     }
+
     /**
      * Returns current test result.
      */
-    public function get_test_result(): \Behat\Testwork\Tester\Result\Test_Result
+    public function getTestResult(): \Behat\Testwork\Tester\Result\TestResult
     {
         return $this->result;
     }

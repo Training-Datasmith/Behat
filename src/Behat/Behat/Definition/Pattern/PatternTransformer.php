@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,34 +9,39 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition\Pattern;
 
-use Behat\Behat\Definition\Exception\Unknown_Pattern_Exception;
-use Behat\Behat\Definition\Exception\Unsupported_Pattern_Type_Exception;
-use Behat\Behat\Definition\Pattern\Policy\Pattern_Policy;
+use Behat\Behat\Definition\Exception\UnknownPatternException;
+use Behat\Behat\Definition\Exception\UnsupportedPatternTypeException;
+use Behat\Behat\Definition\Pattern\Policy\PatternPolicy;
+
 /**
  * Transforms patterns using registered policies.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Pattern_Transformer
+final class PatternTransformer
 {
     /**
      * @var PatternPolicy[]
      */
     private array $policies = [];
+
     /**
      * @var string[]
      */
-    private array $pattern_to_regexp_cache = [];
+    private array $patternToRegexpCache = [];
+
     /**
      * Registers pattern policy.
      */
-    public function register_pattern_policy(Pattern_Policy $policy): void
+    public function registerPatternPolicy(PatternPolicy $policy): void
     {
         $this->policies[] = $policy;
-        $this->pattern_to_regexp_cache = [];
+        $this->patternToRegexpCache = [];
     }
+
     /**
      * Generates pattern.
      *
@@ -46,15 +52,17 @@ final class Pattern_Transformer
      *
      * @throws UnsupportedPatternTypeException
      */
-    public function generate_pattern($type, $step_text)
+    public function generatePattern($type, $stepText)
     {
         foreach ($this->policies as $policy) {
-            if ($policy->supports_pattern_type($type)) {
-                return $policy->generate_pattern($step_text);
+            if ($policy->supportsPatternType($type)) {
+                return $policy->generatePattern($stepText);
             }
         }
-        throw new Unsupported_Pattern_Type_Exception(sprintf('Can not find policy for a pattern type `%s`.', $type), $type);
+
+        throw new UnsupportedPatternTypeException(sprintf('Can not find policy for a pattern type `%s`.', $type), $type);
     }
+
     /**
      * Transforms pattern string to regex.
      *
@@ -64,13 +72,15 @@ final class Pattern_Transformer
      *
      * @throws UnknownPatternException
      */
-    public function transform_pattern_to_regex($pattern)
+    public function transformPatternToRegex($pattern)
     {
-        if (!isset($this->pattern_to_regexp_cache[$pattern])) {
-            $this->pattern_to_regexp_cache[$pattern] = $this->transform_pattern_to_regex_with_supported_policy($pattern);
+        if (!isset($this->patternToRegexpCache[$pattern])) {
+            $this->patternToRegexpCache[$pattern] = $this->transformPatternToRegexWithSupportedPolicy($pattern);
         }
-        return $this->pattern_to_regexp_cache[$pattern];
+
+        return $this->patternToRegexpCache[$pattern];
     }
+
     /**
      * Tests if a pattern matches a given step text.
      *
@@ -79,14 +89,16 @@ final class Pattern_Transformer
      *
      * @return false|array<int|string,string>
      */
-    public function match_pattern(string $pattern, string $step_text): false|array
+    public function matchPattern(string $pattern, string $stepText): false|array
     {
-        $regex = $this->transform_pattern_to_regex($pattern);
-        if (!preg_match($regex, $step_text, $matches)) {
+        $regex = $this->transformPatternToRegex($pattern);
+        if (!preg_match($regex, $stepText, $matches)) {
             return false;
         }
+
         return $matches;
     }
+
     /**
      * @param string $pattern
      *
@@ -94,13 +106,14 @@ final class Pattern_Transformer
      *
      * @throws UnknownPatternException
      */
-    private function transform_pattern_to_regex_with_supported_policy($pattern)
+    private function transformPatternToRegexWithSupportedPolicy($pattern)
     {
         foreach ($this->policies as $policy) {
-            if ($policy->supports_pattern($pattern)) {
-                return $policy->transform_pattern_to_regex($pattern);
+            if ($policy->supportsPattern($pattern)) {
+                return $policy->transformPatternToRegex($pattern);
             }
         }
-        throw new Unknown_Pattern_Exception(sprintf('Can not find policy for a pattern `%s`.', $pattern), $pattern);
+
+        throw new UnknownPatternException(sprintf('Can not find policy for a pattern `%s`.', $pattern), $pattern);
     }
 }

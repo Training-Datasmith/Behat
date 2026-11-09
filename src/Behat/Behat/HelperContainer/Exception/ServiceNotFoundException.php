@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,16 +9,18 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Helper_Container\Exception;
+
+namespace Behat\Behat\HelperContainer\Exception;
 
 use InvalidArgumentException;
-use Psr\Container\Not_Found_Exception_Interface;
+use Psr\Container\NotFoundExceptionInterface;
+
 /**
  * Represents an exception thrown when service ID is not found inside the container.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Service_Not_Found_Exception extends InvalidArgumentException implements Helper_Container_Exception, Not_Found_Exception_Interface
+final class ServiceNotFoundException extends InvalidArgumentException implements HelperContainerException, NotFoundExceptionInterface
 {
     /**
      * Initializes exception.
@@ -25,17 +28,20 @@ final class Service_Not_Found_Exception extends InvalidArgumentException impleme
      * @param string $message
      * @param string $serviceId
      */
-    public function __construct($message, private $service_id)
-    {
+    public function __construct(
+        $message,
+        private $serviceId,
+    ) {
         parent::__construct($message);
     }
+
     /**
      * Returns service ID that caused exception.
      *
      * @return string
      */
-    public function get_service_id()
+    public function getServiceId()
     {
-        return $this->service_id;
+        return $this->serviceId;
     }
 }

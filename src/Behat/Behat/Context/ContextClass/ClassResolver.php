@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Context\Context_Class;
 
-use Behat\Behat\Context\Environment\Handler\Context_Environment_Handler;
+namespace Behat\Behat\Context\ContextClass;
+
+use Behat\Behat\Context\Environment\Handler\ContextEnvironmentHandler;
+
 /**
  * Resolves arbitrary context strings into a context classes.
  *
@@ -18,7 +21,7 @@ use Behat\Behat\Context\Environment\Handler\Context_Environment_Handler;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Class_Resolver
+interface ClassResolver
 {
     /**
      * Checks if resolvers supports provided class.
@@ -27,7 +30,8 @@ interface Class_Resolver
      *
      * @return bool
      */
-    public function supports_class($context_string);
+    public function supportsClass($contextString);
+
     /**
      * Resolves context class.
      *
@@ -35,5 +39,5 @@ interface Class_Resolver
      *
      * @return string
      */
-    public function resolve_class($context_class);
+    public function resolveClass($contextClass);
 }

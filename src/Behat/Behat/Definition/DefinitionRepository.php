@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,24 +9,28 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition;
 
-use Behat\Behat\Definition\Exception\Redundant_Step_Exception;
+use Behat\Behat\Definition\Exception\RedundantStepException;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\Environment_Manager;
+use Behat\Testwork\Environment\EnvironmentManager;
+
 /**
  * Provides step definitions using environment manager.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Definition_Repository
+final readonly class DefinitionRepository
 {
     /**
      * Initializes repository.
      */
-    public function __construct(private Environment_Manager $environment_manager)
-    {
+    public function __construct(
+        private EnvironmentManager $environmentManager,
+    ) {
     }
+
     /**
      * Returns all available definitions for a specific environment.
      *
@@ -33,21 +38,26 @@ final readonly class Definition_Repository
      *
      * @throws RedundantStepException
      */
-    public function get_environment_definitions(Environment $environment): array
+    public function getEnvironmentDefinitions(Environment $environment): array
     {
         $patterns = [];
         $definitions = [];
-        foreach ($this->environment_manager->read_environment_callees($environment) as $callee) {
+
+        foreach ($this->environmentManager->readEnvironmentCallees($environment) as $callee) {
             if (!$callee instanceof Definition) {
                 continue;
             }
-            $pattern = $callee->get_pattern();
+
+            $pattern = $callee->getPattern();
             if (isset($patterns[$pattern])) {
-                throw new Redundant_Step_Exception($callee, $patterns[$pattern]);
+                throw new RedundantStepException($callee, $patterns[$pattern]);
             }
+
             $patterns[$pattern] = $callee;
+
             $definitions[] = $callee;
         }
+
         return $definitions;
     }
 }

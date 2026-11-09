@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context;
 
-use Behat\Behat\Context\Snippet\Generator\Context_Snippet_Generator;
+use Behat\Behat\Context\Snippet\Generator\ContextSnippetGenerator;
+
 /**
  * Context that implements this interface is treated as a custom-snippet-friendly context.
  *
@@ -20,7 +23,7 @@ use Behat\Behat\Context\Snippet\Generator\Context_Snippet_Generator;
  *
  * @deprecated will be removed in 4.0. Use --snippets-for and --snippets-type CLI options instead
  */
-interface Custom_Snippet_Accepting_Context extends Snippet_Accepting_Context
+interface CustomSnippetAcceptingContext extends SnippetAcceptingContext
 {
     /**
      * Returns type of the snippets that this context accepts.
@@ -29,5 +32,5 @@ interface Custom_Snippet_Accepting_Context extends Snippet_Accepting_Context
      *
      * @return string
      */
-    public static function get_accepted_snippet_type();
+    public static function getAcceptedSnippetType();
 }

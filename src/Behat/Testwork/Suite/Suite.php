@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Suite;
 
 /**
@@ -22,13 +24,15 @@ interface Suite
      *
      * @return string
      */
-    public function get_name();
+    public function getName();
+
     /**
      * Returns suite settings.
      *
      * @return array
      */
-    public function get_settings();
+    public function getSettings();
+
     /**
      * Checks if a setting with provided name exists.
      *
@@ -36,11 +40,12 @@ interface Suite
      *
      * @return bool
      */
-    public function has_setting($key);
+    public function hasSetting($key);
+
     /**
      * Returns setting value by its key.
      *
      * @param string $key
      */
-    public function get_setting($key);
+    public function getSetting($key);
 }

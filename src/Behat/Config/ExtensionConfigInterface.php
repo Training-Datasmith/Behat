@@ -1,9 +1,10 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 namespace Behat\Config;
 
-interface Extension_Config_Interface extends Config_Interface
+interface ExtensionConfigInterface extends ConfigInterface
 {
     public function name(): string;
 }

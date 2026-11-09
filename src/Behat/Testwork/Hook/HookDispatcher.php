@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,44 +9,51 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook;
 
-use Behat\Testwork\Call\Call_Center;
-use Behat\Testwork\Call\Call_Result;
-use Behat\Testwork\Call\Call_Results;
-use Behat\Testwork\Hook\Call\Hook_Call;
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Testwork\Call\CallCenter;
+use Behat\Testwork\Call\CallResult;
+use Behat\Testwork\Call\CallResults;
+use Behat\Testwork\Hook\Call\HookCall;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Dispatches registered hooks for provided events.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Hook_Dispatcher
+final readonly class HookDispatcher
 {
     /**
      * Initializes hook dispatcher.
      */
-    public function __construct(private Hook_Repository $repository, private Call_Center $call_center)
-    {
+    public function __construct(
+        private HookRepository $repository,
+        private CallCenter $callCenter,
+    ) {
     }
+
     /**
      * Dispatches hooks for a specified event.
      */
-    public function dispatch_scope_hooks(Hook_Scope $scope): Call_Results
+    public function dispatchScopeHooks(HookScope $scope): CallResults
     {
         $results = [];
-        foreach ($this->repository->get_scope_hooks($scope) as $hook) {
-            $results[] = $this->dispatch_hook($scope, $hook);
+        foreach ($this->repository->getScopeHooks($scope) as $hook) {
+            $results[] = $this->dispatchHook($scope, $hook);
         }
-        return new Call_Results($results);
+
+        return new CallResults($results);
     }
+
     /**
      * Dispatches single event hook.
      *
      * @return CallResult
      */
-    private function dispatch_hook(Hook_Scope $scope, Hook $hook)
+    private function dispatchHook(HookScope $scope, Hook $hook)
     {
-        return $this->call_center->make_call(new Hook_Call($scope, $hook));
+        return $this->callCenter->makeCall(new HookCall($scope, $hook));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,65 +9,88 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation\Call\Filter;
 
-use Behat\Behat\Definition\Call\Definition_Call;
-use Behat\Behat\Transformation\Exception\Unsupported_Call_Exception;
-use Behat\Behat\Transformation\Transformer\Argument_Transformer;
+use Behat\Behat\Definition\Call\DefinitionCall;
+use Behat\Behat\Transformation\Exception\UnsupportedCallException;
+use Behat\Behat\Transformation\Transformer\ArgumentTransformer;
 use Behat\Testwork\Call\Call;
-use Behat\Testwork\Call\Filter\Call_Filter;
+use Behat\Testwork\Call\Filter\CallFilter;
+
 /**
  * Handles definition calls by intercepting them and transforming their arguments using transformations.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Definition_Arguments_Transformer implements Call_Filter
+final class DefinitionArgumentsTransformer implements CallFilter
 {
     /**
      * @var ArgumentTransformer[]
      */
-    private array $argument_transformers = [];
+    private array $argumentTransformers = [];
+
     /**
      * Registers new argument transformer.
      */
-    public function register_argument_transformer(Argument_Transformer $transformer): void
+    public function registerArgumentTransformer(ArgumentTransformer $transformer): void
     {
-        $this->argument_transformers[] = $transformer;
+        $this->argumentTransformers[] = $transformer;
     }
-    public function supports_call(Call $call): bool
+
+    public function supportsCall(Call $call): bool
     {
-        return $call instanceof Definition_Call;
+        return $call instanceof DefinitionCall;
     }
-    public function filter_call(Call $call)
+
+    public function filterCall(Call $call)
     {
-        if (!$call instanceof Definition_Call) {
-            throw new Unsupported_Call_Exception(sprintf('DefinitionArgumentTransformer can not filter `%s` call.', $call::class), $call);
+        if (!$call instanceof DefinitionCall) {
+            throw new UnsupportedCallException(sprintf(
+                'DefinitionArgumentTransformer can not filter `%s` call.',
+                $call::class
+            ), $call);
         }
-        $new_arguments = [];
+
+        $newArguments = [];
         $transformed = false;
-        foreach ($call->get_arguments() as $index => $value) {
-            $new_value = $this->transform_argument($call, $index, $value);
-            if ($new_value !== $value) {
+        foreach ($call->getArguments() as $index => $value) {
+            $newValue = $this->transformArgument($call, $index, $value);
+
+            if ($newValue !== $value) {
                 $transformed = true;
             }
-            $new_arguments[$index] = $new_value;
+
+            $newArguments[$index] = $newValue;
         }
+
         if (!$transformed) {
             return $call;
         }
-        return new Definition_Call($call->get_environment(), $call->get_feature(), $call->get_step(), $call->get_callee(), $new_arguments, $call->get_error_reporting_level());
+
+        return new DefinitionCall(
+            $call->getEnvironment(),
+            $call->getFeature(),
+            $call->getStep(),
+            $call->getCallee(),
+            $newArguments,
+            $call->getErrorReportingLevel()
+        );
     }
+
     /**
      * Transforms call argument using registered transformers.
      */
-    private function transform_argument(Definition_Call $definition_call, int|string $index, $value)
+    private function transformArgument(DefinitionCall $definitionCall, int|string $index, $value)
     {
-        foreach ($this->argument_transformers as $transformer) {
-            if (!$transformer->supports_definition_and_argument($definition_call, $index, $value)) {
+        foreach ($this->argumentTransformers as $transformer) {
+            if (!$transformer->supportsDefinitionAndArgument($definitionCall, $index, $value)) {
                 continue;
             }
-            return $transformer->transform_argument($definition_call, $index, $value);
+
+            return $transformer->transformArgument($definitionCall, $index, $value);
         }
+
         return $value;
     }
 }

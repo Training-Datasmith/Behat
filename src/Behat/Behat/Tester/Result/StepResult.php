@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,14 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Tester\Result;
 
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Extends Testwork test result with support for undefined status.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Step_Result extends Test_Result
+interface StepResult extends TestResult
 {
 }

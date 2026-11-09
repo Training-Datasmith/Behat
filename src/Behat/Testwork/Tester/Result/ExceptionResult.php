@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,26 +9,29 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Result;
 
 use Throwable;
+
 /**
  * Represents a result, that possibly produced an exception.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Exception_Result extends Test_Result
+interface ExceptionResult extends TestResult
 {
     /**
      * Checks that the test result has exception.
      *
      * @return bool
      */
-    public function has_exception();
+    public function hasException();
+
     /**
      * Returns exception that test result has.
      *
      * @return Throwable|null
      */
-    public function get_exception();
+    public function getException();
 }

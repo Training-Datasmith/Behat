@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,22 +9,25 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Output\Service_Container\Formatter;
 
-use Symfony\Component\Dependency_Injection\Container_Builder;
+namespace Behat\Testwork\Output\ServiceContainer\Formatter;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
  * Provides a way to easily define custom formatters.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Formatter_Factory
+interface FormatterFactory
 {
     /**
      * Builds formatter configuration.
      */
-    public function build_formatter(Container_Builder $container);
+    public function buildFormatter(ContainerBuilder $container);
+
     /**
      * Processes formatter configuration.
      */
-    public function process_formatter(Container_Builder $container);
+    public function processFormatter(ContainerBuilder $container);
 }

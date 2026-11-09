@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Output\Printer;
 
 /**
@@ -15,7 +17,7 @@ namespace Behat\Testwork\Output\Printer;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Output_Printer
+interface OutputPrinter
 {
     /**
      * @deprecated since 3.1, to be removed in 4.0
@@ -33,12 +35,14 @@ interface Output_Printer
      * @deprecated since 3.1, to be removed in 4.0
      */
     public const VERBOSITY_DEBUG = 4;
+
     /**
      * Sets output path.
      *
      * @param string $path
      */
-    public function set_output_path($path);
+    public function setOutputPath($path);
+
     /**
      * Returns output path.
      *
@@ -46,11 +50,13 @@ interface Output_Printer
      *
      * @deprecated since 3.1, to be removed in 4.0
      */
-    public function get_output_path();
+    public function getOutputPath();
+
     /**
      * Sets output styles.
      */
-    public function set_output_styles(array $styles);
+    public function setOutputStyles(array $styles);
+
     /**
      * Returns output styles.
      *
@@ -58,13 +64,15 @@ interface Output_Printer
      *
      * @deprecated since 3.1, to be removed in 4.0
      */
-    public function get_output_styles();
+    public function getOutputStyles();
+
     /**
      * Forces output to be decorated.
      *
      * @param bool $decorated
      */
-    public function set_output_decorated($decorated);
+    public function setOutputDecorated($decorated);
+
     /**
      * Returns output decoration status.
      *
@@ -72,13 +80,15 @@ interface Output_Printer
      *
      * @deprecated since 3.1, to be removed in 4.0
      */
-    public function is_output_decorated();
+    public function isOutputDecorated();
+
     /**
      * Sets output verbosity level.
      *
      * @param int $level
      */
-    public function set_output_verbosity($level);
+    public function setOutputVerbosity($level);
+
     /**
      * Returns output verbosity level.
      *
@@ -86,19 +96,22 @@ interface Output_Printer
      *
      * @deprecated since 3.1, to be removed in 4.0
      */
-    public function get_output_verbosity();
+    public function getOutputVerbosity();
+
     /**
      * Writes message(s) to output stream.
      *
      * @param string|array $messages message or array of messages
      */
     public function write($messages);
+
     /**
      * Writes newlined message(s) to output stream.
      *
      * @param string|array $messages message or array of messages
      */
     public function writeln($messages = '');
+
     /**
      * Clear output stream, so on next write formatter will need to init (create) it again.
      */

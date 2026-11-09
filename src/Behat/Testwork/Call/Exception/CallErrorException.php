@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,17 +9,29 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call\Exception;
 
 use ErrorException;
+
 /**
  * Represents catchable errors raised during call execution.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Call_Error_Exception extends ErrorException
+final class CallErrorException extends ErrorException
 {
-    private $levels = [E_WARNING => 'Warning', E_NOTICE => 'Notice', E_DEPRECATED => 'Deprecated', E_USER_ERROR => 'User Error', E_USER_WARNING => 'User Warning', E_USER_NOTICE => 'User Notice', E_USER_DEPRECATED => 'User Deprecated', E_RECOVERABLE_ERROR => 'Catchable Fatal Error'];
+    private $levels = [
+        E_WARNING => 'Warning',
+        E_NOTICE => 'Notice',
+        E_DEPRECATED => 'Deprecated',
+        E_USER_ERROR => 'User Error',
+        E_USER_WARNING => 'User Warning',
+        E_USER_NOTICE => 'User Notice',
+        E_USER_DEPRECATED => 'User Deprecated',
+        E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
+    ];
+
     /**
      * Initializes error handler exception.
      *
@@ -33,6 +46,15 @@ final class Call_Error_Exception extends ErrorException
         if (defined('E_STRICT') && $level === @E_STRICT) {
             $this->levels[@E_STRICT] = 'Runtime Notice';
         }
-        parent::__construct(sprintf('%s: %s in %s line %d', $this->levels[$level] ?? $level, $message, $file, $line));
+
+        parent::__construct(
+            sprintf(
+                '%s: %s in %s line %d',
+                $this->levels[$level] ?? $level,
+                $message,
+                $file,
+                $line
+            )
+        );
     }
 }

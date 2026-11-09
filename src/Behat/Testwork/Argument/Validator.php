@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,12 +9,14 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Argument;
 
-use Behat\Testwork\Argument\Exception\Unknown_Parameter_Value_Exception;
-use Reflection_Function_Abstract;
+use Behat\Testwork\Argument\Exception\UnknownParameterValueException;
+use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
+
 /**
  * Validates function arguments.
  *
@@ -28,38 +31,52 @@ final class Validator
      *
      * @throws UnknownParameterValueException
      */
-    public function validate_arguments(Reflection_Function_Abstract $function, array $arguments): void
+    public function validateArguments(ReflectionFunctionAbstract $function, array $arguments): void
     {
-        foreach ($function->get_parameters() as $num => $parameter) {
-            $this->validate_argument($parameter, $num, $arguments);
+        foreach ($function->getParameters() as $num => $parameter) {
+            $this->validateArgument($parameter, $num, $arguments);
         }
     }
+
     /**
      * Validates given argument.
      *
      * @param int $parameterIndex
      */
-    private function validate_argument(ReflectionParameter $parameter, $parameter_index, array $given_arguments): void
+    private function validateArgument(ReflectionParameter $parameter, $parameterIndex, array $givenArguments): void
     {
-        if ($parameter->is_default_value_available()) {
+        if ($parameter->isDefaultValueAvailable()) {
             return;
         }
-        if (array_key_exists($parameter_index, $given_arguments)) {
+
+        if (array_key_exists($parameterIndex, $givenArguments)) {
             return;
         }
-        if (array_key_exists($parameter->get_name(), $given_arguments)) {
+
+        if (array_key_exists($parameter->getName(), $givenArguments)) {
             return;
         }
-        throw new Unknown_Parameter_Value_Exception(sprintf('Can not find a matching value for an argument `$%s` of the method `%s`.', $parameter->get_name(), $this->get_function_path($parameter->get_declaring_function())));
+
+        throw new UnknownParameterValueException(sprintf(
+            'Can not find a matching value for an argument `$%s` of the method `%s`.',
+            $parameter->getName(),
+            $this->getFunctionPath($parameter->getDeclaringFunction())
+        ));
     }
+
     /**
      * Returns function path for a provided reflection.
      */
-    private function get_function_path(Reflection_Function_Abstract $function): string
+    private function getFunctionPath(ReflectionFunctionAbstract $function): string
     {
         if ($function instanceof ReflectionMethod) {
-            return sprintf('%s::%s()', $function->get_declaring_class()->get_name(), $function->get_name());
+            return sprintf(
+                '%s::%s()',
+                $function->getDeclaringClass()->getName(),
+                $function->getName()
+            );
         }
-        return sprintf('%s()', $function->get_name());
+
+        return sprintf('%s()', $function->getName());
     }
 }

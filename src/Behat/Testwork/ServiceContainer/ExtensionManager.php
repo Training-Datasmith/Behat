@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,16 +9,18 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Service_Container;
 
-use Behat\Behat\Util\Strict_Regex;
-use Behat\Testwork\Service_Container\Exception\Extension_Initialization_Exception;
+namespace Behat\Testwork\ServiceContainer;
+
+use Behat\Behat\Util\StrictRegex;
+use Behat\Testwork\ServiceContainer\Exception\ExtensionInitializationException;
+
 /**
  * Manages both default and 3rd-party extensions.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Extension_Manager
+final class ExtensionManager
 {
     /**
      * @var Extension[]
@@ -26,29 +29,36 @@ final class Extension_Manager
     /**
      * @var Extension[string]
      */
-    private array $located_extensions = [];
-    private array $debug_information = ['extensions_list' => []];
+    private array $locatedExtensions = [];
+    private array $debugInformation = [
+        'extensions_list' => [],
+    ];
+
     /**
      * Initializes manager.
      *
      * @param Extension[] $extensions     List of default extensions
      * @param string|null $extensionsPath Base path where to search custom extension files
      */
-    public function __construct(array $extensions, private $extensions_path = null)
-    {
+    public function __construct(
+        array $extensions,
+        private $extensionsPath = null,
+    ) {
         foreach ($extensions as $extension) {
-            $this->extensions[$extension->get_config_key()] = $extension;
+            $this->extensions[$extension->getConfigKey()] = $extension;
         }
     }
+
     /**
      * Sets path to directory in which manager will try to find extension files.
      *
      * @param string|null $path
      */
-    public function set_extensions_path($path): void
+    public function setExtensionsPath($path): void
     {
-        $this->extensions_path = $path;
+        $this->extensionsPath = $path;
     }
+
     /**
      * Activate extension by its locator.
      *
@@ -56,12 +66,15 @@ final class Extension_Manager
      *
      * @return Extension
      */
-    public function activate_extension(string $locator)
+    public function activateExtension(string $locator)
     {
         $extension = $this->initialize($locator);
-        $this->debug_information['extensions_list'][] = $extension->get_config_key();
-        return $this->extensions[$extension->get_config_key()] = $extension;
+
+        $this->debugInformation['extensions_list'][] = $extension->getConfigKey();
+
+        return $this->extensions[$extension->getConfigKey()] = $extension;
     }
+
     /**
      * Returns specific extension by its name.
      *
@@ -69,57 +82,64 @@ final class Extension_Manager
      *
      * @return Extension|null
      */
-    public function get_extension($key)
+    public function getExtension($key)
     {
         return $this->extensions[$key] ?? null;
     }
+
     /**
      * Returns all available extensions.
      *
      * @return Extension[]
      */
-    public function get_extensions()
+    public function getExtensions()
     {
         return $this->extensions;
     }
+
     /**
      * Returns activated extension names.
      *
      * @return list<class-string<Extension>>
      */
-    public function get_extension_classes(): array
+    public function getExtensionClasses(): array
     {
         return array_map(get_class(...), array_values($this->extensions));
     }
+
     /**
      * Initializes all activated and predefined extensions.
      */
-    public function initialize_extensions(): void
+    public function initializeExtensions(): void
     {
         foreach ($this->extensions as $extension) {
             $extension->initialize($this);
         }
     }
+
     /**
      * Returns array with extensions debug information.
      *
      * @return array
      */
-    public function debug_information()
+    public function debugInformation()
     {
-        return $this->debug_information;
+        return $this->debugInformation;
     }
+
     /**
      * Attempts to guess full extension class from relative.
      *
      * @internal
      */
-    public static function guess_full_extension_class_name(string $locator): string
+    public static function guessFullExtensionClassName(string $locator): string
     {
         $parts = explode('\\', $locator);
-        $name = Strict_Regex::replace('/Extension$/', '', end($parts)) . 'Extension';
-        return $locator . '\ServiceContainer\\' . $name;
+        $name = StrictRegex::replace('/Extension$/', '', end($parts)) . 'Extension';
+
+        return $locator . '\\ServiceContainer\\' . $name;
     }
+
     /**
      * Initializes extension by id.
      *
@@ -127,49 +147,71 @@ final class Extension_Manager
      */
     private function initialize(string $locator): Extension
     {
-        if (isset($this->located_extensions[$locator])) {
-            return $this->located_extensions[$locator];
+        if (isset($this->locatedExtensions[$locator])) {
+            return $this->locatedExtensions[$locator];
         }
-        $extension = $this->instantiate_extension($locator);
-        $this->validate_extension_instance($extension, $locator);
-        return $this->located_extensions[$locator] = $extension;
+
+        $extension = $this->instantiateExtension($locator);
+        $this->validateExtensionInstance($extension, $locator);
+
+        return $this->locatedExtensions[$locator] = $extension;
     }
+
     /**
      * Instantiates extension from its locator.
      *
      * @throws ExtensionInitializationException
      */
-    private function instantiate_extension(string $locator): mixed
+    private function instantiateExtension(string $locator): mixed
     {
         if (class_exists($class = $locator)) {
             return new $class();
         }
-        if (class_exists($class = self::guess_full_extension_class_name($locator))) {
+
+        if (class_exists($class = self::guessFullExtensionClassName($locator))) {
             return new $class();
         }
+
         if (file_exists($locator)) {
             return require $locator;
         }
-        if (file_exists($path = $this->extensions_path . DIRECTORY_SEPARATOR . $locator)) {
+
+        if (file_exists($path = $this->extensionsPath . DIRECTORY_SEPARATOR . $locator)) {
             return require $path;
         }
-        throw new Extension_Initialization_Exception(sprintf('`%s` extension file or class could not be located.', $locator), $locator);
+
+        throw new ExtensionInitializationException(sprintf(
+            '`%s` extension file or class could not be located.',
+            $locator
+        ), $locator);
     }
+
     /**
      * Validates extension instance.
      *
      * @throws ExtensionInitializationException
      */
-    private function validate_extension_instance(mixed $extension, string $locator): void
+    private function validateExtensionInstance(mixed $extension, string $locator): void
     {
         if (null === $extension) {
-            throw new Extension_Initialization_Exception(sprintf('`%s` extension could not be found.', $locator), $locator);
+            throw new ExtensionInitializationException(sprintf(
+                '`%s` extension could not be found.',
+                $locator
+            ), $locator);
         }
+
         if (!is_object($extension)) {
-            throw new Extension_Initialization_Exception(sprintf('`%s` extension could not be initialized.', $locator), $locator);
+            throw new ExtensionInitializationException(sprintf(
+                '`%s` extension could not be initialized.',
+                $locator
+            ), $locator);
         }
+
         if (!$extension instanceof Extension) {
-            throw new Extension_Initialization_Exception(sprintf('`%s` extension class should implement Testwork Extension interface.', $extension::class), $locator);
+            throw new ExtensionInitializationException(sprintf(
+                '`%s` extension class should implement Testwork Extension interface.',
+                $extension::class
+            ), $locator);
         }
     }
 }

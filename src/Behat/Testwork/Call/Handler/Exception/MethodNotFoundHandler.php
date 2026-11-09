@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call\Handler\Exception;
 
-use Behat\Testwork\Call\Handler\Exception_Handler;
+use Behat\Testwork\Call\Handler\ExceptionHandler;
 use Error;
+
 /**
  * Handles method not found exceptions.
  *
@@ -19,34 +22,41 @@ use Error;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Method_Not_Found_Handler implements Exception_Handler
+abstract class MethodNotFoundHandler implements ExceptionHandler
 {
     public const PATTERN = '/^Call to undefined method ([^:]+)::([^\)]+)\(\)$/';
-    final public function supports_exception($exception)
+
+    final public function supportsException($exception)
     {
         if (!$exception instanceof Error) {
             return false;
         }
-        return null !== $this->extract_non_existent_callable($exception);
+
+        return null !== $this->extractNonExistentCallable($exception);
     }
-    final public function handle_exception($exception)
+
+    final public function handleException($exception)
     {
         assert($exception instanceof Error);
-        $this->handle_non_existent_method($this->extract_non_existent_callable($exception));
+        $this->handleNonExistentMethod($this->extractNonExistentCallable($exception));
+
         return $exception;
     }
+
     /**
      * Override to handle non-existent method.
      */
-    abstract public function handle_non_existent_method(array $callable);
+    abstract public function handleNonExistentMethod(array $callable);
+
     /**
      * Extract callable from exception.
      */
-    private function extract_non_existent_callable(Error $exception): ?array
+    private function extractNonExistentCallable(Error $exception): ?array
     {
-        if (1 === preg_match(self::PATTERN, $exception->get_message(), $matches)) {
+        if (1 === preg_match(self::PATTERN, $exception->getMessage(), $matches)) {
             return [$matches[1], $matches[2]];
         }
+
         return null;
     }
 }

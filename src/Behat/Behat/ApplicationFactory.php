@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,46 +9,48 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat;
 
-use Behat\Behat\Context\Service_Container\Context_Extension;
-use Behat\Behat\Definition\Service_Container\Definition_Extension;
-use Behat\Behat\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
-use Behat\Behat\Gherkin\Service_Container\Gherkin_Extension;
-use Behat\Behat\Helper_Container\Service_Container\Helper_Container_Extension;
-use Behat\Behat\Hook\Service_Container\Hook_Extension;
-use Behat\Behat\Output\Service_Container\Formatter\Json_Formatter_Factory;
-use Behat\Behat\Output\Service_Container\Formatter\J_Unit_Formatter_Factory;
-use Behat\Behat\Output\Service_Container\Formatter\Pretty_Formatter_Factory;
-use Behat\Behat\Output\Service_Container\Formatter\Progress_Formatter_Factory;
-use Behat\Behat\Snippet\Service_Container\Snippet_Extension;
-use Behat\Behat\Tester\Service_Container\Tester_Extension;
-use Behat\Behat\Transformation\Service_Container\Transformation_Extension;
-use Behat\Behat\Translator\Service_Container\Gherkin_Translations_Extension;
-use Behat\Testwork\Application_Factory as BaseFactory;
-use Behat\Testwork\Argument\Service_Container\Argument_Extension;
-use Behat\Testwork\Autoloader\Service_Container\Autoloader_Extension;
-use Behat\Testwork\Call\Service_Container\Call_Extension;
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Deprecation\Service_Container\Deprecation_Extension;
-use Behat\Testwork\Environment\Service_Container\Environment_Extension;
-use Behat\Testwork\Exception\Service_Container\Exception_Extension;
-use Behat\Testwork\Filesystem\Service_Container\Filesystem_Extension;
-use Behat\Testwork\Ordering\Service_Container\Ordering_Extension;
-use Behat\Testwork\Output\Service_Container\Formatter\Formatter_Factory;
-use Behat\Testwork\Output\Service_Container\Output_Extension;
-use Behat\Testwork\Path_Options\Service_Container\Path_Options_Extension;
-use Behat\Testwork\Service_Container\Service_Processor;
-use Behat\Testwork\Specification\Service_Container\Specification_Extension;
-use Behat\Testwork\Suite\Service_Container\Suite_Extension;
-use Behat\Testwork\Translator\Service_Container\Translator_Extension;
-use Composer\Installed_Versions;
+use Behat\Behat\Context\ServiceContainer\ContextExtension;
+use Behat\Behat\Definition\ServiceContainer\DefinitionExtension;
+use Behat\Behat\EventDispatcher\ServiceContainer\EventDispatcherExtension;
+use Behat\Behat\Gherkin\ServiceContainer\GherkinExtension;
+use Behat\Behat\HelperContainer\ServiceContainer\HelperContainerExtension;
+use Behat\Behat\Hook\ServiceContainer\HookExtension;
+use Behat\Behat\Output\ServiceContainer\Formatter\JSONFormatterFactory;
+use Behat\Behat\Output\ServiceContainer\Formatter\JUnitFormatterFactory;
+use Behat\Behat\Output\ServiceContainer\Formatter\PrettyFormatterFactory;
+use Behat\Behat\Output\ServiceContainer\Formatter\ProgressFormatterFactory;
+use Behat\Behat\Snippet\ServiceContainer\SnippetExtension;
+use Behat\Behat\Tester\ServiceContainer\TesterExtension;
+use Behat\Behat\Transformation\ServiceContainer\TransformationExtension;
+use Behat\Behat\Translator\ServiceContainer\GherkinTranslationsExtension;
+use Behat\Testwork\ApplicationFactory as BaseFactory;
+use Behat\Testwork\Argument\ServiceContainer\ArgumentExtension;
+use Behat\Testwork\Autoloader\ServiceContainer\AutoloaderExtension;
+use Behat\Testwork\Call\ServiceContainer\CallExtension;
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\Deprecation\ServiceContainer\DeprecationExtension;
+use Behat\Testwork\Environment\ServiceContainer\EnvironmentExtension;
+use Behat\Testwork\Exception\ServiceContainer\ExceptionExtension;
+use Behat\Testwork\Filesystem\ServiceContainer\FilesystemExtension;
+use Behat\Testwork\Ordering\ServiceContainer\OrderingExtension;
+use Behat\Testwork\Output\ServiceContainer\Formatter\FormatterFactory;
+use Behat\Testwork\Output\ServiceContainer\OutputExtension;
+use Behat\Testwork\PathOptions\ServiceContainer\PathOptionsExtension;
+use Behat\Testwork\ServiceContainer\ServiceProcessor;
+use Behat\Testwork\Specification\ServiceContainer\SpecificationExtension;
+use Behat\Testwork\Suite\ServiceContainer\SuiteExtension;
+use Behat\Testwork\Translator\ServiceContainer\TranslatorExtension;
+use Composer\InstalledVersions;
+
 /**
  * Defines the way behat is created.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Application_Factory extends Base_Factory
+final class ApplicationFactory extends BaseFactory
 {
     /**
      * @deprecated this constant will not be updated for releases after 3.13.0 and will be removed in the next major.
@@ -55,43 +58,99 @@ final class Application_Factory extends Base_Factory
      * an example. Note that composer's versions will not always be simple numeric values.
      */
     public const VERSION = '3.13.0';
-    protected function get_name(): string
+
+    protected function getName(): string
     {
         return 'behat';
     }
-    protected function get_version()
+
+    protected function getVersion()
     {
         // Get the currently installed behat version from composer's runtime API
-        return Installed_Versions::get_version('behat/behat');
+        return InstalledVersions::getVersion('behat/behat');
     }
-    protected function get_default_extensions(): array
+
+    protected function getDefaultExtensions(): array
     {
-        $processor = new Service_Processor();
-        return [new Argument_Extension(), new Autoloader_Extension(['' => '%paths.base%/features/bootstrap']), new Suite_Extension($processor), new Output_Extension('pretty', $this->get_default_formatter_factories($processor), $processor), new Path_Options_Extension(), new Exception_Extension($processor), new Gherkin_Extension($processor), new Call_Extension($processor), new Translator_Extension(), new Gherkin_Translations_Extension(), new Tester_Extension($processor), new Cli_Extension($processor), new Environment_Extension($processor), new Specification_Extension($processor), new Filesystem_Extension(), new Context_Extension($processor), new Snippet_Extension($processor), new Definition_Extension($processor), new Event_Dispatcher_Extension($processor), new Hook_Extension(), new Transformation_Extension($processor), new Ordering_Extension($processor), new Helper_Container_Extension($processor), new Deprecation_Extension()];
+        $processor = new ServiceProcessor();
+
+        return [
+            new ArgumentExtension(),
+            new AutoloaderExtension(['' => '%paths.base%/features/bootstrap']),
+            new SuiteExtension($processor),
+            new OutputExtension('pretty', $this->getDefaultFormatterFactories($processor), $processor),
+            new PathOptionsExtension(),
+            new ExceptionExtension($processor),
+            new GherkinExtension($processor),
+            new CallExtension($processor),
+            new TranslatorExtension(),
+            new GherkinTranslationsExtension(),
+            new TesterExtension($processor),
+            new CliExtension($processor),
+            new EnvironmentExtension($processor),
+            new SpecificationExtension($processor),
+            new FilesystemExtension(),
+            new ContextExtension($processor),
+            new SnippetExtension($processor),
+            new DefinitionExtension($processor),
+            new EventDispatcherExtension($processor),
+            new HookExtension(),
+            new TransformationExtension($processor),
+            new OrderingExtension($processor),
+            new HelperContainerExtension($processor),
+            new DeprecationExtension(),
+        ];
     }
-    protected function get_environment_variable_name(): string
+
+    protected function getEnvironmentVariableName(): string
     {
         return 'BEHAT_PARAMS';
     }
-    protected function get_config_path(): ?string
+
+    protected function getConfigPath(): ?string
     {
         $cwd = rtrim(getcwd(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $config_dir = $cwd . 'config' . DIRECTORY_SEPARATOR;
-        $paths = [$cwd . 'behat.yaml', $cwd . 'behat.yml', $cwd . 'behat.yaml.dist', $cwd . 'behat.yml.dist', $cwd . 'behat.dist.yaml', $cwd . 'behat.dist.yml', $cwd . 'behat.php', $cwd . 'behat.dist.php', $config_dir . 'behat.yaml', $config_dir . 'behat.yml', $config_dir . 'behat.yaml.dist', $config_dir . 'behat.yml.dist', $config_dir . 'behat.dist.yaml', $config_dir . 'behat.dist.yml', $config_dir . 'behat.php', $config_dir . 'behat.dist.php'];
+        $configDir = $cwd . 'config' . DIRECTORY_SEPARATOR;
+        $paths = [
+            $cwd . 'behat.yaml',
+            $cwd . 'behat.yml',
+            $cwd . 'behat.yaml.dist',
+            $cwd . 'behat.yml.dist',
+            $cwd . 'behat.dist.yaml',
+            $cwd . 'behat.dist.yml',
+            $cwd . 'behat.php',
+            $cwd . 'behat.dist.php',
+            $configDir . 'behat.yaml',
+            $configDir . 'behat.yml',
+            $configDir . 'behat.yaml.dist',
+            $configDir . 'behat.yml.dist',
+            $configDir . 'behat.dist.yaml',
+            $configDir . 'behat.dist.yml',
+            $configDir . 'behat.php',
+            $configDir . 'behat.dist.php',
+        ];
+
         foreach ($paths as $path) {
             if (is_file($path)) {
                 return $path;
             }
         }
+
         return null;
     }
+
     /**
      * Returns default formatter factories.
      *
      * @return list<FormatterFactory>
      */
-    private function get_default_formatter_factories(Service_Processor $processor): array
+    private function getDefaultFormatterFactories(ServiceProcessor $processor): array
     {
-        return [new Pretty_Formatter_Factory($processor), new Progress_Formatter_Factory($processor), new J_Unit_Formatter_Factory(), new Json_Formatter_Factory()];
+        return [
+            new PrettyFormatterFactory($processor),
+            new ProgressFormatterFactory($processor),
+            new JUnitFormatterFactory(),
+            new JSONFormatterFactory(),
+        ];
     }
 }

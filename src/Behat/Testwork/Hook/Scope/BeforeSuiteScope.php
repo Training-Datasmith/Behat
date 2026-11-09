@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,38 +9,46 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook\Scope;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Specification\SpecificationIterator;
+
 /**
  * Represents a scope for BeforeSuite hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Before_Suite_Scope implements Suite_Scope
+final readonly class BeforeSuiteScope implements SuiteScope
 {
     /**
      * Initializes scope.
      *
      * @param SpecificationIterator<mixed> $iterator
      */
-    public function __construct(private Environment $environment, private Specification_Iterator $iterator)
-    {
+    public function __construct(
+        private Environment $environment,
+        private SpecificationIterator $iterator,
+    ) {
     }
-    public function get_name(): string
+
+    public function getName(): string
     {
         return self::BEFORE;
     }
-    public function get_suite()
+
+    public function getSuite()
     {
-        return $this->environment->get_suite();
+        return $this->environment->getSuite();
     }
-    public function get_environment(): Environment
+
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
-    public function get_specification_iterator(): Specification_Iterator
+
+    public function getSpecificationIterator(): SpecificationIterator
     {
         return $this->iterator;
     }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,21 +9,23 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Hook\Call;
 
-use Behat\Behat\Hook\Scope\Feature_Scope;
-use Behat\Gherkin\Filter\Name_Filter;
-use Behat\Gherkin\Filter\Tag_Filter;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Testwork\Call\Exception\Bad_Callback_Exception;
-use Behat\Testwork\Hook\Call\Runtime_Filterable_Hook;
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Behat\Hook\Scope\FeatureScope;
+use Behat\Gherkin\Filter\NameFilter;
+use Behat\Gherkin\Filter\TagFilter;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Testwork\Call\Exception\BadCallbackException;
+use Behat\Testwork\Hook\Call\RuntimeFilterableHook;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Represents a feature hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Runtime_Feature_Hook extends Runtime_Filterable_Hook
+abstract class RuntimeFeatureHook extends RuntimeFilterableHook
 {
     /**
      * Initializes hook.
@@ -34,47 +37,57 @@ abstract class Runtime_Feature_Hook extends Runtime_Filterable_Hook
      *
      * @throws BadCallbackException If callback is method, but not a static one
      */
-    public function __construct($scope_name, $filter_string, $callable, $description = null)
+    public function __construct($scopeName, $filterString, $callable, $description = null)
     {
-        parent::__construct($scope_name, $filter_string, $callable, $description);
-        $this->throw_if_instance_method($callable, 'Feature');
+        parent::__construct($scopeName, $filterString, $callable, $description);
+
+        $this->throwIfInstanceMethod($callable, 'Feature');
     }
-    public function filter_matches(Hook_Scope $scope)
+
+    public function filterMatches(HookScope $scope)
     {
-        if (!$scope instanceof Feature_Scope) {
+        if (!$scope instanceof FeatureScope) {
             return false;
         }
-        if (null === $filter_string = $this->get_filter_string()) {
+
+        if (null === ($filterString = $this->getFilterString())) {
             return true;
         }
-        return $this->is_match($scope->get_feature(), $filter_string);
+
+        return $this->isMatch($scope->getFeature(), $filterString);
     }
+
     /**
      * @param string      $filterString
      *
      * @return bool
      */
-    private function is_match(Feature_Node $feature, $filter_string)
+    private function isMatch(FeatureNode $feature, $filterString)
     {
-        if (str_contains($filter_string, '@')) {
-            return $this->is_match_tag_filter($feature, $filter_string);
+        if (str_contains($filterString, '@')) {
+            return $this->isMatchTagFilter($feature, $filterString);
         }
-        if (!empty($filter_string)) {
-            return $this->is_match_name_filter($feature, $filter_string);
+
+        if (!empty($filterString)) {
+            return $this->isMatchNameFilter($feature, $filterString);
         }
+
         return false;
     }
+
     /**
      * Checks if feature matches tag filter.
      *
      *
      * @return bool
      */
-    private function is_match_tag_filter(Feature_Node $feature, string $filter_string)
+    private function isMatchTagFilter(FeatureNode $feature, string $filterString)
     {
-        $filter = new Tag_Filter($filter_string);
-        return $filter->is_feature_match($feature);
+        $filter = new TagFilter($filterString);
+
+        return $filter->isFeatureMatch($feature);
     }
+
     /**
      * Checks if feature matches name filter.
      *
@@ -82,9 +95,10 @@ abstract class Runtime_Feature_Hook extends Runtime_Filterable_Hook
      *
      * @return bool
      */
-    private function is_match_name_filter(Feature_Node $feature, $filter_string)
+    private function isMatchNameFilter(FeatureNode $feature, $filterString)
     {
-        $filter = new Name_Filter($filter_string);
-        return $filter->is_feature_match($feature);
+        $filter = new NameFilter($filterString);
+
+        return $filter->isFeatureMatch($feature);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,37 +9,49 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Translator\Cli;
 
 use Behat\Testwork\Cli\Controller;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\Input_Interface;
-use Symfony\Component\Console\Input\Input_Option;
-use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Translation\Translator;
+
 /**
  * Configures translator service to use custom locale.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Language_Controller implements Controller
+final readonly class LanguageController implements Controller
 {
     /**
      * Initializes controller.
      */
-    public function __construct(private Translator $translator)
-    {
+    public function __construct(
+        private Translator $translator,
+    ) {
     }
+
     public function configure(Command $command): void
     {
-        $command->add_option('--lang', null, Input_Option::VALUE_REQUIRED, 'Print output in particular language.');
+        $command->addOption(
+            '--lang',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Print output in particular language.'
+        );
     }
-    public function execute(Input_Interface $input, Output_Interface $output): null
+
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
-        if (!$input->get_option('lang')) {
+        if (!$input->getOption('lang')) {
             return null;
         }
-        $this->translator->set_locale($input->get_option('lang'));
+
+        $this->translator->setLocale($input->getOption('lang'));
+
         return null;
     }
 }

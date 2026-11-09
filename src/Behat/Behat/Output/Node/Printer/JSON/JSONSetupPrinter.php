@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,60 +9,75 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Node\Printer\JSON;
 
-use Behat\Behat\Hook\Call\After_Feature;
-use Behat\Behat\Hook\Call\Before_Feature;
-use Behat\Behat\Hook\Scope\Step_Scope;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
-use Behat\Testwork\Call\Call_Results;
-use Behat\Testwork\Exception\Exception_Presenter;
-use Behat\Testwork\Hook\Call\After_Suite;
-use Behat\Testwork\Hook\Call\Before_Suite;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Setup;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Teardown;
+use Behat\Behat\Hook\Call\AfterFeature;
+use Behat\Behat\Hook\Call\BeforeFeature;
+use Behat\Behat\Hook\Scope\StepScope;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
+use Behat\Testwork\Call\CallResults;
+use Behat\Testwork\Exception\ExceptionPresenter;
+use Behat\Testwork\Hook\Call\AfterSuite;
+use Behat\Testwork\Hook\Call\BeforeSuite;
+use Behat\Testwork\Hook\Tester\Setup\HookedSetup;
+use Behat\Testwork\Hook\Tester\Setup\HookedTeardown;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\Json_Output_Printer;
+use Behat\Testwork\Output\Printer\JSONOutputPrinter;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
-final readonly class Json_Setup_Printer implements Setup_Printer
+
+final readonly class JSONSetupPrinter implements SetupPrinter
 {
-    public function __construct(private Exception_Presenter $exception_presenter)
-    {
+    public function __construct(
+        private ExceptionPresenter $exceptionPresenter,
+    ) {
     }
-    public function print_setup(Formatter $formatter, Setup $setup): void
+
+    public function printSetup(Formatter $formatter, Setup $setup): void
     {
-        if (!$setup->is_successful() && $setup instanceof Hooked_Setup) {
-            $this->handle_hook_calls($formatter, $setup->get_hook_call_results(), 'setup');
+        if (!$setup->isSuccessful() && $setup instanceof HookedSetup) {
+            $this->handleHookCalls($formatter, $setup->getHookCallResults(), 'setup');
         }
     }
-    public function print_teardown(Formatter $formatter, Teardown $teardown): void
+
+    public function printTeardown(Formatter $formatter, Teardown $teardown): void
     {
-        if (!$teardown->is_successful() && $teardown instanceof Hooked_Teardown) {
-            $this->handle_hook_calls($formatter, $teardown->get_hook_call_results(), 'teardown');
+        if (!$teardown->isSuccessful() && $teardown instanceof HookedTeardown) {
+            $this->handleHookCalls($formatter, $teardown->getHookCallResults(), 'teardown');
         }
     }
-    private function handle_hook_calls(Formatter $formatter, Call_Results $results, string $message_type): void
+
+    private function handleHookCalls(Formatter $formatter, CallResults $results, string $messageType): void
     {
-        foreach ($results as $hook_call_result) {
-            if ($hook_call_result->has_exception()) {
-                $call = $hook_call_result->get_call();
-                $scope = $call->get_scope();
-                $output_printer = $formatter->get_output_printer();
-                assert($output_printer instanceof Json_Output_Printer);
-                $callee = $call->get_callee();
-                $message = $callee->get_name();
-                if ($scope instanceof Step_Scope) {
-                    $message .= ': ' . $scope->get_step()->get_keyword() . ' ' . $scope->get_step()->get_text();
+        foreach ($results as $hookCallResult) {
+            if ($hookCallResult->hasException()) {
+                $call = $hookCallResult->getCall();
+                $scope = $call->getScope();
+                $outputPrinter = $formatter->getOutputPrinter();
+                assert($outputPrinter instanceof JSONOutputPrinter);
+
+                $callee = $call->getCallee();
+                $message = $callee->getName();
+                if ($scope instanceof StepScope) {
+                    $message .= ': ' . $scope->getStep()->getKeyword() . ' ' . $scope->getStep()->getText();
                 }
-                $message .= ': ' . $this->exception_presenter->present_exception($hook_call_result->get_exception(), applyEditorUrl: false);
-                $attributes = ['message' => $message, 'type' => $message_type];
-                if ($callee instanceof Before_Suite || $callee instanceof After_Suite) {
-                    $output_printer->add_suite_child('failures', $attributes);
-                } elseif ($callee instanceof Before_Feature || $callee instanceof After_Feature) {
-                    $output_printer->add_feature_child('failures', $attributes);
+                $message .= ': ' . $this->exceptionPresenter->presentException(
+                    $hookCallResult->getException(),
+                    applyEditorUrl: false
+                );
+
+                $attributes = [
+                    'message' => $message,
+                    'type' => $messageType,
+                ];
+
+                if ($callee instanceof BeforeSuite || $callee instanceof AfterSuite) {
+                    $outputPrinter->addSuiteChild('failures', $attributes);
+                } elseif ($callee instanceof BeforeFeature || $callee instanceof AfterFeature) {
+                    $outputPrinter->addFeatureChild('failures', $attributes);
                 } else {
-                    $output_printer->add_scenario_child('failures', $attributes);
+                    $outputPrinter->addScenarioChild('failures', $attributes);
                 }
             }
         }

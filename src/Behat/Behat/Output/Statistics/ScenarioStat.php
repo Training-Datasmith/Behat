@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,53 +9,62 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Statistics;
 
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Result\Test_Results;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\TestResults;
 use Stringable;
+
 /**
  * Behat scenario stat.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Scenario_Stat implements Stringable
+final class ScenarioStat implements Stringable
 {
     /**
      * @param TestResult::*|TestResults::NO_TESTS $resultCode
      */
-    public function __construct(private ?string $title, private readonly string $path, private readonly int $result_code)
-    {
+    public function __construct(
+        private ?string $title,
+        private readonly string $path,
+        private readonly int $resultCode,
+    ) {
         $this->title = null;
     }
+
     /**
      * Returns scenario title.
      */
-    public function get_title(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
+
     /**
      * Returns scenario path.
      */
-    public function get_path(): string
+    public function getPath(): string
     {
         return $this->path;
     }
+
     /**
      * Returns scenario result code.
      *
      * @return TestResult::*|TestResults::NO_TESTS
      */
-    public function get_result_code(): int
+    public function getResultCode(): int
     {
-        return $this->result_code;
+        return $this->resultCode;
     }
+
     /**
      * Returns string representation for a stat.
      */
     public function __toString(): string
     {
-        return $this->get_path();
+        return $this->getPath();
     }
 }

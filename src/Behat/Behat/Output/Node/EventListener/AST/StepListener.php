@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,79 +9,94 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\AST;
 
-use Behat\Behat\Event_Dispatcher\Event\After_Step_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Step_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Example_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Scenario_Like_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Scenario_Tested;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
-use Behat\Behat\Output\Node\Printer\Step_Printer;
-use Behat\Gherkin\Node\Scenario_Like_Interface;
+namespace Behat\Behat\Output\Node\EventListener\AST;
+
+use Behat\Behat\EventDispatcher\Event\AfterStepSetup;
+use Behat\Behat\EventDispatcher\Event\AfterStepTested;
+use Behat\Behat\EventDispatcher\Event\ExampleTested;
+use Behat\Behat\EventDispatcher\Event\ScenarioLikeTested;
+use Behat\Behat\EventDispatcher\Event\ScenarioTested;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
+use Behat\Behat\Output\Node\Printer\StepPrinter;
+use Behat\Gherkin\Node\ScenarioLikeInterface;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Listens to step events and call appropriate printers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Step_Listener implements Event_Listener
+final class StepListener implements EventListener
 {
-    private ?Scenario_Like_Interface $scenario = null;
-    public function __construct(private readonly Step_Printer $step_printer, private readonly ?Setup_Printer $setup_printer = null)
-    {
+    private ?ScenarioLikeInterface $scenario = null;
+
+    public function __construct(
+        private readonly StepPrinter $stepPrinter,
+        private readonly ?SetupPrinter $setupPrinter = null,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        $this->capture_scenario_on_scenario_event($event);
-        $this->forget_scenario_on_after_event($event_name);
-        $this->print_step_setup_on_before_event($formatter, $event);
-        $this->print_step_on_after_event($formatter, $event);
+        $this->captureScenarioOnScenarioEvent($event);
+        $this->forgetScenarioOnAfterEvent($eventName);
+        $this->printStepSetupOnBeforeEvent($formatter, $event);
+        $this->printStepOnAfterEvent($formatter, $event);
     }
+
     /**
      * Captures scenario into the ivar on scenario/background/example BEFORE event.
      */
-    private function capture_scenario_on_scenario_event(Event $event): void
+    private function captureScenarioOnScenarioEvent(Event $event): void
     {
-        if (!$event instanceof Scenario_Like_Tested) {
+        if (!$event instanceof ScenarioLikeTested) {
             return;
         }
-        $this->scenario = $event->get_scenario();
+
+        $this->scenario = $event->getScenario();
     }
+
     /**
      * Removes scenario from the ivar on scenario/background/example AFTER event.
      *
      * @param string $eventName
      */
-    private function forget_scenario_on_after_event($event_name): void
+    private function forgetScenarioOnAfterEvent($eventName): void
     {
-        if (!in_array($event_name, [Scenario_Tested::AFTER, Example_Tested::AFTER])) {
+        if (!in_array($eventName, [ScenarioTested::AFTER, ExampleTested::AFTER])) {
             return;
         }
+
         $this->scenario = null;
     }
-    private function print_step_setup_on_before_event(Formatter $formatter, Event $event): void
+
+    private function printStepSetupOnBeforeEvent(Formatter $formatter, Event $event): void
     {
-        if (!$event instanceof After_Step_Setup) {
+        if (!$event instanceof AfterStepSetup) {
             return;
         }
-        if ($this->setup_printer instanceof Setup_Printer) {
-            $this->setup_printer->print_setup($formatter, $event->get_setup());
+
+        if ($this->setupPrinter instanceof SetupPrinter) {
+            $this->setupPrinter->printSetup($formatter, $event->getSetup());
         }
     }
+
     /**
      * Prints step on AFTER event.
      */
-    private function print_step_on_after_event(Formatter $formatter, Event $event): void
+    private function printStepOnAfterEvent(Formatter $formatter, Event $event): void
     {
-        if (!$event instanceof After_Step_Tested) {
+        if (!$event instanceof AfterStepTested) {
             return;
         }
-        $this->step_printer->print_step($formatter, $this->scenario, $event->get_step(), $event->get_test_result());
-        if ($this->setup_printer instanceof Setup_Printer) {
-            $this->setup_printer->print_teardown($formatter, $event->get_teardown());
+
+        $this->stepPrinter->printStep($formatter, $this->scenario, $event->getStep(), $event->getTestResult());
+
+        if ($this->setupPrinter instanceof SetupPrinter) {
+            $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
         }
     }
 }

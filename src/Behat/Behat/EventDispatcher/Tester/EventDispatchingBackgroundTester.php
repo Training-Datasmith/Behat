@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,51 +9,68 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Event_Dispatcher\Tester;
 
-use Behat\Behat\Event_Dispatcher\Event\After_Background_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Background_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Background_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Before_Background_Teardown;
-use Behat\Behat\Event_Dispatcher\Event\Before_Background_Tested;
-use Behat\Behat\Tester\Background_Tester;
-use Behat\Gherkin\Node\Feature_Node;
+namespace Behat\Behat\EventDispatcher\Tester;
+
+use Behat\Behat\EventDispatcher\Event\AfterBackgroundSetup;
+use Behat\Behat\EventDispatcher\Event\AfterBackgroundTested;
+use Behat\Behat\EventDispatcher\Event\BackgroundTested;
+use Behat\Behat\EventDispatcher\Event\BeforeBackgroundTeardown;
+use Behat\Behat\EventDispatcher\Event\BeforeBackgroundTested;
+use Behat\Behat\Tester\BackgroundTester;
+use Behat\Gherkin\Node\FeatureNode;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
+use Behat\Testwork\Tester\Result\TestResult;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * Background tester dispatching BEFORE/AFTER events.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Event_Dispatching_Background_Tester implements Background_Tester
+final readonly class EventDispatchingBackgroundTester implements BackgroundTester
 {
     /**
      * Initializes tester.
      */
-    public function __construct(private Background_Tester $base_tester, private Event_Dispatcher_Interface $event_dispatcher)
-    {
+    public function __construct(
+        private BackgroundTester $baseTester,
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
-    public function set_up(Environment $env, Feature_Node $feature, $skip)
+
+    public function setUp(Environment $env, FeatureNode $feature, $skip)
     {
-        $event = new Before_Background_Tested($env, $feature, $feature->get_background());
-        $this->event_dispatcher->dispatch($event, $event::BEFORE);
-        $setup = $this->base_tester->set_up($env, $feature, $skip);
-        $event = new After_Background_Setup($env, $feature, $feature->get_background(), $setup);
-        $this->event_dispatcher->dispatch($event, $event::AFTER_SETUP);
+        $event = new BeforeBackgroundTested($env, $feature, $feature->getBackground());
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE);
+
+        $setup = $this->baseTester->setUp($env, $feature, $skip);
+
+        $event = new AfterBackgroundSetup($env, $feature, $feature->getBackground(), $setup);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER_SETUP);
+
         return $setup;
     }
-    public function test(Environment $env, Feature_Node $feature, $skip)
+
+    public function test(Environment $env, FeatureNode $feature, $skip)
     {
-        return $this->base_tester->test($env, $feature, $skip);
+        return $this->baseTester->test($env, $feature, $skip);
     }
-    public function tear_down(Environment $env, Feature_Node $feature, $skip, Test_Result $result)
+
+    public function tearDown(Environment $env, FeatureNode $feature, $skip, TestResult $result)
     {
-        $event = new Before_Background_Teardown($env, $feature, $feature->get_background(), $result);
-        $this->event_dispatcher->dispatch($event, Background_Tested::BEFORE_TEARDOWN);
-        $teardown = $this->base_tester->tear_down($env, $feature, $skip, $result);
-        $event = new After_Background_Tested($env, $feature, $feature->get_background(), $result, $teardown);
-        $this->event_dispatcher->dispatch($event, Background_Tested::AFTER);
+        $event = new BeforeBackgroundTeardown($env, $feature, $feature->getBackground(), $result);
+
+        $this->eventDispatcher->dispatch($event, BackgroundTested::BEFORE_TEARDOWN);
+
+        $teardown = $this->baseTester->tearDown($env, $feature, $skip, $result);
+
+        $event = new AfterBackgroundTested($env, $feature, $feature->getBackground(), $result, $teardown);
+
+        $this->eventDispatcher->dispatch($event, BackgroundTested::AFTER);
+
         return $teardown;
     }
 }

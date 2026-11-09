@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,135 +9,177 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Output\Service_Container;
 
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Event_Dispatcher\Service_Container\Event_Dispatcher_Extension;
-use Behat\Testwork\Output\Cli\Output_Controller;
-use Behat\Testwork\Output\Output_Manager;
-use Behat\Testwork\Output\Service_Container\Formatter\Formatter_Factory;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Behat\Testwork\Service_Container\Service_Processor;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
-use Symfony\Component\Dependency_Injection\Reference;
+namespace Behat\Testwork\Output\ServiceContainer;
+
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
+use Behat\Testwork\Output\Cli\OutputController;
+use Behat\Testwork\Output\OutputManager;
+use Behat\Testwork\Output\ServiceContainer\Formatter\FormatterFactory;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\ServiceContainer\ServiceProcessor;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
 /**
  * Provides output management services for testwork.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Output_Extension implements Extension
+final class OutputExtension implements Extension
 {
     /*
      * Available services
      */
     public const MANAGER_ID = 'output.manager';
+
     /*
      * Available extension points
      */
     public const FORMATTER_TAG = 'output.formatter';
-    private readonly Service_Processor $processor;
+    private readonly ServiceProcessor $processor;
+
     /**
      * Initializes extension.
      *
      * @param string                $defaultFormatter
      * @param FormatterFactory[] $factories
      */
-    public function __construct(private $default_formatter, private array $factories, ?Service_Processor $processor = null)
-    {
-        $this->processor = $processor ?: new Service_Processor();
+    public function __construct(
+        private $defaultFormatter,
+        private array $factories,
+        ?ServiceProcessor $processor = null,
+    ) {
+        $this->processor = $processor ?: new ServiceProcessor();
     }
+
     /**
      * Registers formatter factory.
      */
-    public function register_formatter_factory(Formatter_Factory $factory): void
+    public function registerFormatterFactory(FormatterFactory $factory): void
     {
         $this->factories[] = $factory;
     }
-    public function get_config_key(): string
+
+    public function getConfigKey(): string
     {
         return 'formatters';
     }
-    public function initialize(Extension_Manager $extension_manager): void
+
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
-        $builder = $builder->default_value([$this->default_formatter => ['enabled' => true]])->use_attribute_as_key('name')->prototype('array')->before_normalization()->if_true(fn($a): bool => is_array($a) && !isset($a['enabled']))->then(fn($a): array => array_merge($a, ['enabled' => true]))->end();
+        $builder = $builder
+            ->defaultValue([$this->defaultFormatter => ['enabled' => true]])
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->beforeNormalization()
+                    ->ifTrue(fn ($a): bool => is_array($a) && !isset($a['enabled']))
+                    ->then(fn ($a): array => array_merge($a, ['enabled' => true]))
+                ->end()
+        ;
         /** @var ArrayNodeDefinition $builder */
-        $builder->use_attribute_as_key('name')->treat_true_like(['enabled' => true])->treat_null_like(['enabled' => true])->treat_false_like(['enabled' => false])->prototype('variable')->end();
+        $builder
+                ->useAttributeAsKey('name')
+                ->treatTrueLike(['enabled' => true])
+                ->treatNullLike(['enabled' => true])
+                ->treatFalseLike(['enabled' => false])
+                ->prototype('variable')->end()
+        ;
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
-        $this->load_output_controller($container);
-        $this->load_formatters($container);
-        $this->load_manager($container, $config);
+        $this->loadOutputController($container);
+        $this->loadFormatters($container);
+        $this->loadManager($container, $config);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
-        $this->process_formatters($container);
-        $this->process_dynamically_registered_formatters($container);
+        $this->processFormatters($container);
+        $this->processDynamicallyRegisteredFormatters($container);
     }
+
     /**
      * Loads output controller.
      */
-    private function load_output_controller(Container_Builder $container): void
+    private function loadOutputController(ContainerBuilder $container): void
     {
-        $definition = new Definition(Output_Controller::class, [new Reference(self::MANAGER_ID)]);
-        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 1000]);
-        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.output', $definition);
+        $definition = new Definition(OutputController::class, [
+            new Reference(self::MANAGER_ID),
+        ]);
+        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 1000]);
+        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.output', $definition);
     }
+
     /**
      * Loads output manager.
      */
-    private function load_manager(Container_Builder $container, array $formatters): void
+    private function loadManager(ContainerBuilder $container, array $formatters): void
     {
-        $definition = new Definition(Output_Manager::class, [new Reference(Event_Dispatcher_Extension::DISPATCHER_ID)]);
+        $definition = new Definition(OutputManager::class, [
+            new Reference(EventDispatcherExtension::DISPATCHER_ID),
+        ]);
+
         foreach ($formatters as $name => $parameters) {
             if ($parameters['enabled']) {
-                $definition->add_method_call('enableFormatter', [$name]);
+                $definition->addMethodCall('enableFormatter', [$name]);
             } else {
-                $definition->add_method_call('disableFormatter', [$name]);
+                $definition->addMethodCall('disableFormatter', [$name]);
             }
+
             unset($parameters['enabled']);
-            $definition->add_method_call('setFormatterParameters', [$name, $parameters]);
+            $definition->addMethodCall('setFormatterParameters', [$name, $parameters]);
         }
-        $container->set_definition(self::MANAGER_ID, $definition);
+
+        $container->setDefinition(self::MANAGER_ID, $definition);
     }
+
     /**
      * Loads default formatters using registered factories.
      */
-    private function load_formatters(Container_Builder $container): void
+    private function loadFormatters(ContainerBuilder $container): void
     {
         foreach ($this->factories as $factory) {
-            $factory->build_formatter($container);
+            $factory->buildFormatter($container);
         }
     }
+
     /**
      * Processes formatters using registered factories.
      */
-    private function process_formatters(Container_Builder $container): void
+    private function processFormatters(ContainerBuilder $container): void
     {
         foreach ($this->factories as $factory) {
-            $factory->process_formatter($container);
+            $factory->processFormatter($container);
         }
     }
+
     /**
      * Processes all available output formatters.
      */
-    private function process_dynamically_registered_formatters(Container_Builder $container): void
+    private function processDynamicallyRegisteredFormatters(ContainerBuilder $container): void
     {
-        $references = $this->processor->find_and_sort_tagged_services($container, self::FORMATTER_TAG);
-        $definition = $container->get_definition(self::MANAGER_ID);
-        $previous_calls = $definition->get_method_calls();
-        $definition->set_method_calls();
+        $references = $this->processor->findAndSortTaggedServices($container, self::FORMATTER_TAG);
+        $definition = $container->getDefinition(self::MANAGER_ID);
+
+        $previousCalls = $definition->getMethodCalls();
+        $definition->setMethodCalls();
+
         foreach ($references as $reference) {
-            $definition->add_method_call('registerFormatter', [$reference]);
+            $definition->addMethodCall('registerFormatter', [$reference]);
         }
-        foreach ($previous_calls as $call) {
-            $definition->add_method_call($call[0], $call[1]);
+
+        foreach ($previousCalls as $call) {
+            $definition->addMethodCall($call[0], $call[1]);
         }
     }
 }

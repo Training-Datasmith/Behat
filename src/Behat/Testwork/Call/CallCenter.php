@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,95 +9,106 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call;
 
-use Behat\Testwork\Call\Exception\Call_Handling_Exception;
-use Behat\Testwork\Call\Exception\Fatal_Throwable_Error;
-use Behat\Testwork\Call\Filter\Call_Filter;
-use Behat\Testwork\Call\Filter\Result_Filter;
-use Behat\Testwork\Call\Handler\Call_Handler;
-use Behat\Testwork\Call\Handler\Exception_Handler;
+use Behat\Testwork\Call\Exception\CallHandlingException;
+use Behat\Testwork\Call\Exception\FatalThrowableError;
+use Behat\Testwork\Call\Filter\CallFilter;
+use Behat\Testwork\Call\Filter\ResultFilter;
+use Behat\Testwork\Call\Handler\CallHandler;
+use Behat\Testwork\Call\Handler\ExceptionHandler;
 use Exception;
 use Throwable;
+
 /**
  * Makes calls and handles results using registered handlers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Call_Center
+final class CallCenter
 {
     /**
      * @var CallFilter[]
      */
-    private array $call_filters = [];
+    private array $callFilters = [];
     /**
      * @var CallHandler[]
      */
-    private array $call_handlers = [];
+    private array $callHandlers = [];
     /**
      * @var ResultFilter[]
      */
-    private array $result_filters = [];
+    private array $resultFilters = [];
     /**
      * @var ExceptionHandler[]
      */
-    private array $exception_handlers = [];
+    private array $exceptionHandlers = [];
+
     /**
      * Registers call filter.
      */
-    public function register_call_filter(Call_Filter $filter): void
+    public function registerCallFilter(CallFilter $filter): void
     {
-        $this->call_filters[] = $filter;
+        $this->callFilters[] = $filter;
     }
+
     /**
      * Registers call handler.
      */
-    public function register_call_handler(Call_Handler $handler): void
+    public function registerCallHandler(CallHandler $handler): void
     {
-        $this->call_handlers[] = $handler;
+        $this->callHandlers[] = $handler;
     }
+
     /**
      * Registers call result filter.
      */
-    public function register_result_filter(Result_Filter $filter): void
+    public function registerResultFilter(ResultFilter $filter): void
     {
-        $this->result_filters[] = $filter;
+        $this->resultFilters[] = $filter;
     }
+
     /**
      * Registers result exception handler.
      */
-    public function register_exception_handler(Exception_Handler $handler): void
+    public function registerExceptionHandler(ExceptionHandler $handler): void
     {
-        $this->exception_handlers[] = $handler;
+        $this->exceptionHandlers[] = $handler;
     }
+
     /**
      * Handles call and its result using registered filters and handlers.
      *
      * @return CallResult
      */
-    public function make_call(Call $call)
+    public function makeCall(Call $call)
     {
         try {
-            return $this->filter_result($this->handle_call($this->filter_call($call)));
+            return $this->filterResult($this->handleCall($this->filterCall($call)));
         } catch (Throwable $exception) {
-            return new Call_Result($call, null, $this->handle_exception($exception));
+            return new CallResult($call, null, $this->handleException($exception));
         }
     }
+
     /**
      * Filters call using registered filters and returns a filtered one.
      *
      * @return Call
      */
-    private function filter_call(Call $call)
+    private function filterCall(Call $call)
     {
-        foreach ($this->call_filters as $filter) {
-            if (!$filter->supports_call($call)) {
+        foreach ($this->callFilters as $filter) {
+            if (!$filter->supportsCall($call)) {
                 continue;
             }
-            $call = $filter->filter_call($call);
+
+            $call = $filter->filterCall($call);
         }
+
         return $call;
     }
+
     /**
      * Handles call using registered call handlers.
      *
@@ -104,47 +116,59 @@ final class Call_Center
      *
      * @throws CallHandlingException If call handlers didn't produce call result
      */
-    private function handle_call(Call $call)
+    private function handleCall(Call $call)
     {
-        foreach ($this->call_handlers as $handler) {
-            if (!$handler->supports_call($call)) {
+        foreach ($this->callHandlers as $handler) {
+            if (!$handler->supportsCall($call)) {
                 continue;
             }
-            return $handler->handle_call($call);
+
+            return $handler->handleCall($call);
         }
-        throw new Call_Handling_Exception(sprintf('None of the registered call handlers could handle a `%s` call.', $call->get_callee()->get_path()), $call);
+
+        throw new CallHandlingException(sprintf(
+            'None of the registered call handlers could handle a `%s` call.',
+            $call->getCallee()->getPath()
+        ), $call);
     }
+
     /**
      * Filters call result using registered filters and returns a filtered one.
      *
      * @return CallResult
      */
-    private function filter_result(Call_Result $result)
+    private function filterResult(CallResult $result)
     {
-        foreach ($this->result_filters as $filter) {
-            if (!$filter->supports_result($result)) {
+        foreach ($this->resultFilters as $filter) {
+            if (!$filter->supportsResult($result)) {
                 continue;
             }
-            $result = $filter->filter_result($result);
+
+            $result = $filter->filterResult($result);
         }
+
         return $result;
     }
+
     /**
      * Handles exception using registered handlers and returns a handled one.
      *
      *
      */
-    private function handle_exception(\Throwable $exception): \Behat\Testwork\Call\Exception\Fatal_Throwable_Error|\Exception
+    private function handleException(\Throwable $exception): \Behat\Testwork\Call\Exception\FatalThrowableError|\Exception
     {
-        foreach ($this->exception_handlers as $handler) {
-            if (!$handler->supports_exception($exception)) {
+        foreach ($this->exceptionHandlers as $handler) {
+            if (!$handler->supportsException($exception)) {
                 continue;
             }
-            $exception = $handler->handle_exception($exception);
+
+            $exception = $handler->handleException($exception);
         }
+
         if (!$exception instanceof Exception) {
-            return new Fatal_Throwable_Error($exception);
+            return new FatalThrowableError($exception);
         }
+
         return $exception;
     }
 }

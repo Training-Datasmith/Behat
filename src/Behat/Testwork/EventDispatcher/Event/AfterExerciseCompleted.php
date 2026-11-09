@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,44 +9,52 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Event;
 
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Tester\Result\Test_Result;
+namespace Behat\Testwork\EventDispatcher\Event;
+
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Teardown;
+
 /**
  * Represents an event in which exercise was completed.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class After_Exercise_Completed extends Exercise_Completed implements After_Tested
+final class AfterExerciseCompleted extends ExerciseCompleted implements AfterTested
 {
     /**
      * Initializes event.
      *
      * @param SpecificationIterator<mixed>[] $specificationIterators
      */
-    public function __construct(private readonly array $specification_iterators, private readonly Test_Result $result, private readonly Teardown $teardown)
-    {
+    public function __construct(
+        private readonly array $specificationIterators,
+        private readonly TestResult $result,
+        private readonly Teardown $teardown,
+    ) {
     }
+
     /**
      * @return SpecificationIterator[]
      */
-    public function get_specification_iterators(): array
+    public function getSpecificationIterators(): array
     {
-        return $this->specification_iterators;
+        return $this->specificationIterators;
     }
+
     /**
      * Returns exercise test result.
      */
-    public function get_test_result(): Test_Result
+    public function getTestResult(): TestResult
     {
         return $this->result;
     }
+
     /**
      * Returns exercise teardown result.
      */
-    public function get_teardown(): Teardown
+    public function getTeardown(): Teardown
     {
         return $this->teardown;
     }

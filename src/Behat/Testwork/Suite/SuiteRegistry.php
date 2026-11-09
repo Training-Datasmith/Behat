@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,37 +9,41 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Suite;
 
-use Behat\Testwork\Suite\Exception\Suite_Configuration_Exception;
-use Behat\Testwork\Suite\Exception\Suite_Generation_Exception;
-use Behat\Testwork\Suite\Generator\Suite_Generator;
+use Behat\Testwork\Suite\Exception\SuiteConfigurationException;
+use Behat\Testwork\Suite\Exception\SuiteGenerationException;
+use Behat\Testwork\Suite\Generator\SuiteGenerator;
+
 /**
  * Acts like a suite repository by auto-generating suites for registered suite configurations using registered
  * generators.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Suite_Registry implements Suite_Repository
+final class SuiteRegistry implements SuiteRepository
 {
-    private bool $suites_generated = false;
+    private bool $suitesGenerated = false;
     /**
      * @var SuiteGenerator[]
      */
     private array $generators = [];
-    private array $suite_configurations = [];
+    private array $suiteConfigurations = [];
     /**
      * @var Suite[]
      */
     private array $suites = [];
+
     /**
      * Registers suite generator.
      */
-    public function register_suite_generator(Suite_Generator $generator): void
+    public function registerSuiteGenerator(SuiteGenerator $generator): void
     {
         $this->generators[] = $generator;
-        $this->suites_generated = false;
+        $this->suitesGenerated = false;
     }
+
     /**
      * Registers suite using provided name, type & parameters.
      *
@@ -47,45 +52,61 @@ final class Suite_Registry implements Suite_Repository
      *
      * @throws SuiteConfigurationException
      */
-    public function register_suite_configuration($name, $type, array $settings): void
+    public function registerSuiteConfiguration($name, $type, array $settings): void
     {
-        if (isset($this->suite_configurations[$name])) {
-            throw new Suite_Configuration_Exception(sprintf('Suite configuration for a suite "%s" is already registered.', $name), $name);
+        if (isset($this->suiteConfigurations[$name])) {
+            throw new SuiteConfigurationException(sprintf(
+                'Suite configuration for a suite "%s" is already registered.',
+                $name
+            ), $name);
         }
-        $this->suite_configurations[$name] = [$type, $settings];
-        $this->suites_generated = false;
+
+        $this->suiteConfigurations[$name] = [$type, $settings];
+        $this->suitesGenerated = false;
     }
+
     /**
      * Returns all available suites.
      *
      * @return Suite[]
      */
-    public function get_suites()
+    public function getSuites()
     {
-        if ($this->suites_generated) {
+        if ($this->suitesGenerated) {
             return $this->suites;
         }
+
         $this->suites = [];
-        foreach ($this->suite_configurations as $name => $configuration) {
+        foreach ($this->suiteConfigurations as $name => $configuration) {
             [$type, $settings] = $configuration;
-            $this->suites[] = $this->generate_suite($name, $type, $settings);
+
+            $this->suites[] = $this->generateSuite($name, $type, $settings);
         }
-        $this->suites_generated = true;
+
+        $this->suitesGenerated = true;
+
         return $this->suites;
     }
+
     /**
      * Generates suite using registered generators.
      *
      * @throws SuiteGenerationException If no appropriate generator found
      */
-    private function generate_suite(string $name, ?string $type, array $settings): Suite
+    private function generateSuite(string $name, ?string $type, array $settings): Suite
     {
         foreach ($this->generators as $generator) {
-            if (!$generator->supports_type_and_settings($type, $settings)) {
+            if (!$generator->supportsTypeAndSettings($type, $settings)) {
                 continue;
             }
-            return $generator->generate_suite($name, $settings);
+
+            return $generator->generateSuite($name, $settings);
         }
-        throw new Suite_Generation_Exception(sprintf('Can not find suite generator for a suite `%s` of type `%s`.', $name, $type), $name);
+
+        throw new SuiteGenerationException(sprintf(
+            'Can not find suite generator for a suite `%s` of type `%s`.',
+            $name,
+            $type
+        ), $name);
     }
 }

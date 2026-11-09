@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,20 +9,22 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Runtime;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Tester\Result\Integer_Test_Result;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Result\Test_Results;
-use Behat\Testwork\Tester\Result\Test_With_Setup_Result;
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Tester\Result\IntegerTestResult;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\TestResults;
+use Behat\Testwork\Tester\Result\TestWithSetupResult;
 use Behat\Testwork\Tester\Setup\Setup;
-use Behat\Testwork\Tester\Setup\Successful_Setup;
-use Behat\Testwork\Tester\Setup\Successful_Teardown;
+use Behat\Testwork\Tester\Setup\SuccessfulSetup;
+use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
 use Behat\Testwork\Tester\Setup\Teardown;
-use Behat\Testwork\Tester\Specification_Tester;
-use Behat\Testwork\Tester\Suite_Tester;
+use Behat\Testwork\Tester\SpecificationTester;
+use Behat\Testwork\Tester\SuiteTester;
+
 /**
  * Tester executing suite tests in the runtime.
  *
@@ -31,35 +34,41 @@ use Behat\Testwork\Tester\Suite_Tester;
  *
  * @implements SuiteTester<TSpec>
  */
-final readonly class Runtime_Suite_Tester implements Suite_Tester
+final readonly class RuntimeSuiteTester implements SuiteTester
 {
     /**
      * Initializes tester.
      *
      * @param SpecificationTester<TSpec> $specTester
      */
-    public function __construct(private Specification_Tester $spec_tester)
-    {
+    public function __construct(
+        private SpecificationTester $specTester,
+    ) {
     }
-    public function set_up(Environment $env, Specification_Iterator $iterator, $skip): Setup
+
+    public function setUp(Environment $env, SpecificationIterator $iterator, $skip): Setup
     {
-        return new Successful_Setup();
+        return new SuccessfulSetup();
     }
-    public function test(Environment $env, Specification_Iterator $iterator, $skip = false): Test_Result
+
+    public function test(Environment $env, SpecificationIterator $iterator, $skip = false): TestResult
     {
         $results = [];
         foreach ($iterator as $specification) {
-            $setup = $this->spec_tester->set_up($env, $specification, $skip);
-            $local_skip = !$setup->is_successful() || $skip;
-            $test_result = $this->spec_tester->test($env, $specification, $local_skip);
-            $teardown = $this->spec_tester->tear_down($env, $specification, $local_skip, $test_result);
-            $integer_result = new Integer_Test_Result($test_result->get_result_code());
-            $results[] = new Test_With_Setup_Result($setup, $integer_result, $teardown);
+            $setup = $this->specTester->setUp($env, $specification, $skip);
+            $localSkip = !$setup->isSuccessful() || $skip;
+            $testResult = $this->specTester->test($env, $specification, $localSkip);
+            $teardown = $this->specTester->tearDown($env, $specification, $localSkip, $testResult);
+
+            $integerResult = new IntegerTestResult($testResult->getResultCode());
+            $results[] = new TestWithSetupResult($setup, $integerResult, $teardown);
         }
-        return new Test_Results($results);
+
+        return new TestResults($results);
     }
-    public function tear_down(Environment $env, Specification_Iterator $iterator, $skip, Test_Result $result): Teardown
+
+    public function tearDown(Environment $env, SpecificationIterator $iterator, $skip, TestResult $result): Teardown
     {
-        return new Successful_Teardown();
+        return new SuccessfulTeardown();
     }
 }

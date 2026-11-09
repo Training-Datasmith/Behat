@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,167 +9,202 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Output\Printer;
 
-use Behat\Testwork\Output\Exception\Missing_Output_Path_Exception;
-use Behat\Testwork\Output\Printer\Factory\File_Output_Factory;
-use Symfony\Component\Console\Output\Output_Interface;
-final class Json_Output_Printer extends Stream_Output_Printer
+use Behat\Testwork\Output\Exception\MissingOutputPathException;
+use Behat\Testwork\Output\Printer\Factory\FileOutputFactory;
+use Symfony\Component\Console\Output\OutputInterface;
+
+final class JSONOutputPrinter extends StreamOutputPrinter
 {
     /**
      * @var array<string, string|int|float|array>|null
      */
     private ?array $exercise = null;
+
     /**
      * @var array<string, string|int|float|array>[]
      */
     private array $suites = [];
+
     /**
      * @var array<string, string|int|float|array>[]
      */
     private array $features = [];
+
     /**
      * @var array<string, string|int|float|array>[]
      */
     private array $scenarios = [];
+
     /**
      * @var array<string, string|int|float|array>
      */
-    private array $current_suite = [];
+    private array $currentSuite = [];
+
     /**
      * @var array<string, string|int|float|array>
      */
-    private array $current_feature = [];
+    private array $currentFeature = [];
+
     /**
      * @var array<string, string|int|float|array>
      */
-    private array $current_scenario = [];
-    private int $scenarios_count = 0;
-    private int $features_count = 0;
-    private int $suites_count = 0;
-    public function __construct(File_Output_Factory $output_factory)
+    private array $currentScenario = [];
+
+    private int $scenariosCount = 0;
+
+    private int $featuresCount = 0;
+
+    private int $suitesCount = 0;
+
+    public function __construct(FileOutputFactory $outputFactory)
     {
-        parent::__construct($output_factory);
+        parent::__construct($outputFactory);
     }
-    public function create_new_file(): void
+
+    public function createNewFile(): void
     {
-        $this->exercise = ['suites' => &$this->suites];
+        $this->exercise = [
+            'suites' => &$this->suites,
+        ];
+
         $this->flush();
     }
+
     /**
      * @param array<string, string|int|float> $exerciseAttributes
      */
-    public function extend_exercise_attributes(array $exercise_attributes): void
+    public function extendExerciseAttributes(array $exerciseAttributes): void
     {
-        $this->add_attributes_to_node($this->exercise, $exercise_attributes, true);
+        $this->addAttributesToNode($this->exercise, $exerciseAttributes, true);
     }
+
     /**
      * @param array<string, string|int|float> $suiteAttributes
      */
-    public function add_suite(array $suite_attributes = []): void
+    public function addSuite(array $suiteAttributes = []): void
     {
         $this->suites[] = [];
-        $this->current_suite =& $this->suites[$this->suites_count++];
-        $this->current_suite['features'] = [];
-        $this->features =& $this->current_suite['features'];
-        $this->features_count = 0;
-        $this->add_attributes_to_node($this->current_suite, $suite_attributes);
+        $this->currentSuite = &$this->suites[$this->suitesCount++];
+        $this->currentSuite['features'] = [];
+        $this->features = &$this->currentSuite['features'];
+        $this->featuresCount = 0;
+        $this->addAttributesToNode($this->currentSuite, $suiteAttributes);
     }
+
     /**
      * @param array<string, string|int|float> $suiteAttributes
      */
-    public function extend_suite_attributes(array $suite_attributes): void
+    public function extendSuiteAttributes(array $suiteAttributes): void
     {
-        $this->add_attributes_to_node($this->current_suite, $suite_attributes, true);
+        $this->addAttributesToNode($this->currentSuite, $suiteAttributes, true);
     }
+
     /**
      * @param array<string, string|int|float> $featureAttributes
      */
-    public function add_feature(array $feature_attributes = []): void
+    public function addFeature(array $featureAttributes = []): void
     {
         $this->features[] = [];
-        $this->current_feature =& $this->features[$this->features_count++];
-        $this->current_feature['scenarios'] = [];
-        $this->scenarios =& $this->current_feature['scenarios'];
-        $this->scenarios_count = 0;
-        $this->add_attributes_to_node($this->current_feature, $feature_attributes);
+        $this->currentFeature = &$this->features[$this->featuresCount++];
+        $this->currentFeature['scenarios'] = [];
+        $this->scenarios = &$this->currentFeature['scenarios'];
+        $this->scenariosCount = 0;
+        $this->addAttributesToNode($this->currentFeature, $featureAttributes);
     }
+
     /**
      * @param array<string, string|int|float> $featureAttributes
      */
-    public function extend_feature_attributes(array $feature_attributes): void
+    public function extendFeatureAttributes(array $featureAttributes): void
     {
-        $this->add_attributes_to_node($this->current_feature, $feature_attributes, true);
+        $this->addAttributesToNode($this->currentFeature, $featureAttributes, true);
     }
+
     /**
      * @param array<string, string|int|float> $scenarioAttributes
      */
-    public function add_scenario(array $scenario_attributes = []): void
+    public function addScenario(array $scenarioAttributes = []): void
     {
         $this->scenarios[] = [];
-        $this->current_scenario =& $this->scenarios[$this->scenarios_count++];
-        $this->add_attributes_to_node($this->current_scenario, $scenario_attributes);
+        $this->currentScenario = &$this->scenarios[$this->scenariosCount++];
+        $this->addAttributesToNode($this->currentScenario, $scenarioAttributes);
     }
+
     /**
      * @param array<string, string|int|float> $scenarioAttributes
      */
-    public function add_current_scenario_attributes(array $scenario_attributes, bool $at_start = false): void
+    public function addCurrentScenarioAttributes(array $scenarioAttributes, bool $atStart = false): void
     {
-        $this->add_attributes_to_node($this->current_scenario, $scenario_attributes, $at_start);
+        $this->addAttributesToNode($this->currentScenario, $scenarioAttributes, $atStart);
     }
+
     /**
      * @param array<string, string|int|float> $nodeAttributes
      */
-    public function add_suite_child(string $node_name, array $node_attributes = []): void
+    public function addSuiteChild(string $nodeName, array $nodeAttributes = []): void
     {
-        $child_node = [];
-        if (!isset($this->current_suite[$node_name])) {
-            $this->current_suite[$node_name] = [];
+        $childNode = [];
+        if (!isset($this->currentSuite[$nodeName])) {
+            $this->currentSuite[$nodeName] = [];
         }
-        $this->current_suite[$node_name][] =& $child_node;
-        $this->add_attributes_to_node($child_node, $node_attributes);
+        $this->currentSuite[$nodeName][] = &$childNode;
+        $this->addAttributesToNode($childNode, $nodeAttributes);
     }
+
     /**
      * @param array<string, string|int|float> $nodeAttributes
      */
-    public function add_feature_child(string $node_name, array $node_attributes = []): void
+    public function addFeatureChild(string $nodeName, array $nodeAttributes = []): void
     {
-        $child_node = [];
-        if (!isset($this->current_feature[$node_name])) {
-            $this->current_feature[$node_name] = [];
+        $childNode = [];
+        if (!isset($this->currentFeature[$nodeName])) {
+            $this->currentFeature[$nodeName] = [];
         }
-        $this->current_feature[$node_name][] =& $child_node;
-        $this->add_attributes_to_node($child_node, $node_attributes);
+        $this->currentFeature[$nodeName][] = &$childNode;
+        $this->addAttributesToNode($childNode, $nodeAttributes);
     }
+
     /**
      * @param array<string, string|int|float> $nodeAttributes
      */
-    public function add_scenario_child(string $node_name, array $node_attributes = []): void
+    public function addScenarioChild(string $nodeName, array $nodeAttributes = []): void
     {
-        $child_node = [];
-        if (!isset($this->current_scenario[$node_name])) {
-            $this->current_scenario[$node_name] = [];
+        $childNode = [];
+        if (!isset($this->currentScenario[$nodeName])) {
+            $this->currentScenario[$nodeName] = [];
         }
-        $this->current_scenario[$node_name][] =& $child_node;
-        $this->add_attributes_to_node($child_node, $node_attributes);
+        $this->currentScenario[$nodeName][] = &$childNode;
+        $this->addAttributesToNode($childNode, $nodeAttributes);
     }
+
     public function flush(): void
     {
         if (is_array($this->exercise)) {
             try {
-                $this->get_writing_stream()->write(json_encode($this->exercise, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES), false, Output_Interface::OUTPUT_RAW);
-            } catch (Missing_Output_Path_Exception) {
-                throw new Missing_Output_Path_Exception('The `output_path` option must be specified for the json formatter.');
+                $this->getWritingStream()->write(
+                    json_encode($this->exercise, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES),
+                    false,
+                    OutputInterface::OUTPUT_RAW
+                );
+            } catch (MissingOutputPathException) {
+                throw new MissingOutputPathException(
+                    'The `output_path` option must be specified for the json formatter.',
+                );
             }
         }
+
         parent::flush();
     }
+
     /**
      * @param array<string, string|int|float|array> $node
      * @param array<string, string|int|float> $attributes
      */
-    private function add_attributes_to_node(array &$node, array $attributes, bool $at_start = false): void
+    private function addAttributesToNode(array &$node, array $attributes, bool $atStart = false): void
     {
-        $node = $at_start ? [...$attributes, ...$node] : [...$node, ...$attributes];
+        $node = $atStart ? [...$attributes, ...$node] : [...$node, ...$attributes];
     }
 }

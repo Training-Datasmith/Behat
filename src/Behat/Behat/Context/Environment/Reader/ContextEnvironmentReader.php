@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,50 +9,64 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Environment\Reader;
 
-use Behat\Behat\Context\Environment\Context_Environment;
-use Behat\Behat\Context\Reader\Context_Reader;
+use Behat\Behat\Context\Environment\ContextEnvironment;
+use Behat\Behat\Context\Reader\ContextReader;
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Environment\Exception\Environment_Read_Exception;
-use Behat\Testwork\Environment\Reader\Environment_Reader;
+use Behat\Testwork\Environment\Exception\EnvironmentReadException;
+use Behat\Testwork\Environment\Reader\EnvironmentReader;
+
 /**
  * Reads context-based environment callees using registered context loaders.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Context_Environment_Reader implements Environment_Reader
+final class ContextEnvironmentReader implements EnvironmentReader
 {
     /**
      * @var ContextReader[]
      */
-    private array $context_readers = [];
+    private array $contextReaders = [];
+
     /**
      * Registers context loader.
      */
-    public function register_context_reader(Context_Reader $context_reader): void
+    public function registerContextReader(ContextReader $contextReader): void
     {
-        $this->context_readers[] = $context_reader;
+        $this->contextReaders[] = $contextReader;
     }
-    public function supports_environment(Environment $environment): bool
+
+    public function supportsEnvironment(Environment $environment): bool
     {
-        return $environment instanceof Context_Environment;
+        return $environment instanceof ContextEnvironment;
     }
+
     /**
      * @return list<Callee>
      */
-    public function read_environment_callees(Environment $environment): array
+    public function readEnvironmentCallees(Environment $environment): array
     {
-        if (!$environment instanceof Context_Environment) {
-            throw new Environment_Read_Exception(sprintf('ContextEnvironmentReader does not support `%s` environment.', $environment::class), $environment);
+        if (!$environment instanceof ContextEnvironment) {
+            throw new EnvironmentReadException(sprintf(
+                'ContextEnvironmentReader does not support `%s` environment.',
+                $environment::class
+            ), $environment);
         }
+
         $callees = [];
-        foreach ($environment->get_context_classes() as $context_class) {
-            $callees = array_merge($callees, $this->read_context_callees($environment, $context_class));
+        foreach ($environment->getContextClasses() as $contextClass) {
+            $callees = array_merge(
+                $callees,
+                $this->readContextCallees($environment, $contextClass)
+            );
         }
+
         return $callees;
     }
+
     /**
      * Reads callees from a specific suite's context.
      *
@@ -59,12 +74,16 @@ final class Context_Environment_Reader implements Environment_Reader
      *
      * @return list<Callee>
      */
-    private function read_context_callees(Context_Environment $environment, $context_class): array
+    private function readContextCallees(ContextEnvironment $environment, $contextClass): array
     {
         $callees = [];
-        foreach ($this->context_readers as $loader) {
-            $callees = array_merge($callees, $loader->read_context_callees($environment, $context_class));
+        foreach ($this->contextReaders as $loader) {
+            $callees = array_merge(
+                $callees,
+                $loader->readContextCallees($environment, $contextClass)
+            );
         }
+
         return $callees;
     }
 }

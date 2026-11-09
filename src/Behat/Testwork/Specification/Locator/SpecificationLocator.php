@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,11 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Specification\Locator;
 
-use Behat\Testwork\Specification\Specification_Finder;
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Specification\SpecificationFinder;
+use Behat\Testwork\Specification\SpecificationIterator;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Provides a custom way to locate specification by provided suite and locator string.
  *
@@ -22,14 +25,15 @@ use Behat\Testwork\Suite\Suite;
  *
  * @template-covariant T
  */
-interface Specification_Locator
+interface SpecificationLocator
 {
     /**
      * Returns array of strings representing examples of supported specification locators.
      *
      * @return string[]
      */
-    public function get_locator_examples();
+    public function getLocatorExamples();
+
     /**
      * Locates specifications and wraps them into iterator.
      *
@@ -37,5 +41,5 @@ interface Specification_Locator
      *
      * @return SpecificationIterator<T>
      */
-    public function locate_specifications(Suite $suite, $locator);
+    public function locateSpecifications(Suite $suite, $locator);
 }

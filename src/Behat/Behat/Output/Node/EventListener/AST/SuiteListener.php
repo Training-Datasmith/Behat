@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,34 +9,39 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\AST;
 
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
+namespace Behat\Behat\Output\Node\EventListener\AST;
+
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Tested;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteTested;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Behat suite listener.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Suite_Listener implements Event_Listener
+final readonly class SuiteListener implements EventListener
 {
     /**
      * Initializes listener.
      */
-    public function __construct(private Setup_Printer $setup_printer)
-    {
+    public function __construct(
+        private SetupPrinter $setupPrinter,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        if ($event instanceof After_Suite_Setup) {
-            $this->setup_printer->print_setup($formatter, $event->get_setup());
+        if ($event instanceof AfterSuiteSetup) {
+            $this->setupPrinter->printSetup($formatter, $event->getSetup());
         }
-        if ($event instanceof After_Suite_Tested) {
-            $this->setup_printer->print_teardown($formatter, $event->get_teardown());
+
+        if ($event instanceof AfterSuiteTested) {
+            $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
         }
     }
 }

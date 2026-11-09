@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,69 +9,89 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Reader;
 
-use Behat\Behat\Context\Attribute\Attribute_Reader;
-use Behat\Behat\Context\Environment\Context_Environment;
-use Behat\Testwork\Call\Runtime_Callee;
+use Behat\Behat\Context\Attribute\AttributeReader;
+use Behat\Behat\Context\Environment\ContextEnvironment;
+use Behat\Testwork\Call\RuntimeCallee;
 use ReflectionClass;
-use Reflection_Exception;
+use ReflectionException;
 use ReflectionMethod;
+
 /**
  * Reads context callees by Attributes using registered Attribute readers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Attribute_Context_Reader implements Context_Reader
+final class AttributeContextReader implements ContextReader
 {
     /**
      * @var AttributeReader[]
      */
     private array $readers = [];
+
     /**
      * Registers attribute reader.
      */
-    public function register_attribute_reader(Attribute_Reader $reader): void
+    public function registerAttributeReader(AttributeReader $reader): void
     {
         $this->readers[] = $reader;
     }
+
     /**
      * @return list<RuntimeCallee>
      */
-    public function read_context_callees(Context_Environment $environment, $context_class): array
+    public function readContextCallees(ContextEnvironment $environment, $contextClass): array
     {
-        $reflection = new ReflectionClass($context_class);
+        $reflection = new ReflectionClass($contextClass);
+
         $callees = [];
-        foreach ($reflection->get_methods(ReflectionMethod::IS_PUBLIC) as $method) {
-            foreach ($this->read_method_callees($reflection->get_name(), $method) as $callee) {
+
+        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            foreach ($this->readMethodCallees($reflection->getName(), $method) as $callee) {
                 $callees[] = $callee;
             }
         }
+
         return $callees;
     }
+
     /**
      * @return list<RuntimeCallee>
      */
-    private function read_method_callees(string $context_class, ReflectionMethod $method): array
+    private function readMethodCallees(string $contextClass, ReflectionMethod $method): array
     {
         $callees = [];
+
         foreach ($this->readers as $reader) {
-            $callees = array_merge($this->read_parent_callees($context_class, $method, $reader, $callees), $reader->read_callees($context_class, $method));
+            $callees = array_merge(
+                $this->readParentCallees($contextClass, $method, $reader, $callees),
+                $reader->readCallees($contextClass, $method)
+            );
         }
+
         return $callees;
     }
+
     /**
      * @return list<RuntimeCallee>
      */
-    private function read_parent_callees(string $context_class, ReflectionMethod $method, Attribute_Reader $reader, array $callees): array
-    {
+    private function readParentCallees(
+        string $contextClass,
+        ReflectionMethod $method,
+        AttributeReader $reader,
+        array $callees,
+    ): array {
         try {
-            $prototype = $method->get_prototype();
-            if ($prototype->get_declaring_class()->get_name() !== $method->get_declaring_class()->get_name()) {
-                $callees = array_merge($callees, $reader->read_callees($context_class, $prototype));
+            $prototype = $method->getPrototype();
+
+            if ($prototype->getDeclaringClass()->getName() !== $method->getDeclaringClass()->getName()) {
+                $callees = array_merge($callees, $reader->readCallees($contextClass, $prototype));
             }
-        } catch (Reflection_Exception) {
+        } catch (ReflectionException) {
         }
+
         return $callees;
     }
 }

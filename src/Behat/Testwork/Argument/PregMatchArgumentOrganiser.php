@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,27 +9,33 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Argument;
 
-use Reflection_Function_Abstract;
+use ReflectionFunctionAbstract;
+
 /**
  * Organises arguments coming from preg_match results.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Preg_Match_Argument_Organiser implements Argument_Organiser
+final readonly class PregMatchArgumentOrganiser implements ArgumentOrganiser
 {
     /**
      * Initialises organiser.
      */
-    public function __construct(private Argument_Organiser $base_organiser)
-    {
+    public function __construct(
+        private ArgumentOrganiser $baseOrganiser,
+    ) {
     }
-    public function organise_arguments(Reflection_Function_Abstract $function, array $arguments)
+
+    public function organiseArguments(ReflectionFunctionAbstract $function, array $arguments)
     {
-        $cleaned_arguments = $this->cleanup_match_duplicates($arguments);
-        return $this->base_organiser->organise_arguments($function, $cleaned_arguments);
+        $cleanedArguments = $this->cleanupMatchDuplicates($arguments);
+
+        return $this->baseOrganiser->organiseArguments($function, $cleanedArguments);
     }
+
     /**
      * Cleans up provided preg_match match into a list of arguments.
      *
@@ -39,30 +46,36 @@ final readonly class Preg_Match_Argument_Organiser implements Argument_Organiser
      *
      * @return list<mixed>
      */
-    private function cleanup_match_duplicates(array $match): array
+    private function cleanupMatchDuplicates(array $match): array
     {
-        $clean_match = array_slice($match, 1);
+        $cleanMatch = array_slice($match, 1);
         $arguments = [];
-        $keys = array_keys($clean_match);
-        $num_keys = count($keys);
-        for ($key_index = 0; $key_index < $num_keys; ++$key_index) {
-            $key = $keys[$key_index];
-            $arguments[$key] = $clean_match[$key];
-            if ($this->is_key_a_string_and_next_one_is_an_integer($key_index, $keys)) {
-                ++$key_index;
+
+        $keys = array_keys($cleanMatch);
+        $numKeys = count($keys);
+        for ($keyIndex = 0; $keyIndex < $numKeys; ++$keyIndex) {
+            $key = $keys[$keyIndex];
+
+            $arguments[$key] = $cleanMatch[$key];
+
+            if ($this->isKeyAStringAndNextOneIsAnInteger($keyIndex, $keys)) {
+                ++$keyIndex;
             }
         }
+
         return $arguments;
     }
+
     /**
      * Checks if key at provided index is a string and next key in the array is an integer.
      *
      * @param mixed[] $keys
      */
-    private function is_key_a_string_and_next_one_is_an_integer(int $key_index, array $keys): bool
+    private function isKeyAStringAndNextOneIsAnInteger(int $keyIndex, array $keys): bool
     {
-        $key_is_a_string = is_string($keys[$key_index]);
-        $next_key_is_an_integer = isset($keys[$key_index + 1]) && is_int($keys[$key_index + 1]);
-        return $key_is_a_string && $next_key_is_an_integer;
+        $keyIsAString = is_string($keys[$keyIndex]);
+        $nextKeyIsAnInteger = isset($keys[$keyIndex + 1]) && is_int($keys[$keyIndex + 1]);
+
+        return $keyIsAString && $nextKeyIsAnInteger;
     }
 }

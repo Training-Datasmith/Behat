@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,54 +9,64 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition\Translator;
 
 use Behat\Behat\Definition\Definition;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Translates definitions using translator component.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Definition_Translator
+final class DefinitionTranslator
 {
     /**
      * @var array<string, string>
      */
-    private array $translation_cache = [];
+    private array $translationCache = [];
+
     /**
      * Initialises definition translator.
      */
-    public function __construct(private readonly Translator_Interface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
     }
+
     /**
      * Attempts to translate definition using translator and produce translated one on success.
      *
      * @param string|null $language
      */
-    public function translate_definition(Suite $suite, Definition $definition, $language = null): \Behat\Behat\Definition\Translator\Translated_Definition|\Behat\Behat\Definition\Definition
+    public function translateDefinition(Suite $suite, Definition $definition, $language = null): \Behat\Behat\Definition\Translator\TranslatedDefinition|\Behat\Behat\Definition\Definition
     {
-        $assets_id = $suite->get_name();
-        $pattern = $definition->get_pattern();
-        $cache_key = sprintf('%s|%s|%s', $assets_id, $pattern, $language ?? $this->get_locale());
-        if (isset($this->translation_cache[$cache_key])) {
-            $translated_pattern = $this->translation_cache[$cache_key];
+        $assetsId = $suite->getName();
+        $pattern = $definition->getPattern();
+        $cacheKey = sprintf('%s|%s|%s', $assetsId, $pattern, $language ?? $this->getLocale());
+
+        if (isset($this->translationCache[$cacheKey])) {
+            $translatedPattern = $this->translationCache[$cacheKey];
         } else {
-            $translated_pattern = $this->translator->trans($pattern, [], $assets_id, $language);
-            $this->translation_cache[$cache_key] = $translated_pattern;
+            $translatedPattern = $this->translator->trans($pattern, [], $assetsId, $language);
+            $this->translationCache[$cacheKey] = $translatedPattern;
         }
-        if ($pattern != $translated_pattern) {
-            return new Translated_Definition($definition, $translated_pattern, $language);
+
+        if ($pattern != $translatedPattern) {
+            return new TranslatedDefinition($definition, $translatedPattern, $language);
         }
+
         return $definition;
     }
-    public function translate_info_text(string $info_text, array $parameters): string
+
+    public function translateInfoText(string $infoText, array $parameters): string
     {
-        return $this->translator->trans($info_text, $parameters, 'output');
+        return $this->translator->trans($infoText, $parameters, 'output');
     }
-    public function get_locale()
+
+    public function getLocale()
     {
-        return $this->translator->get_locale();
+        return $this->translator->getLocale();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,16 +9,18 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Reader;
 
-use Behat\Behat\Context\Environment\Context_Environment;
+use Behat\Behat\Context\Environment\ContextEnvironment;
 use Behat\Testwork\Call\Callee;
+
 /**
  * Reads callees from a context class.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Context_Reader
+interface ContextReader
 {
     /**
      * Reads callees from specific environment & context.
@@ -26,5 +29,5 @@ interface Context_Reader
      *
      * @return Callee[]
      */
-    public function read_context_callees(Context_Environment $environment, $context_class);
+    public function readContextCallees(ContextEnvironment $environment, $contextClass);
 }

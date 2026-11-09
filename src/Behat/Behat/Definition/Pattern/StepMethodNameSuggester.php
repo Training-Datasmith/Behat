@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 namespace Behat\Behat\Definition\Pattern;
 
 /**
@@ -9,7 +10,7 @@ namespace Behat\Behat\Definition\Pattern;
  * Suggested names do not have to be unique - the ContextSnippetGenerator will add a numerical suffix if the Context
  * already contains a method with the suggested name.
  */
-interface Step_Method_Name_Suggester
+interface StepMethodNameSuggester
 {
-    public function suggest(string $step_text_without_placeholders): string;
+    public function suggest(string $stepTextWithoutPlaceholders): string;
 }

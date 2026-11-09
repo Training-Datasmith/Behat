@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Ordering\Orderer;
 
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Specification\SpecificationIterator;
+
 /**
  * Algorithm for prioritising Specification execution.
  *
@@ -25,9 +28,10 @@ interface Orderer
      *
      * @return SpecificationIterator<T>[]
      */
-    public function order(array $scenario_iterators);
+    public function order(array $scenarioIterators);
+
     /**
      * @return string
      */
-    public function get_name();
+    public function getName();
 }

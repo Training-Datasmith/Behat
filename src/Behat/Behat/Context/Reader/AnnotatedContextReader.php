@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,59 +9,76 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Reader;
 
-use Behat\Behat\Context\Annotation\Annotation_Reader;
-use Behat\Behat\Context\Annotation\Doc_Block_Helper;
-use Behat\Behat\Context\Environment\Context_Environment;
-use Behat\Behat\Util\Strict_Regex;
+use Behat\Behat\Context\Annotation\AnnotationReader;
+use Behat\Behat\Context\Annotation\DocBlockHelper;
+use Behat\Behat\Context\Environment\ContextEnvironment;
+use Behat\Behat\Util\StrictRegex;
 use Behat\Testwork\Call\Callee;
 use ReflectionClass;
-use Reflection_Exception;
+use ReflectionException;
 use ReflectionMethod;
+
 /**
  * Reads context callees by annotations using registered annotation readers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Annotated_Context_Reader implements Context_Reader
+final class AnnotatedContextReader implements ContextReader
 {
     public const DOCLINE_TRIMMER_REGEX = '/^\/\*\*\s*|^\s*\*\s*|\s*\*\/$|\s*$/';
+
     /**
      * @var string[]
      */
-    private static array $ignore_annotations = ['@param', '@return', '@throws', '@see', '@uses', '@todo'];
+    private static array $ignoreAnnotations = [
+        '@param',
+        '@return',
+        '@throws',
+        '@see',
+        '@uses',
+        '@todo',
+    ];
     /**
      * @var AnnotationReader[]
      */
     private array $readers = [];
+
     /**
      * Initializes reader.
      */
-    public function __construct(private readonly Doc_Block_Helper $doc_block_helper)
-    {
+    public function __construct(
+        private readonly DocBlockHelper $docBlockHelper,
+    ) {
     }
+
     /**
      * Registers annotation reader.
      */
-    public function register_annotation_reader(Annotation_Reader $reader): void
+    public function registerAnnotationReader(AnnotationReader $reader): void
     {
         $this->readers[] = $reader;
     }
+
     /**
      * @return list<Callee>
      */
-    public function read_context_callees(Context_Environment $environment, $context_class): array
+    public function readContextCallees(ContextEnvironment $environment, $contextClass): array
     {
-        $reflection = new ReflectionClass($context_class);
+        $reflection = new ReflectionClass($contextClass);
+
         $callees = [];
-        foreach ($reflection->get_methods(ReflectionMethod::IS_PUBLIC) as $method) {
-            foreach ($this->read_method_callees($reflection->get_name(), $method) as $callee) {
+        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            foreach ($this->readMethodCallees($reflection->getName(), $method) as $callee) {
                 $callees[] = $callee;
             }
         }
+
         return $callees;
     }
+
     /**
      * Loads callees associated with specific method.
      *
@@ -68,23 +86,27 @@ final class Annotated_Context_Reader implements Context_Reader
      *
      * @return list<Callee>
      */
-    private function read_method_callees($class, ReflectionMethod $method): array
+    private function readMethodCallees($class, ReflectionMethod $method): array
     {
         $callees = [];
+
         // read parent annotations
         try {
-            $prototype = $method->get_prototype();
+            $prototype = $method->getPrototype();
             // error occurs on every second PHP stable release - getPrototype() returns itself
-            if ($prototype->get_declaring_class()->get_name() !== $method->get_declaring_class()->get_name()) {
-                $callees = array_merge($callees, $this->read_method_callees($class, $prototype));
+            if ($prototype->getDeclaringClass()->getName() !== $method->getDeclaringClass()->getName()) {
+                $callees = array_merge($callees, $this->readMethodCallees($class, $prototype));
             }
-        } catch (Reflection_Exception) {
+        } catch (ReflectionException) {
         }
-        if ($doc_block = $method->get_doc_comment()) {
-            return array_merge($callees, $this->read_doc_block_callees($class, $method, $doc_block));
+
+        if ($docBlock = $method->getDocComment()) {
+            return array_merge($callees, $this->readDocBlockCallees($class, $method, $docBlock));
         }
+
         return $callees;
     }
+
     /**
      * Reads callees from the method doc block.
      *
@@ -93,46 +115,55 @@ final class Annotated_Context_Reader implements Context_Reader
      *
      * @return list<Callee>
      */
-    private function read_doc_block_callees($class, ReflectionMethod $method, $doc_block): array
+    private function readDocBlockCallees($class, ReflectionMethod $method, $docBlock): array
     {
         $callees = [];
-        $description = $this->doc_block_helper->extract_description($doc_block);
-        $doc_block = $this->merge_multilines($doc_block);
-        foreach (explode("\n", $doc_block) as $doc_line) {
-            $doc_line = Strict_Regex::replace(self::DOCLINE_TRIMMER_REGEX, '', $doc_line);
-            if ($this->is_empty($doc_line)) {
+        $description = $this->docBlockHelper->extractDescription($docBlock);
+        $docBlock = $this->mergeMultilines($docBlock);
+
+        foreach (explode("\n", $docBlock) as $docLine) {
+            $docLine = StrictRegex::replace(self::DOCLINE_TRIMMER_REGEX, '', $docLine);
+
+            if ($this->isEmpty($docLine)) {
                 continue;
             }
-            if ($this->is_not_annotation($doc_line)) {
+
+            if ($this->isNotAnnotation($docLine)) {
                 continue;
             }
-            if ($callee = $this->read_doc_line_callee($class, $method, $doc_line, $description)) {
+
+            if ($callee = $this->readDocLineCallee($class, $method, $docLine, $description)) {
                 $callees[] = $callee;
             }
         }
+
         return $callees;
     }
+
     /**
      * Merges multiline strings (strings ending with "\").
      */
-    private function merge_multilines(string $doc_block): string
+    private function mergeMultilines(string $docBlock): string
     {
-        return Strict_Regex::replace("#\\\\\$\\s*+\\*\\s*+([^\\\\\$]++)#m", '$1', $doc_block);
+        return StrictRegex::replace("#\\\\$\s*+\*\s*+([^\\\\$]++)#m", '$1', $docBlock);
     }
+
     /**
      * Checks if provided doc lien is empty.
      */
-    private function is_empty(string $doc_line): bool
+    private function isEmpty(string $docLine): bool
     {
-        return '' == $doc_line;
+        return '' == $docLine;
     }
+
     /**
      * Checks if provided doc line is not an annotation.
      */
-    private function is_not_annotation(string $doc_line): bool
+    private function isNotAnnotation(string $docLine): bool
     {
-        return !str_starts_with($doc_line, '@');
+        return !str_starts_with($docLine, '@');
     }
+
     /**
      * Reads callee from provided doc line using registered annotation readers.
      *
@@ -140,29 +171,33 @@ final class Annotated_Context_Reader implements Context_Reader
      * @param string|null $description
      * @return Callee|null
      */
-    private function read_doc_line_callee($class, ReflectionMethod $method, string $doc_line, $description = null)
+    private function readDocLineCallee($class, ReflectionMethod $method, string $docLine, $description = null)
     {
-        if ($this->is_ignored_annotation($doc_line)) {
+        if ($this->isIgnoredAnnotation($docLine)) {
             return null;
         }
+
         foreach ($this->readers as $reader) {
-            if ($callee = $reader->read_callee($class, $method, $doc_line, $description)) {
+            if ($callee = $reader->readCallee($class, $method, $docLine, $description)) {
                 return $callee;
             }
         }
+
         return null;
     }
+
     /**
      * Checks if provided doc line is one of the ignored annotations.
      */
-    private function is_ignored_annotation(string $doc_line): bool
+    private function isIgnoredAnnotation(string $docLine): bool
     {
-        $low_doc_line = strtolower($doc_line);
-        foreach (self::$ignore_annotations as $ignored_annotation) {
-            if (str_starts_with($low_doc_line, $ignored_annotation)) {
+        $lowDocLine = strtolower($docLine);
+        foreach (self::$ignoreAnnotations as $ignoredAnnotation) {
+            if (str_starts_with($lowDocLine, $ignoredAnnotation)) {
                 return true;
             }
         }
+
         return false;
     }
 }

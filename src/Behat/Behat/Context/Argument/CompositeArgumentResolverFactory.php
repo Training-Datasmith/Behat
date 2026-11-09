@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Argument;
 
 use Behat\Testwork\Environment\Environment;
+
 /**
  * Composite factory. Delegates to other (registered) factories to do the job.
  *
@@ -18,21 +21,27 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Composite_Argument_Resolver_Factory implements Argument_Resolver_Factory
+final class CompositeArgumentResolverFactory implements ArgumentResolverFactory
 {
     /**
      * @var ArgumentResolverFactory[]
      */
     private array $factories = [];
+
     /**
      * Registers factory.
      */
-    public function register_factory(Argument_Resolver_Factory $factory): void
+    public function registerFactory(ArgumentResolverFactory $factory): void
     {
         $this->factories[] = $factory;
     }
-    public function create_argument_resolvers(Environment $environment): array
+
+    public function createArgumentResolvers(Environment $environment): array
     {
-        return array_reduce($this->factories, fn(array $resolvers, Argument_Resolver_Factory $factory): array => array_merge($resolvers, $factory->create_argument_resolvers($environment)), []);
+        return array_reduce(
+            $this->factories,
+            fn (array $resolvers, ArgumentResolverFactory $factory): array => array_merge($resolvers, $factory->createArgumentResolvers($environment)),
+            []
+        );
     }
 }

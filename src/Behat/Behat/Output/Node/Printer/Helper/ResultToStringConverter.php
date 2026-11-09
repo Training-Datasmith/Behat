@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,35 +9,38 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Node\Printer\Helper;
 
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Converts result objects into a string representation.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Result_To_String_Converter
+final class ResultToStringConverter
 {
     /**
      * Converts provided test result to a string.
      */
-    public function convert_result_to_string(Test_Result $result): string
+    public function convertResultToString(TestResult $result): string
     {
-        return $this->convert_result_code_to_string($result->get_result_code());
+        return $this->convertResultCodeToString($result->getResultCode());
     }
+
     /**
      * Converts provided result code to a string.
      *
      * @param int $resultCode
      */
-    public function convert_result_code_to_string($result_code): string
+    public function convertResultCodeToString($resultCode): string
     {
-        return match ($result_code) {
-            Test_Result::SKIPPED => 'skipped',
-            Test_Result::PENDING => 'pending',
-            Test_Result::FAILED => 'failed',
-            Test_Result::UNDEFINED => 'undefined',
+        return match ($resultCode) {
+            TestResult::SKIPPED => 'skipped',
+            TestResult::PENDING => 'pending',
+            TestResult::FAILED => 'failed',
+            TestResult::UNDEFINED => 'undefined',
             default => 'passed',
         };
     }

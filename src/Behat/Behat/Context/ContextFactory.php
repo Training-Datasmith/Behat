@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,50 +9,57 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context;
 
-use Behat\Behat\Context\Argument\Argument_Resolver;
-use Behat\Behat\Context\Initializer\Context_Initializer;
-use Behat\Testwork\Argument\Argument_Organiser;
+use Behat\Behat\Context\Argument\ArgumentResolver;
+use Behat\Behat\Context\Initializer\ContextInitializer;
+use Behat\Testwork\Argument\ArgumentOrganiser;
 use Behat\Testwork\Argument\Validator;
 use ReflectionClass;
+
 /**
  * Instantiates contexts using registered argument resolvers and context initializers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Context_Factory
+final class ContextFactory
 {
     /**
      * @var ArgumentResolver[]
      */
-    private array $argument_resolvers = [];
+    private array $argumentResolvers = [];
     /**
      * @var ContextInitializer[]
      */
-    private array $context_initializers = [];
+    private array $contextInitializers = [];
     private readonly Validator $validator;
+
     /**
      * Initialises factory.
      */
-    public function __construct(private readonly Argument_Organiser $argument_organiser)
-    {
+    public function __construct(
+        private readonly ArgumentOrganiser $argumentOrganiser,
+    ) {
         $this->validator = new Validator();
     }
+
     /**
      * Registers context argument resolver.
      */
-    public function register_argument_resolver(Argument_Resolver $resolver): void
+    public function registerArgumentResolver(ArgumentResolver $resolver): void
     {
-        $this->argument_resolvers[] = $resolver;
+        $this->argumentResolvers[] = $resolver;
     }
+
     /**
      * Registers context initializer.
      */
-    public function register_context_initializer(Context_Initializer $initializer): void
+    public function registerContextInitializer(ContextInitializer $initializer): void
     {
-        $this->context_initializers[] = $initializer;
+        $this->contextInitializers[] = $initializer;
     }
+
     /**
      * Creates and initializes context class.
      *
@@ -60,15 +68,17 @@ final class Context_Factory
      *
      * @return Context
      */
-    public function create_context($class, array $arguments = [], array $single_use_resolvers = [])
+    public function createContext($class, array $arguments = [], array $singleUseResolvers = [])
     {
         $reflection = new ReflectionClass($class);
-        $resolvers = array_merge($single_use_resolvers, $this->argument_resolvers);
-        $resolved_arguments = $this->resolve_arguments($reflection, $arguments, $resolvers);
-        $context = $this->create_instance($reflection, $resolved_arguments);
-        $this->initialize_instance($context);
+        $resolvers = array_merge($singleUseResolvers, $this->argumentResolvers);
+        $resolvedArguments = $this->resolveArguments($reflection, $arguments, $resolvers);
+        $context = $this->createInstance($reflection, $resolvedArguments);
+        $this->initializeInstance($context);
+
         return $context;
     }
+
     /**
      * Resolves arguments for a specific class using registered argument resolvers.
      *
@@ -76,37 +86,44 @@ final class Context_Factory
      *
      * @return mixed[]
      */
-    private function resolve_arguments(ReflectionClass $reflection, array $arguments, array $resolvers)
+    private function resolveArguments(ReflectionClass $reflection, array $arguments, array $resolvers)
     {
-        $new_arguments = $arguments;
+        $newArguments = $arguments;
+
         foreach ($resolvers as $resolver) {
-            $new_arguments = $resolver->resolve_arguments($reflection, $new_arguments);
+            $newArguments = $resolver->resolveArguments($reflection, $newArguments);
         }
-        if (!$reflection->has_method('__construct')) {
-            return $new_arguments;
+
+        if (!$reflection->hasMethod('__construct')) {
+            return $newArguments;
         }
-        $constructor = $reflection->get_constructor();
-        $new_arguments = $this->argument_organiser->organise_arguments($constructor, $new_arguments);
-        $this->validator->validate_arguments($constructor, $new_arguments);
-        return $new_arguments;
+
+        $constructor = $reflection->getConstructor();
+        $newArguments = $this->argumentOrganiser->organiseArguments($constructor, $newArguments);
+        $this->validator->validateArguments($constructor, $newArguments);
+
+        return $newArguments;
     }
+
     /**
      * Creates context instance.
      */
-    private function create_instance(ReflectionClass $reflection, array $arguments): Context
+    private function createInstance(ReflectionClass $reflection, array $arguments): Context
     {
         if (count($arguments)) {
-            return $reflection->new_instance_args(array_values($arguments));
+            return $reflection->newInstanceArgs(array_values($arguments));
         }
-        return $reflection->new_instance();
+
+        return $reflection->newInstance();
     }
+
     /**
      * Initializes context class and returns new context instance.
      */
-    private function initialize_instance(Context $context): void
+    private function initializeInstance(Context $context): void
     {
-        foreach ($this->context_initializers as $initializer) {
-            $initializer->initialize_context($context);
+        foreach ($this->contextInitializers as $initializer) {
+            $initializer->initializeContext($context);
         }
     }
 }

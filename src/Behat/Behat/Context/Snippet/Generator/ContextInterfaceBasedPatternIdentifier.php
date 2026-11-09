@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Snippet\Generator;
 
-use Behat\Behat\Context\Custom_Snippet_Accepting_Context;
+use Behat\Behat\Context\CustomSnippetAcceptingContext;
+
 /**
  * Identifier that uses context interfaces to guess the pattern type.
  *
@@ -18,13 +21,14 @@ use Behat\Behat\Context\Custom_Snippet_Accepting_Context;
  *
  * @deprecated in favour of --snippet-type and will be removed in 4.0
  */
-final class Context_Interface_Based_Pattern_Identifier implements Pattern_Identifier
+final class ContextInterfaceBasedPatternIdentifier implements PatternIdentifier
 {
-    public function guess_pattern_type($context_class)
+    public function guessPatternType($contextClass)
     {
-        if (!in_array(Custom_Snippet_Accepting_Context::class, class_implements($context_class))) {
+        if (!in_array(CustomSnippetAcceptingContext::class, class_implements($contextClass))) {
             return null;
         }
-        return $context_class::get_accepted_snippet_type();
+
+        return $contextClass::getAcceptedSnippetType();
     }
 }

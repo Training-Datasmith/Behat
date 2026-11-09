@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,58 +9,78 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation\Transformation;
 
-use Behat\Behat\Definition\Call\Definition_Call;
-use Behat\Behat\Transformation\Call\Transformation_Call;
-use Behat\Behat\Transformation\Simple_Argument_Transformation;
-use Behat\Testwork\Call\Call_Center;
-use Behat\Testwork\Call\Runtime_Callee;
+use Behat\Behat\Definition\Call\DefinitionCall;
+use Behat\Behat\Transformation\Call\TransformationCall;
+use Behat\Behat\Transformation\SimpleArgumentTransformation;
+use Behat\Testwork\Call\CallCenter;
+use Behat\Testwork\Call\RuntimeCallee;
 use ReflectionMethod;
 use Stringable;
+
 /**
  * Token name based transformation.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Token_Name_Transformation extends Runtime_Callee implements Stringable, Simple_Argument_Transformation
+final class TokenNameTransformation extends RuntimeCallee implements Stringable, SimpleArgumentTransformation
 {
     public const PATTERN_REGEX = '/^\:\w+$/';
-    public static function supports_pattern_and_method($pattern, ReflectionMethod $method): bool
+
+    public static function supportsPatternAndMethod($pattern, ReflectionMethod $method): bool
     {
         return 1 === preg_match(self::PATTERN_REGEX, $pattern);
     }
+
     /**
      * Initializes transformation.
      *
      * @param string      $pattern
      * @param callable    $callable
      */
-    public function __construct(private $pattern, callable|array $callable, ?string $description = null)
-    {
+    public function __construct(
+        private $pattern,
+        callable|array $callable,
+        ?string $description = null,
+    ) {
         parent::__construct($callable, $description);
     }
-    public function supports_definition_and_argument(Definition_Call $definition_call, $argument_index, $argument_argument_value): bool
+
+    public function supportsDefinitionAndArgument(DefinitionCall $definitionCall, $argumentIndex, $argumentArgumentValue): bool
     {
-        return ':' . $argument_index === $this->pattern;
+        return ':' . $argumentIndex === $this->pattern;
     }
-    public function transform_argument(Call_Center $call_center, Definition_Call $definition_call, $argument_index, $argument_value)
+
+    public function transformArgument(CallCenter $callCenter, DefinitionCall $definitionCall, $argumentIndex, $argumentValue)
     {
-        $call = new Transformation_Call($definition_call->get_environment(), $definition_call->get_callee(), $this, [$argument_value]);
-        $result = $call_center->make_call($call);
-        if ($result->has_exception()) {
-            throw $result->get_exception();
+        $call = new TransformationCall(
+            $definitionCall->getEnvironment(),
+            $definitionCall->getCallee(),
+            $this,
+            [$argumentValue]
+        );
+
+        $result = $callCenter->makeCall($call);
+
+        if ($result->hasException()) {
+            throw $result->getException();
         }
-        return $result->get_return();
+
+        return $result->getReturn();
     }
-    public function get_priority(): int
+
+    public function getPriority(): int
     {
         return 50;
     }
-    public function get_pattern()
+
+    public function getPattern()
     {
         return $this->pattern;
     }
+
     public function __toString(): string
     {
         return 'TokenNameTransform ' . $this->pattern;

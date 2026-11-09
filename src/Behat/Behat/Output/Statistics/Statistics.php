@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,12 +9,14 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Statistics;
 
-use Behat\Behat\Tester\Result\Step_Result;
+use Behat\Behat\Tester\Result\StepResult;
 use Behat\Testwork\Counter\Memory;
 use Behat\Testwork\Counter\Timer;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Collects and provided exercise statistics.
  *
@@ -24,75 +27,88 @@ interface Statistics
     /**
      * Starts timer.
      */
-    public function start_timer();
+    public function startTimer();
+
     /**
      * Stops timer.
      */
-    public function stop_timer();
+    public function stopTimer();
+
     /**
      * Returns timer object.
      *
      * @return Timer
      */
-    public function get_timer();
+    public function getTimer();
+
     /**
      * Returns memory usage object.
      *
      * @return Memory
      */
-    public function get_memory();
+    public function getMemory();
+
     /**
      * Registers scenario stat.
      */
-    public function register_scenario_stat(Scenario_Stat $stat);
+    public function registerScenarioStat(ScenarioStat $stat);
+
     /**
      * Registers step stat.
      */
-    public function register_step_stat(Step_Stat $stat);
+    public function registerStepStat(StepStat $stat);
+
     /**
      * Registers hook stat.
      */
-    public function register_hook_stat(Hook_Stat $stat);
+    public function registerHookStat(HookStat $stat);
+
     /**
      * Returns counters for different scenario result codes.
      *
      * @return array<TestResult::*, int>
      */
-    public function get_scenario_stat_counts();
+    public function getScenarioStatCounts();
+
     /**
      * Returns skipped scenario stats.
      *
      * @return ScenarioStat[]
      */
-    public function get_skipped_scenarios();
+    public function getSkippedScenarios();
+
     /**
      * Returns failed scenario stats.
      *
      * @return ScenarioStat[]
      */
-    public function get_failed_scenarios();
+    public function getFailedScenarios();
+
     /**
      * Returns counters for different step result codes.
      *
      * @return array<StepResult::*, int>
      */
-    public function get_step_stat_counts();
+    public function getStepStatCounts();
+
     /**
      * Returns failed step stats.
      *
      * @return StepStat[]
      */
-    public function get_failed_steps();
+    public function getFailedSteps();
+
     /**
      * Returns pending step stats.
      *
      * @return StepStat[]
      */
-    public function get_pending_steps();
+    public function getPendingSteps();
+
     /**
      * Returns failed hook stats.
      *
      * @return HookStat[]
      */
-    public function get_failed_hook_stats();
+    public function getFailedHookStats();
 }

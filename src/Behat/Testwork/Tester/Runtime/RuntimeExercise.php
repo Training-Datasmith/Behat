@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,20 +9,22 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Runtime;
 
-use Behat\Testwork\Environment\Environment_Manager;
-use Behat\Testwork\Specification\Grouped_Specification_Iterator;
+use Behat\Testwork\Environment\EnvironmentManager;
+use Behat\Testwork\Specification\GroupedSpecificationIterator;
 use Behat\Testwork\Tester\Exercise;
-use Behat\Testwork\Tester\Result\Integer_Test_Result;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Result\Test_Results;
-use Behat\Testwork\Tester\Result\Test_With_Setup_Result;
+use Behat\Testwork\Tester\Result\IntegerTestResult;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\TestResults;
+use Behat\Testwork\Tester\Result\TestWithSetupResult;
 use Behat\Testwork\Tester\Setup\Setup;
-use Behat\Testwork\Tester\Setup\Successful_Setup;
-use Behat\Testwork\Tester\Setup\Successful_Teardown;
+use Behat\Testwork\Tester\Setup\SuccessfulSetup;
+use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
 use Behat\Testwork\Tester\Setup\Teardown;
-use Behat\Testwork\Tester\Suite_Tester;
+use Behat\Testwork\Tester\SuiteTester;
+
 /**
  * Tester executing exercises in the runtime.
  *
@@ -31,36 +34,44 @@ use Behat\Testwork\Tester\Suite_Tester;
  *
  * @implements Exercise<TSpec>
  */
-final readonly class Runtime_Exercise implements Exercise
+final readonly class RuntimeExercise implements Exercise
 {
     /**
      * Initializes tester.
      *
      * @param SuiteTester<TSpec> $suiteTester
      */
-    public function __construct(private Environment_Manager $env_manager, private Suite_Tester $suite_tester)
-    {
+    public function __construct(
+        private EnvironmentManager $envManager,
+        private SuiteTester $suiteTester,
+    ) {
     }
-    public function set_up(array $iterators, $skip): Setup
+
+    public function setUp(array $iterators, $skip): Setup
     {
-        return new Successful_Setup();
+        return new SuccessfulSetup();
     }
-    public function test(array $iterators, $skip = false): Test_Result
+
+    public function test(array $iterators, $skip = false): TestResult
     {
         $results = [];
-        foreach (Grouped_Specification_Iterator::group($iterators) as $iterator) {
-            $environment = $this->env_manager->build_environment($iterator->get_suite());
-            $setup = $this->suite_tester->set_up($environment, $iterator, $skip);
-            $local_skip = !$setup->is_successful() || $skip;
-            $test_result = $this->suite_tester->test($environment, $iterator, $local_skip);
-            $teardown = $this->suite_tester->tear_down($environment, $iterator, $local_skip, $test_result);
-            $integer_result = new Integer_Test_Result($test_result->get_result_code());
-            $results[] = new Test_With_Setup_Result($setup, $integer_result, $teardown);
+        foreach (GroupedSpecificationIterator::group($iterators) as $iterator) {
+            $environment = $this->envManager->buildEnvironment($iterator->getSuite());
+
+            $setup = $this->suiteTester->setUp($environment, $iterator, $skip);
+            $localSkip = !$setup->isSuccessful() || $skip;
+            $testResult = $this->suiteTester->test($environment, $iterator, $localSkip);
+            $teardown = $this->suiteTester->tearDown($environment, $iterator, $localSkip, $testResult);
+
+            $integerResult = new IntegerTestResult($testResult->getResultCode());
+            $results[] = new TestWithSetupResult($setup, $integerResult, $teardown);
         }
-        return new Test_Results($results);
+
+        return new TestResults($results);
     }
-    public function tear_down(array $iterators, $skip, Test_Result $result): Teardown
+
+    public function tearDown(array $iterators, $skip, TestResult $result): Teardown
     {
-        return new Successful_Teardown();
+        return new SuccessfulTeardown();
     }
 }

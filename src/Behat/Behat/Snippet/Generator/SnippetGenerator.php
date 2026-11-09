@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,13 +9,15 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Snippet\Generator;
 
-use Behat\Behat\Context\Snippet\Generator\Cannot_Generate_Step_Pattern_Exception;
+use Behat\Behat\Context\Snippet\Generator\CannotGenerateStepPatternException;
 use Behat\Behat\Snippet\Snippet;
-use Behat\Behat\Snippet\Snippet_Registry;
-use Behat\Gherkin\Node\Step_Node;
+use Behat\Behat\Snippet\SnippetRegistry;
+use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Environment\Environment;
+
 /**
  * Generates snippet for a specific step in a specific environment.
  *
@@ -22,14 +25,15 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Snippet_Generator
+interface SnippetGenerator
 {
     /**
      * Checks if generator supports search query.
      *
      * @return bool
      */
-    public function supports_environment_and_step(Environment $environment, Step_Node $step);
+    public function supportsEnvironmentAndStep(Environment $environment, StepNode $step);
+
     /**
      * Generates snippet from search.
      *
@@ -37,5 +41,5 @@ interface Snippet_Generator
      *
      * @throws CannotGenerateStepPatternException if the step text cannot be automatically converted to a pattern
      */
-    public function generate_snippet(Environment $environment, Step_Node $step);
+    public function generateSnippet(Environment $environment, StepNode $step);
 }

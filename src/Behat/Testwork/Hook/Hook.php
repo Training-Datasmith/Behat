@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook;
 
 use Behat\Testwork\Call\Callee;
+
 /**
  * Represents a Testwork hook.
  *
@@ -23,13 +26,15 @@ interface Hook extends Callee
      *
      * @return string
      */
-    public function get_name();
+    public function getName();
+
     /**
      * Returns hook scope name.
      *
      * @return string
      */
-    public function get_scope_name();
+    public function getScopeName();
+
     /**
      * Represents hook as a string.
      *

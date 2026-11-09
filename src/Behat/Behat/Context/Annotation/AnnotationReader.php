@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,11 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Annotation;
 
-use Behat\Behat\Context\Reader\Annotated_Context_Reader;
+use Behat\Behat\Context\Reader\AnnotatedContextReader;
 use Behat\Testwork\Call\Callee;
 use ReflectionMethod;
+
 /**
  * Reads custom annotation of a provided context method into a Callee.
  *
@@ -20,7 +23,7 @@ use ReflectionMethod;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Annotation_Reader
+interface AnnotationReader
 {
     /**
      * Reads all callees associated with a provided method.
@@ -31,5 +34,5 @@ interface Annotation_Reader
      *
      * @return Callee|null
      */
-    public function read_callee($context_class, ReflectionMethod $method, $doc_line, $description);
+    public function readCallee($contextClass, ReflectionMethod $method, $docLine, $description);
 }

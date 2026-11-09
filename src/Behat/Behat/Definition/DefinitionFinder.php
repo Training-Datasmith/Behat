@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,43 +9,49 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition;
 
-use Behat\Behat\Definition\Search\Search_Engine;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Step_Node;
+use Behat\Behat\Definition\Search\SearchEngine;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Environment\Environment;
+
 /**
  * Finds specific step definition in environment using registered search engines.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Definition_Finder
+final class DefinitionFinder
 {
     /**
      * @var SearchEngine[]
      */
     private array $engines = [];
+
     /**
      * Registers definition search engine.
      */
-    public function register_search_engine(Search_Engine $search_engine): void
+    public function registerSearchEngine(SearchEngine $searchEngine): void
     {
-        $this->engines[] = $search_engine;
+        $this->engines[] = $searchEngine;
     }
+
     /**
      * Searches definition for a provided step in a provided environment.
      *
      * @return SearchResult
      */
-    public function find_definition(Environment $environment, Feature_Node $feature, Step_Node $step)
+    public function findDefinition(Environment $environment, FeatureNode $feature, StepNode $step)
     {
         foreach ($this->engines as $engine) {
-            $result = $engine->search_definition($environment, $feature, $step);
-            if (null !== $result && $result->has_match()) {
+            $result = $engine->searchDefinition($environment, $feature, $step);
+
+            if (null !== $result && $result->hasMatch()) {
                 return $result;
             }
         }
-        return new Search_Result();
+
+        return new SearchResult();
     }
 }

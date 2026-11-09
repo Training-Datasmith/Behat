@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,69 +9,81 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Hook\Scope;
 
-use Behat\Behat\Tester\Result\Step_Result;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Step_Node;
+use Behat\Behat\Tester\Result\StepResult;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Hook\Scope\After_Test_Scope;
+use Behat\Testwork\Hook\Scope\AfterTestScope;
 use Behat\Testwork\Suite\Suite;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Represents an AfterStep hook scope.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class After_Step_Scope implements Step_Scope, After_Test_Scope
+final readonly class AfterStepScope implements StepScope, AfterTestScope
 {
     /**
      * Initializes scope.
      */
-    public function __construct(private Environment $environment, private Feature_Node $feature, private Step_Node $step, private Step_Result $result)
-    {
+    public function __construct(
+        private Environment $environment,
+        private FeatureNode $feature,
+        private StepNode $step,
+        private StepResult $result,
+    ) {
     }
+
     /**
      * Returns hook scope name.
      */
-    public function get_name(): string
+    public function getName(): string
     {
         return self::AFTER;
     }
+
     /**
      * Returns hook suite.
      *
      * @return Suite
      */
-    public function get_suite()
+    public function getSuite()
     {
-        return $this->environment->get_suite();
+        return $this->environment->getSuite();
     }
+
     /**
      * Returns hook environment.
      */
-    public function get_environment(): Environment
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
+
     /**
      * Returns scope feature.
      */
-    public function get_feature(): Feature_Node
+    public function getFeature(): FeatureNode
     {
         return $this->feature;
     }
+
     /**
      * Returns scope step.
      */
-    public function get_step(): Step_Node
+    public function getStep(): StepNode
     {
         return $this->step;
     }
+
     /**
      * Returns test result.
      */
-    public function get_test_result(): Test_Result
+    public function getTestResult(): TestResult
     {
         return $this->result;
     }

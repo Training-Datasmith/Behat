@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,66 +9,80 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Tester\Runtime;
 
-use Behat\Behat\Tester\Background_Tester;
-use Behat\Behat\Tester\Scenario_Tester;
-use Behat\Behat\Tester\Step_Container_Tester;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Interface as Scenario;
+use Behat\Behat\Tester\BackgroundTester;
+use Behat\Behat\Tester\ScenarioTester;
+use Behat\Behat\Tester\StepContainerTester;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioInterface as Scenario;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Tester\Result\Integer_Test_Result;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Result\Test_Results;
-use Behat\Testwork\Tester\Result\Test_With_Setup_Result;
+use Behat\Testwork\Tester\Result\IntegerTestResult;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\TestResults;
+use Behat\Testwork\Tester\Result\TestWithSetupResult;
 use Behat\Testwork\Tester\Setup\Setup;
-use Behat\Testwork\Tester\Setup\Successful_Setup;
-use Behat\Testwork\Tester\Setup\Successful_Teardown;
+use Behat\Testwork\Tester\Setup\SuccessfulSetup;
+use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
 use Behat\Testwork\Tester\Setup\Teardown;
+
 /**
  * Tester executing scenario or example tests in the runtime.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Runtime_Scenario_Tester implements Scenario_Tester
+final readonly class RuntimeScenarioTester implements ScenarioTester
 {
     /**
      * Initializes tester.
      */
-    public function __construct(private Step_Container_Tester $container_tester, private Background_Tester $background_tester)
-    {
+    public function __construct(
+        private StepContainerTester $containerTester,
+        private BackgroundTester $backgroundTester,
+    ) {
     }
-    public function set_up(Environment $env, Feature_Node $feature, Scenario $scenario, $skip): Setup
+
+    public function setUp(Environment $env, FeatureNode $feature, Scenario $scenario, $skip): Setup
     {
-        return new Successful_Setup();
+        return new SuccessfulSetup();
     }
-    public function test(Environment $env, Feature_Node $feature, Scenario $scenario, $skip = false): Test_Result
+
+    public function test(Environment $env, FeatureNode $feature, Scenario $scenario, $skip = false): TestResult
     {
         $results = [];
-        if ($feature->has_background()) {
-            $background_result = $this->test_background($env, $feature, $skip);
-            $skip = !$background_result->is_passed() || $skip;
-            $results[] = $background_result;
+
+        if ($feature->hasBackground()) {
+            $backgroundResult = $this->testBackground($env, $feature, $skip);
+            $skip = !$backgroundResult->isPassed() || $skip;
+
+            $results[] = $backgroundResult;
         }
-        $results = array_merge($results, $this->container_tester->test($env, $feature, $scenario, $skip));
-        return new Test_Results($results);
+
+        $results = array_merge($results, $this->containerTester->test($env, $feature, $scenario, $skip));
+
+        return new TestResults($results);
     }
-    public function tear_down(Environment $env, Feature_Node $feature, Scenario $scenario, $skip, Test_Result $result): Teardown
+
+    public function tearDown(Environment $env, FeatureNode $feature, Scenario $scenario, $skip, TestResult $result): Teardown
     {
-        return new Successful_Teardown();
+        return new SuccessfulTeardown();
     }
+
     /**
      * Tests background of the provided feature against provided environment.
      *
      * @param bool     $skip
      */
-    private function test_background(Environment $env, Feature_Node $feature, $skip): Test_With_Setup_Result
+    private function testBackground(Environment $env, FeatureNode $feature, $skip): TestWithSetupResult
     {
-        $setup = $this->background_tester->set_up($env, $feature, $skip);
-        $skip_setup = !$setup->is_successful() || $skip;
-        $test_result = $this->background_tester->test($env, $feature, $skip_setup);
-        $teardown = $this->background_tester->tear_down($env, $feature, $skip_setup, $test_result);
-        $integer_result = new Integer_Test_Result($test_result->get_result_code());
-        return new Test_With_Setup_Result($setup, $integer_result, $teardown);
+        $setup = $this->backgroundTester->setUp($env, $feature, $skip);
+        $skipSetup = !$setup->isSuccessful() || $skip;
+        $testResult = $this->backgroundTester->test($env, $feature, $skipSetup);
+        $teardown = $this->backgroundTester->tearDown($env, $feature, $skipSetup, $testResult);
+
+        $integerResult = new IntegerTestResult($testResult->getResultCode());
+
+        return new TestWithSetupResult($setup, $integerResult, $teardown);
     }
 }

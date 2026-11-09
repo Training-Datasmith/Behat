@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,25 +9,28 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Event;
+
+namespace Behat\Testwork\EventDispatcher\Event;
 
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Specification\SpecificationIterator;
+
 /**
  * Represents an exercise event.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Exercise_Completed extends Event
+abstract class ExerciseCompleted extends Event
 {
     public const BEFORE = 'tester.exercise_completed.before';
     public const AFTER_SETUP = 'tester.exercise_completed.after_setup';
     public const BEFORE_TEARDOWN = 'tester.exercise_completed.before_teardown';
     public const AFTER = 'tester.exercise_completed.after';
+
     /**
      * Returns specification iterators.
      *
      * @return SpecificationIterator<mixed>[]
      */
-    abstract public function get_specification_iterators();
+    abstract public function getSpecificationIterators();
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,14 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Environment;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Environment\Handler\Context_Environment_Handler;
-use Behat\Behat\Context\Exception\Context_Not_Found_Exception;
-use Behat\Behat\Context\Exception\Wrong_Context_Class_Exception;
-use Behat\Testwork\Environment\Static_Environment;
+use Behat\Behat\Context\Environment\Handler\ContextEnvironmentHandler;
+use Behat\Behat\Context\Exception\ContextNotFoundException;
+use Behat\Behat\Context\Exception\WrongContextClassException;
+use Behat\Testwork\Environment\StaticEnvironment;
 use ReflectionClass;
+
 /**
  * Context environment based on a list of context classes.
  *
@@ -23,12 +26,13 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Uninitialized_Context_Environment extends Static_Environment implements Context_Environment
+final class UninitializedContextEnvironment extends StaticEnvironment implements ContextEnvironment
 {
     /**
      * @var array<class-string<Context>, array>
      */
-    private array $context_classes = [];
+    private array $contextClasses = [];
+
     /**
      * Registers context class.
      *
@@ -37,36 +41,49 @@ final class Uninitialized_Context_Environment extends Static_Environment impleme
      * @throws ContextNotFoundException   If class does not exist
      * @throws WrongContextClassException if class does not implement Context interface
      */
-    public function register_context_class($context_class, ?array $arguments = null): void
+    public function registerContextClass($contextClass, ?array $arguments = null): void
     {
-        if (!class_exists($context_class)) {
-            throw new Context_Not_Found_Exception(sprintf('`%s` context class not found and can not be used.', $context_class), $context_class);
+        if (!class_exists($contextClass)) {
+            throw new ContextNotFoundException(sprintf(
+                '`%s` context class not found and can not be used.',
+                $contextClass
+            ), $contextClass);
         }
-        $refl_class = new ReflectionClass($context_class);
-        if (!$refl_class->implements_interface(Context::class)) {
-            throw new Wrong_Context_Class_Exception(sprintf('Every context class must implement Behat Context interface, but `%s` does not.', $context_class), $context_class);
+
+        $reflClass = new ReflectionClass($contextClass);
+
+        if (!$reflClass->implementsInterface(Context::class)) {
+            throw new WrongContextClassException(sprintf(
+                'Every context class must implement Behat Context interface, but `%s` does not.',
+                $contextClass
+            ), $contextClass);
         }
-        $this->context_classes[$context_class] = $arguments ?: [];
+
+        $this->contextClasses[$contextClass] = $arguments ?: [];
     }
-    public function has_contexts(): bool
+
+    public function hasContexts(): bool
     {
-        return count($this->context_classes) > 0;
+        return count($this->contextClasses) > 0;
     }
-    public function get_context_classes(): array
+
+    public function getContextClasses(): array
     {
-        return array_keys($this->context_classes);
+        return array_keys($this->contextClasses);
     }
-    public function has_context_class($class): bool
+
+    public function hasContextClass($class): bool
     {
-        return isset($this->context_classes[$class]);
+        return isset($this->contextClasses[$class]);
     }
+
     /**
      * Returns context classes with their arguments.
      *
      * @return array<class-string<Context>, array>
      */
-    public function get_context_classes_with_arguments()
+    public function getContextClassesWithArguments()
     {
-        return $this->context_classes;
+        return $this->contextClasses;
     }
 }

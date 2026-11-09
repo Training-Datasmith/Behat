@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,15 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Tester;
 
-use Behat\Testwork\Event_Dispatcher\Event\After_Exercise_Completed;
-use Behat\Testwork\Event_Dispatcher\Event\After_Exercise_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Exercise_Completed;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Exercise_Teardown;
+namespace Behat\Testwork\EventDispatcher\Tester;
+
+use Behat\Testwork\EventDispatcher\Event\AfterExerciseCompleted;
+use Behat\Testwork\EventDispatcher\Event\AfterExerciseSetup;
+use Behat\Testwork\EventDispatcher\Event\BeforeExerciseCompleted;
+use Behat\Testwork\EventDispatcher\Event\BeforeExerciseTeardown;
 use Behat\Testwork\Tester\Exercise;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
+use Behat\Testwork\Tester\Result\TestResult;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * Exercise dispatching BEFORE/AFTER events during its execution.
  *
@@ -26,36 +29,51 @@ use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
  *
  * @implements Exercise<TSpec>
  */
-final readonly class Event_Dispatching_Exercise implements Exercise
+final readonly class EventDispatchingExercise implements Exercise
 {
     /**
      * Initializes exercise.
      *
      * @param Exercise<TSpec>          $baseExercise
      */
-    public function __construct(private Exercise $base_exercise, private Event_Dispatcher_Interface $event_dispatcher)
-    {
+    public function __construct(
+        private Exercise $baseExercise,
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
-    public function set_up(array $iterators, $skip)
+
+    public function setUp(array $iterators, $skip)
     {
-        $event = new Before_Exercise_Completed($iterators);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE);
-        $setup = $this->base_exercise->set_up($iterators, $skip);
-        $event = new After_Exercise_Setup($iterators, $setup);
-        $this->event_dispatcher->dispatch($event, $event::AFTER_SETUP);
+        $event = new BeforeExerciseCompleted($iterators);
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE);
+
+        $setup = $this->baseExercise->setUp($iterators, $skip);
+
+        $event = new AfterExerciseSetup($iterators, $setup);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER_SETUP);
+
         return $setup;
     }
+
     public function test(array $iterators, $skip = false)
     {
-        return $this->base_exercise->test($iterators, $skip);
+        return $this->baseExercise->test($iterators, $skip);
     }
-    public function tear_down(array $iterators, $skip, Test_Result $result)
+
+    public function tearDown(array $iterators, $skip, TestResult $result)
     {
-        $event = new Before_Exercise_Teardown($iterators, $result);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
-        $teardown = $this->base_exercise->tear_down($iterators, $skip, $result);
-        $event = new After_Exercise_Completed($iterators, $result, $teardown);
-        $this->event_dispatcher->dispatch($event, $event::AFTER);
+        $event = new BeforeExerciseTeardown($iterators, $result);
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
+
+        $teardown = $this->baseExercise->tearDown($iterators, $skip, $result);
+
+        $event = new AfterExerciseCompleted($iterators, $result, $teardown);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER);
+
         return $teardown;
     }
 }

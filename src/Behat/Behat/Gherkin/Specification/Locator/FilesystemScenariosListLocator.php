@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,15 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Gherkin\Specification\Locator;
 
-use Behat\Behat\Gherkin\Specification\Lazy_Feature_Iterator;
+use Behat\Behat\Gherkin\Specification\LazyFeatureIterator;
 use Behat\Gherkin\Gherkin;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Testwork\Specification\Locator\Specification_Locator;
-use Behat\Testwork\Specification\No_Specifications_Iterator;
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Testwork\Specification\Locator\SpecificationLocator;
+use Behat\Testwork\Specification\NoSpecificationsIterator;
+use Behat\Testwork\Specification\SpecificationIterator;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Loads gherkin features using a file with the list of scenarios.
  *
@@ -24,24 +27,29 @@ use Behat\Testwork\Suite\Suite;
  *
  * @implements SpecificationLocator<FeatureNode>
  */
-final readonly class Filesystem_Scenarios_List_Locator implements Specification_Locator
+final readonly class FilesystemScenariosListLocator implements SpecificationLocator
 {
     /**
      * Initializes locator.
      */
-    public function __construct(private Gherkin $gherkin)
-    {
+    public function __construct(
+        private Gherkin $gherkin,
+    ) {
     }
-    public function get_locator_examples(): array
+
+    public function getLocatorExamples(): array
     {
         return ['a scenarios list file <comment>(*.scenarios)</comment>.'];
     }
-    public function locate_specifications(Suite $suite, $locator): Specification_Iterator
+
+    public function locateSpecifications(Suite $suite, $locator): SpecificationIterator
     {
         if (null === $locator || !is_file($locator) || 'scenarios' !== pathinfo($locator, PATHINFO_EXTENSION)) {
-            return new No_Specifications_Iterator($suite);
+            return new NoSpecificationsIterator($suite);
         }
+
         $scenarios = explode("\n", trim(file_get_contents($locator)));
-        return new Lazy_Feature_Iterator($suite, $this->gherkin, $scenarios);
+
+        return new LazyFeatureIterator($suite, $this->gherkin, $scenarios);
     }
 }

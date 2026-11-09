@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,42 +9,49 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Tester\Result;
 
 use Behat\Behat\Definition\Definition;
-use Behat\Behat\Definition\Search_Result;
+use Behat\Behat\Definition\SearchResult;
+
 /**
  * Represents a skipped step result.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Skipped_Step_Result implements Step_Result, Defined_Step_Result
+final readonly class SkippedStepResult implements StepResult, DefinedStepResult
 {
     /**
      * Initializes step result.
      */
-    public function __construct(private Search_Result $search_result)
-    {
+    public function __construct(
+        private SearchResult $searchResult,
+    ) {
     }
+
     /**
      * Returns definition search result.
      */
-    public function get_search_result(): Search_Result
+    public function getSearchResult(): SearchResult
     {
-        return $this->search_result;
+        return $this->searchResult;
     }
-    public function get_step_definition(): ?Definition
+
+    public function getStepDefinition(): ?Definition
     {
-        return $this->search_result->get_matched_definition();
+        return $this->searchResult->getMatchedDefinition();
     }
-    public function is_passed(): bool
+
+    public function isPassed(): bool
     {
         return false;
     }
+
     /**
      * @return self::SKIPPED
      */
-    public function get_result_code(): int
+    public function getResultCode(): int
     {
         return self::SKIPPED;
     }

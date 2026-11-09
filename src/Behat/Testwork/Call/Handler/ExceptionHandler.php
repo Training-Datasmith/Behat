@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call\Handler;
 
 use Throwable;
+
 /**
  * Handles exceptions.
  *
@@ -18,7 +21,7 @@ use Throwable;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Exception_Handler
+interface ExceptionHandler
 {
     /**
      * Checks if handler supports exception.
@@ -27,7 +30,8 @@ interface Exception_Handler
      *
      * @return bool
      */
-    public function supports_exception($exception);
+    public function supportsException($exception);
+
     /**
      * Handles exception and returns new one if necessary.
      *
@@ -35,5 +39,5 @@ interface Exception_Handler
      *
      * @return Throwable
      */
-    public function handle_exception($exception);
+    public function handleException($exception);
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Filesystem;
 
 /**
@@ -15,7 +17,7 @@ namespace Behat\Testwork\Filesystem;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Filesystem_Logger
+interface FilesystemLogger
 {
     /**
      * Logs directory creation.
@@ -23,19 +25,21 @@ interface Filesystem_Logger
      * @param string $path
      * @param string $reason
      */
-    public function directory_created($path, $reason);
+    public function directoryCreated($path, $reason);
+
     /**
      * Logs file creation.
      *
      * @param string $path
      * @param string $reason
      */
-    public function file_created($path, $reason);
+    public function fileCreated($path, $reason);
+
     /**
      * Logs file update.
      *
      * @param string $path
      * @param string $reason
      */
-    public function file_updated($path, $reason);
+    public function fileUpdated($path, $reason);
 }

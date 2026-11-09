@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition\Pattern\Policy;
 
 use Behat\Behat\Definition\Pattern\Pattern;
-use Behat\Behat\Definition\Pattern\Pattern_Transformer;
+use Behat\Behat\Definition\Pattern\PatternTransformer;
+
 /**
  * Defines a way to handle custom definition patterns.
  *
@@ -19,7 +22,7 @@ use Behat\Behat\Definition\Pattern\Pattern_Transformer;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Pattern_Policy
+interface PatternPolicy
 {
     /**
      * Checks if policy supports pattern type.
@@ -28,7 +31,8 @@ interface Pattern_Policy
      *
      * @return bool
      */
-    public function supports_pattern_type($type);
+    public function supportsPatternType($type);
+
     /**
      * Generates pattern for step text.
      *
@@ -36,7 +40,8 @@ interface Pattern_Policy
      *
      * @return Pattern
      */
-    public function generate_pattern($step_text);
+    public function generatePattern($stepText);
+
     /**
      * Checks if policy supports pattern.
      *
@@ -44,7 +49,8 @@ interface Pattern_Policy
      *
      * @return bool
      */
-    public function supports_pattern($pattern);
+    public function supportsPattern($pattern);
+
     /**
      * Transforms pattern string to regex.
      *
@@ -52,5 +58,5 @@ interface Pattern_Policy
      *
      * @return string
      */
-    public function transform_pattern_to_regex($pattern);
+    public function transformPatternToRegex($pattern);
 }

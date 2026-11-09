@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,108 +9,126 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Node\Printer\Pretty;
 
-use Behat\Behat\Output\Node\Printer\Scenario_Printer;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
-use Behat\Gherkin\Node\Tagged_Node_Interface;
+use Behat\Behat\Output\Node\Printer\ScenarioPrinter;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
+use Behat\Gherkin\Node\TaggedNodeInterface;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\Output_Printer;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Output\Printer\OutputPrinter;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Prints scenario headers (with tags, keyword and long title) and footers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Pretty_Scenario_Printer implements Scenario_Printer
+final class PrettyScenarioPrinter implements ScenarioPrinter
 {
     /**
      * @var string
      */
-    private $indent_text;
-    private readonly string $sub_indent_text;
+    private $indentText;
+    private readonly string $subIndentText;
+
     /**
      * Initializes printer.
      *
      * @param int $indentation
      * @param int $subIndentation
      */
-    public function __construct(private readonly Pretty_Path_Printer $path_printer, $indentation = 2, $sub_indentation = 2)
-    {
-        $this->indent_text = str_repeat(' ', intval($indentation));
-        $this->sub_indent_text = $this->indent_text . str_repeat(' ', intval($sub_indentation));
+    public function __construct(
+        private readonly PrettyPathPrinter $pathPrinter,
+        $indentation = 2,
+        $subIndentation = 2,
+    ) {
+        $this->indentText = str_repeat(' ', intval($indentation));
+        $this->subIndentText = $this->indentText . str_repeat(' ', intval($subIndentation));
     }
-    public function print_header(Formatter $formatter, Feature_Node $feature, Scenario $scenario): void
+
+    public function printHeader(Formatter $formatter, FeatureNode $feature, Scenario $scenario): void
     {
-        if ($scenario instanceof Tagged_Node_Interface) {
-            $this->print_tags($formatter->get_output_printer(), $scenario->get_tags());
+        if ($scenario instanceof TaggedNodeInterface) {
+            $this->printTags($formatter->getOutputPrinter(), $scenario->getTags());
         }
-        $this->print_keyword($formatter->get_output_printer(), $scenario->get_keyword());
-        $this->print_title($formatter->get_output_printer(), $scenario->get_title());
-        $this->path_printer->print_scenario_path($formatter, $feature, $scenario, mb_strlen($this->indent_text, 'utf8'));
-        $this->print_description($formatter->get_output_printer(), $scenario->get_title());
+
+        $this->printKeyword($formatter->getOutputPrinter(), $scenario->getKeyword());
+        $this->printTitle($formatter->getOutputPrinter(), $scenario->getTitle());
+        $this->pathPrinter->printScenarioPath($formatter, $feature, $scenario, mb_strlen($this->indentText, 'utf8'));
+        $this->printDescription($formatter->getOutputPrinter(), $scenario->getTitle());
     }
-    public function print_footer(Formatter $formatter, Test_Result $result): void
+
+    public function printFooter(Formatter $formatter, TestResult $result): void
     {
-        $formatter->get_output_printer()->writeln();
+        $formatter->getOutputPrinter()->writeln();
     }
+
     /**
      * Prints scenario tags.
      *
      * @param string[]      $tags
      */
-    private function print_tags(Output_Printer $printer, array $tags): void
+    private function printTags(OutputPrinter $printer, array $tags): void
     {
         if (!count($tags)) {
             return;
         }
-        $tags = array_map($this->prepend_tag_with_tag_sign(...), $tags);
-        $printer->writeln(sprintf('%s{+tag}%s{-tag}', $this->indent_text, implode(' ', $tags)));
+
+        $tags = array_map($this->prependTagWithTagSign(...), $tags);
+        $printer->writeln(sprintf('%s{+tag}%s{-tag}', $this->indentText, implode(' ', $tags)));
     }
+
     /**
      * Prints scenario keyword.
      *
      * @param string        $keyword
      */
-    private function print_keyword(Output_Printer $printer, $keyword): void
+    private function printKeyword(OutputPrinter $printer, $keyword): void
     {
-        $printer->write(sprintf('%s{+keyword}%s:{-keyword}', $this->indent_text, $keyword));
+        $printer->write(sprintf('%s{+keyword}%s:{-keyword}', $this->indentText, $keyword));
     }
+
     /**
      * Prints scenario title (first line of long title).
      *
      * @param string|null   $longTitle
      */
-    private function print_title(Output_Printer $printer, $long_title): void
+    private function printTitle(OutputPrinter $printer, $longTitle): void
     {
-        $description = explode("\n", $long_title ?? '');
+        $description = explode("\n", $longTitle ?? '');
         $title = array_shift($description);
+
         if ('' !== $title) {
             $printer->write(sprintf(' %s', $title));
         }
     }
+
     /**
      * Prints scenario description (other lines of long title).
      *
      * @param string|null   $longTitle
      */
-    private function print_description(Output_Printer $printer, $long_title): void
+    private function printDescription(OutputPrinter $printer, $longTitle): void
     {
-        $lines = explode("\n", $long_title ?? '');
+        $lines = explode("\n", $longTitle ?? '');
         array_shift($lines);
+
         foreach ($lines as $line) {
-            $printer->writeln(sprintf('%s%s', $this->sub_indent_text, $line));
+            $printer->writeln(sprintf('%s%s', $this->subIndentText, $line));
         }
     }
+
     /**
      * Prepends tags string with tag-sign.
      */
-    private function prepend_tag_with_tag_sign(string $tag): string
+    private function prependTagWithTagSign(string $tag): string
     {
         if (str_starts_with($tag, '@')) {
             return $tag;
         }
+
         // The legacy mode of the behat/gherkin parser is trimming the `@` from tags so we need to re-add it for pretty-printing
         return '@' . $tag;
     }

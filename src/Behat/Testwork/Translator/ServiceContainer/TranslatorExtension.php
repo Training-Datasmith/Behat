@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,89 +9,139 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Translator\Service_Container;
+
+namespace Behat\Testwork\Translator\ServiceContainer;
 
 use Behat\Behat\Definition\Translator\Translator;
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Behat\Testwork\Translator\Cli\Language_Controller;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
-use Symfony\Component\Dependency_Injection\Reference;
-use Symfony\Component\Translation\Loader\Array_Loader;
-use Symfony\Component\Translation\Loader\Php_File_Loader;
-use Symfony\Component\Translation\Loader\Xliff_File_Loader;
-use Symfony\Component\Translation\Loader\Yaml_File_Loader;
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\Translator\Cli\LanguageController;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Loader\PhpFileLoader;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+
 /**
  * Provides translator service.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Translator_Extension implements Extension
+final class TranslatorExtension implements Extension
 {
     /*
      * Available services
      */
     public const TRANSLATOR_ID = 'translator';
-    public function get_config_key(): string
+
+    public function getConfigKey(): string
     {
         return 'translation';
     }
-    public function initialize(Extension_Manager $extension_manager): void
+
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
-        $default_language = $this->get_default_language() ?: 'en';
-        $children_builder = $builder->add_defaults_if_not_set()->children();
-        $children_builder->scalar_node('locale')->info('Sets output locale for the tester')->default_value($default_language);
-        $children_builder->scalar_node('fallback_locale')->info('Sets fallback output locale for the tester')->default_value('en');
+        $defaultLanguage = $this->getDefaultLanguage() ?: 'en';
+
+        $childrenBuilder = $builder
+            ->addDefaultsIfNotSet()
+            ->children()
+        ;
+        $childrenBuilder
+                ->scalarNode('locale')
+                    ->info('Sets output locale for the tester')
+                    ->defaultValue($defaultLanguage)
+        ;
+        $childrenBuilder
+                ->scalarNode('fallback_locale')
+                    ->info('Sets fallback output locale for the tester')
+                    ->defaultValue('en')
+        ;
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
-        $this->load_translator($container, $config['locale'], $config['fallback_locale']);
-        $this->load_controller($container);
+        $this->loadTranslator($container, $config['locale'], $config['fallback_locale']);
+        $this->loadController($container);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
     }
+
     /**
      * Loads translator service.
      *
      * @param string           $locale
      * @param string           $fallbackLocale
      */
-    private function load_translator(Container_Builder $container, $locale, $fallback_locale): void
+    private function loadTranslator(ContainerBuilder $container, $locale, $fallbackLocale): void
     {
         $definition = new Definition(Translator::class, [$locale]);
-        $container->set_definition(self::TRANSLATOR_ID, $definition);
-        $definition->add_method_call('setFallbackLocales', [[$fallback_locale]]);
-        $definition->add_method_call('addLoader', ['xliff', new Definition(Xliff_File_Loader::class)]);
-        $definition->add_method_call('addLoader', ['yaml', new Definition(Yaml_File_Loader::class)]);
-        $definition->add_method_call('addLoader', ['php', new Definition(Php_File_Loader::class)]);
-        $definition->add_method_call('addLoader', ['array', new Definition(Array_Loader::class)]);
-        $container->set_definition(self::TRANSLATOR_ID, $definition);
+        $container->setDefinition(self::TRANSLATOR_ID, $definition);
+
+        $definition->addMethodCall('setFallbackLocales', [[$fallbackLocale]]);
+        $definition->addMethodCall(
+            'addLoader',
+            [
+                'xliff',
+                new Definition(XliffFileLoader::class),
+            ]
+        );
+        $definition->addMethodCall(
+            'addLoader',
+            [
+                'yaml',
+                new Definition(YamlFileLoader::class),
+            ]
+        );
+        $definition->addMethodCall(
+            'addLoader',
+            [
+                'php',
+                new Definition(PhpFileLoader::class),
+            ]
+        );
+        $definition->addMethodCall(
+            'addLoader',
+            [
+                'array',
+                new Definition(ArrayLoader::class),
+            ]
+        );
+        $container->setDefinition(self::TRANSLATOR_ID, $definition);
     }
+
     /**
      * Loads translator controller.
      */
-    private function load_controller(Container_Builder $container): void
+    private function loadController(ContainerBuilder $container): void
     {
-        $definition = new Definition(Language_Controller::class, [new Reference(self::TRANSLATOR_ID)]);
-        $definition->add_tag(Cli_Extension::CONTROLLER_TAG, ['priority' => 800]);
-        $container->set_definition(Cli_Extension::CONTROLLER_TAG . '.translator', $definition);
+        $definition = new Definition(LanguageController::class, [
+            new Reference(self::TRANSLATOR_ID),
+        ]);
+        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 800]);
+        $container->setDefinition(CliExtension::CONTROLLER_TAG . '.translator', $definition);
     }
+
     /**
      * Tries to guess default user cli language.
      */
-    private function get_default_language(): ?string
+    private function getDefaultLanguage(): ?string
     {
-        $default_language = null;
+        $defaultLanguage = null;
         if (($locale = getenv('LANG')) && preg_match('/^([a-z]{2})/', $locale, $matches)) {
             return $matches[1];
         }
-        return $default_language;
+
+        return $defaultLanguage;
     }
 }

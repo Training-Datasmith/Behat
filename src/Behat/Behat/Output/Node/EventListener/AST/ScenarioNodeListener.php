@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,58 +9,72 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\AST;
 
-use Behat\Behat\Event_Dispatcher\Event\Scenario_Like_Tested;
-use Behat\Behat\Output\Node\Printer\Scenario_Printer;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
+namespace Behat\Behat\Output\Node\EventListener\AST;
+
+use Behat\Behat\EventDispatcher\Event\ScenarioLikeTested;
+use Behat\Behat\Output\Node\Printer\ScenarioPrinter;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Event\After_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Tested;
+use Behat\Testwork\EventDispatcher\Event\AfterSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterTested;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Listens to scenario events and calls appropriate printers (header/footer).
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Scenario_Node_Listener implements Event_Listener
+final readonly class ScenarioNodeListener implements EventListener
 {
-    public function __construct(private string $before_event_name, private string $after_event_name, private Scenario_Printer $scenario_printer, private ?Setup_Printer $setup_printer = null)
-    {
+    public function __construct(
+        private string $beforeEventName,
+        private string $afterEventName,
+        private ScenarioPrinter $scenarioPrinter,
+        private ?SetupPrinter $setupPrinter = null,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        if (!$event instanceof Scenario_Like_Tested) {
+        if (!$event instanceof ScenarioLikeTested) {
             return;
         }
-        $this->print_header_on_before_event($formatter, $event, $event_name);
-        $this->print_footer_on_after_event($formatter, $event, $event_name);
+
+        $this->printHeaderOnBeforeEvent($formatter, $event, $eventName);
+        $this->printFooterOnAfterEvent($formatter, $event, $eventName);
     }
+
     /**
      * Prints scenario/background header on BEFORE event.
      */
-    private function print_header_on_before_event(Formatter $formatter, Scenario_Like_Tested $event, string $event_name): void
+    private function printHeaderOnBeforeEvent(Formatter $formatter, ScenarioLikeTested $event, string $eventName): void
     {
-        if ($this->before_event_name !== $event_name || !$event instanceof After_Setup) {
+        if ($this->beforeEventName !== $eventName || !$event instanceof AfterSetup) {
             return;
         }
-        if ($this->setup_printer instanceof Setup_Printer) {
-            $this->setup_printer->print_setup($formatter, $event->get_setup());
+
+        if ($this->setupPrinter instanceof SetupPrinter) {
+            $this->setupPrinter->printSetup($formatter, $event->getSetup());
         }
-        $this->scenario_printer->print_header($formatter, $event->get_feature(), $event->get_scenario());
+
+        $this->scenarioPrinter->printHeader($formatter, $event->getFeature(), $event->getScenario());
     }
+
     /**
      * Prints scenario/background footer on AFTER event.
      */
-    private function print_footer_on_after_event(Formatter $formatter, Scenario_Like_Tested $event, string $event_name): void
+    private function printFooterOnAfterEvent(Formatter $formatter, ScenarioLikeTested $event, string $eventName): void
     {
-        if ($this->after_event_name !== $event_name || !$event instanceof After_Tested) {
+        if ($this->afterEventName !== $eventName || !$event instanceof AfterTested) {
             return;
         }
-        if ($this->setup_printer instanceof Setup_Printer) {
-            $this->setup_printer->print_teardown($formatter, $event->get_teardown());
+
+        if ($this->setupPrinter instanceof SetupPrinter) {
+            $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
         }
-        $this->scenario_printer->print_footer($formatter, $event->get_test_result());
+
+        $this->scenarioPrinter->printFooter($formatter, $event->getTestResult());
     }
 }

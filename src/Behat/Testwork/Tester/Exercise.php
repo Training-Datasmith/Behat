@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,12 +9,14 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester;
 
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
+
 /**
  * Prepares and tests provided exercise specifications.
  *
@@ -31,7 +34,8 @@ interface Exercise
      *
      * @return Setup
      */
-    public function set_up(array $iterators, $skip);
+    public function setUp(array $iterators, $skip);
+
     /**
      * Tests suites specifications.
      *
@@ -41,6 +45,7 @@ interface Exercise
      * @return TestResult
      */
     public function test(array $iterators, $skip);
+
     /**
      * Tears down exercise after a test.
      *
@@ -49,5 +54,5 @@ interface Exercise
      *
      * @return Teardown
      */
-    public function tear_down(array $iterators, $skip, Test_Result $result);
+    public function tearDown(array $iterators, $skip, TestResult $result);
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,30 +9,34 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Hook\Scope;
 
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Interface;
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioInterface;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Represents a scenario hook scope.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Scenario_Scope extends Hook_Scope
+interface ScenarioScope extends HookScope
 {
     public const BEFORE = 'scenario.before';
     public const AFTER = 'scenario.after';
+
     /**
      * Returns scope feature.
      *
      * @return FeatureNode
      */
-    public function get_feature();
+    public function getFeature();
+
     /**
      * Returns scenario.
      *
      * @return ScenarioInterface
      */
-    public function get_scenario();
+    public function getScenario();
 }

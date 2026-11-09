@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call\Handler\Exception;
 
-use Behat\Testwork\Call\Handler\Exception_Handler;
+use Behat\Testwork\Call\Handler\ExceptionHandler;
 use Error;
+
 /**
  * Handles class not found exceptions.
  *
@@ -19,36 +22,43 @@ use Error;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-abstract class Class_Not_Found_Handler implements Exception_Handler
+abstract class ClassNotFoundHandler implements ExceptionHandler
 {
-    public const PATTERN = "/^Class (?:'|\")([^'\"]+)(?:'|\") not found\$/";
-    final public function supports_exception($exception)
+    public const PATTERN = "/^Class (?:'|\")([^'\"]+)(?:'|\") not found$/";
+
+    final public function supportsException($exception)
     {
         if (!$exception instanceof Error) {
             return false;
         }
-        return null !== $this->extract_non_existent_class($exception);
+
+        return null !== $this->extractNonExistentClass($exception);
     }
-    final public function handle_exception($exception)
+
+    final public function handleException($exception)
     {
         assert($exception instanceof Error);
-        $this->handle_non_existent_class($this->extract_non_existent_class($exception));
+        $this->handleNonExistentClass($this->extractNonExistentClass($exception));
+
         return $exception;
     }
+
     /**
      * Override to handle non-existent class name.
      *
      * @param string $class
      */
-    abstract public function handle_non_existent_class($class);
+    abstract public function handleNonExistentClass($class);
+
     /**
      * Extracts missing class name from the exception.
      */
-    private function extract_non_existent_class(Error $exception): ?string
+    private function extractNonExistentClass(Error $exception): ?string
     {
-        if (1 === preg_match(self::PATTERN, $exception->get_message(), $matches)) {
+        if (1 === preg_match(self::PATTERN, $exception->getMessage(), $matches)) {
             return $matches[1];
         }
+
         return null;
     }
 }

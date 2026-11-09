@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,33 +9,38 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook\Call;
 
-use Behat\Testwork\Environment\Call\Environment_Call;
+use Behat\Testwork\Environment\Call\EnvironmentCall;
 use Behat\Testwork\Hook\Hook;
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Represents a hook call.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Hook_Call extends Environment_Call
+final class HookCall extends EnvironmentCall
 {
-    private readonly Hook_Scope $scope;
+    private readonly HookScope $scope;
+
     /**
      * Initializes hook call.
      *
      * @param int|null $errorReportingLevel
      */
-    public function __construct(Hook_Scope $scope, Hook $hook, $error_reporting_level = null)
+    public function __construct(HookScope $scope, Hook $hook, $errorReportingLevel = null)
     {
-        parent::__construct($scope->get_environment(), $hook, [$scope], $error_reporting_level);
+        parent::__construct($scope->getEnvironment(), $hook, [$scope], $errorReportingLevel);
+
         $this->scope = $scope;
     }
+
     /**
      * Returns hook scope.
      */
-    public function get_scope(): Hook_Scope
+    public function getScope(): HookScope
     {
         return $this->scope;
     }

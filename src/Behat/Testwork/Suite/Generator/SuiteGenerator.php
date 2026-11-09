@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Suite\Generator;
 
 use Behat\Testwork\Suite\Suite;
-use Behat\Testwork\Suite\Suite_Registry;
+use Behat\Testwork\Suite\SuiteRegistry;
+
 /**
  * Generates a suite using provided name, settings and parameters.
  *
@@ -19,7 +22,7 @@ use Behat\Testwork\Suite\Suite_Registry;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Suite_Generator
+interface SuiteGenerator
 {
     /**
      * Checks if generator support provided suite type and settings.
@@ -28,7 +31,8 @@ interface Suite_Generator
      *
      * @return bool
      */
-    public function supports_type_and_settings($type, array $settings);
+    public function supportsTypeAndSettings($type, array $settings);
+
     /**
      * Generate suite with provided name and settings.
      *
@@ -36,5 +40,5 @@ interface Suite_Generator
      *
      * @return Suite
      */
-    public function generate_suite($suite_name, array $settings);
+    public function generateSuite($suiteName, array $settings);
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,57 +9,67 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\AST;
 
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Feature_Tested;
-use Behat\Behat\Output\Node\Printer\Feature_Printer;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
+namespace Behat\Behat\Output\Node\EventListener\AST;
+
+use Behat\Behat\EventDispatcher\Event\AfterFeatureSetup;
+use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
+use Behat\Behat\EventDispatcher\Event\FeatureTested;
+use Behat\Behat\Output\Node\Printer\FeaturePrinter;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Listens to feature events and calls appropriate printers.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Feature_Listener implements Event_Listener
+final readonly class FeatureListener implements EventListener
 {
     /**
      * Initializes listener.
      */
-    public function __construct(private Feature_Printer $feature_printer, private Setup_Printer $setup_printer)
-    {
+    public function __construct(
+        private FeaturePrinter $featurePrinter,
+        private SetupPrinter $setupPrinter,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        if (!$event instanceof Feature_Tested) {
+        if (!$event instanceof FeatureTested) {
             return;
         }
-        $this->print_header_on_before_event($formatter, $event);
-        $this->print_footer_on_after_event($formatter, $event);
+
+        $this->printHeaderOnBeforeEvent($formatter, $event);
+        $this->printFooterOnAfterEvent($formatter, $event);
     }
+
     /**
      * Prints feature header on BEFORE event.
      */
-    private function print_header_on_before_event(Formatter $formatter, Event $event): void
+    private function printHeaderOnBeforeEvent(Formatter $formatter, Event $event): void
     {
-        if (!$event instanceof After_Feature_Setup) {
+        if (!$event instanceof AfterFeatureSetup) {
             return;
         }
-        $this->setup_printer->print_setup($formatter, $event->get_setup());
-        $this->feature_printer->print_header($formatter, $event->get_feature());
+
+        $this->setupPrinter->printSetup($formatter, $event->getSetup());
+        $this->featurePrinter->printHeader($formatter, $event->getFeature());
     }
+
     /**
      * Prints feature footer on AFTER event.
      */
-    private function print_footer_on_after_event(Formatter $formatter, Event $event): void
+    private function printFooterOnAfterEvent(Formatter $formatter, Event $event): void
     {
-        if (!$event instanceof After_Feature_Tested) {
+        if (!$event instanceof AfterFeatureTested) {
             return;
         }
-        $this->setup_printer->print_teardown($formatter, $event->get_teardown());
-        $this->feature_printer->print_footer($formatter, $event->get_test_result());
+
+        $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
+        $this->featurePrinter->printFooter($formatter, $event->getTestResult());
     }
 }

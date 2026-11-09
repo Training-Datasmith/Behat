@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,59 +9,69 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Hook\Scope;
 
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Interface;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Represents a BeforeScenario hook scope.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Before_Scenario_Scope implements Scenario_Scope
+final readonly class BeforeScenarioScope implements ScenarioScope
 {
     /**
      * Initializes scope.
      */
-    public function __construct(private Environment $environment, private Feature_Node $feature, private Scenario_Interface $scenario)
-    {
+    public function __construct(
+        private Environment $environment,
+        private FeatureNode $feature,
+        private ScenarioInterface $scenario,
+    ) {
     }
+
     /**
      * Returns hook scope name.
      */
-    public function get_name(): string
+    public function getName(): string
     {
         return self::BEFORE;
     }
+
     /**
      * Returns hook suite.
      *
      * @return Suite
      */
-    public function get_suite()
+    public function getSuite()
     {
-        return $this->environment->get_suite();
+        return $this->environment->getSuite();
     }
+
     /**
      * Returns hook environment.
      */
-    public function get_environment(): Environment
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
+
     /**
      * Returns scope feature.
      */
-    public function get_feature(): Feature_Node
+    public function getFeature(): FeatureNode
     {
         return $this->feature;
     }
+
     /**
      * Returns scenario.
      */
-    public function get_scenario(): Scenario_Interface
+    public function getScenario(): ScenarioInterface
     {
         return $this->scenario;
     }

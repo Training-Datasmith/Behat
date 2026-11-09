@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,31 +9,38 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Output\Node\Event_Listener\Flow;
+
+namespace Behat\Testwork\Output\Node\EventListener\Flow;
 
 use Behat\Testwork\Event\Event;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Catches all events, but proxies them only if formatter has specific parameter set to a specific value.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class Fire_Only_If_Formatter_Parameter_Listener implements Event_Listener
+class FireOnlyIfFormatterParameterListener implements EventListener
 {
     /**
      * Initializes listener.
      *
      * @param string        $name
      */
-    public function __construct(private $name, private $value, private readonly Event_Listener $descendant)
-    {
+    public function __construct(
+        private $name,
+        private $value,
+        private readonly EventListener $descendant,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        if ($this->value !== $formatter->get_parameter($this->name)) {
+        if ($this->value !== $formatter->getParameter($this->name)) {
             return;
         }
-        $this->descendant->listen_event($formatter, $event, $event_name);
+
+        $this->descendant->listenEvent($formatter, $event, $eventName);
     }
 }

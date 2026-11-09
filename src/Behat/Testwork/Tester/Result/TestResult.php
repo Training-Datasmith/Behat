@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Result;
 
 /**
@@ -15,23 +17,25 @@ namespace Behat\Testwork\Tester\Result;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Test_Result
+interface TestResult
 {
     public const PASSED = 0;
     public const SKIPPED = 10;
     public const PENDING = 20;
     public const UNDEFINED = 30;
     public const FAILED = 99;
+
     /**
      * Checks that test has passed.
      *
      * @return bool
      */
-    public function is_passed();
+    public function isPassed();
+
     /**
      * Returns tester result code.
      *
      * @return TestResult::*|TestResults::NO_TESTS
      */
-    public function get_result_code();
+    public function getResultCode();
 }

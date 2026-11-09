@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,31 +9,34 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Node\Printer\Pretty;
 
-use Behat\Behat\Output\Node\Printer\Helper\Result_To_String_Converter;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
-use Behat\Testwork\Call\Call_Result;
-use Behat\Testwork\Exception\Exception_Presenter;
-use Behat\Testwork\Hook\Call\Runtime_Hook;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Setup;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Teardown;
+use Behat\Behat\Output\Node\Printer\Helper\ResultToStringConverter;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
+use Behat\Testwork\Call\CallResult;
+use Behat\Testwork\Exception\ExceptionPresenter;
+use Behat\Testwork\Hook\Call\RuntimeHook;
+use Behat\Testwork\Hook\Tester\Setup\HookedSetup;
+use Behat\Testwork\Hook\Tester\Setup\HookedTeardown;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\Output_Printer;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Output\Printer\OutputPrinter;
+use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
+
 /**
  * Prints hooks in a pretty fashion.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Pretty_Setup_Printer implements Setup_Printer
+final class PrettySetupPrinter implements SetupPrinter
 {
     /**
      * @var string
      */
-    private $indent_text;
+    private $indentText;
+
     /**
      * Initializes printer.
      *
@@ -40,97 +44,136 @@ final class Pretty_Setup_Printer implements Setup_Printer
      * @param bool $newlineBefore
      * @param bool $newlineAfter
      */
-    public function __construct(private readonly Result_To_String_Converter $result_converter, private readonly Exception_Presenter $exception_presenter, $indentation = 0, private $newline_before = false, private $newline_after = false)
-    {
-        $this->indent_text = str_repeat(' ', intval($indentation));
+    public function __construct(
+        private readonly ResultToStringConverter $resultConverter,
+        private readonly ExceptionPresenter $exceptionPresenter,
+        $indentation = 0,
+        private $newlineBefore = false,
+        private $newlineAfter = false,
+    ) {
+        $this->indentText = str_repeat(' ', intval($indentation));
     }
-    public function print_setup(Formatter $formatter, Setup $setup): void
+
+    public function printSetup(Formatter $formatter, Setup $setup): void
     {
-        if (!$setup instanceof Hooked_Setup) {
+        if (!$setup instanceof HookedSetup) {
             return;
         }
-        foreach ($setup->get_hook_call_results() as $call_result) {
-            $this->print_setup_hook_call_result($formatter->get_output_printer(), $call_result);
+
+        foreach ($setup->getHookCallResults() as $callResult) {
+            $this->printSetupHookCallResult($formatter->getOutputPrinter(), $callResult);
         }
     }
-    public function print_teardown(Formatter $formatter, Teardown $teardown): void
+
+    public function printTeardown(Formatter $formatter, Teardown $teardown): void
     {
-        if (!$teardown instanceof Hooked_Teardown) {
+        if (!$teardown instanceof HookedTeardown) {
             return;
         }
-        foreach ($teardown->get_hook_call_results() as $call_result) {
-            $this->print_teardown_hook_call_result($formatter->get_output_printer(), $call_result);
+
+        foreach ($teardown->getHookCallResults() as $callResult) {
+            $this->printTeardownHookCallResult($formatter->getOutputPrinter(), $callResult);
         }
     }
+
     /**
      * Prints setup hook call result.
      */
-    private function print_setup_hook_call_result(Output_Printer $printer, Call_Result $call_result): void
+    private function printSetupHookCallResult(OutputPrinter $printer, CallResult $callResult): void
     {
-        if (!$call_result->has_std_out() && !$call_result->has_exception()) {
+        if (!$callResult->hasStdOut() && !$callResult->hasException()) {
             return;
         }
-        $result_code = $call_result->has_exception() ? Test_Result::FAILED : Test_Result::PASSED;
-        $style = $this->result_converter->convert_result_code_to_string($result_code);
-        $hook = $call_result->get_call()->get_callee();
-        $path = $hook->get_path();
-        assert($hook instanceof Runtime_Hook);
-        $printer->writeln(sprintf('%s┌─ {+%s}@%s{-%s} {+comment}# %s{-comment}', $this->indent_text, $style, $hook, $style, $path));
-        $printer->writeln(sprintf('%s│', $this->indent_text));
-        $this->print_hook_call_std_out($printer, $call_result, $this->indent_text);
-        $this->print_hook_call_exception($printer, $call_result, $this->indent_text);
-        if ($this->newline_before) {
+
+        $resultCode = $callResult->hasException() ? TestResult::FAILED : TestResult::PASSED;
+        $style = $this->resultConverter->convertResultCodeToString($resultCode);
+        $hook = $callResult->getCall()->getCallee();
+        $path = $hook->getPath();
+
+        assert($hook instanceof RuntimeHook);
+        $printer->writeln(
+            sprintf('%s┌─ {+%s}@%s{-%s} {+comment}# %s{-comment}', $this->indentText, $style, $hook, $style, $path)
+        );
+
+        $printer->writeln(sprintf('%s│', $this->indentText));
+
+        $this->printHookCallStdOut($printer, $callResult, $this->indentText);
+        $this->printHookCallException($printer, $callResult, $this->indentText);
+
+        if ($this->newlineBefore) {
             $printer->writeln();
         }
     }
+
     /**
      * Prints teardown hook call result.
      */
-    private function print_teardown_hook_call_result(Output_Printer $printer, Call_Result $call_result): void
+    private function printTeardownHookCallResult(OutputPrinter $printer, CallResult $callResult): void
     {
-        if (!$call_result->has_std_out() && !$call_result->has_exception()) {
+        if (!$callResult->hasStdOut() && !$callResult->hasException()) {
             return;
         }
-        $result_code = $call_result->has_exception() ? Test_Result::FAILED : Test_Result::PASSED;
-        $style = $this->result_converter->convert_result_code_to_string($result_code);
-        $hook = $call_result->get_call()->get_callee();
-        $path = $hook->get_path();
-        $printer->writeln(sprintf('%s│', $this->indent_text));
-        $this->print_hook_call_std_out($printer, $call_result, $this->indent_text);
-        $this->print_hook_call_exception($printer, $call_result, $this->indent_text);
-        assert($hook instanceof Runtime_Hook);
-        $printer->writeln(sprintf('%s└─ {+%s}@%s{-%s} {+comment}# %s{-comment}', $this->indent_text, $style, $hook, $style, $path));
-        if ($this->newline_after) {
+
+        $resultCode = $callResult->hasException() ? TestResult::FAILED : TestResult::PASSED;
+        $style = $this->resultConverter->convertResultCodeToString($resultCode);
+        $hook = $callResult->getCall()->getCallee();
+        $path = $hook->getPath();
+
+        $printer->writeln(sprintf('%s│', $this->indentText));
+
+        $this->printHookCallStdOut($printer, $callResult, $this->indentText);
+        $this->printHookCallException($printer, $callResult, $this->indentText);
+
+        assert($hook instanceof RuntimeHook);
+        $printer->writeln(
+            sprintf('%s└─ {+%s}@%s{-%s} {+comment}# %s{-comment}', $this->indentText, $style, $hook, $style, $path)
+        );
+
+        if ($this->newlineAfter) {
             $printer->writeln();
         }
     }
+
     /**
      * Prints hook call output (if has some).
      *
      * @param string        $indentText
      */
-    private function print_hook_call_std_out(Output_Printer $printer, Call_Result $call_result, $indent_text): void
+    private function printHookCallStdOut(OutputPrinter $printer, CallResult $callResult, $indentText): void
     {
-        if (!$call_result->has_std_out()) {
+        if (!$callResult->hasStdOut()) {
             return;
         }
-        $pad = fn($line): string => sprintf('%s│  {+stdout}%s{-stdout}', $indent_text, $line);
-        $printer->writeln(implode("\n", array_map($pad, explode("\n", (string) $call_result->get_std_out()))));
-        $printer->writeln(sprintf('%s│', $indent_text));
+
+        $pad = (fn ($line): string => sprintf(
+            '%s│  {+stdout}%s{-stdout}',
+            $indentText,
+            $line
+        ));
+
+        $printer->writeln(implode("\n", array_map($pad, explode("\n", (string) $callResult->getStdOut()))));
+        $printer->writeln(sprintf('%s│', $indentText));
     }
+
     /**
      * Prints hook call exception (if has some).
      *
      * @param string        $indentText
      */
-    private function print_hook_call_exception(Output_Printer $printer, Call_Result $call_result, $indent_text): void
+    private function printHookCallException(OutputPrinter $printer, CallResult $callResult, $indentText): void
     {
-        if (!$call_result->has_exception()) {
+        if (!$callResult->hasException()) {
             return;
         }
-        $pad = fn($l): string => sprintf('%s╳  {+exception}%s{-exception}', $indent_text, $l);
-        $exception = $this->exception_presenter->present_exception($call_result->get_exception());
+
+        $pad = (fn ($l): string => sprintf(
+            '%s╳  {+exception}%s{-exception}',
+            $indentText,
+            $l
+        ));
+
+        $exception = $this->exceptionPresenter->presentException($callResult->getException());
         $printer->writeln(implode("\n", array_map($pad, explode("\n", $exception))));
-        $printer->writeln(sprintf('%s│', $indent_text));
+        $printer->writeln(sprintf('%s│', $indentText));
     }
 }

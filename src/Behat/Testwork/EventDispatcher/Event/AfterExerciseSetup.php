@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,36 +9,42 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Event;
 
-use Behat\Testwork\Specification\Specification_Iterator;
+namespace Behat\Testwork\EventDispatcher\Event;
+
+use Behat\Testwork\Specification\SpecificationIterator;
 use Behat\Testwork\Tester\Setup\Setup;
+
 /**
  * Represents an event in which exercise is prepared to be executed.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class After_Exercise_Setup extends Exercise_Completed implements After_Setup
+final class AfterExerciseSetup extends ExerciseCompleted implements AfterSetup
 {
     /**
      * Initializes event.
      *
      * @param SpecificationIterator<mixed>[] $specificationIterators
      */
-    public function __construct(private readonly array $specification_iterators, private readonly Setup $setup)
-    {
+    public function __construct(
+        private readonly array $specificationIterators,
+        private readonly Setup $setup,
+    ) {
     }
+
     /**
      * @return SpecificationIterator[]
      */
-    public function get_specification_iterators(): array
+    public function getSpecificationIterators(): array
     {
-        return $this->specification_iterators;
+        return $this->specificationIterators;
     }
+
     /**
      * Returns exercise setup result.
      */
-    public function get_setup(): Setup
+    public function getSetup(): Setup
     {
         return $this->setup;
     }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,11 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Tester\Result;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+
 /**
  * Aggregates multiple test results into a collection and provides informational API on top of that.
  *
@@ -20,46 +23,54 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<int, TestResult>
  */
-final readonly class Test_Results implements Test_Result, Countable, IteratorAggregate
+final readonly class TestResults implements TestResult, Countable, IteratorAggregate
 {
     public const NO_TESTS = -100;
+
     /**
      * Initializes test results collection.
      *
      * @param TestResult[] $results
      */
-    public function __construct(private array $results = [])
-    {
+    public function __construct(
+        private array $results = [],
+    ) {
     }
-    public function is_passed(): bool
+
+    public function isPassed(): bool
     {
-        return self::PASSED == $this->get_result_code();
+        return self::PASSED == $this->getResultCode();
     }
+
     /**
      * @return TestResult::*|TestResults::NO_TESTS
      */
-    public function get_result_code()
+    public function getResultCode()
     {
-        $result_code = self::NO_TESTS;
+        $resultCode = self::NO_TESTS;
         foreach ($this->results as $result) {
-            $result_code = max($result_code, $result->get_result_code());
+            $resultCode = max($resultCode, $result->getResultCode());
         }
-        return $result_code;
+
+        return $resultCode;
     }
+
     public function count(): int
     {
         return count($this->results);
     }
+
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->results);
     }
+
     /**
      * Returns test results array.
      *
      * @return TestResult[]
      */
-    public function to_array(): array
+    public function toArray(): array
     {
         return $this->results;
     }

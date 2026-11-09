@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,30 +9,35 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Helper_Container\Exception;
+
+namespace Behat\Behat\HelperContainer\Exception;
 
 use Behat\Testwork\Call\Call;
 use InvalidArgumentException;
+
 /**
  * Represents an exception caused by an attempt to filter an unsupported call.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Unsupported_Call_Exception extends InvalidArgumentException implements Helper_Container_Exception
+final class UnsupportedCallException extends InvalidArgumentException implements HelperContainerException
 {
     /**
      * Initializes exception.
      *
      * @param string $message
      */
-    public function __construct($message, private readonly Call $call)
-    {
+    public function __construct(
+        $message,
+        private readonly Call $call,
+    ) {
         parent::__construct($message);
     }
+
     /**
      * Returns a call that caused exception.
      */
-    public function get_call(): Call
+    public function getCall(): Call
     {
         return $this->call;
     }

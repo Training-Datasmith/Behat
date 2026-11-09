@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,35 +9,42 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Event;
+
+namespace Behat\Testwork\EventDispatcher\Event;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Represents an event right before suite teardown.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Before_Suite_Teardown extends Suite_Tested implements Before_Teardown
+final class BeforeSuiteTeardown extends SuiteTested implements BeforeTeardown
 {
     /**
      * Initializes event.
      *
      * @param SpecificationIterator<mixed> $iterator
      */
-    public function __construct(Environment $env, private readonly Specification_Iterator $iterator, private readonly Test_Result $result)
-    {
+    public function __construct(
+        Environment $env,
+        private readonly SpecificationIterator $iterator,
+        private readonly TestResult $result,
+    ) {
         parent::__construct($env);
     }
-    public function get_specification_iterator(): Specification_Iterator
+
+    public function getSpecificationIterator(): SpecificationIterator
     {
         return $this->iterator;
     }
+
     /**
      * Returns current test result.
      */
-    public function get_test_result(): Test_Result
+    public function getTestResult(): TestResult
     {
         return $this->result;
     }

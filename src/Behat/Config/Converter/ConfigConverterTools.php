@@ -1,112 +1,158 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 namespace Behat\Config\Converter;
 
 use InvalidArgumentException;
-use Php_Parser\Builder_Factory;
-use Php_Parser\Node\Expr;
-use Php_Parser\Node\Expr\Binary_Op\Bitwise_And;
-use Php_Parser\Node\Expr\Binary_Op\Bitwise_Or;
-use Php_Parser\Node\Expr\Bitwise_Not;
-use Php_Parser\Node\Expr\New_;
-use Php_Parser\Node\Name\Fully_Qualified;
-use Php_Parser\Node\Stmt\Use_;
+use PhpParser\BuilderFactory;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\BinaryOp\BitwiseAnd;
+use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
+use PhpParser\Node\Expr\BitwiseNot;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Stmt\Use_;
 use ReflectionClass;
-use Reflection_Class_Constant;
+use ReflectionClassConstant;
 use ReflectionMethod;
-class Config_Converter_Tools
+
+class ConfigConverterTools
 {
-    private static ?Builder_Factory $builder_factory = null;
-    public static function add_method_call(string $class, string $method_name, array $arguments, Expr $expr): Expr
+    private static ?BuilderFactory $builderFactory = null;
+
+    public static function addMethodCall(string $class, string $methodName, array $arguments, Expr $expr): Expr
     {
-        $builder_factory = self::get_builder_factory();
-        $arguments = self::remove_default_arguments((new ReflectionClass($class))->get_method($method_name), $arguments);
-        $args = $builder_factory->args(self::replace_class_references($arguments));
-        return $builder_factory->method_call($expr, $method_name, $args);
+        $builderFactory = self::getBuilderFactory();
+        $arguments = self::removeDefaultArguments((new ReflectionClass($class))->getMethod($methodName), $arguments);
+        $args = $builderFactory->args(self::replaceClassReferences($arguments));
+
+        return $builderFactory->methodCall($expr, $methodName, $args);
     }
-    private static function remove_default_arguments(ReflectionMethod $method, array $arguments): array
+
+    private static function removeDefaultArguments(ReflectionMethod $method, array $arguments): array
     {
-        $has_removed_any = false;
+        $hasRemovedAny = false;
         $result = [];
-        foreach ($method->get_parameters() as $index => $parameter) {
-            if ($parameter->is_variadic()) {
+        foreach ($method->getParameters() as $index => $parameter) {
+            if ($parameter->isVariadic()) {
                 // We can't do anything useful (easily) for methods with variadics, just return the originals
                 return $arguments;
             }
+
             // Config objects can export their method arguments as positional or named arguments.
-            $arg_key = array_key_exists($parameter->get_name(), $arguments) ? $parameter->get_name() : $index;
+            $argKey = array_key_exists($parameter->getName(), $arguments) ? $parameter->getName() : $index;
+
             // The Config object must provide a value for every argument (defaults are stripped here). If we are
             // missing arguments, that implies the ->toPhpExpr implementation is out of sync with the method definition.
-            if (!array_key_exists($arg_key, $arguments)) {
-                throw new InvalidArgumentException(sprintf('Missing argument #%d (%s) for %s::%s', $index, $parameter->get_name(), $method->get_declaring_class()->get_name(), $method->get_name()));
+            if (!array_key_exists($argKey, $arguments)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Missing argument #%d (%s) for %s::%s',
+                        $index,
+                        $parameter->getName(),
+                        $method->getDeclaringClass()->getName(),
+                        $method->getName(),
+                    ),
+                );
             }
-            $arg_value = $arguments[$arg_key];
-            if ($parameter->is_default_value_available() && $parameter->get_default_value() === $arg_value) {
+
+            $argValue = $arguments[$argKey];
+            if ($parameter->isDefaultValueAvailable() && $parameter->getDefaultValue() === $argValue) {
                 // We can skip this, it has the default value. That means we'll need to specify any following arguments
                 // by name even if we were given them as positional.
-                $has_removed_any = true;
+                $hasRemovedAny = true;
             } else {
-                $result[$has_removed_any ? $parameter->get_name() : $arg_key] = $arg_value;
+                $result[$hasRemovedAny ? $parameter->getName() : $argKey] = $argValue;
             }
+
             // Record that this argument has been used
-            unset($arguments[$arg_key]);
+            unset($arguments[$argKey]);
         }
+
         // We should have applied all arguments that were provided. If not, that implies the ->toPhpExpr implementation
         // is out of sync with the method definition.
         if ($arguments !== []) {
-            throw new InvalidArgumentException(sprintf('Too many arguments provided for %s::%s (%s)', $method->get_declaring_class()->get_name(), $method->get_name(), implode(', ', array_keys($arguments))));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Too many arguments provided for %s::%s (%s)',
+                    $method->getDeclaringClass()->getName(),
+                    $method->getName(),
+                    implode(', ', array_keys($arguments)),
+                ),
+            );
         }
+
         return $result;
     }
-    public static function create_object(string $class_name): New_
+
+    public static function createObject(string $className): New_
     {
-        $builder_factory = self::get_builder_factory();
-        return $builder_factory->new(new Fully_Qualified($class_name));
+        $builderFactory = self::getBuilderFactory();
+
+        return $builderFactory->new(new FullyQualified($className));
     }
-    public static function add_arguments_to_constructor(array $arguments, New_ $expr): void
+
+    public static function addArgumentsToConstructor(array $arguments, New_ $expr): void
     {
-        $builder_factory = self::get_builder_factory();
-        $expr->args = $builder_factory->args(self::replace_class_references($arguments));
+        $builderFactory = self::getBuilderFactory();
+        $expr->args = $builderFactory->args(self::replaceClassReferences($arguments));
     }
-    public static function create_use_statement(string $class_name): Use_
+
+    public static function createUseStatement(string $className): Use_
     {
-        $builder_factory = self::get_builder_factory();
-        return $builder_factory->use($class_name)->get_node();
+        $builderFactory = self::getBuilderFactory();
+
+        return $builderFactory->use($className)->getNode();
     }
-    private static function get_builder_factory(): Builder_Factory
+
+    private static function getBuilderFactory(): BuilderFactory
     {
-        if (!self::$builder_factory instanceof Builder_Factory) {
-            self::$builder_factory = new Builder_Factory();
+        if (!self::$builderFactory instanceof BuilderFactory) {
+            self::$builderFactory = new BuilderFactory();
         }
-        return self::$builder_factory;
+
+        return self::$builderFactory;
     }
-    private static function replace_class_references(array $arguments): array
+
+    private static function replaceClassReferences(array $arguments): array
     {
-        return array_map(static fn($arg) => is_string($arg) && class_exists($arg) ? self::get_class_const_reference($arg, 'class') : $arg, $arguments);
+        return array_map(
+            static fn ($arg) => is_string($arg) && class_exists($arg)
+                ? self::getClassConstReference($arg, 'class')
+                : $arg,
+            $arguments,
+        );
     }
-    private static function get_class_const_reference(string $class_name, string $constant_name): Expr
+
+    private static function getClassConstReference(string $className, string $constantName): Expr
     {
-        $builder_factory = self::get_builder_factory();
-        return $builder_factory->class_const_fetch($class_name, $constant_name);
+        $builderFactory = self::getBuilderFactory();
+
+        return $builderFactory->classConstFetch($className, $constantName);
     }
-    public static function find_reference_to_class_constant(string $class_name, mixed $setting_value): mixed
+
+    public static function findReferenceToClassConstant(string $className, mixed $settingValue): mixed
     {
-        $consts = (new ReflectionClass($class_name))->get_constants(Reflection_Class_Constant::IS_PUBLIC);
-        foreach ($consts as $constant_name => $constant_value) {
-            if ($setting_value === $constant_value) {
-                return Config_Converter_Tools::get_class_const_reference($class_name, $constant_name);
+        $consts = (new ReflectionClass($className))->getConstants(ReflectionClassConstant::IS_PUBLIC);
+        foreach ($consts as $constantName => $constantValue) {
+            if ($settingValue === $constantValue) {
+                return ConfigConverterTools::getClassConstReference($className, $constantName);
             }
         }
+
         // Can't find a constant for it, just return the original value
-        return $setting_value;
+        return $settingValue;
     }
-    public static function error_reporting_to_constants(mixed $value): Expr
+
+    public static function errorReportingToConstants(mixed $value): Expr
     {
-        $builder_factory = self::get_builder_factory();
+        $builderFactory = self::getBuilderFactory();
+
         if (!is_int($value)) {
-            return $builder_factory->val($value);
+            return $builderFactory->val($value);
         }
+
         // First remove the old E_STRICT value from both E_ALL and from the actual configured value.
         // This will make the behaviour consistent across all supported PHP versions. Since 8.4.0,
         // use of E_STRICT is deprecated and the value is no longer included in E_ALL. However,
@@ -114,51 +160,64 @@ class Config_Converter_Tools
         // Since 8.0, PHP cannot actually ever trigger an E_STRICT error, so the setting of the bit
         // is actually irrelevant and we can safely ignore it.
         $value &= ~2048;
+
         if ($value === (E_ALL & ~2048)) {
             // The value is equivalent to E_ALL (with or without the E_STRICT bit set, it doesn't matter).
-            return $builder_factory->const_fetch('E_ALL');
+            return $builderFactory->constFetch('E_ALL');
         }
+
         if ($value === 0) {
             // error_reporting is disabled
-            return $builder_factory->val(0);
+            return $builderFactory->val(0);
         }
+
         // Split the value into constant expressions for the bit flags that are on and off.
-        $flags_on = $flags_off = [];
-        $remaining_value = $value;
-        foreach (self::list_error_level_constants() as $const_name => $const_value) {
-            $remaining_value &= ~$const_value;
-            if (($value & $const_value) !== 0) {
-                $flags_on[] = $builder_factory->const_fetch($const_name);
+        $flagsOn = $flagsOff = [];
+        $remainingValue = $value;
+        foreach (self::listErrorLevelConstants() as $constName => $constValue) {
+            $remainingValue &= ~$constValue;
+
+            if (($value & $constValue) !== 0) {
+                $flagsOn[] = $builderFactory->constFetch($constName);
             } else {
-                $flags_off[] = $builder_factory->const_fetch($const_name);
+                $flagsOff[] = $builderFactory->constFetch($constName);
             }
         }
-        if ($remaining_value !== 0) {
+
+        if ($remainingValue !== 0) {
             // This is an edge case, their value includes a number that is not defined as a PHP error_reporting level
             // Keep it as a constant value so that the configuration doesn't change and the user can review it
-            $flags_on[] = $builder_factory->val($remaining_value);
+            $flagsOn[] = $builderFactory->val($remainingValue);
         }
-        if (count($flags_off) < count($flags_on)) {
+
+        if (count($flagsOff) < count($flagsOn)) {
             // Most flags are on, it will be more readable and future-proof to start from E_ALL and negate
-            return new Bitwise_And($builder_factory->const_fetch('E_ALL'), new Bitwise_Not(self::build_bitwise_flag_expression(...$flags_off)));
+            return new BitwiseAnd(
+                $builderFactory->constFetch('E_ALL'),
+                new BitwiseNot(self::buildBitwiseFlagExpression(...$flagsOff)),
+            );
         }
+
         // Most flags are off, so just specify the ones that are on
-        return self::build_bitwise_flag_expression(...$flags_on);
+        return self::buildBitwiseFlagExpression(...$flagsOn);
     }
-    private static function list_error_level_constants(): iterable
+
+    private static function listErrorLevelConstants(): iterable
     {
-        foreach (get_defined_constants(true)['Core'] as $const_name => $const_value) {
-            if (str_starts_with($const_name, 'E_') && $const_name !== 'E_ALL' && $const_name !== 'E_STRICT') {
-                yield $const_name => $const_value;
+        foreach (get_defined_constants(true)['Core'] as $constName => $constValue) {
+            if (str_starts_with($constName, 'E_') && $constName !== 'E_ALL' && $constName !== 'E_STRICT') {
+                yield $constName => $constValue;
             }
         }
     }
-    private static function build_bitwise_flag_expression(Expr ...$expressions): Expr
+
+    private static function buildBitwiseFlagExpression(Expr ...$expressions): Expr
     {
         $expr = array_shift($expressions);
         while ($expressions !== []) {
-            $expr = new Bitwise_Or($expr, array_shift($expressions));
+            $expr = new BitwiseOr($expr, array_shift($expressions));
         }
+
         return $expr;
     }
 }

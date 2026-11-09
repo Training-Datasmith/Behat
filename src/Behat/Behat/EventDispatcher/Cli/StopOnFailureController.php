@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,14 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Event_Dispatcher\Cli;
+
+namespace Behat\Behat\EventDispatcher\Cli;
 
 use Behat\Testwork\Cli\Controller;
-use Behat\Testwork\Tester\Handler\Stop_On_Failure_Handler;
+use Behat\Testwork\Tester\Handler\StopOnFailureHandler;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\Input_Interface;
-use Symfony\Component\Console\Input\Input_Option;
-use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Stops tests on first scenario failure.
  *
@@ -23,29 +26,39 @@ use Symfony\Component\Console\Output\Output_Interface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Stop_On_Failure_Controller implements Controller
+final class StopOnFailureController implements Controller
 {
-    private \Behat\Testwork\Tester\Handler\Stop_On_Failure_Handler $stop_on_failure_handler;
+    private \Behat\Testwork\Tester\Handler\StopOnFailureHandler $stopOnFailureHandler;
+
     /**
      * @required
      */
-    public function set_stop_on_failure_handler(Stop_On_Failure_Handler $stop_on_failure_handler): void
+    public function setStopOnFailureHandler(StopOnFailureHandler $stopOnFailureHandler): void
     {
-        $this->stop_on_failure_handler = $stop_on_failure_handler;
+        $this->stopOnFailureHandler = $stopOnFailureHandler;
     }
+
     /**
      * Configures command to be executable by the controller.
      */
     public function configure(Command $command): void
     {
-        $command->add_option('--stop-on-failure', null, Input_Option::VALUE_NONE, 'Stop processing on first failed scenario.');
+        $command->addOption(
+            '--stop-on-failure',
+            null,
+            InputOption::VALUE_NONE,
+            'Stop processing on first failed scenario.'
+        );
     }
-    public function execute(Input_Interface $input, Output_Interface $output): null
+
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
-        if (!$input->get_option('stop-on-failure')) {
+        if (!$input->getOption('stop-on-failure')) {
             return null;
         }
-        $this->stop_on_failure_handler->register_listeners();
+
+        $this->stopOnFailureHandler->registerListeners();
+
         return null;
     }
 }

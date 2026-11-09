@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,20 +9,22 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook;
 
-use Behat\Testwork\Hook\Scope\Hook_Scope;
+use Behat\Testwork\Hook\Scope\HookScope;
+
 /**
  * Represents hook that is filterable by the provided scope.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Filterable_Hook extends Hook
+interface FilterableHook extends Hook
 {
     /**
      * Checks that current hook matches provided hook scope.
      *
      * @return bool
      */
-    public function filter_matches(Hook_Scope $scope);
+    public function filterMatches(HookScope $scope);
 }

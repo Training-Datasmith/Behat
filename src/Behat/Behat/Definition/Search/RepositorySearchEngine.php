@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,20 +9,22 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Definition\Search;
 
 use Behat\Behat\Definition\Definition;
-use Behat\Behat\Definition\Definition_Repository;
-use Behat\Behat\Definition\Exception\Ambiguous_Match_Exception;
-use Behat\Behat\Definition\Pattern\Pattern_Transformer;
-use Behat\Behat\Definition\Search_Result;
-use Behat\Behat\Definition\Translator\Definition_Translator;
-use Behat\Gherkin\Node\Argument_Interface;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Step_Node;
-use Behat\Testwork\Argument\Argument_Organiser;
-use Behat\Testwork\Argument\Exception\Unexpected_Multiline_Argument_Exception;
+use Behat\Behat\Definition\DefinitionRepository;
+use Behat\Behat\Definition\Exception\AmbiguousMatchException;
+use Behat\Behat\Definition\Pattern\PatternTransformer;
+use Behat\Behat\Definition\SearchResult;
+use Behat\Behat\Definition\Translator\DefinitionTranslator;
+use Behat\Gherkin\Node\ArgumentInterface;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\StepNode;
+use Behat\Testwork\Argument\ArgumentOrganiser;
+use Behat\Testwork\Argument\Exception\UnexpectedMultilineArgumentException;
 use Behat\Testwork\Environment\Environment;
+
 /**
  * Searches for a step definition using definition repository.
  *
@@ -29,65 +32,85 @@ use Behat\Testwork\Environment\Environment;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Repository_Search_Engine implements Search_Engine
+final readonly class RepositorySearchEngine implements SearchEngine
 {
     /**
      * Initializes search engine.
      */
-    public function __construct(private Definition_Repository $repository, private Pattern_Transformer $pattern_transformer, private Definition_Translator $translator, private Argument_Organiser $argument_organiser)
-    {
+    public function __construct(
+        private DefinitionRepository $repository,
+        private PatternTransformer $patternTransformer,
+        private DefinitionTranslator $translator,
+        private ArgumentOrganiser $argumentOrganiser,
+    ) {
     }
+
     /**
      * @throws AmbiguousMatchException
      */
-    public function search_definition(Environment $environment, Feature_Node $feature, Step_Node $step): ?Search_Result
-    {
-        $suite = $environment->get_suite();
-        $language = $feature->get_language();
-        $step_text = $step->get_text();
-        $multi = $step->get_arguments();
-        $step_location = $feature->get_file() . ':' . $step->get_line();
+    public function searchDefinition(
+        Environment $environment,
+        FeatureNode $feature,
+        StepNode $step,
+    ): ?SearchResult {
+        $suite = $environment->getSuite();
+        $language = $feature->getLanguage();
+        $stepText = $step->getText();
+        $multi = $step->getArguments();
+        $stepLocation = $feature->getFile().':'.$step->getLine();
+
         $definitions = [];
         $result = null;
-        foreach ($this->repository->get_environment_definitions($environment) as $definition) {
-            $definition = $this->translator->translate_definition($suite, $definition, $language);
-            $new_result = $this->match($definition, $step_location, $step_text, $multi);
-            if (!$new_result instanceof Search_Result) {
+
+        foreach ($this->repository->getEnvironmentDefinitions($environment) as $definition) {
+            $definition = $this->translator->translateDefinition($suite, $definition, $language);
+            $newResult = $this->match($definition, $stepLocation, $stepText, $multi);
+            if (!$newResult instanceof SearchResult) {
                 continue;
             }
-            $result = $new_result;
-            $matched_definition = $new_result->get_matched_definition();
-            if ($matched_definition instanceof Definition) {
-                $definitions[] = $matched_definition;
+
+            $result = $newResult;
+            $matchedDefinition = $newResult->getMatchedDefinition();
+            if ($matchedDefinition instanceof Definition) {
+                $definitions[] = $matchedDefinition;
             }
         }
+
         if (count($definitions) > 1) {
-            throw new Ambiguous_Match_Exception($result->get_matched_text(), $definitions);
+            throw new AmbiguousMatchException($result->getMatchedText(), $definitions);
         }
+
         return $result;
     }
+
     /**
      * Attempts to match provided definition against a step text.
      *
      * @param ArgumentInterface[] $multiline
      */
-    private function match(Definition $definition, string $step_location, string $step_text, array $multiline): ?Search_Result
+    private function match(Definition $definition, string $stepLocation, string $stepText, array $multiline): ?SearchResult
     {
-        $match = $this->pattern_transformer->match_pattern($definition->get_pattern(), $step_text);
+        $match = $this->patternTransformer->matchPattern($definition->getPattern(), $stepText);
         if ($match === false) {
             return null;
         }
-        $function = $definition->get_reflection();
+
+        $function = $definition->getReflection();
         $match = array_merge($match, array_values($multiline));
+
         try {
-            $arguments = $this->argument_organiser->organise_arguments($function, $match);
-        } catch (Unexpected_Multiline_Argument_Exception $e) {
+            $arguments = $this->argumentOrganiser->organiseArguments($function, $match);
+        } catch (UnexpectedMultilineArgumentException $e) {
             // Add the location of the feature and step that caused the problem.
             // We can't do this where the exception is originally thrown because the ArgumentOrganiser interface
             // is used for other types of function / argument processing e.g. Context constructors, so it has no
             // knowledge of the concept of a Step.
-            throw new Unexpected_Multiline_Argument_Exception($e->get_message() . PHP_EOL . 'This is probably an error in your step implementation or in ' . $step_location, previous: $e);
+            throw new UnexpectedMultilineArgumentException(
+                $e->getMessage() . PHP_EOL . 'This is probably an error in your step implementation or in ' . $stepLocation,
+                previous: $e
+            );
         }
-        return new Search_Result($definition, $step_text, $arguments);
+
+        return new SearchResult($definition, $stepText, $arguments);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,19 +9,21 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Output;
 
-use Behat\Config\Formatter\Show_Output_Option;
+use Behat\Config\Formatter\ShowOutputOption;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Testwork_Event_Dispatcher;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
-use Behat\Testwork\Output\Printer\Output_Printer;
+use Behat\Testwork\EventDispatcher\TestworkEventDispatcher;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+use Behat\Testwork\Output\Printer\OutputPrinter;
+
 /**
  * Formatter built around the idea of event delegation and composition.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Node_Event_Listening_Formatter implements Formatter
+final class NodeEventListeningFormatter implements Formatter
 {
     /**
      * Initializes formatter.
@@ -28,52 +31,66 @@ final class Node_Event_Listening_Formatter implements Formatter
      * @param string        $name
      * @param string        $description
      */
-    public function __construct(private $name, private $description, private array $parameters, private readonly Output_Printer $printer, private readonly Event_Listener $listener)
-    {
+    public function __construct(
+        private $name,
+        private $description,
+        private array $parameters,
+        private readonly OutputPrinter $printer,
+        private readonly EventListener $listener,
+    ) {
     }
+
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
      * @return array The event names to listen to
      */
-    public static function get_subscribed_events(): array
+    public static function getSubscribedEvents(): array
     {
-        return [Testwork_Event_Dispatcher::BEFORE_ALL_EVENTS => 'listenEvent'];
+        return [TestworkEventDispatcher::BEFORE_ALL_EVENTS => 'listenEvent'];
     }
+
     /**
      * Proxies event to the listener.
      *
      * @param string|null $eventName
      */
-    public function listen_event(Event $event, $event_name = null): void
+    public function listenEvent(Event $event, $eventName = null): void
     {
-        if (null === $event_name) {
-            $event_name = method_exists($event, 'getName') ? $event->get_name() : $event::class;
+        if (null === $eventName) {
+            $eventName = method_exists($event, 'getName') ? $event->getName() : $event::class;
         }
-        $this->listener->listen_event($this, $event, $event_name);
+
+        $this->listener->listenEvent($this, $event, $eventName);
     }
-    public function get_name()
+
+    public function getName()
     {
         return $this->name;
     }
-    public function get_description()
+
+    public function getDescription()
     {
         return $this->description;
     }
-    public function get_output_printer(): Output_Printer
+
+    public function getOutputPrinter(): OutputPrinter
     {
         return $this->printer;
     }
-    public function set_parameter($name, $value): void
+
+    public function setParameter($name, $value): void
     {
         $this->parameters[$name] = $value;
     }
-    public function get_parameter($name)
+
+    public function getParameter($name)
     {
         $value = $this->parameters[$name] ?? null;
-        if ($value !== null && $name === Show_Output_Option::OPTION_NAME) {
-            return Show_Output_Option::from($value);
+        if ($value !== null && $name === ShowOutputOption::OPTION_NAME) {
+            return ShowOutputOption::from($value);
         }
+
         return $value;
     }
 }

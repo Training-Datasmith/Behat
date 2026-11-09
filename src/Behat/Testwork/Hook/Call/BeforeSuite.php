@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,15 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Hook\Call;
 
-use Behat\Testwork\Hook\Scope\Suite_Scope;
+use Behat\Testwork\Hook\Scope\SuiteScope;
+
 /**
  * Represents BeforeSuite hook.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Before_Suite extends Runtime_Suite_Hook
+final class BeforeSuite extends RuntimeSuiteHook
 {
     /**
      * Initializes hook.
@@ -25,14 +28,15 @@ final class Before_Suite extends Runtime_Suite_Hook
      * @param callable    $callable
      * @param string|null $description
      */
-    public function __construct($filter_string, $callable, $description = null)
+    public function __construct($filterString, $callable, $description = null)
     {
-        parent::__construct(Suite_Scope::BEFORE, $filter_string, $callable, $description);
+        parent::__construct(SuiteScope::BEFORE, $filterString, $callable, $description);
     }
+
     /**
      * Returns hook name.
      */
-    public function get_name(): string
+    public function getName(): string
     {
         return 'BeforeSuite';
     }

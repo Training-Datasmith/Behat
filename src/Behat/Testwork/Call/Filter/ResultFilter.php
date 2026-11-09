@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,10 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Call\Filter;
 
-use Behat\Testwork\Call\Call_Center;
-use Behat\Testwork\Call\Call_Result;
+use Behat\Testwork\Call\CallCenter;
+use Behat\Testwork\Call\CallResult;
+
 /**
  * Filters call results and produces new ones.
  *
@@ -19,18 +22,19 @@ use Behat\Testwork\Call\Call_Result;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Result_Filter
+interface ResultFilter
 {
     /**
      * Checks if filter supports call result.
      *
      * @return bool
      */
-    public function supports_result(Call_Result $result);
+    public function supportsResult(CallResult $result);
+
     /**
      * Filters call result and returns a new result.
      *
      * @return CallResult
      */
-    public function filter_result(Call_Result $result);
+    public function filterResult(CallResult $result);
 }

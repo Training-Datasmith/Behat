@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,33 +9,39 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Cli;
 
-use Behat\Testwork\Service_Container\Configuration\Configuration_Tree;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Symfony\Component\Config\Definition\Dumper\Yaml_Reference_Dumper;
+use Behat\Testwork\ServiceContainer\Configuration\ConfigurationTree;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Symfony\Component\Config\Definition\Dumper\YamlReferenceDumper;
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Symfony\Component\Console\Input\Input_Interface;
-use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Extends Symfony console application with testwork functionality.
  *
  * @author Christophe Coevoet <stof>
  */
-final class Dump_Reference_Command extends Base_Command
+final class DumpReferenceCommand extends BaseCommand
 {
     /**
      * Initializes dumper.
      */
-    public function __construct(private readonly Extension_Manager $extension_manager)
-    {
+    public function __construct(
+        private readonly ExtensionManager $extensionManager,
+    ) {
         parent::__construct('dump-reference');
     }
-    protected function execute(Input_Interface $input, Output_Interface $output): int
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $dumper = new Yaml_Reference_Dumper();
-        $config_tree = new Configuration_Tree();
-        $output->writeln($dumper->dump_node($config_tree->get_config_tree($this->extension_manager->get_extensions())));
+        $dumper = new YamlReferenceDumper();
+        $configTree = new ConfigurationTree();
+
+        $output->writeln($dumper->dumpNode($configTree->getConfigTree($this->extensionManager->getExtensions())));
+
         return 0;
     }
 }

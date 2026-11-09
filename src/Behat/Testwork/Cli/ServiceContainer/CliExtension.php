@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,21 +9,23 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Cli\Service_Container;
+
+namespace Behat\Testwork\Cli\ServiceContainer;
 
 use Behat\Testwork\Cli\Command;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Behat\Testwork\Service_Container\Service_Processor;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\ServiceContainer\ServiceProcessor;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+
 /**
  * Provides console services for testwork.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Cli_Extension implements Extension
+final readonly class CliExtension implements Extension
 {
     /*
      * Available services
@@ -30,60 +33,71 @@ final readonly class Cli_Extension implements Extension
     public const COMMAND_ID = 'cli.command';
     public const INPUT_ID = 'cli.input';
     public const OUTPUT_ID = 'cli.output';
+
     /*
      * Available extension points
      */
     public const CONTROLLER_TAG = 'cli.controller';
-    private Service_Processor $processor;
+
+    private ServiceProcessor $processor;
+
     /**
      * Initializes extension.
      */
-    public function __construct(?Service_Processor $processor = null)
+    public function __construct(?ServiceProcessor $processor = null)
     {
-        $this->processor = $processor ?: new Service_Processor();
+        $this->processor = $processor ?: new ServiceProcessor();
     }
+
     /**
      * Returns the extension config key.
      */
-    public function get_config_key(): string
+    public function getConfigKey(): string
     {
         return 'cli';
     }
-    public function initialize(Extension_Manager $extension_manager): void
+
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
-        $this->load_command($container);
-        $this->load_synthetic_services($container);
+        $this->loadCommand($container);
+        $this->loadSyntheticServices($container);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
-        $this->process_controllers($container);
+        $this->processControllers($container);
     }
+
     /**
      * Loads application command.
      */
-    private function load_command(Container_Builder $container): void
+    private function loadCommand(ContainerBuilder $container): void
     {
         $definition = new Definition(Command::class, ['%cli.command.name%', []]);
-        $definition->set_public(true);
-        $container->set_definition(self::COMMAND_ID, $definition);
+        $definition->setPublic(true);
+        $container->setDefinition(self::COMMAND_ID, $definition);
     }
-    private function load_synthetic_services(Container_Builder $container): void
+
+    private function loadSyntheticServices(ContainerBuilder $container): void
     {
-        $container->register(self::INPUT_ID)->set_synthetic(true)->set_public(true);
-        $container->register(self::OUTPUT_ID)->set_synthetic(true)->set_public(true);
+        $container->register(self::INPUT_ID)->setSynthetic(true)->setPublic(true);
+        $container->register(self::OUTPUT_ID)->setSynthetic(true)->setPublic(true);
     }
+
     /**
      * Processes all controllers in container.
      */
-    private function process_controllers(Container_Builder $container): void
+    private function processControllers(ContainerBuilder $container): void
     {
-        $references = $this->processor->find_and_sort_tagged_services($container, self::CONTROLLER_TAG);
-        $container->get_definition(self::COMMAND_ID)->replace_argument(1, $references);
+        $references = $this->processor->findAndSortTaggedServices($container, self::CONTROLLER_TAG);
+        $container->getDefinition(self::COMMAND_ID)->replaceArgument(1, $references);
     }
 }

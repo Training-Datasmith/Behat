@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,11 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Transformation\Call;
 
 use Behat\Behat\Transformation\Transformation;
-use Behat\Testwork\Call\Runtime_Callee;
+use Behat\Testwork\Call\RuntimeCallee;
 use Stringable;
+
 /**
  * Transformation that is created and executed in the runtime.
  *
@@ -20,7 +23,7 @@ use Stringable;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Runtime_Transformation extends Runtime_Callee implements Stringable, Transformation
+final class RuntimeTransformation extends RuntimeCallee implements Stringable, Transformation
 {
     /**
      * Initializes transformation.
@@ -28,16 +31,21 @@ final class Runtime_Transformation extends Runtime_Callee implements Stringable,
      * @param string      $pattern
      * @param callable    $callable
      */
-    public function __construct(private $pattern, callable|array $callable, ?string $description = null)
-    {
+    public function __construct(
+        private $pattern,
+        callable|array $callable,
+        ?string $description = null,
+    ) {
         parent::__construct($callable, $description);
     }
-    public function get_pattern()
+
+    public function getPattern()
     {
         return $this->pattern;
     }
+
     public function __toString(): string
     {
-        return 'Transform ' . $this->get_pattern();
+        return 'Transform ' . $this->getPattern();
     }
 }

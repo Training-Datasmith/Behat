@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,53 +9,64 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Event_Dispatcher\Event;
 
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Outline_Node;
+namespace Behat\Behat\EventDispatcher\Event;
+
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\OutlineNode;
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Event_Dispatcher\Event\After_Tested;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\EventDispatcher\Event\AfterTested;
+use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Teardown;
+
 /**
  * Represents an event after outline was tested.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class After_Outline_Tested extends Outline_Tested implements After_Tested
+final class AfterOutlineTested extends OutlineTested implements AfterTested
 {
     /**
      * Initializes event.
      */
-    public function __construct(Environment $env, private readonly Feature_Node $feature, private readonly Outline_Node $outline, private readonly Test_Result $result, private readonly Teardown $teardown)
-    {
+    public function __construct(
+        Environment $env,
+        private readonly FeatureNode $feature,
+        private readonly OutlineNode $outline,
+        private readonly TestResult $result,
+        private readonly Teardown $teardown,
+    ) {
         parent::__construct($env);
     }
+
     /**
      * Returns feature.
      */
-    public function get_feature(): Feature_Node
+    public function getFeature(): FeatureNode
     {
         return $this->feature;
     }
+
     /**
      * Returns outline node.
      */
-    public function get_outline(): Outline_Node
+    public function getOutline(): OutlineNode
     {
         return $this->outline;
     }
+
     /**
      * Returns current test result.
      */
-    public function get_test_result(): Test_Result
+    public function getTestResult(): TestResult
     {
         return $this->result;
     }
+
     /**
      * Returns current test teardown.
      */
-    public function get_teardown(): Teardown
+    public function getTeardown(): Teardown
     {
         return $this->teardown;
     }

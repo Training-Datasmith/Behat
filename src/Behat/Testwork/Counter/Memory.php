@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,9 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Counter;
 
 use Stringable;
+
 /**
  * Counts amount of system memory being used.
  *
@@ -22,29 +25,34 @@ final class Memory implements Stringable
      * @var string[]
      */
     private array $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb'];
+
     /**
      * Returns current memory usage.
      */
-    public function get_memory_usage(): int
+    public function getMemoryUsage(): int
     {
         return memory_get_usage();
     }
+
     /**
      * Presents memory usage in human-readable form.
      */
     public function __toString(): string
     {
-        return $this->humanize($this->get_memory_usage());
+        return $this->humanize($this->getMemoryUsage());
     }
+
     /**
      * Humanizes usage information.
      */
     private function humanize(int $bytes): string
     {
         $e = intval(floor(log($bytes) / log(1024)));
+
         if (!isset($this->units[$e])) {
             return 'Can not calculate memory usage';
         }
+
         return sprintf('%.2f%s', $bytes / 1024 ** floor($e), $this->units[$e]);
     }
 }

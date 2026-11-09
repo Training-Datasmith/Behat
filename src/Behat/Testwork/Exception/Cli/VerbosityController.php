@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,37 +9,43 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Exception\Cli;
 
 use Behat\Testwork\Cli\Controller;
-use Behat\Testwork\Exception\Exception_Presenter;
+use Behat\Testwork\Exception\ExceptionPresenter;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\Input_Interface;
-use Symfony\Component\Console\Output\Output_Interface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Controls exception default verbosity level.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Verbosity_Controller implements Controller
+final readonly class VerbosityController implements Controller
 {
     /**
      * Initializes controller.
      */
-    public function __construct(private Exception_Presenter $exception_presenter)
-    {
+    public function __construct(
+        private ExceptionPresenter $exceptionPresenter,
+    ) {
     }
+
     /**
      * Configures command to be executable by the controller.
      */
     public function configure(Command $command): void
     {
     }
-    public function execute(Input_Interface $input, Output_Interface $output): null
+
+    public function execute(InputInterface $input, OutputInterface $output): null
     {
-        if ($output->get_verbosity() !== Output_Interface::VERBOSITY_NORMAL) {
-            $this->exception_presenter->set_default_verbosity($output->get_verbosity());
+        if ($output->getVerbosity() !== OutputInterface::VERBOSITY_NORMAL) {
+            $this->exceptionPresenter->setDefaultVerbosity($output->getVerbosity());
         }
+
         return null;
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 namespace Behat\Config\Formatter;
 
-enum Show_Output_Option : string
+enum ShowOutputOption: string
 {
     public const OPTION_NAME = 'show_output';
     public const PARAMETER_NAME = 'showOutput';
+
     case Yes = 'yes';
     case No = 'no';
     case OnFail = 'on-fail';

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,75 +9,98 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Output\Node\Printer\Pretty;
 
-use Behat\Behat\Output\Node\Printer\Helper\Width_Calculator;
-use Behat\Behat\Tester\Result\Defined_Step_Result;
-use Behat\Behat\Tester\Result\Step_Result;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Gherkin\Node\Scenario_Like_Interface as Scenario;
-use Behat\Gherkin\Node\Step_Node;
+use Behat\Behat\Output\Node\Printer\Helper\WidthCalculator;
+use Behat\Behat\Tester\Result\DefinedStepResult;
+use Behat\Behat\Tester\Result\StepResult;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioLikeInterface as Scenario;
+use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\Output_Printer;
-use Behat\Testwork\Path_Options\Printer\Configurable_Path_Printer;
+use Behat\Testwork\Output\Printer\OutputPrinter;
+use Behat\Testwork\PathOptions\Printer\ConfigurablePathPrinter;
+
 /**
  * Prints paths for scenarios, examples, backgrounds and steps.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Pretty_Path_Printer
+final readonly class PrettyPathPrinter
 {
-    private Configurable_Path_Printer $configurable_path_printer;
+    private ConfigurablePathPrinter $configurablePathPrinter;
+
     /**
      * Initializes printer.
      */
-    public function __construct(private Width_Calculator $width_calculator, string $base_path, ?Configurable_Path_Printer $configurable_path_printer = null)
-    {
-        $this->configurable_path_printer = $configurable_path_printer ?? new Configurable_Path_Printer($base_path, printAbsolutePaths: false);
+    public function __construct(
+        private WidthCalculator $widthCalculator,
+        string $basePath,
+        ?ConfigurablePathPrinter $configurablePathPrinter = null,
+    ) {
+        $this->configurablePathPrinter = $configurablePathPrinter ?? new ConfigurablePathPrinter($basePath, printAbsolutePaths: false);
     }
+
     /**
      * Prints scenario path comment.
      *
      * @param int $indentation
      */
-    public function print_scenario_path(Formatter $formatter, Feature_Node $feature, Scenario $scenario, $indentation): void
+    public function printScenarioPath(Formatter $formatter, FeatureNode $feature, Scenario $scenario, $indentation): void
     {
-        $printer = $formatter->get_output_printer();
-        if (!$formatter->get_parameter('paths')) {
+        $printer = $formatter->getOutputPrinter();
+
+        if (!$formatter->getParameter('paths')) {
             $printer->writeln();
+
             return;
         }
-        $file_and_line = $this->configurable_path_printer->process_paths_in_text(sprintf('%s:%s', $feature->get_file(), $scenario->get_line()));
-        $header_width = $this->width_calculator->calculate_scenario_header_width($scenario, $indentation);
-        $scenario_width = $this->width_calculator->calculate_scenario_width($scenario, $indentation, 2);
-        $spacing = str_repeat(' ', max(0, $scenario_width - $header_width));
-        $printer->writeln(sprintf('%s {+comment}# %s{-comment}', $spacing, $file_and_line));
+
+        $fileAndLine = $this->configurablePathPrinter->processPathsInText(sprintf('%s:%s', $feature->getFile(), $scenario->getLine()));
+        $headerWidth = $this->widthCalculator->calculateScenarioHeaderWidth($scenario, $indentation);
+        $scenarioWidth = $this->widthCalculator->calculateScenarioWidth($scenario, $indentation, 2);
+        $spacing = str_repeat(' ', max(0, $scenarioWidth - $headerWidth));
+
+        $printer->writeln(sprintf('%s {+comment}# %s{-comment}', $spacing, $fileAndLine));
     }
+
     /**
      * Prints step path comment.
      *
      * @param int $indentation
      */
-    public function print_step_path(Formatter $formatter, Scenario $scenario, Step_Node $step, Step_Result $result, $indentation): void
-    {
-        $printer = $formatter->get_output_printer();
-        if (!$result instanceof Defined_Step_Result || !$result->get_step_definition() || !$formatter->get_parameter('paths')) {
+    public function printStepPath(
+        Formatter $formatter,
+        Scenario $scenario,
+        StepNode $step,
+        StepResult $result,
+        $indentation,
+    ): void {
+        $printer = $formatter->getOutputPrinter();
+
+        if (!$result instanceof DefinedStepResult || !$result->getStepDefinition() || !$formatter->getParameter('paths')) {
             $printer->writeln();
+
             return;
         }
-        $text_width = $this->width_calculator->calculate_step_width($step, $indentation);
-        $scenario_width = $this->width_calculator->calculate_scenario_width($scenario, $indentation - 2, 2);
-        $this->print_defined_step_path($printer, $result, $scenario_width, $text_width);
+
+        $textWidth = $this->widthCalculator->calculateStepWidth($step, $indentation);
+        $scenarioWidth = $this->widthCalculator->calculateScenarioWidth($scenario, $indentation - 2, 2);
+
+        $this->printDefinedStepPath($printer, $result, $scenarioWidth, $textWidth);
     }
+
     /**
      * Prints defined step path.
      *
      * @param int $scenarioWidth
      */
-    private function print_defined_step_path(Output_Printer $printer, Defined_Step_Result $result, $scenario_width, int $step_width): void
+    private function printDefinedStepPath(OutputPrinter $printer, DefinedStepResult $result, $scenarioWidth, int $stepWidth): void
     {
-        $path = $result->get_step_definition()->get_path();
-        $spacing = str_repeat(' ', max(0, $scenario_width - $step_width));
+        $path = $result->getStepDefinition()->getPath();
+        $spacing = str_repeat(' ', max(0, $scenarioWidth - $stepWidth));
+
         $printer->writeln(sprintf('%s {+comment}# %s{-comment}', $spacing, $path));
     }
 }

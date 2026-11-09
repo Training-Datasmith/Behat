@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,88 +9,103 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\Statistics;
 
-use Behat\Behat\Output\Statistics\Hook_Stat;
+namespace Behat\Behat\Output\Node\EventListener\Statistics;
+
+use Behat\Behat\Output\Statistics\HookStat;
 use Behat\Behat\Output\Statistics\Statistics;
-use Behat\Testwork\Call\Call_Result;
+use Behat\Testwork\Call\CallResult;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Event\After_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Tested;
-use Behat\Testwork\Exception\Exception_Presenter;
-use Behat\Testwork\Hook\Call\Hook_Call;
-use Behat\Testwork\Hook\Call\Runtime_Hook;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Setup;
-use Behat\Testwork\Hook\Tester\Setup\Hooked_Teardown;
+use Behat\Testwork\EventDispatcher\Event\AfterSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterTested;
+use Behat\Testwork\Exception\ExceptionPresenter;
+use Behat\Testwork\Hook\Call\HookCall;
+use Behat\Testwork\Hook\Call\RuntimeHook;
+use Behat\Testwork\Hook\Tester\Setup\HookedSetup;
+use Behat\Testwork\Hook\Tester\Setup\HookedTeardown;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
 use Exception;
+
 /**
  * Listens and records hook stats.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Hook_Stats_Listener implements Event_Listener
+final readonly class HookStatsListener implements EventListener
 {
     /**
      * Initializes listener.
      */
-    public function __construct(private Statistics $statistics, private Exception_Presenter $exception_presenter)
-    {
+    public function __construct(
+        private Statistics $statistics,
+        private ExceptionPresenter $exceptionPresenter,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        $this->capture_hook_stats_on_event($event);
+        $this->captureHookStatsOnEvent($event);
     }
+
     /**
      * Captures hook stats on hooked event.
      */
-    private function capture_hook_stats_on_event(Event $event): void
+    private function captureHookStatsOnEvent(Event $event): void
     {
-        if ($event instanceof After_Setup && $event->get_setup() instanceof Hooked_Setup) {
-            $this->capture_before_hook_stats($event->get_setup());
+        if ($event instanceof AfterSetup && $event->getSetup() instanceof HookedSetup) {
+            $this->captureBeforeHookStats($event->getSetup());
         }
-        if ($event instanceof After_Tested && $event->get_teardown() instanceof Hooked_Teardown) {
-            $this->capture_after_hook_stats($event->get_teardown());
+
+        if ($event instanceof AfterTested && $event->getTeardown() instanceof HookedTeardown) {
+            $this->captureAfterHookStats($event->getTeardown());
         }
     }
+
     /**
      * Captures before hook stats.
      */
-    private function capture_before_hook_stats(Hooked_Setup $setup): void
+    private function captureBeforeHookStats(HookedSetup $setup): void
     {
-        $hook_call_results = $setup->get_hook_call_results();
-        foreach ($hook_call_results as $hook_call_result) {
-            $this->capture_hook_stat($hook_call_result);
+        $hookCallResults = $setup->getHookCallResults();
+
+        foreach ($hookCallResults as $hookCallResult) {
+            $this->captureHookStat($hookCallResult);
         }
     }
+
     /**
      * Captures before hook stats.
      */
-    private function capture_after_hook_stats(Hooked_Teardown $teardown): void
+    private function captureAfterHookStats(HookedTeardown $teardown): void
     {
-        $hook_call_results = $teardown->get_hook_call_results();
-        foreach ($hook_call_results as $hook_call_result) {
-            $this->capture_hook_stat($hook_call_result);
+        $hookCallResults = $teardown->getHookCallResults();
+
+        foreach ($hookCallResults as $hookCallResult) {
+            $this->captureHookStat($hookCallResult);
         }
     }
+
     /**
      * Captures hook call result.
      */
-    private function capture_hook_stat(Call_Result $hook_call_result): void
+    private function captureHookStat(CallResult $hookCallResult): void
     {
-        $call = $hook_call_result->get_call();
-        assert($call instanceof Hook_Call);
-        $callee = $call->get_callee();
-        $scope = $call->get_scope();
-        $path = $callee->get_path();
-        $std_out = $hook_call_result->get_std_out();
-        $error = $hook_call_result->get_exception() instanceof Exception ? $this->exception_presenter->present_exception($hook_call_result->get_exception()) : null;
-        assert($callee instanceof Runtime_Hook);
-        $stat = new Hook_Stat((string) $callee, $path, $error, $std_out);
-        if (!$stat->is_successful()) {
-            $stat->set_scope($scope);
+        $call = $hookCallResult->getCall();
+        assert($call instanceof HookCall);
+        $callee = $call->getCallee();
+        $scope = $call->getScope();
+        $path = $callee->getPath();
+        $stdOut = $hookCallResult->getStdOut();
+        $error = $hookCallResult->getException() instanceof Exception
+            ? $this->exceptionPresenter->presentException($hookCallResult->getException())
+            : null;
+
+        assert($callee instanceof RuntimeHook);
+        $stat = new HookStat((string) $callee, $path, $error, $stdOut);
+        if (!$stat->isSuccessful()) {
+            $stat->setScope($scope);
         }
-        $this->statistics->register_hook_stat($stat);
+        $this->statistics->registerHookStat($stat);
     }
 }

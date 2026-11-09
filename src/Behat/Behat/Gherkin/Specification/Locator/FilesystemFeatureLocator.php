@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,20 +9,22 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Gherkin\Specification\Locator;
 
-use Behat\Behat\Gherkin\Specification\Lazy_Feature_Iterator;
-use Behat\Gherkin\Filter\Paths_Filter;
+use Behat\Behat\Gherkin\Specification\LazyFeatureIterator;
+use Behat\Gherkin\Filter\PathsFilter;
 use Behat\Gherkin\Gherkin;
-use Behat\Gherkin\Node\Feature_Node;
-use Behat\Testwork\Specification\Locator\Specification_Locator;
-use Behat\Testwork\Specification\No_Specifications_Iterator;
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Suite\Exception\Suite_Configuration_Exception;
+use Behat\Gherkin\Node\FeatureNode;
+use Behat\Testwork\Specification\Locator\SpecificationLocator;
+use Behat\Testwork\Specification\NoSpecificationsIterator;
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Suite\Exception\SuiteConfigurationException;
 use Behat\Testwork\Suite\Suite;
-use Recursive_Directory_Iterator;
-use Recursive_Iterator_Iterator;
-use Regex_Iterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RegexIterator;
+
 /**
  * Loads gherkin features from the filesystem using gherkin parser.
  *
@@ -29,36 +32,52 @@ use Regex_Iterator;
  *
  * @implements SpecificationLocator<FeatureNode>
  */
-final class Filesystem_Feature_Locator implements Specification_Locator
+final class FilesystemFeatureLocator implements SpecificationLocator
 {
     /**
      * Initializes loader.
      *
      * @param string  $basePath
      */
-    public function __construct(private readonly Gherkin $gherkin, private $base_path)
-    {
+    public function __construct(
+        private readonly Gherkin $gherkin,
+        private $basePath,
+    ) {
     }
-    public function get_locator_examples(): array
+
+    public function getLocatorExamples(): array
     {
-        return ['a dir <comment>(features/)</comment>', 'a feature <comment>(*.feature)</comment>', 'a scenario at specific line <comment>(*.feature:10)</comment>.', 'all scenarios at or after a specific line <comment>(*.feature:10-*)</comment>.', 'all scenarios at a line within a specific range <comment>(*.feature:10-20)</comment>.'];
+        return [
+            'a dir <comment>(features/)</comment>',
+            'a feature <comment>(*.feature)</comment>',
+            'a scenario at specific line <comment>(*.feature:10)</comment>.',
+            'all scenarios at or after a specific line <comment>(*.feature:10-*)</comment>.',
+            'all scenarios at a line within a specific range <comment>(*.feature:10-20)</comment>.',
+        ];
     }
-    public function locate_specifications(Suite $suite, $locator): Specification_Iterator
+
+    public function locateSpecifications(Suite $suite, $locator): SpecificationIterator
     {
-        if (!$suite->has_setting('paths')) {
-            return new No_Specifications_Iterator($suite);
+        if (!$suite->hasSetting('paths')) {
+            return new NoSpecificationsIterator($suite);
         }
-        $suite_locators = $this->get_suite_paths($suite);
+
+        $suiteLocators = $this->getSuitePaths($suite);
+
         if ($locator) {
-            $filters = [new Paths_Filter($suite_locators)];
-            return new Lazy_Feature_Iterator($suite, $this->gherkin, $this->find_feature_files($locator), $filters);
+            $filters = [new PathsFilter($suiteLocators)];
+
+            return new LazyFeatureIterator($suite, $this->gherkin, $this->findFeatureFiles($locator), $filters);
         }
-        $feature_paths = [];
-        foreach ($suite_locators as $suite_locator) {
-            $feature_paths = array_merge($feature_paths, $this->find_feature_files($suite_locator));
+
+        $featurePaths = [];
+        foreach ($suiteLocators as $suiteLocator) {
+            $featurePaths = array_merge($featurePaths, $this->findFeatureFiles($suiteLocator));
         }
-        return new Lazy_Feature_Iterator($suite, $this->gherkin, $feature_paths);
+
+        return new LazyFeatureIterator($suite, $this->gherkin, $featurePaths);
     }
+
     /**
      * Returns array of feature paths configured for the provided suite.
      *
@@ -66,47 +85,76 @@ final class Filesystem_Feature_Locator implements Specification_Locator
      *
      * @throws SuiteConfigurationException If `paths` setting is not an array
      */
-    private function get_suite_paths(Suite $suite)
+    private function getSuitePaths(Suite $suite)
     {
-        if (!is_array($suite->get_setting('paths'))) {
-            throw new Suite_Configuration_Exception(sprintf('`paths` setting of the "%s" suite is expected to be an array, %s given.', $suite->get_name(), gettype($suite->get_setting('paths'))), $suite->get_name());
+        if (!is_array($suite->getSetting('paths'))) {
+            throw new SuiteConfigurationException(
+                sprintf(
+                    '`paths` setting of the "%s" suite is expected to be an array, %s given.',
+                    $suite->getName(),
+                    gettype($suite->getSetting('paths'))
+                ),
+                $suite->getName()
+            );
         }
-        return $suite->get_setting('paths');
+
+        return $suite->getSetting('paths');
     }
+
     /**
      * Loads feature files paths from provided path.
      *
      *
      * @return list<string>
      */
-    private function find_feature_files(string $path): array
+    private function findFeatureFiles(string $path): array
     {
-        $absolute_path = $this->find_absolute_path($path);
-        if (!$absolute_path) {
+        $absolutePath = $this->findAbsolutePath($path);
+
+        if (!$absolutePath) {
             return [$path];
         }
-        if (is_file($absolute_path)) {
-            return [$absolute_path];
+
+        if (is_file($absolutePath)) {
+            return [$absolutePath];
         }
-        $iterator = new Regex_Iterator(new Recursive_Iterator_Iterator(new Recursive_Directory_Iterator($absolute_path, Recursive_Directory_Iterator::FOLLOW_SYMLINKS | Recursive_Directory_Iterator::SKIP_DOTS)), '/^.+\.feature$/i', Regex_Iterator::MATCH);
+
+        $iterator = new RegexIterator(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    $absolutePath,
+                    RecursiveDirectoryIterator::FOLLOW_SYMLINKS | RecursiveDirectoryIterator::SKIP_DOTS
+                )
+            ),
+            '/^.+\.feature$/i',
+            RegexIterator::MATCH
+        );
+
         $paths = array_map(strval(...), iterator_to_array($iterator));
         uasort($paths, strnatcasecmp(...));
+
         return $paths;
     }
+
     /**
      * Finds absolute path for provided relative (relative to base features path).
      */
-    private function find_absolute_path(string $path): string|false
+    private function findAbsolutePath(string $path): string|false
     {
         if (is_file($path) || is_dir($path)) {
             return realpath($path);
         }
-        if (null === $this->base_path) {
+
+        if (null === $this->basePath) {
             return false;
         }
-        if (is_file($this->base_path . DIRECTORY_SEPARATOR . $path) || is_dir($this->base_path . DIRECTORY_SEPARATOR . $path)) {
-            return realpath($this->base_path . DIRECTORY_SEPARATOR . $path);
+
+        if (is_file($this->basePath . DIRECTORY_SEPARATOR . $path)
+            || is_dir($this->basePath . DIRECTORY_SEPARATOR . $path)
+        ) {
+            return realpath($this->basePath . DIRECTORY_SEPARATOR . $path);
         }
+
         return false;
     }
 }

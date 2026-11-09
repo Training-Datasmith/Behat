@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,21 +9,23 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Helper_Container\Argument;
 
-use Behat\Behat\Context\Argument\Argument_Resolver;
-use Behat\Behat\Context\Argument\Argument_Resolver_Factory;
-use Behat\Behat\Context\Argument\Suite_Scoped_Resolver_Factory;
-use Behat\Behat\Helper_Container\Built_In_Service_Container;
-use Behat\Behat\Helper_Container\Environment\Service_Container_Environment;
-use Behat\Behat\Helper_Container\Exception\Wrong_Container_Class_Exception;
-use Behat\Behat\Helper_Container\Exception\Wrong_Services_Configuration_Exception;
-use Behat\Behat\Helper_Container\Service_Container\Helper_Container_Extension;
-use Behat\Testwork\Deprecation\Deprecation_Collector;
+namespace Behat\Behat\HelperContainer\Argument;
+
+use Behat\Behat\Context\Argument\ArgumentResolver;
+use Behat\Behat\Context\Argument\ArgumentResolverFactory;
+use Behat\Behat\Context\Argument\SuiteScopedResolverFactory;
+use Behat\Behat\HelperContainer\BuiltInServiceContainer;
+use Behat\Behat\HelperContainer\Environment\ServiceContainerEnvironment;
+use Behat\Behat\HelperContainer\Exception\WrongContainerClassException;
+use Behat\Behat\HelperContainer\Exception\WrongServicesConfigurationException;
+use Behat\Behat\HelperContainer\ServiceContainer\HelperContainerExtension;
+use Behat\Testwork\Deprecation\DeprecationCollector;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Suite\Suite;
-use Psr\Container\Container_Interface;
-use Symfony\Component\Dependency_Injection\Tagged_Container_Interface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\TaggedContainerInterface;
+
 /**
  * Generates ServiceContainer argument resolvers based on suite's `services` setting.
  *
@@ -30,108 +33,135 @@ use Symfony\Component\Dependency_Injection\Tagged_Container_Interface;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Services_Resolver_Factory implements Suite_Scoped_Resolver_Factory, Argument_Resolver_Factory
+final readonly class ServicesResolverFactory implements SuiteScopedResolverFactory, ArgumentResolverFactory
 {
     /**
      * Initialises factory.
      */
-    public function __construct(private Tagged_Container_Interface $container)
-    {
+    public function __construct(
+        private TaggedContainerInterface $container,
+    ) {
     }
+
     /**
      * @deprecated as part of SuiteScopedResolverFactory deprecation. Would be removed in 4.0
      *
      * @throws WrongServicesConfigurationException
      * @throws WrongContainerClassException
      */
-    public function generate_argument_resolvers(Suite $suite): array
+    public function generateArgumentResolvers(Suite $suite): array
     {
-        Deprecation_Collector::trigger('SuiteScopedResolverFactory::generateArgumentResolvers() was deprecated and will be removed in 4.0');
-        if (!$suite->has_setting('services')) {
+        DeprecationCollector::trigger('SuiteScopedResolverFactory::generateArgumentResolvers() was deprecated and will be removed in 4.0');
+
+        if (!$suite->hasSetting('services')) {
             return [];
         }
-        $container = $this->create_container($suite->get_setting('services'));
-        return $this->create_resolvers($container, false);
+
+        $container = $this->createContainer($suite->getSetting('services'));
+
+        return $this->createResolvers($container, false);
     }
+
     /**
      * @throws WrongServicesConfigurationException
      * @throws WrongContainerClassException
      */
-    public function create_argument_resolvers(Environment $environment): array
+    public function createArgumentResolvers(Environment $environment): array
     {
-        $suite = $environment->get_suite();
-        if (!$suite->has_setting('services')) {
+        $suite = $environment->getSuite();
+
+        if (!$suite->hasSetting('services')) {
             return [];
         }
-        $container = $this->create_container($suite->get_setting('services'));
-        $autowire = $suite->has_setting('autowire') && $suite->get_setting('autowire');
-        if ($environment instanceof Service_Container_Environment) {
-            $environment->set_service_container($container);
+
+        $container = $this->createContainer($suite->getSetting('services'));
+        $autowire = $suite->hasSetting('autowire') && $suite->getSetting('autowire');
+
+        if ($environment instanceof ServiceContainerEnvironment) {
+            $environment->setServiceContainer($container);
         }
-        return $this->create_resolvers($container, $autowire);
+
+        return $this->createResolvers($container, $autowire);
     }
+
     /**
      * Creates container from the setting passed.
      *
      * @throws WrongServicesConfigurationException
      */
-    private function create_container($settings)
+    private function createContainer($settings)
     {
         if (is_string($settings)) {
-            return $this->create_container_from_string($settings);
+            return $this->createContainerFromString($settings);
         }
+
         if (is_array($settings)) {
-            return $this->create_container_from_array($settings);
+            return $this->createContainerFromArray($settings);
         }
-        throw new Wrong_Services_Configuration_Exception(sprintf('`services` must be either string or an array, but `%s` given.', gettype($settings)));
+
+        throw new WrongServicesConfigurationException(
+            sprintf('`services` must be either string or an array, but `%s` given.', gettype($settings))
+        );
     }
+
     /**
      * Creates custom container using class/constructor given.
      *
      *
      * @throws WrongServicesConfigurationException
      */
-    private function create_container_from_string(string $settings)
+    private function createContainerFromString(string $settings)
     {
         if (0 === mb_strpos($settings, '@')) {
-            return $this->load_container_from_container(mb_substr($settings, 1));
+            return $this->loadContainerFromContainer(mb_substr($settings, 1));
         }
-        return $this->create_container_from_class_spec($settings);
+
+        return $this->createContainerFromClassSpec($settings);
     }
+
     /**
      * Creates built-in service container with provided settings.
      */
-    private function create_container_from_array(array $settings): Built_In_Service_Container
+    private function createContainerFromArray(array $settings): BuiltInServiceContainer
     {
-        return new Built_In_Service_Container($settings);
+        return new BuiltInServiceContainer($settings);
     }
+
     /**
      * Loads container from string.
      *
      *
      * @throws WrongServicesConfigurationException
      */
-    private function load_container_from_container(string $name): object
+    private function loadContainerFromContainer(string $name): object
     {
-        $services = $this->container->find_tagged_service_ids(Helper_Container_Extension::HELPER_CONTAINER_TAG);
+        $services = $this->container->findTaggedServiceIds(HelperContainerExtension::HELPER_CONTAINER_TAG);
+
         if (!array_key_exists($name, $services)) {
-            throw new Wrong_Services_Configuration_Exception(sprintf('Service container `@%s` was not found.', $name));
+            throw new WrongServicesConfigurationException(
+                sprintf('Service container `@%s` was not found.', $name)
+            );
         }
+
         return $this->container->get($name);
     }
+
     /**
      * Creates container from string-based class spec.
      *
      * @param string $classSpec
      */
-    private function create_container_from_class_spec($class_spec)
+    private function createContainerFromClassSpec($classSpec)
     {
-        $constructor = explode('::', $class_spec);
+        $constructor = explode('::', $classSpec);
+
         if (2 === count($constructor)) {
             return call_user_func($constructor);
         }
+
         return new $constructor[0]();
     }
+
     /**
      * Checks if container implements the correct interface and creates resolver using it.
      *
@@ -139,14 +169,22 @@ final readonly class Services_Resolver_Factory implements Suite_Scoped_Resolver_
      * @return list<ArgumentResolver>
      * @throws WrongContainerClassException
      */
-    private function create_resolvers($container, bool $autowire): array
+    private function createResolvers($container, bool $autowire): array
     {
-        if (!$container instanceof Container_Interface) {
-            throw new Wrong_Container_Class_Exception(sprintf('Service container is expected to implement `Psr\Container\ContainerInterface`, but `%s` does not.', $container::class), $container::class);
+        if (!$container instanceof ContainerInterface) {
+            throw new WrongContainerClassException(
+                sprintf(
+                    'Service container is expected to implement `Psr\Container\ContainerInterface`, but `%s` does not.',
+                    $container::class
+                ),
+                $container::class
+            );
         }
+
         if ($autowire) {
-            return [new Services_Resolver($container), new Autowiring_Resolver($container)];
+            return [new ServicesResolver($container), new AutowiringResolver($container)];
         }
-        return [new Services_Resolver($container)];
+
+        return [new ServicesResolver($container)];
     }
 }

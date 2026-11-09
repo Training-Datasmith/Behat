@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Ordering\Orderer;
 
 /**
@@ -15,13 +17,14 @@ namespace Behat\Testwork\Ordering\Orderer;
  *
  * @author Ciaran McNulty <mail@ciaranmcnulty.com>
  */
-final class Noop_Orderer implements Orderer
+final class NoopOrderer implements Orderer
 {
-    public function order(array $scenario_iterators): array
+    public function order(array $scenarioIterators): array
     {
-        return $scenario_iterators;
+        return $scenarioIterators;
     }
-    public function get_name(): string
+
+    public function getName(): string
     {
         return 'null';
     }

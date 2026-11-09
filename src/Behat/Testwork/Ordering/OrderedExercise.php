@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,13 +9,15 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Ordering;
 
-use Behat\Testwork\Ordering\Orderer\Noop_Orderer;
+use Behat\Testwork\Ordering\Orderer\NoopOrderer;
 use Behat\Testwork\Ordering\Orderer\Orderer;
-use Behat\Testwork\Specification\Specification_Iterator;
+use Behat\Testwork\Specification\SpecificationIterator;
 use Behat\Testwork\Tester\Exercise;
-use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Result\TestResult;
+
 /**
  * Exercise that is ordered according to a specified algorithm.
  *
@@ -24,43 +27,52 @@ use Behat\Testwork\Tester\Result\Test_Result;
  *
  * @implements Exercise<TSpec>
  */
-final class Ordered_Exercise implements Exercise
+final class OrderedExercise implements Exercise
 {
-    private \Behat\Testwork\Ordering\Orderer\Noop_Orderer|\Behat\Testwork\Ordering\Orderer\Orderer $orderer;
+    private \Behat\Testwork\Ordering\Orderer\NoopOrderer|\Behat\Testwork\Ordering\Orderer\Orderer $orderer;
+
     /**
      * @var SpecificationIterator<TSpec>[]|null
      */
     private ?array $unordered = null;
+
     /**
      * @var SpecificationIterator<TSpec>[]|null
      */
     private $ordered;
+
     /**
      * @param Exercise<TSpec> $decoratedExercise
      */
-    public function __construct(private readonly Exercise $decorated_exercise)
-    {
-        $this->orderer = new Noop_Orderer();
+    public function __construct(
+        private readonly Exercise $decoratedExercise,
+    ) {
+        $this->orderer = new NoopOrderer();
     }
-    public function set_up(array $iterators, $skip)
+
+    public function setUp(array $iterators, $skip)
     {
-        return $this->decorated_exercise->set_up($this->order($iterators), $skip);
+        return $this->decoratedExercise->setUp($this->order($iterators), $skip);
     }
+
     public function test(array $iterators, $skip)
     {
-        return $this->decorated_exercise->test($this->order($iterators), $skip);
+        return $this->decoratedExercise->test($this->order($iterators), $skip);
     }
-    public function tear_down(array $iterators, $skip, Test_Result $result)
+
+    public function tearDown(array $iterators, $skip, TestResult $result)
     {
-        return $this->decorated_exercise->tear_down($this->order($iterators), $skip, $result);
+        return $this->decoratedExercise->tearDown($this->order($iterators), $skip, $result);
     }
+
     /**
      * Replace the algorithm being used for prioritisation.
      */
-    public function set_orderer(Orderer $orderer): void
+    public function setOrderer(Orderer $orderer): void
     {
         $this->orderer = $orderer;
     }
+
     /**
      * @param SpecificationIterator<TSpec>[] $iterators
      *
@@ -72,6 +84,7 @@ final class Ordered_Exercise implements Exercise
             $this->unordered = $iterators;
             $this->ordered = $this->orderer->order($iterators);
         }
+
         return $this->ordered;
     }
 }

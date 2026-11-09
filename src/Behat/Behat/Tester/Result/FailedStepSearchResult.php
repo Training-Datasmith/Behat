@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,39 +9,46 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Tester\Result;
 
-use Behat\Behat\Definition\Exception\Search_Exception;
-use Behat\Testwork\Tester\Result\Exception_Result;
+use Behat\Behat\Definition\Exception\SearchException;
+use Behat\Testwork\Tester\Result\ExceptionResult;
+
 /**
  * Represents a step test result with a failed definition search.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final readonly class Failed_Step_Search_Result implements Step_Result, Exception_Result
+final readonly class FailedStepSearchResult implements StepResult, ExceptionResult
 {
     /**
      * Initializes result.
      */
-    public function __construct(private Search_Exception $search_exception)
-    {
+    public function __construct(
+        private SearchException $searchException,
+    ) {
     }
-    public function has_exception(): bool
+
+    public function hasException(): bool
     {
         return true;
     }
-    public function get_exception(): Search_Exception
+
+    public function getException(): SearchException
     {
-        return $this->search_exception;
+        return $this->searchException;
     }
-    public function is_passed(): bool
+
+    public function isPassed(): bool
     {
         return false;
     }
+
     /**
      * @return self::FAILED
      */
-    public function get_result_code(): int
+    public function getResultCode(): int
     {
         return self::FAILED;
     }

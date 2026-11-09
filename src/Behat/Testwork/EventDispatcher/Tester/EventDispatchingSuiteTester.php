@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,17 +9,19 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Event_Dispatcher\Tester;
+
+namespace Behat\Testwork\EventDispatcher\Tester;
 
 use Behat\Testwork\Environment\Environment;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Tested;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Suite_Teardown;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Suite_Tested;
-use Behat\Testwork\Specification\Specification_Iterator;
-use Behat\Testwork\Tester\Result\Test_Result;
-use Behat\Testwork\Tester\Suite_Tester;
-use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteTested;
+use Behat\Testwork\EventDispatcher\Event\BeforeSuiteTeardown;
+use Behat\Testwork\EventDispatcher\Event\BeforeSuiteTested;
+use Behat\Testwork\Specification\SpecificationIterator;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\SuiteTester;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * Suite tester dispatching BEFORE/AFTER events during testing.
  *
@@ -28,36 +31,50 @@ use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
  *
  * @implements SuiteTester<TSpec>
  */
-final readonly class Event_Dispatching_Suite_Tester implements Suite_Tester
+final readonly class EventDispatchingSuiteTester implements SuiteTester
 {
     /**
      * Initializes tester.
      *
      * @param SuiteTester<TSpec>       $baseTester
      */
-    public function __construct(private Suite_Tester $base_tester, private Event_Dispatcher_Interface $event_dispatcher)
-    {
+    public function __construct(
+        private SuiteTester $baseTester,
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
-    public function set_up(Environment $env, Specification_Iterator $iterator, $skip)
+
+    public function setUp(Environment $env, SpecificationIterator $iterator, $skip)
     {
-        $event = new Before_Suite_Tested($env, $iterator);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE);
-        $setup = $this->base_tester->set_up($env, $iterator, $skip);
-        $event = new After_Suite_Setup($env, $iterator, $setup);
-        $this->event_dispatcher->dispatch($event, $event::AFTER_SETUP);
+        $event = new BeforeSuiteTested($env, $iterator);
+
+        $this->eventDispatcher->dispatch($event, $event::BEFORE);
+
+        $setup = $this->baseTester->setUp($env, $iterator, $skip);
+
+        $event = new AfterSuiteSetup($env, $iterator, $setup);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER_SETUP);
+
         return $setup;
     }
-    public function test(Environment $env, Specification_Iterator $iterator, $skip = false)
+
+    public function test(Environment $env, SpecificationIterator $iterator, $skip = false)
     {
-        return $this->base_tester->test($env, $iterator, $skip);
+        return $this->baseTester->test($env, $iterator, $skip);
     }
-    public function tear_down(Environment $env, Specification_Iterator $iterator, $skip, Test_Result $result)
+
+    public function tearDown(Environment $env, SpecificationIterator $iterator, $skip, TestResult $result)
     {
-        $event = new Before_Suite_Teardown($env, $iterator, $result);
-        $this->event_dispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
-        $teardown = $this->base_tester->tear_down($env, $iterator, $skip, $result);
-        $event = new After_Suite_Tested($env, $iterator, $result, $teardown);
-        $this->event_dispatcher->dispatch($event, $event::AFTER);
+        $event = new BeforeSuiteTeardown($env, $iterator, $result);
+        $this->eventDispatcher->dispatch($event, $event::BEFORE_TEARDOWN);
+
+        $teardown = $this->baseTester->tearDown($env, $iterator, $skip, $result);
+
+        $event = new AfterSuiteTested($env, $iterator, $result, $teardown);
+
+        $this->eventDispatcher->dispatch($event, $event::AFTER);
+
         return $teardown;
     }
 }

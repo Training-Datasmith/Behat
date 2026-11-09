@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,50 +9,61 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Testwork\Filesystem\Service_Container;
 
-use Behat\Testwork\Cli\Service_Container\Cli_Extension;
-use Behat\Testwork\Filesystem\Console_Filesystem_Logger;
-use Behat\Testwork\Service_Container\Extension;
-use Behat\Testwork\Service_Container\Extension_Manager;
-use Symfony\Component\Config\Definition\Builder\Array_Node_Definition;
-use Symfony\Component\Dependency_Injection\Container_Builder;
-use Symfony\Component\Dependency_Injection\Definition;
-use Symfony\Component\Dependency_Injection\Reference;
+namespace Behat\Testwork\Filesystem\ServiceContainer;
+
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
+use Behat\Testwork\Filesystem\ConsoleFilesystemLogger;
+use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
 /**
  * Provides filesystem services for testwork.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Filesystem_Extension implements Extension
+final class FilesystemExtension implements Extension
 {
     /*
      * Available services
      */
     public const LOGGER_ID = 'filesystem.logger';
-    public function get_config_key(): string
+
+    public function getConfigKey(): string
     {
         return 'filesystem';
     }
-    public function initialize(Extension_Manager $extension_manager): void
+
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
-    public function configure(Array_Node_Definition $builder): void
+
+    public function configure(ArrayNodeDefinition $builder): void
     {
     }
-    public function load(Container_Builder $container, array $config): void
+
+    public function load(ContainerBuilder $container, array $config): void
     {
-        $this->load_filesystem_logger($container);
+        $this->loadFilesystemLogger($container);
     }
-    public function process(Container_Builder $container): void
+
+    public function process(ContainerBuilder $container): void
     {
     }
+
     /**
      * Loads filesystem logger.
      */
-    private function load_filesystem_logger(Container_Builder $container): void
+    private function loadFilesystemLogger(ContainerBuilder $container): void
     {
-        $definition = new Definition(Console_Filesystem_Logger::class, ['%paths.base%', new Reference(Cli_Extension::OUTPUT_ID)]);
-        $container->set_definition(self::LOGGER_ID, $definition);
+        $definition = new Definition(ConsoleFilesystemLogger::class, [
+            '%paths.base%',
+            new Reference(CliExtension::OUTPUT_ID),
+        ]);
+        $container->setDefinition(self::LOGGER_ID, $definition);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,75 +9,92 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\JSON;
 
-use Behat\Behat\Output\Node\Event_Listener\Statistics\Duration_Listener;
+namespace Behat\Behat\Output\Node\EventListener\JSON;
+
+use Behat\Behat\Output\Node\EventListener\Statistics\DurationListener;
 use Behat\Testwork\Counter\Timer;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Event\After_Exercise_Completed;
-use Behat\Testwork\Event_Dispatcher\Event\After_Exercise_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Tested;
-use Behat\Testwork\Event_Dispatcher\Event\Before_Suite_Tested;
+use Behat\Testwork\EventDispatcher\Event\AfterExerciseCompleted;
+use Behat\Testwork\EventDispatcher\Event\AfterExerciseSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteTested;
+use Behat\Testwork\EventDispatcher\Event\BeforeSuiteTested;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Suite\Suite;
-final class Json_Duration_Listener extends Duration_Listener
+
+final class JSONDurationListener extends DurationListener
 {
     /**
      * @var array<string, Timer>
      */
-    private array $suite_timer_store = [];
-    private Timer $exercise_timer;
+    private array $suiteTimerStore = [];
+
+    private Timer $exerciseTimer;
+
     /**
      * @var array<string, float>
      */
-    private array $suite_result_store = [];
-    private ?float $exercise_result = null;
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+    private array $suiteResultStore = [];
+
+    private ?float $exerciseResult = null;
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        parent::listen_event($formatter, $event, $event_name);
-        $this->capture_exercise_start_event($event);
-        $this->capture_suite_setup_event($event);
-        $this->capture_suite_teardown_event($event);
-        $this->capture_exercise_end_event($event);
+        parent::listenEvent($formatter, $event, $eventName);
+        $this->captureExerciseStartEvent($event);
+        $this->captureSuiteSetupEvent($event);
+        $this->captureSuiteTeardownEvent($event);
+        $this->captureExerciseEndEvent($event);
     }
-    public function get_suite_duration(Suite $suite): string
+
+    public function getSuiteDuration(Suite $suite): string
     {
-        $key = $this->get_hash($suite);
-        return array_key_exists($key, $this->suite_result_store) ? number_format($this->suite_result_store[$key], 3, '.', '') : '';
+        $key = $this->getHash($suite);
+
+        return array_key_exists($key, $this->suiteResultStore)
+            ? number_format($this->suiteResultStore[$key], 3, '.', '')
+            : '';
     }
-    public function get_exercise_duration(): string
+
+    public function getExerciseDuration(): string
     {
-        return $this->exercise_result !== null ? number_format($this->exercise_result, 3, '.', '') : '';
+        return $this->exerciseResult !== null
+            ? number_format($this->exerciseResult, 3, '.', '')
+            : '';
     }
-    private function capture_exercise_start_event(Event $event): void
+
+    private function captureExerciseStartEvent(Event $event): void
     {
-        if ($event instanceof After_Exercise_Setup) {
-            $this->exercise_timer = $this->start_timer();
+        if ($event instanceof AfterExerciseSetup) {
+            $this->exerciseTimer = $this->startTimer();
         }
     }
-    private function capture_exercise_end_event(Event $event): void
+
+    private function captureExerciseEndEvent(Event $event): void
     {
-        if ($event instanceof After_Exercise_Completed) {
-            $timer = $this->exercise_timer;
+        if ($event instanceof AfterExerciseCompleted) {
+            $timer = $this->exerciseTimer;
             $timer->stop();
-            $this->exercise_result = $timer->get_time();
+            $this->exerciseResult = $timer->getTime();
         }
     }
-    private function capture_suite_setup_event(Event $event): void
+
+    private function captureSuiteSetupEvent(Event $event): void
     {
-        if ($event instanceof Before_Suite_Tested) {
-            $this->suite_timer_store[$this->get_hash($event->get_suite())] = $this->start_timer();
+        if ($event instanceof BeforeSuiteTested) {
+            $this->suiteTimerStore[$this->getHash($event->getSuite())] = $this->startTimer();
         }
     }
-    private function capture_suite_teardown_event(Event $event): void
+
+    private function captureSuiteTeardownEvent(Event $event): void
     {
-        if ($event instanceof After_Suite_Tested) {
-            $key = $this->get_hash($event->get_suite());
-            if (isset($this->suite_timer_store[$key])) {
-                $timer = $this->suite_timer_store[$key];
+        if ($event instanceof AfterSuiteTested) {
+            $key = $this->getHash($event->getSuite());
+            if (isset($this->suiteTimerStore[$key])) {
+                $timer = $this->suiteTimerStore[$key];
                 $timer->stop();
-                $this->suite_result_store[$key] = $timer->get_time();
-                unset($this->suite_timer_store[$key]);
+                $this->suiteResultStore[$key] = $timer->getTime();
+                unset($this->suiteTimerStore[$key]);
             }
         }
     }

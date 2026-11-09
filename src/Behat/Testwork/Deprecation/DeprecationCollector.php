@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,109 +9,133 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Testwork\Deprecation;
 
 /**
  * Collects deprecations triggered by Behat code during test execution.
  */
-final class Deprecation_Collector
+final class DeprecationCollector
 {
-    private static ?Deprecation_Collector $instance = null;
+    private static ?DeprecationCollector $instance = null;
+
     /**
      * @var array<string, array{count: int, file: string, line: int}>
      */
     private array $deprecations = [];
-    private int $total_count = 0;
+
+    private int $totalCount = 0;
+
     /** @var callable|null */
-    private $previous_handler;
-    private bool $is_registered = false;
+    private $previousHandler;
+
+    private bool $isRegistered = false;
+
     /**
      * Returns the singleton instance, creating it if necessary.
      */
-    public static function get_instance(): self
+    public static function getInstance(): self
     {
-        if (!self::$instance instanceof Deprecation_Collector) {
+        if (!self::$instance instanceof DeprecationCollector) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
+
     public static function trigger(string $message): void
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
+
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $caller = $backtrace[0];
+
         $file = $caller['file'] ?? 'unknown';
         $line = $caller['line'] ?? 0;
-        $instance->record_deprecation($message, $file, $line);
+
+        $instance->recordDeprecation($message, $file, $line);
     }
+
     /**
      * Registers the deprecation error handler.
      */
     public function register(): void
     {
-        if ($this->is_registered) {
+        if ($this->isRegistered) {
             return;
         }
-        $this->previous_handler = set_error_handler($this->create_error_handler());
-        $this->is_registered = true;
+
+        $this->previousHandler = set_error_handler($this->createErrorHandler());
+        $this->isRegistered = true;
     }
+
     /**
      * Unregisters the deprecation error handler.
      */
     public function unregister(): void
     {
-        if (!$this->is_registered) {
+        if (!$this->isRegistered) {
             return;
         }
+
         restore_error_handler();
-        $this->is_registered = false;
+        $this->isRegistered = false;
     }
+
     /**
      * Returns all collected deprecations with their counts and locations.
      *
      * @return array<string, array{count: int, file: string, line: int}>
      */
-    public function get_deprecations(): array
+    public function getDeprecations(): array
     {
         return $this->deprecations;
     }
+
     /**
      * Returns the total number of deprecation occurrences.
      */
-    public function get_deprecation_count(): int
+    public function getDeprecationCount(): int
     {
-        return $this->total_count;
+        return $this->totalCount;
     }
+
     /**
      * Checks if any deprecations were collected.
      */
-    public function has_deprecations(): bool
+    public function hasDeprecations(): bool
     {
-        return $this->total_count > 0;
+        return $this->totalCount > 0;
     }
+
     /**
      * Creates the error handler that captures deprecations.
      */
-    private function create_error_handler(): callable
+    private function createErrorHandler(): callable
     {
         return function (int $errno, string $errstr, string $errfile, int $errline): bool {
             if ($errno !== E_USER_DEPRECATED && $errno !== E_DEPRECATED) {
-                if ($this->previous_handler !== null) {
-                    return ($this->previous_handler)($errno, $errstr, $errfile, $errline);
+                if ($this->previousHandler !== null) {
+                    return ($this->previousHandler)($errno, $errstr, $errfile, $errline);
                 }
+
                 return false;
             }
-            $this->record_deprecation($errstr, $errfile, $errline);
+
+            $this->recordDeprecation($errstr, $errfile, $errline);
+
             return true;
         };
     }
-    private function record_deprecation(string $message, string $file, int $line): void
+
+    private function recordDeprecation(string $message, string $file, int $line): void
     {
         if (isset($this->deprecations[$message])) {
             ++$this->deprecations[$message]['count'];
         } else {
             $this->deprecations[$message] = ['count' => 1, 'file' => $file, 'line' => $line];
         }
-        ++$this->total_count;
+
+        ++$this->totalCount;
     }
 }

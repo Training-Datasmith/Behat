@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,147 +9,177 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Behat\Behat\Output\Node\Event_Listener\J_Unit;
 
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Feature_Tested;
-use Behat\Behat\Event_Dispatcher\Event\After_Scenario_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Scenario_Tested;
-use Behat\Behat\Event_Dispatcher\Event\After_Step_Setup;
-use Behat\Behat\Event_Dispatcher\Event\After_Step_Tested;
-use Behat\Behat\Event_Dispatcher\Event\Before_Feature_Tested;
-use Behat\Behat\Output\Node\Printer\Feature_Printer;
-use Behat\Behat\Output\Node\Printer\J_Unit\J_Unit_Scenario_Printer;
-use Behat\Behat\Output\Node\Printer\Setup_Printer;
-use Behat\Behat\Output\Node\Printer\Step_Printer;
+namespace Behat\Behat\Output\Node\EventListener\JUnit;
+
+use Behat\Behat\EventDispatcher\Event\AfterFeatureSetup;
+use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
+use Behat\Behat\EventDispatcher\Event\AfterScenarioSetup;
+use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
+use Behat\Behat\EventDispatcher\Event\AfterStepSetup;
+use Behat\Behat\EventDispatcher\Event\AfterStepTested;
+use Behat\Behat\EventDispatcher\Event\BeforeFeatureTested;
+use Behat\Behat\Output\Node\Printer\FeaturePrinter;
+use Behat\Behat\Output\Node\Printer\JUnit\JUnitScenarioPrinter;
+use Behat\Behat\Output\Node\Printer\SetupPrinter;
+use Behat\Behat\Output\Node\Printer\StepPrinter;
 use Behat\Testwork\Event\Event;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Setup;
-use Behat\Testwork\Event_Dispatcher\Event\After_Suite_Tested;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteSetup;
+use Behat\Testwork\EventDispatcher\Event\AfterSuiteTested;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Node\Event_Listener\Event_Listener;
+use Behat\Testwork\Output\Node\EventListener\EventListener;
+
 /**
  * Listens to feature, scenario and step events and calls appropriate printers.
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-final class J_Unit_Feature_Element_Listener implements Event_Listener
+final class JUnitFeatureElementListener implements EventListener
 {
     /**
      * @var AfterStepTested[]
      */
-    private array $after_step_tested_events = [];
+    private array $afterStepTestedEvents = [];
+
     /**
      * @var AfterStepSetup[]
      */
-    private array $after_step_setup_events = [];
-    private ?After_Suite_Setup $after_suite_setup = null;
-    private ?After_Feature_Setup $after_feature_setup = null;
-    private After_Scenario_Setup $after_scenario_setup;
+    private array $afterStepSetupEvents = [];
+
+    private ?AfterSuiteSetup $afterSuiteSetup = null;
+
+    private ?AfterFeatureSetup $afterFeatureSetup = null;
+
+    private AfterScenarioSetup $afterScenarioSetup;
+
     /**
      * Initializes listener.
      */
-    public function __construct(private readonly Feature_Printer $feature_printer, private readonly J_Unit_Scenario_Printer $scenario_printer, private readonly Step_Printer $step_printer, private readonly Setup_Printer $setup_printer)
-    {
+    public function __construct(
+        private readonly FeaturePrinter $featurePrinter,
+        private readonly JUnitScenarioPrinter $scenarioPrinter,
+        private readonly StepPrinter $stepPrinter,
+        private readonly SetupPrinter $setupPrinter,
+    ) {
     }
-    public function listen_event(Formatter $formatter, Event $event, $event_name): void
+
+    public function listenEvent(Formatter $formatter, Event $event, $eventName): void
     {
-        $this->capture_suite_setup_event($event);
-        $this->print_feature_on_before_event($formatter, $event);
-        $this->capture_step_event($event);
-        $this->print_scenario_event($formatter, $event);
-        $this->print_feature_on_after_event($formatter, $event);
-        $this->print_suite_teardown_event($formatter, $event);
+        $this->captureSuiteSetupEvent($event);
+        $this->printFeatureOnBeforeEvent($formatter, $event);
+        $this->captureStepEvent($event);
+        $this->printScenarioEvent($formatter, $event);
+        $this->printFeatureOnAfterEvent($formatter, $event);
+        $this->printSuiteTeardownEvent($formatter, $event);
     }
+
     /**
      * Captures any failures in suite setup.
      * They will be printed later when the first scenario is printed.
      */
-    private function capture_suite_setup_event(Event $event): void
+    private function captureSuiteSetupEvent(Event $event): void
     {
-        if ($event instanceof After_Suite_Setup) {
-            $this->after_suite_setup = $event;
+        if ($event instanceof AfterSuiteSetup) {
+            $this->afterSuiteSetup = $event;
         }
     }
+
     /**
      * Prints any failures in suite teardown.
      */
-    private function print_suite_teardown_event(Formatter $formatter, Event $event): void
+    private function printSuiteTeardownEvent(Formatter $formatter, Event $event): void
     {
-        if ($event instanceof After_Suite_Tested) {
+        if ($event instanceof AfterSuiteTested) {
             // if needed, add a failure node to the last testCase node that has been created
-            $this->setup_printer->print_teardown($formatter, $event->get_teardown());
+            $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
         }
     }
+
     /**
      * Prints the header for the feature.
      */
-    private function print_feature_on_before_event(Formatter $formatter, Event $event): void
+    private function printFeatureOnBeforeEvent(Formatter $formatter, Event $event): void
     {
-        if ($event instanceof Before_Feature_Tested) {
-            $this->feature_printer->print_header($formatter, $event->get_feature());
+        if ($event instanceof BeforeFeatureTested) {
+            $this->featurePrinter->printHeader($formatter, $event->getFeature());
+
             return;
         }
-        if ($event instanceof After_Feature_Setup) {
+        if ($event instanceof AfterFeatureSetup) {
             // Captures any failures in feature setup.
             // They will be printed later when the first scenario is printed
-            $this->after_feature_setup = $event;
+            $this->afterFeatureSetup = $event;
         }
     }
+
     /**
      * Captures step tested event.
      */
-    private function capture_step_event(Event $event): void
+    private function captureStepEvent(Event $event): void
     {
-        if ($event instanceof After_Step_Tested) {
-            $this->after_step_tested_events[$event->get_step()->get_line()] = $event;
+        if ($event instanceof AfterStepTested) {
+            $this->afterStepTestedEvents[$event->getStep()->getLine()] = $event;
         }
-        if ($event instanceof After_Step_Setup) {
-            $this->after_step_setup_events[$event->get_step()->get_line()] = $event;
+        if ($event instanceof AfterStepSetup) {
+            $this->afterStepSetupEvents[$event->getStep()->getLine()] = $event;
         }
     }
+
     /**
      * Prints the scenario tested event.
      */
-    private function print_scenario_event(Formatter $formatter, Event $event): void
+    private function printScenarioEvent(Formatter $formatter, Event $event): void
     {
-        if ($event instanceof After_Scenario_Setup) {
-            $this->after_scenario_setup = $event;
+        if ($event instanceof AfterScenarioSetup) {
+            $this->afterScenarioSetup = $event;
+
             return;
         }
-        if (!$event instanceof After_Scenario_Tested) {
+        if (!$event instanceof AfterScenarioTested) {
             return;
         }
-        $after_scenario_tested = $event;
-        $this->scenario_printer->print_open_tag($formatter, $after_scenario_tested->get_feature(), $after_scenario_tested->get_scenario(), $after_scenario_tested->get_test_result(), $event->get_feature()->get_file());
-        if ($this->after_suite_setup instanceof After_Suite_Setup) {
-            $this->setup_printer->print_setup($formatter, $this->after_suite_setup->get_setup());
-            $this->after_suite_setup = null;
+        $afterScenarioTested = $event;
+        $this->scenarioPrinter->printOpenTag(
+            $formatter,
+            $afterScenarioTested->getFeature(),
+            $afterScenarioTested->getScenario(),
+            $afterScenarioTested->getTestResult(),
+            $event->getFeature()->getFile()
+        );
+
+        if ($this->afterSuiteSetup instanceof AfterSuiteSetup) {
+            $this->setupPrinter->printSetup($formatter, $this->afterSuiteSetup->getSetup());
+            $this->afterSuiteSetup = null;
         }
-        if ($this->after_feature_setup instanceof After_Feature_Setup) {
-            $this->setup_printer->print_setup($formatter, $this->after_feature_setup->get_setup());
-            $this->after_feature_setup = null;
+        if ($this->afterFeatureSetup instanceof AfterFeatureSetup) {
+            $this->setupPrinter->printSetup($formatter, $this->afterFeatureSetup->getSetup());
+            $this->afterFeatureSetup = null;
         }
-        $this->setup_printer->print_setup($formatter, $this->after_scenario_setup->get_setup());
-        foreach ($this->after_step_setup_events as $after_step_setup) {
-            $this->setup_printer->print_setup($formatter, $after_step_setup->get_setup());
+        $this->setupPrinter->printSetup($formatter, $this->afterScenarioSetup->getSetup());
+
+        foreach ($this->afterStepSetupEvents as $afterStepSetup) {
+            $this->setupPrinter->printSetup($formatter, $afterStepSetup->getSetup());
         }
-        foreach ($this->after_step_tested_events as $after_step_tested) {
-            $this->step_printer->print_step($formatter, $after_scenario_tested->get_scenario(), $after_step_tested->get_step(), $after_step_tested->get_test_result());
-            $this->setup_printer->print_teardown($formatter, $after_step_tested->get_teardown());
+        foreach ($this->afterStepTestedEvents as $afterStepTested) {
+            $this->stepPrinter->printStep($formatter, $afterScenarioTested->getScenario(), $afterStepTested->getStep(), $afterStepTested->getTestResult());
+            $this->setupPrinter->printTeardown($formatter, $afterStepTested->getTeardown());
         }
-        $this->setup_printer->print_teardown($formatter, $after_scenario_tested->get_teardown());
-        $this->after_step_tested_events = [];
-        $this->after_step_setup_events = [];
+
+        $this->setupPrinter->printTeardown($formatter, $afterScenarioTested->getTeardown());
+
+        $this->afterStepTestedEvents = [];
+        $this->afterStepSetupEvents = [];
     }
+
     /**
      * Prints the feature on AFTER event.
      */
-    private function print_feature_on_after_event(Formatter $formatter, Event $event): void
+    private function printFeatureOnAfterEvent(Formatter $formatter, Event $event): void
     {
-        if (!$event instanceof After_Feature_Tested) {
+        if (!$event instanceof AfterFeatureTested) {
             return;
         }
-        $this->setup_printer->print_teardown($formatter, $event->get_teardown());
-        $this->feature_printer->print_footer($formatter, $event->get_test_result());
+        $this->setupPrinter->printTeardown($formatter, $event->getTeardown());
+        $this->featurePrinter->printFooter($formatter, $event->getTestResult());
     }
 }

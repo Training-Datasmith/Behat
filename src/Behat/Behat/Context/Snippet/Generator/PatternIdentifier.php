@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,6 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Context\Snippet\Generator;
 
 /**
@@ -15,7 +17,7 @@ namespace Behat\Behat\Context\Snippet\Generator;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Pattern_Identifier
+interface PatternIdentifier
 {
     /**
      * Attempts to guess the target pattern type from the context.
@@ -24,5 +26,5 @@ interface Pattern_Identifier
      *
      * @return string|null
      */
-    public function guess_pattern_type($context_class);
+    public function guessPatternType($contextClass);
 }

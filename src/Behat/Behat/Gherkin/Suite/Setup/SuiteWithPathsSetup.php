@@ -1,6 +1,7 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
+
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -8,69 +9,86 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Behat\Behat\Gherkin\Suite\Setup;
 
-use Behat\Testwork\Filesystem\Filesystem_Logger;
-use Behat\Testwork\Suite\Setup\Suite_Setup;
+use Behat\Testwork\Filesystem\FilesystemLogger;
+use Behat\Testwork\Suite\Setup\SuiteSetup;
 use Behat\Testwork\Suite\Suite;
+
 /**
  * Sets up gherkin suite in the filesystem (creates feature folders).
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Suite_With_Paths_Setup implements Suite_Setup
+final class SuiteWithPathsSetup implements SuiteSetup
 {
     /**
      * Initializes setup.
      *
      * @param string                $basePath
      */
-    public function __construct(private $base_path, private readonly ?Filesystem_Logger $logger = null)
-    {
+    public function __construct(
+        private $basePath,
+        private readonly ?FilesystemLogger $logger = null,
+    ) {
     }
-    public function supports_suite(Suite $suite): bool
+
+    public function supportsSuite(Suite $suite): bool
     {
-        return $suite->has_setting('paths') && is_array($suite->get_setting('paths'));
+        return $suite->hasSetting('paths') && is_array($suite->getSetting('paths'));
     }
-    public function setup_suite(Suite $suite): void
+
+    public function setupSuite(Suite $suite): void
     {
-        foreach ($suite->get_setting('paths') as $locator) {
-            if (!str_starts_with((string) $locator, '@') && !is_dir($path = $this->locate_path($locator))) {
-                $this->create_feature_directory($path);
+        foreach ($suite->getSetting('paths') as $locator) {
+            if (!str_starts_with((string) $locator, '@') && !is_dir($path = $this->locatePath($locator))) {
+                $this->createFeatureDirectory($path);
             }
         }
     }
+
     /**
      * Creates feature directory.
      *
      * @param string $path
      */
-    private function create_feature_directory($path): void
+    private function createFeatureDirectory($path): void
     {
         mkdir($path, 0777, true);
-        if ($this->logger instanceof Filesystem_Logger) {
-            $this->logger->directory_created($path, 'place your *.feature files here');
+
+        if ($this->logger instanceof FilesystemLogger) {
+            $this->logger->directoryCreated($path, 'place your *.feature files here');
         }
     }
+
     /**
      * Locates path from a relative one.
      *
      *
      */
-    private function locate_path(string $path): string
+    private function locatePath(string $path): string
     {
-        if ($this->is_absolute_path($path)) {
+        if ($this->isAbsolutePath($path)) {
             return $path;
         }
-        return $this->base_path . DIRECTORY_SEPARATOR . $path;
+
+        return $this->basePath . DIRECTORY_SEPARATOR . $path;
     }
+
     /**
      * Returns whether the file path is an absolute path.
      *
      * @param string $file A file path
      */
-    private function is_absolute_path(string $file): bool
+    private function isAbsolutePath(string $file): bool
     {
-        return $file[0] == '/' || $file[0] == '\\' || strlen($file) > 3 && ctype_alpha($file[0]) && $file[1] == ':' && ($file[2] == '\\' || $file[2] == '/') || null !== parse_url($file, PHP_URL_SCHEME);
+        return $file[0] == '/' || $file[0] == '\\'
+            || (
+                strlen($file) > 3 && ctype_alpha($file[0])
+                && $file[1] == ':'
+                && ($file[2] == '\\' || $file[2] == '/')
+            )
+            || null !== parse_url($file, PHP_URL_SCHEME);
     }
 }
