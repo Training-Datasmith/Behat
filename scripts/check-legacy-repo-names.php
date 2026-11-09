@@ -3,30 +3,15 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
-$mapFile = $root . '/scripts/legacy-rename-map.tsv';
 $listFile = $root . '/scripts/legacy-rename-basenames.txt';
 
-foreach ([$mapFile, $listFile] as $path) {
-    if (!is_readable($path)) {
-        fwrite(STDERR, 'check-legacy-repo-names: missing ' . basename($path) . "\n");
-        exit(1);
-    }
-}
-
-/** @var array<string, string> $renameMap */
-$renameMap = [];
-foreach (file($mapFile) ?: [] as $line) {
-    $line = trim($line);
-    if ($line === '' || !str_contains($line, "\t")) {
-        continue;
-    }
-    [$old, $new] = explode("\t", $line, 2);
-    $renameMap[$old] = $new;
+if (!is_readable($listFile)) {
+    fwrite(STDERR, 'check-legacy-repo-names: missing ' . basename($listFile) . "\n");
+    exit(1);
 }
 
 /** @var list<string> $legacyBasenames */
 $legacyBasenames = array_values(array_filter(array_map('trim', file($listFile) ?: [])));
-uksort($renameMap, static fn (string $a, string $b): int => strlen($b) <=> strlen($a));
 
 $scanRoots = [
     $root . '/src',
@@ -51,6 +36,11 @@ $extraFiles = [
 
 $scanExtensions = ['php', 'feature', 'yml', 'yaml', 'md', 'neon', 'dist', 'json'];
 
+/** @var array<string, string> legacy basename => PCRE matching extends/implements of upstream FQCN */
+$thirdPartyFqnAllowlist = [
+    'TranslatorInterface' => '/\b(?:extends|implements)\s+\\\\Symfony\\\\Contracts\\\\Translation\\\\TranslatorInterface\b/',
+];
+
 $errors = [];
 
 /**
@@ -61,20 +51,12 @@ $scanContent = static function (
     string $content,
     array &$errors,
     array $legacyBasenames,
-    array $renameMap,
+    array $thirdPartyFqnAllowlist,
 ): void {
     $gherkinShortNames = [];
     if (preg_match_all('/^use\s+Behat\\\\Gherkin\\\\[^;]*\\\\([A-Za-z0-9_]+)\s*;/m', $content, $importMatches)) {
         foreach ($importMatches[1] as $short) {
             $gherkinShortNames[$short] = true;
-        }
-    }
-
-    if (str_ends_with($rel, '.php')) {
-        foreach ($renameMap as $old => $new) {
-            if (str_ends_with($rel, $new . '.php')) {
-                return;
-            }
         }
     }
 
@@ -99,6 +81,9 @@ $scanContent = static function (
             if (!preg_match('/\b' . preg_quote($basename, '/') . '\b/', $line)) {
                 continue;
             }
+            if (isset($thirdPartyFqnAllowlist[$basename]) && preg_match($thirdPartyFqnAllowlist[$basename], $line) === 1) {
+                continue;
+            }
             if (isset($gherkinShortNames[$basename])) {
                 continue;
             }
@@ -121,7 +106,7 @@ $scanContent = static function (
 
 $probeContent = "<?php\nuse Behat\\Behat\\ApplicationFactory;\n";
 $probeErrors = [];
-$scanContent('__probe__.php', $probeContent, $probeErrors, $legacyBasenames, $renameMap);
+$scanContent('__probe__.php', $probeContent, $probeErrors, $legacyBasenames, $thirdPartyFqnAllowlist);
 if ($probeErrors === []) {
     fwrite(STDERR, "check-legacy-repo-names: built-in detection self-test failed (expected ApplicationFactory probe).\n");
     exit(1);
@@ -153,7 +138,7 @@ foreach ($scanRoots as $scanRoot) {
         if ($content === false) {
             continue;
         }
-        $scanContent(substr($file->getPathname(), strlen($root) + 1), $content, $errors, $legacyBasenames, $renameMap);
+        $scanContent(substr($file->getPathname(), strlen($root) + 1), $content, $errors, $legacyBasenames, $thirdPartyFqnAllowlist);
     }
 }
 
@@ -161,7 +146,7 @@ foreach ($extraFiles as $path) {
     if (!is_file($path)) {
         continue;
     }
-    $scanContent(substr($path, strlen($root) + 1), file_get_contents($path) ?: '', $errors, $legacyBasenames, $renameMap);
+    $scanContent(substr($path, strlen($root) + 1), file_get_contents($path) ?: '', $errors, $legacyBasenames, $thirdPartyFqnAllowlist);
 }
 
 if ($errors !== []) {
