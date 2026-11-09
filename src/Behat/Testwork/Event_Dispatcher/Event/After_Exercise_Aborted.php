@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+/*
+ * This file is part of the Behat.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Testwork\Event_Dispatcher\Event;
+
+/**
+ * Represents an event in which exercise was aborted.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+final class After_Exercise_Aborted extends Exercise_Completed
+{
+    public function get_specification_iterators(): array
+    {
+        return [];
+    }
+}

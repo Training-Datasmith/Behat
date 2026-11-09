@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -24,14 +25,11 @@ final class Command extends BaseCommand
     /**
      * Initializes command.
      *
-     * @param string       $commandName
      * @param Controller[] $controllers
      */
-    public function __construct(
-        $commandName,
-        private readonly array $controllers,
-    ) {
-        parent::__construct($commandName);
+    public function __construct(?string $command_name, private readonly array $controllers)
+    {
+        parent::__construct($command_name);
     }
 
     /**

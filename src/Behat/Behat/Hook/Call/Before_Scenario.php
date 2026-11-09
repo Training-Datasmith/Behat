@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+/*
+ * This file is part of the Behat.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Behat\Hook\Call;
+
+use Behat\Behat\Hook\Scope\Scenario_Scope;
+
+/**
+ * Represents a Before_Scenario hook.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+final class Before_Scenario extends Runtime_Scenario_Hook
+{
+    /**
+     * Initializes hook.
+     *
+     * @param callable    $callable
+     * @param string|null $description
+     */
+    public function __construct($filter_string, $callable, $description = null)
+    {
+        parent::__construct(Scenario_Scope::BEFORE, $filter_string, $callable, $description);
+    }
+
+    public function get_name(): string
+    {
+        return 'Before_Scenario';
+    }
+}

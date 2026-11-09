@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -22,26 +23,26 @@ interface Call
      *
      * @return Callee
      */
-    public function getCallee();
+    public function get_callee();
 
     /**
      * Returns bound callable.
      *
      * @return callable
      */
-    public function getBoundCallable();
+    public function get_bound_callable();
 
     /**
      * Returns call arguments.
      *
      * @return array
      */
-    public function getArguments();
+    public function get_arguments();
 
     /**
      * Returns call error reporting level.
      *
      * @return int|null
      */
-    public function getErrorReportingLevel();
+    public function get_error_reporting_level();
 }

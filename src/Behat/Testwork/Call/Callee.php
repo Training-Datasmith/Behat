@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,8 +10,6 @@
  */
 
 namespace Behat\Testwork\Call;
-
-use ReflectionFunctionAbstract;
 
 /**
  * Represents callable object.
@@ -24,40 +23,40 @@ interface Callee
      *
      * @return string
      */
-    public function getPath();
+    public function get_path();
 
     /**
      * Returns callee description.
      *
      * @return string
      */
-    public function getDescription();
+    public function get_description();
 
     /**
      * Returns true if callee is a method, false otherwise.
      *
      * @return bool
      */
-    public function isAMethod();
+    public function is_a_method();
 
     /**
      * Returns true if callee is an instance (non-static) method, false otherwise.
      *
      * @return bool
      */
-    public function isAnInstanceMethod();
+    public function is_an_instance_method();
 
     /**
      * Returns callable.
      *
      * @return callable|array{class-string, string}
      */
-    public function getCallable();
+    public function get_callable();
 
     /**
      * Returns callable reflection.
      *
      * @return ReflectionFunctionAbstract
      */
-    public function getReflection();
+    public function get_reflection();
 }

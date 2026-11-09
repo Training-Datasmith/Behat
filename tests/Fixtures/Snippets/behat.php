@@ -9,7 +9,7 @@ use Behat\Config\Suite;
 $defaultProfile = (new Profile('default'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContext')
+            ->withContexts('Feature_Context')
     )
 ;
 

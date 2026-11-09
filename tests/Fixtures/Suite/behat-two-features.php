@@ -8,12 +8,12 @@ use Behat\Config\Suite;
 
 $firstSuite = (new Suite('first'))
   ->withPaths('%paths.base%/features/first')
-  ->withContexts('FirstContext')
+  ->withContexts('First_Context')
 ;
 
 $secondSuite = (new Suite('second'))
   ->withPaths('%paths.base%/features/second')
-  ->withContexts('SecondContext')
+  ->withContexts('Second_Context')
 ;
 
 $profile = (new Profile('default'))

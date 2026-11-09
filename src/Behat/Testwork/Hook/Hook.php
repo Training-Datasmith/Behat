@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -24,14 +25,14 @@ interface Hook extends Callee
      *
      * @return string
      */
-    public function getName();
+    public function get_name();
 
     /**
      * Returns hook scope name.
      *
      * @return string
      */
-    public function getScopeName();
+    public function get_scope_name();
 
     /**
      * Represents hook as a string.

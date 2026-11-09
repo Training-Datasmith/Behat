@@ -11,13 +11,13 @@ return (new Config())
         (new Profile('default'))
             ->withSuite(
                 (new Suite('default'))
-                    ->addContext('FeatureContext')
+                    ->addContext('Feature_Context')
             )
     )
     ->withProfile(
         (new Profile('isolation'))
             ->withSuite(
                 (new Suite('default'))
-                    ->addContext('FeatureContextIsolation')
+                    ->addContext('Feature_Context_Isolation')
             )
     );

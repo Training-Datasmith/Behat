@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -22,12 +23,12 @@ interface Teardown
      *
      * @return bool
      */
-    public function isSuccessful();
+    public function is_successful();
 
     /**
      * Checks if tear down has produced any output.
      *
      * @return bool
      */
-    public function hasOutput();
+    public function has_output();
 }

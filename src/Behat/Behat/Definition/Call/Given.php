@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -15,7 +16,7 @@ namespace Behat\Behat\Definition\Call;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Given extends RuntimeDefinition
+final class Given extends Runtime_Definition
 {
     public const KEYWORD = 'Given';
 

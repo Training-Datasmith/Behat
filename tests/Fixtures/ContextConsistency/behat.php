@@ -7,13 +7,15 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('default'))
+    ->withProfile(
+        (new Profile('default'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['FeatureContext'],
+            'contexts' => ['Feature_Context'],
         ]))
     )
-    ->withProfile((new Profile('params'))
-        ->withSuite((new Suite('default', []))->addContext('FeatureContext', [
+    ->withProfile(
+        (new Profile('params'))
+        ->withSuite((new Suite('default', []))->addContext('Feature_Context', [
             'parameter1' => 'val_one',
             'parameter2' => [
                 'everzet' => 'behat_admin',
@@ -21,43 +23,51 @@ return (new Config())
             ],
         ]))
     )
-    ->withProfile((new Profile('params_optional'))
-        ->withSuite((new Suite('default', []))->addContext('FeatureContext', [
+    ->withProfile(
+        (new Profile('params_optional'))
+        ->withSuite((new Suite('default', []))->addContext('Feature_Context', [
             'parameter1' => 'val_one',
         ]))
     )
-    ->withProfile((new Profile('custom_context'))
+    ->withProfile(
+        (new Profile('custom_context'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['CustomContext'],
+            'contexts' => ['Custom_Context'],
         ]))
     )
-    ->withProfile((new Profile('array_arguments'))
-        ->withSuite((new Suite('default', []))->addContext('FirstContext', [
+    ->withProfile(
+        (new Profile('array_arguments'))
+        ->withSuite((new Suite('default', []))->addContext('First_Context', [
             ['foo', 'bar'],
         ]))
     )
-    ->withProfile((new Profile('empty_contexts'))
+    ->withProfile(
+        (new Profile('empty_contexts'))
         ->withSuite(new Suite('first', [
             'contexts' => [],
         ]))
     )
-    ->withProfile((new Profile('custom_context_with_hook'))
+    ->withProfile(
+        (new Profile('custom_context_with_hook'))
         ->withSuite(new Suite('first', [
-            'contexts' => ['CustomContextWithHook'],
+            'contexts' => ['Custom_Context_With_Hook'],
         ]))
     )
-    ->withProfile((new Profile('single_context'))
+    ->withProfile(
+        (new Profile('single_context'))
         ->withSuite(new Suite('default', [
             'contexts' => 'UnexistentContext',
         ]))
     )
-    ->withProfile((new Profile('unexisting_context'))
+    ->withProfile(
+        (new Profile('unexisting_context'))
         ->withSuite(new Suite('default', [
             'contexts' => ['UnexistentContext'],
         ]))
     )
-    ->withProfile((new Profile('unexisting_param'))
-        ->withSuite((new Suite('default', []))->addContext('FeatureContext', [
+    ->withProfile(
+        (new Profile('unexisting_param'))
+        ->withSuite((new Suite('default', []))->addContext('Feature_Context', [
             'unexistingParam' => 'value',
         ]))
     );

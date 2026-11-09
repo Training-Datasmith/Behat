@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
-use Behat\Config\Filter\RoleFilter;
+use Behat\Config\Filter\Role_Filter;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
 
@@ -15,7 +17,7 @@ return (new Config())
                 'features/multiple_suites_2.feature'
             )
             ->withFilter(
-                new RoleFilter('small kid')
+                new Role_Filter('small kid')
             )
         )
         ->withSuite(
@@ -25,7 +27,7 @@ return (new Config())
                 'features/multiple_suites_2.feature'
             )
             ->withFilter(
-                new RoleFilter('old man')
+                new Role_Filter('old man')
             )
         )
     );

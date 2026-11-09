@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
@@ -13,8 +15,8 @@ return (new Config())
                 'features/simple_step_argument_transformation.feature'
             )
             ->withContexts(
-                'SimpleTransformationAttributesContext',
-                'UserContext'
+                'Simple_Transformation_Attributes_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -23,8 +25,8 @@ return (new Config())
                 'features/step_argument_transformation_without_parameters.feature'
             )
             ->withContexts(
-                'TransformationWithoutParametersAttributesContext',
-                'UserContext'
+                'Transformation_Without_Parameters_Attributes_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -33,8 +35,8 @@ return (new Config())
                 'features/multiple_transformations_in_one_function.feature'
             )
             ->withContexts(
-                'MultipleTransformationsInOneFunctionAttributesContext',
-                'UserContext'
+                'Multiple_Transformations_In_One_Function_Attributes_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -43,8 +45,8 @@ return (new Config())
                     'features/table_column_argument_transformation.feature'
                 )
                 ->withContexts(
-                    'ColumnTransformationContext',
-                    'UserContext'
+                    'Column_Transformation_Context',
+                    'User_Context'
                 )
         )
     )
@@ -56,8 +58,8 @@ return (new Config())
                 'features/simple_step_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -66,8 +68,8 @@ return (new Config())
                 'features/table_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -76,8 +78,8 @@ return (new Config())
                 'features/row_table_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -86,8 +88,8 @@ return (new Config())
                 'features/table_row_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -96,7 +98,7 @@ return (new Config())
                 'features/whole_table_argument_transformation.feature'
             )
             ->withContexts(
-                'WholeTableAnnotationsContext'
+                'Whole_Table_Annotations_Context'
             )
         )
         ->withSuite(
@@ -105,8 +107,8 @@ return (new Config())
                 'features/named_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -115,7 +117,7 @@ return (new Config())
                 'features/transform_different_types.feature'
             )
             ->withContexts(
-                'MultipleTypesAnnotationsContext'
+                'Multiple_Types_Annotations_Context'
             )
         )
         ->withSuite(
@@ -124,7 +126,7 @@ return (new Config())
                 'features/by_type_object_transformation.feature'
             )
             ->withContexts(
-                'ByTypeAnnotationsContext'
+                'By_Type_Annotations_Context'
             )
         )
         ->withSuite(
@@ -133,7 +135,7 @@ return (new Config())
                 'features/by_type_and_by_name_object_transformation.feature'
             )
             ->withContexts(
-                'ByTypeAndByNameAnnotationsContext'
+                'By_Type_And_By_Name_Annotations_Context'
             )
         )
         ->withSuite(
@@ -142,8 +144,8 @@ return (new Config())
                 'features/unicode_named_argument_transformation.feature'
             )
             ->withContexts(
-                'TransformationAnnotationsContext',
-                'UserContext'
+                'Transformation_Annotations_Context',
+                'User_Context'
             )
         )
         ->withSuite(
@@ -152,7 +154,7 @@ return (new Config())
                 'features/ordinal_argument_transformation.feature'
             )
             ->withContexts(
-                'OrdinalTransformationAnnotationsContext'
+                'Ordinal_Transformation_Annotations_Context'
             )
         )
         ->withSuite(
@@ -161,7 +163,7 @@ return (new Config())
                 'features/by_type_union_transformation.feature'
             )
             ->withContexts(
-                'ByTypeUnionAnnotationsContext'
+                'By_Type_Union_Annotations_Context'
             )
         )
         ->withSuite(
@@ -170,7 +172,7 @@ return (new Config())
                 'features/scalar_type_transformation.feature'
             )
             ->withContexts(
-                'ScalarTypeAnnotationsContext'
+                'Scalar_Type_Annotations_Context'
             )
         )
     )

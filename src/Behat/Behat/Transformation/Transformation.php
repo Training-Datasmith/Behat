@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -26,7 +27,7 @@ interface Transformation extends Callee
      *
      * @return string
      */
-    public function getPattern();
+    public function get_pattern();
 
     /**
      * Represents transformation as a string.

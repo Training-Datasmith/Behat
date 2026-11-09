@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -10,8 +11,7 @@
 
 namespace Behat\Testwork\Tester;
 
-use Behat\Testwork\Specification\SpecificationIterator;
-use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\Test_Result;
 use Behat\Testwork\Tester\Setup\Setup;
 use Behat\Testwork\Tester\Setup\Teardown;
 
@@ -27,30 +27,30 @@ interface Exercise
     /**
      * Sets up exercise for a test.
      *
-     * @param SpecificationIterator<TSpec>[] $iterators
+     * @param Specification_Iterator<TSpec>[] $iterators
      * @param bool                 $skip
      *
      * @return Setup
      */
-    public function setUp(array $iterators, $skip);
+    public function set_up(array $iterators, $skip);
 
     /**
      * Tests suites specifications.
      *
-     * @param SpecificationIterator<TSpec>[] $iterators
+     * @param Specification_Iterator<TSpec>[] $iterators
      * @param bool                 $skip
      *
-     * @return TestResult
+     * @return Test_Result
      */
     public function test(array $iterators, $skip);
 
     /**
      * Tears down exercise after a test.
      *
-     * @param SpecificationIterator<TSpec>[] $iterators
+     * @param Specification_Iterator<TSpec>[] $iterators
      * @param bool                 $skip
      *
      * @return Teardown
      */
-    public function tearDown(array $iterators, $skip, TestResult $result);
+    public function tear_down(array $iterators, $skip, Test_Result $result);
 }

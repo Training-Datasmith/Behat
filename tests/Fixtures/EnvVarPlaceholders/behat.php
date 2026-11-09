@@ -7,8 +7,10 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('default'))
-        ->withSuite((new Suite('default'))
-            ->addContext('FeatureContext', ['%env(MY_ENV_VAR)%'])
+    ->withProfile(
+        (new Profile('default'))
+        ->withSuite(
+            (new Suite('default'))
+            ->addContext('Feature_Context', ['%env(MY_ENV_VAR)%'])
         )
     );

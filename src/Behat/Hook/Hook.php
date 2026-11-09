@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -18,5 +19,5 @@ namespace Behat\Hook;
  */
 interface Hook
 {
-    public function getFilterString(): ?string;
+    public function get_filter_string(): ?string;
 }

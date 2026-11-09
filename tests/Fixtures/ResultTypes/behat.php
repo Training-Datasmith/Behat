@@ -1,44 +1,60 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
     ->withProfile(new Profile('default'))
-    ->withProfile((new Profile('undefined'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('UndefinedContext')
+    ->withProfile(
+        (new Profile('undefined'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Undefined_Context')
         )
     )
-    ->withProfile((new Profile('pending'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('PendingContext')
+    ->withProfile(
+        (new Profile('pending'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Pending_Context')
         )
     )
-    ->withProfile((new Profile('failed'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('FailedContext')
+    ->withProfile(
+        (new Profile('failed'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Failed_Context')
         )
     )
-    ->withProfile((new Profile('skipped'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('SkippedContext')
+    ->withProfile(
+        (new Profile('skipped'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Skipped_Context')
         )
     )
-    ->withProfile((new Profile('ambiguous'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('AmbiguousContext')
+    ->withProfile(
+        (new Profile('ambiguous'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Ambiguous_Context')
         )
     )
-    ->withProfile((new Profile('redundant'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('RedundantContext')
+    ->withProfile(
+        (new Profile('redundant'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Redundant_Context')
         )
     )
-    ->withProfile((new Profile('warning'))
-        ->withSuite((new Suite('default'))
-            ->withContexts('WarningContext')
+    ->withProfile(
+        (new Profile('warning'))
+        ->withSuite(
+            (new Suite('default'))
+            ->withContexts('Warning_Context')
         )
     )
 ;

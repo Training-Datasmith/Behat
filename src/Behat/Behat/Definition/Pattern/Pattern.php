@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -15,13 +16,10 @@ namespace Behat\Behat\Definition\Pattern;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Pattern
+final readonly class Pattern
 {
-    public function __construct(
-        private readonly string $suggestedMethodName,
-        private readonly string $pattern,
-        private readonly int $placeholderCount = 0,
-    ) {
+    public function __construct(private string $suggested_method_name, private string $pattern, private int $placeholder_count = 0)
+    {
     }
 
     /**
@@ -29,23 +27,23 @@ final class Pattern
      *
      * @deprecated see getSuggestedMethodName
      */
-    public function getCanonicalText(): string
+    public function get_canonical_text(): string
     {
-        return $this->suggestedMethodName;
+        return $this->suggested_method_name;
     }
 
-    public function getSuggestedMethodName(): string
+    public function get_suggested_method_name(): string
     {
-        return $this->suggestedMethodName;
+        return $this->suggested_method_name;
     }
 
-    public function getPattern(): string
+    public function get_pattern(): string
     {
         return $this->pattern;
     }
 
-    public function getPlaceholderCount(): int
+    public function get_placeholder_count(): int
     {
-        return $this->placeholderCount;
+        return $this->placeholder_count;
     }
 }

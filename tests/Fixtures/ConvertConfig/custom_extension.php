@@ -1,11 +1,13 @@
 <?php
 
-use Behat\Behat\Output\Printer\ConsoleOutputFactory;
+declare(strict_types=1);
+
+use Behat\Behat\Output\Printer\Console_Output_Factory;
 use Behat\Testwork\Output\Formatter;
-use Behat\Testwork\Output\Printer\OutputPrinter;
-use Behat\Testwork\Output\Printer\StreamOutputPrinter;
-use Behat\Testwork\Output\ServiceContainer\OutputExtension;
-use Behat\Testwork\ServiceContainer\Extension;
+use Behat\Testwork\Output\Printer\Output_Printer;
+use Behat\Testwork\Output\Printer\Stream_Output_Printer;
+use Behat\Testwork\Output\Service_Container\Output_Extension;
+use Behat\Testwork\Service_Container\Extension;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -23,20 +25,20 @@ class CustomExtension implements Extension
         $builder->useAttributeAsKey('name')->prototype('variable');
     }
 
-    public function initialize(Behat\Testwork\ServiceContainer\ExtensionManager $extensionManager)
+    public function initialize(Behat\Testwork\Service_Container\Extension_Manager $extensionManager)
     {
     }
 
     public function load(ContainerBuilder $container, array $config)
     {
-        $outputPrinterDefinition = new Definition(StreamOutputPrinter::class, [
-            new Definition(ConsoleOutputFactory::class),
+        $outputPrinterDefinition = new Definition(Stream_Output_Printer::class, [
+            new Definition(Console_Output_Factory::class),
         ]);
-        $container->setDefinition(StreamOutputPrinter::class, $outputPrinterDefinition);
+        $container->setDefinition(Stream_Output_Printer::class, $outputPrinterDefinition);
 
         $formatterDefinition = $container->register(CustomFormatter::class, CustomFormatter::class);
-        $formatterDefinition->addArgument(new Reference(StreamOutputPrinter::class));
-        $formatterDefinition->addTag(OutputExtension::FORMATTER_TAG);
+        $formatterDefinition->addArgument(new Reference(Stream_Output_Printer::class));
+        $formatterDefinition->addTag(Output_Extension::FORMATTER_TAG);
     }
 
     public function process(ContainerBuilder $container): void
@@ -47,7 +49,7 @@ class CustomExtension implements Extension
 class CustomFormatter implements Formatter
 {
     public function __construct(
-        private OutputPrinter $outputPrinter,
+        private Output_Printer $outputPrinter,
     ) {
     }
 

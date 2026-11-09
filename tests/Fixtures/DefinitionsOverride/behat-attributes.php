@@ -7,23 +7,27 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('inherit'))
+    ->withProfile(
+        (new Profile('inherit'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['FeatureContextInheritAttributes'],
+            'contexts' => ['Feature_Context_Inherit_Attributes'],
         ]))
     )
-    ->withProfile((new Profile('both_patterns'))
+    ->withProfile(
+        (new Profile('both_patterns'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['FeatureContextBothAttributes'],
+            'contexts' => ['Feature_Context_Both_Attributes'],
         ]))
     )
-    ->withProfile((new Profile('parent_attribute_child_annotation'))
+    ->withProfile(
+        (new Profile('parent_attribute_child_annotation'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['FeatureContextMixedAttributeParentAnnotationChild'],
+            'contexts' => ['Feature_Context_Mixed_Attribute_Parent_Annotation_Child'],
         ]))
     )
-    ->withProfile((new Profile('parent_annotation_child_attribute'))
+    ->withProfile(
+        (new Profile('parent_annotation_child_attribute'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['FeatureContextMixedAnnotationParentAttributeChild'],
+            'contexts' => ['Feature_Context_Mixed_Annotation_Parent_Attribute_Child'],
         ]))
     );

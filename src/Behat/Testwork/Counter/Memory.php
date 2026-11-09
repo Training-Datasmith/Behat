@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -22,35 +23,30 @@ final class Memory implements Stringable
     /**
      * @var string[]
      */
-    private $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb'];
+    private array $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb'];
 
     /**
      * Returns current memory usage.
      */
-    public function getMemoryUsage(): int
+    public function get_memory_usage(): int
     {
         return memory_get_usage();
     }
 
     /**
      * Presents memory usage in human-readable form.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->humanize($this->getMemoryUsage());
+        return $this->humanize($this->get_memory_usage());
     }
 
     /**
      * Humanizes usage information.
-     *
-     * @param int $bytes
      */
-    private function humanize($bytes): string
+    private function humanize(int $bytes): string
     {
         $e = intval(floor(log($bytes) / log(1024)));
-
         if (!isset($this->units[$e])) {
             return 'Can not calculate memory usage';
         }

@@ -10,6 +10,6 @@ return (new Config())->withProfile(
     (new Profile('default'))->withSuite(
         (new Suite('default'))
             ->withPaths('%paths.base%/features')
-            ->addContext('FeatureContext')
+            ->addContext('Feature_Context')
     )
 );

@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Initializer\ContextInitializer;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Behat\Context\Initializer\Context_Initializer;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CustomInitializer2 implements ContextInitializer
+class CustomInitializer2 implements Context_Initializer
 {
     public function supportsContext(Context $context): bool
     {
@@ -33,7 +33,7 @@ class CustomExtension2 implements Extension
     {
     }
 
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extensionManager): void
     {
     }
 

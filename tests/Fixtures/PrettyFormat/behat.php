@@ -9,42 +9,42 @@ use Behat\Config\Suite;
 $defaultProfile = (new Profile('default'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContext')
+            ->withContexts('Feature_Context')
     )
 ;
 
 $multilineProfile = (new Profile('multiline'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContextMultiline')
+            ->withContexts('Feature_Context_Multiline')
     )
 ;
 
 $emptyProfile = (new Profile('empty'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContextEmpty')
+            ->withContexts('Feature_Context_Empty')
     )
 ;
 
 $backgroundFailingProfile = (new Profile('background_failing'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContextBackgroundFailing')
+            ->withContexts('Feature_Context_Background_Failing')
     )
 ;
 
 $multipleExamplesProfile = (new Profile('multiple_examples'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContextMultipleExamples')
+            ->withContexts('Feature_Context_Multiple_Examples')
     )
 ;
 
 $lsProfile = (new Profile('ls'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('FeatureContextLs')
+            ->withContexts('Feature_Context_Ls')
     )
 ;
 

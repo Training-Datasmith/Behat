@@ -9,28 +9,28 @@ use Behat\Config\Suite;
 $profile = (new Profile('default'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('BasicContext')
+            ->withContexts('Basic_Context')
     )
 ;
 
 $definitions = (new Profile('definitions'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('DefinitionsContext')
+            ->withContexts('Definitions_Context')
     )
 ;
 
 $translatable = (new Profile('translatable'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('TranslatableDefinitionsContext')
+            ->withContexts('Translatable_Definitions_Context')
     )
 ;
 
 $descriptions = (new Profile('descriptions'))
     ->withSuite(
         (new Suite('default'))
-            ->withContexts('DescriptionsContext')
+            ->withContexts('Descriptions_Context')
     )
 ;
 

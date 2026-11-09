@@ -11,7 +11,7 @@ return (new Config())
         (new Profile('default'))
             ->withSuite(
                 (new Suite('default'))
-                    ->addContext('FeatureContextAnnotations')
+                    ->addContext('Feature_Context_Annotations')
                     ->withPaths('features')
             )
     );

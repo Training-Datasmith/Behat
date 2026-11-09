@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Behat\Testwork\Deprecation\DeprecationCollector;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\Deprecation\Deprecation_Collector;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class DeprecationExtension implements Extension
+class Deprecation_Extension implements Extension
 {
     public function getConfigKey(): string
     {
@@ -19,9 +19,9 @@ class DeprecationExtension implements Extension
     {
     }
 
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extensionManager): void
     {
-        DeprecationCollector::trigger('This extension triggers a deprecation during initialization');
+        Deprecation_Collector::trigger('This extension triggers a deprecation during initialization');
     }
 
     public function load(ContainerBuilder $container, array $config): void
@@ -34,4 +34,4 @@ class DeprecationExtension implements Extension
     }
 }
 
-return new DeprecationExtension();
+return new Deprecation_Extension();

@@ -1,73 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
 
 return (new Config())
-    ->withProfile((new Profile('default'))
+    ->withProfile(
+        (new Profile('default'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['ConstructorArgsContext'],
+            'contexts' => ['Constructor_Args_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('constructor_args'))
+    ->withProfile(
+        (new Profile('constructor_args'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['ConstructorArgsContext'],
+            'contexts' => ['Constructor_Args_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('mixed_constructor_args'))
+    ->withProfile(
+        (new Profile('mixed_constructor_args'))
         ->withSuite((new Suite('default', [
             'autowire' => true,
-            'services' => 'ServiceContainer',
-        ]))->addContext('MixedConstructorArgsContext', [
+            'services' => 'Service_Container',
+        ]))->addContext('Mixed_Constructor_Args_Context', [
             'name' => 'Konstantin',
             's2' => '@Service2',
         ]))
     )
-    ->withProfile((new Profile('null_args'))
+    ->withProfile(
+        (new Profile('null_args'))
         ->withSuite((new Suite('default', [
             'autowire' => true,
-            'services' => 'ServiceContainer',
-        ]))->addContext('NullArgsContext', [
+            'services' => 'Service_Container',
+        ]))->addContext('Null_Args_Context', [
             'name' => null,
         ]))
     )
-    ->withProfile((new Profile('unregistered_constructor'))
+    ->withProfile(
+        (new Profile('unregistered_constructor'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['UnregisteredConstructorContext'],
+            'contexts' => ['Unregistered_Constructor_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('step_definition_args'))
+    ->withProfile(
+        (new Profile('step_definition_args'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['StepDefinitionArgsContext'],
+            'contexts' => ['Step_Definition_Args_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('unregistered_step'))
+    ->withProfile(
+        (new Profile('unregistered_step'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['UnregisteredStepContext'],
+            'contexts' => ['Unregistered_Step_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('transformation_args'))
+    ->withProfile(
+        (new Profile('transformation_args'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['TransformationArgsContext'],
+            'contexts' => ['Transformation_Args_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     )
-    ->withProfile((new Profile('union_constructor_args'))
+    ->withProfile(
+        (new Profile('union_constructor_args'))
         ->withSuite(new Suite('default', [
-            'contexts' => ['UnionConstructorArgsContext'],
+            'contexts' => ['Union_Constructor_Args_Context'],
             'autowire' => true,
-            'services' => 'ServiceContainer',
+            'services' => 'Service_Container',
         ]))
     );

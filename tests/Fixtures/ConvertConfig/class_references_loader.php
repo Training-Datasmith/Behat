@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Used by the `class_references.yaml` file to define the class names that will be converted to PHP class references.
  */
 use Behat\Behat\Context\Context;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -20,7 +22,7 @@ class CreateClassNamesExtension implements Extension
         return 'anything';
     }
 
-    public function initialize(ExtensionManager $extensionManager)
+    public function initialize(Extension_Manager $extensionManager)
     {
     }
 
@@ -45,7 +47,7 @@ class CreateClassNamesExtension implements Extension
 // it is tricky to configure the Behat autoloader to find these classes in the "fixtures" directory.
 // Hence using an ugly extension file to run this code.
 class_alias(CreateClassNamesExtension::class, 'Some\Behat\Extension\ExplicitlyReferencedExtension');
-class_alias(CreateClassNamesExtension::class, 'Some\ShorthandExtension\ServiceContainer\ShorthandExtension');
+class_alias(CreateClassNamesExtension::class, 'Some\ShorthandExtension\Service_Container\ShorthandExtension');
 $context = new class implements Context {
 };
 class_alias($context::class, 'MyContext');

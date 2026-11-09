@@ -15,7 +15,7 @@ if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
     require $autoload;
 }
 
-if (!class_exists('Behat\Behat\ApplicationFactory', true)) {
+if (!class_exists('Behat\Behat\Application_Factory', true)) {
     if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
         require($autoload);
     } elseif (is_file($autoload = __DIR__ . '/../../../autoload.php')) {
@@ -30,5 +30,5 @@ if (!class_exists('Behat\Behat\ApplicationFactory', true)) {
     }
 }
 
-$factory = new \Behat\Behat\ApplicationFactory();
-$factory->createApplication()->run();
+$factory = new \Behat\Behat\Application_Factory();
+$factory->create_application()->run();

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Behat\Testwork\Call\Handler\Exception\ClassNotFoundHandler;
-use Behat\Testwork\Call\Handler\Exception\MethodNotFoundHandler;
-use Behat\Testwork\Call\ServiceContainer\CallExtension;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Testwork\Call\Handler\Exception\Class_Not_Found_Handler;
+use Behat\Testwork\Call\Handler\Exception\Method_Not_Found_Handler;
+use Behat\Testwork\Call\Service_Container\Call_Extension;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class NonExistentClassPrinter extends ClassNotFoundHandler
+class NonExistentClassPrinter extends Class_Not_Found_Handler
 {
     public function handleNonExistentClass($class): void
     {
@@ -19,7 +19,7 @@ class NonExistentClassPrinter extends ClassNotFoundHandler
     }
 }
 
-class NonExistentMethodPrinter extends MethodNotFoundHandler
+class NonExistentMethodPrinter extends Method_Not_Found_Handler
 {
     public function handleNonExistentMethod($callable): void
     {
@@ -38,7 +38,7 @@ class CustomHandlers implements Extension
     {
     }
 
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extensionManager): void
     {
     }
 
@@ -49,12 +49,12 @@ class CustomHandlers implements Extension
     public function load(ContainerBuilder $container, array $config): void
     {
         $definition = new Definition('NonExistentClassPrinter', []);
-        $definition->addTag(CallExtension::EXCEPTION_HANDLER_TAG, ['priority' => 50]);
-        $container->setDefinition(CallExtension::EXCEPTION_HANDLER_TAG . '.class_printer', $definition);
+        $definition->addTag(Call_Extension::EXCEPTION_HANDLER_TAG, ['priority' => 50]);
+        $container->setDefinition(Call_Extension::EXCEPTION_HANDLER_TAG . '.class_printer', $definition);
 
         $definition = new Definition('NonExistentMethodPrinter', []);
-        $definition->addTag(CallExtension::EXCEPTION_HANDLER_TAG, ['priority' => 55]);
-        $container->setDefinition(CallExtension::EXCEPTION_HANDLER_TAG . '.method_printer', $definition);
+        $definition->addTag(Call_Extension::EXCEPTION_HANDLER_TAG, ['priority' => 55]);
+        $container->setDefinition(Call_Extension::EXCEPTION_HANDLER_TAG . '.method_printer', $definition);
     }
 }
 

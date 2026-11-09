@@ -10,7 +10,7 @@ return (new Config())
     ->withProfile(
         (new Profile('default'))->withSuite(
             (new Suite('default'))
-                ->addContext('FeatureContextSnippetAccepting')
+                ->addContext('Feature_Context_Snippet_Accepting')
         )
     )
 ;

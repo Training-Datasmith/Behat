@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+
+class Redundant_Context implements Context
+{
+    #[Given('/^customer bought coffee$/')]
+    public function chosen($arg1): void
+    {
+        // do something
+    }
+
+    #[Given('/^customer bought coffee$/')]
+    public function chosenLatte(): void
+    {
+        // do something else
+    }
+}

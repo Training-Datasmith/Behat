@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use Behat\Config\Config;
-use Behat\Config\Formatter\PrettyFormatter;
-use Behat\Config\Formatter\ProgressFormatter;
+use Behat\Config\Formatter\Pretty_Formatter;
+use Behat\Config\Formatter\Progress_Formatter;
 use Behat\Config\Profile;
 
 $defaultProfile = new Profile('default');
 
 $progressProfile = (new Profile('progress'))
-    ->disableFormatter(PrettyFormatter::NAME)
-    ->withFormatter(new ProgressFormatter())
+    ->disableFormatter(Pretty_Formatter::NAME)
+    ->withFormatter(new Progress_Formatter())
 ;
 
 return (new Config())

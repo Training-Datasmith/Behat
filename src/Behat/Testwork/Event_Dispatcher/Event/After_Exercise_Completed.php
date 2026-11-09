@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+/*
+ * This file is part of the Behat.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Testwork\Event_Dispatcher\Event;
+
+use Behat\Testwork\Tester\Result\Test_Result;
+use Behat\Testwork\Tester\Setup\Teardown;
+
+/**
+ * Represents an event in which exercise was completed.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+final class After_Exercise_Completed extends Exercise_Completed implements After_Tested
+{
+    /**
+     * Initializes event.
+     */
+    public function __construct(private readonly array $specification_iterators, private readonly Test_Result $result, private readonly Teardown $teardown)
+    {
+    }
+
+    /**
+     * @return Specification_Iterator[]
+     */
+    public function get_specification_iterators(): array
+    {
+        return $this->specification_iterators;
+    }
+
+    /**
+     * Returns exercise test result.
+     */
+    public function get_test_result(): Test_Result
+    {
+        return $this->result;
+    }
+
+    /**
+     * Returns exercise teardown result.
+     */
+    public function get_teardown(): Teardown
+    {
+        return $this->teardown;
+    }
+}

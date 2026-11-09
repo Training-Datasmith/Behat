@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Initializer\ContextInitializer;
-use Behat\Testwork\ServiceContainer\Extension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Behat\Behat\Context\Initializer\Context_Initializer;
+use Behat\Testwork\Service_Container\Extension;
+use Behat\Testwork\Service_Container\Extension_Manager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CustomInitializer implements ContextInitializer
+class CustomInitializer implements Context_Initializer
 {
     private array $parameters;
 
@@ -41,7 +41,7 @@ class CustomExtension implements Extension
         $builder->useAttributeAsKey('name')->prototype('variable');
     }
 
-    public function initialize(ExtensionManager $extensionManager): void
+    public function initialize(Extension_Manager $extensionManager): void
     {
     }
 

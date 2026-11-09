@@ -10,7 +10,7 @@ $profile = (new Profile('default'))
     ->withSuite(
         (new Suite('suite-with-hyphens'))
             ->withPaths('features/little_kid.feature')
-            ->withContexts('LittleKidContext')
+            ->withContexts('Little_Kid_Context')
     )
 ;
 

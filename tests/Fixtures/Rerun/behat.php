@@ -12,12 +12,12 @@ return (new Config())
             ->withSuite(
                 (new Suite('default'))
                     ->withPaths('features/apples.feature', 'features/bananas.feature')
-                    ->withContexts('FeatureContext')
+                    ->withContexts('Feature_Context')
             )
             ->withSuite(
                 (new Suite('suite2'))
                     ->withPaths('features/bananas.feature')
-                    ->withContexts('FeatureContext')
+                    ->withContexts('Feature_Context')
             )
     )
 ;

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -10,13 +11,12 @@
 
 namespace Behat\Testwork\Output;
 
-use Behat\Testwork\Output\Printer\OutputPrinter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Represents Testwork output formatter.
  *
- * @see OutputManager
+ * @see Output_Manager
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -27,33 +27,33 @@ interface Formatter extends EventSubscriberInterface
      *
      * @return string
      */
-    public function getName();
+    public function get_name();
 
     /**
      * Returns formatter description.
      *
      * @return string
      */
-    public function getDescription();
+    public function get_description();
 
     /**
      * Returns formatter output printer.
      *
-     * @return OutputPrinter
+     * @return Output_Printer
      */
-    public function getOutputPrinter();
+    public function get_output_printer();
 
     /**
      * Sets formatter parameter.
      *
      * @param string $name
      */
-    public function setParameter($name, $value);
+    public function set_parameter($name, $value);
 
     /**
      * Returns parameter name.
      *
      * @param string $name
      */
-    public function getParameter($name);
+    public function get_parameter($name);
 }

@@ -9,7 +9,7 @@ use Behat\Config\Suite;
 return (new Config())->withProfile(
     (new Profile('default'))->withSuite(
         new Suite('default', [
-            'contexts' => ['FeatureContextAttributes'],
+            'contexts' => ['Feature_Context_Attributes'],
             'parameters' => [
                 'before_feature' => 'BEFORE EVERY FEATURE',
                 'after_feature' => 'AFTER EVERY FEATURE',

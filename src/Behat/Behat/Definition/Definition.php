@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -24,14 +25,14 @@ interface Definition extends Callee
      *
      * @return string
      */
-    public function getType();
+    public function get_type();
 
     /**
      * Returns step pattern exactly as it was defined.
      *
      * @return string
      */
-    public function getPattern();
+    public function get_pattern();
 
     /**
      * Represents definition as a string.

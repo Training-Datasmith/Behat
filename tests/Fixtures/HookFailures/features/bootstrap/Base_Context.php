@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+use Behat\Behat\Context\Context;
+
+abstract class Base_Context implements Context
+{
+    private static bool $thrown = false;
+
+    protected static function throwFailure(string $message): void
+    {
+        if (self::$thrown) {
+            return;
+        }
+
+        self::$thrown = true;
+
+        throw new Exception($message);
+    }
+}

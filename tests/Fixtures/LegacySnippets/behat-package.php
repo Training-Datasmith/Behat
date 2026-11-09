@@ -10,7 +10,7 @@ return (new Config())
     ->withProfile(
         (new Profile('default'))->withSuite(
             (new Suite('default'))
-                ->addContext('FeatureContextPackage')
+                ->addContext('Feature_Context_Package')
         )
     )
 ;

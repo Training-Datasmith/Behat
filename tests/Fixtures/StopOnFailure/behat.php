@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Config\Config;
 use Behat\Config\Profile;
-use Behat\Config\TesterOptions;
+use Behat\Config\Tester_Options;
 
 return (new Config())
     ->withProfile(new Profile('default'))
     ->withProfile((new Profile('stop-on-failure'))
-        ->withTesterOptions((new TesterOptions())
+        ->withTesterOptions((new Tester_Options())
             ->withStopOnFailure()))
     ->withProfile((new Profile('no-stop-on-failure'))
-        ->withTesterOptions((new TesterOptions())
+        ->withTesterOptions((new Tester_Options())
             ->withStopOnFailure(false)));

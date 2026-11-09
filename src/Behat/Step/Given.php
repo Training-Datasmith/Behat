@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -21,12 +22,11 @@ final class Given implements Definition
     /**
      * @param string|null $pattern
      */
-    public function __construct(
-        public $pattern = null,
-    ) {
+    public function __construct(public $pattern = null)
+    {
     }
 
-    public function getPattern(): ?string
+    public function get_pattern(): ?string
     {
         return $this->pattern;
     }

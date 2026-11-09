@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+
+class Constructor_Args_Context implements Context
+{
+    public function __construct(Service2 $s1, Service1 $s2, Service3 $s3)
+    {
+    }
+
+    #[Given('a step')]
+    public function aStep()
+    {
+    }
+}

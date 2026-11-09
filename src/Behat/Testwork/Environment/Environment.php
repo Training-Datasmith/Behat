@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat Testwork.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -25,12 +26,12 @@ interface Environment
      *
      * @return Suite
      */
-    public function getSuite();
+    public function get_suite();
 
     /**
      * Creates callable using provided Callee.
      *
      * @return callable
      */
-    public function bindCallee(Callee $callee);
+    public function bind_callee(Callee $callee);
 }

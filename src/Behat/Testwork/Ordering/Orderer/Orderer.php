@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -9,8 +10,6 @@
  */
 
 namespace Behat\Testwork\Ordering\Orderer;
-
-use Behat\Testwork\Specification\SpecificationIterator;
 
 /**
  * Algorithm for prioritising Specification execution.
@@ -22,14 +21,12 @@ interface Orderer
     /**
      * @template T
      *
-     * @param SpecificationIterator<T>[] $scenarioIterators
-     *
-     * @return SpecificationIterator<T>[]
+     * @return Specification_Iterator<T>[]
      */
-    public function order(array $scenarioIterators);
+    public function order(array $scenario_iterators);
 
     /**
      * @return string
      */
-    public function getName();
+    public function get_name();
 }

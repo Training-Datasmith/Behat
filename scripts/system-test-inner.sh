@@ -6,6 +6,8 @@ export LANG=C
 
 git config --global --add safe.directory /app 2>/dev/null || true
 
+php scripts/check-legacy-repo-names.php
+
 strip_ansi() {
     local infile="$1"
     local outfile="$2"

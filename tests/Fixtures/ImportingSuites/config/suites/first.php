@@ -6,7 +6,7 @@ $config = new Behat\Config\Config([
     'default' => [
         'suites' => [
             'first' => [
-                'contexts' => ['FirstContext'],
+                'contexts' => ['First_Context'],
             ],
         ],
     ],
